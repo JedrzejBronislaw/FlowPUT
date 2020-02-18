@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.controllers.MainWindowController">
+   <children>
+      <BorderPane fx:id="borderPane">
+         <center>
+            <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <tabs>
+                  <Tab closable="false" text="Live">
+                     <content>
+                        <ScrollPane fitToWidth="true">
+                           <content>
+                              <VBox fx:id="mainVbox" alignment="TOP_CENTER" fillWidth="false">
+                                 <children>
+                                    <VBox fx:id="flowBox" prefHeight="200.0" prefWidth="172.0" />
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </content>
+                  </Tab>
+                  <Tab closable="false" text="Tabel">
+                     <content>
+                        <ScrollPane fx:id="tablePane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+                  <Tab closable="false" text="Chart">
+                    <content>
+                        <ScrollPane fx:id="chartPane" fitToHeight="true" fitToWidth="true" />
+                    </content>
+                  </Tab>
+                  <Tab closable="false" text="Options">
+                    <content>
+                        <ScrollPane fx:id="optionsPane" fitToWidth="true" />
+                    </content>
+                  </Tab>
+                  <Tab closable="false" text="Calibration">
+                    <content>
+                        <ScrollPane fx:id="calibrationPane" fitToWidth="true" />
+                    </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>

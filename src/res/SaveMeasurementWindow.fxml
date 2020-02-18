@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.controllers.SaveWindowController">
+   <children>
+      <HBox>
+         <children>
+            <VBox>
+               <children>
+                  <Label text="Time format:" />
+                  <CheckBox fx:id="unixTime" mnemonicParsing="false" selected="true" text="Unix time" />
+                  <CheckBox fx:id="fullTime" mnemonicParsing="false" selected="true" text="Full time" />
+                  <CheckBox fx:id="processTime" mnemonicParsing="false" selected="true" text="Process time" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Columns:" />
+                  <CheckBox fx:id="col_pulses" mnemonicParsing="false" selected="true" text="pulses" />
+                  <CheckBox fx:id="col_flow" mnemonicParsing="false" selected="true" text="flow" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Columns order:" />
+                  <RadioButton fx:id="pulses_first" mnemonicParsing="false" selected="true" text="pulses first">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="columnsOrder" />
+                     </toggleGroup></RadioButton>
+                  <RadioButton fx:id="flow_first" mnemonicParsing="false" text="flow first" toggleGroup="$columnsOrder" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Values of  the flowmeter:" />
+                  <RadioButton fx:id="together" mnemonicParsing="false" selected="true" text="together">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="valuesTogether" />
+                     </toggleGroup></RadioButton>
+                  <RadioButton fx:id="separately" mnemonicParsing="false" text="separately" toggleGroup="$valuesTogether" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Decimal separator:" />
+                  <RadioButton fx:id="comma_separator" mnemonicParsing="false" text="comma (,)">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="decimalSeparator" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="dot_separator" mnemonicParsing="false" selected="true" text="dot (.)" toggleGroup="$decimalSeparator" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
+   </children>
+</VBox>

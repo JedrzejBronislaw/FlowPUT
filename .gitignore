@@ -1,3 +1,9 @@
+properties.xml
+build/
+target/
+bin/
+extra_res/
+
 # Compiled class file
 *.class
 
