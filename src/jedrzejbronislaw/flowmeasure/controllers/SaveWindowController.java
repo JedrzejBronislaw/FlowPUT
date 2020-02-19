@@ -31,10 +31,6 @@ public class SaveWindowController implements Initializable {
 	
 	@FXML
 	private RadioButton comma_separator, dot_separator;
-//	enum State {
-//		unavailable, available, ongoing
-//	}
-
 	
 	@FXML
 	private Button saveButton;

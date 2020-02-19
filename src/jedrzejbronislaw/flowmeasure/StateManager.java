@@ -3,7 +3,6 @@ package jedrzejbronislaw.flowmeasure;
 import java.util.function.Function;
 
 import jedrzejbronislaw.flowmeasure.services.EventListener;
-import jedrzejbronislaw.flowmeasure.services.EventListener.EventType;
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
@@ -43,57 +42,46 @@ public class StateManager implements EventListener{
 	public void event(EventType event) {
 
 		if(event == EventType.Process_Ends) {
-//			if (appState.getState() != ApplicationState.Process) return;
-
 			processState.setState(ProcessState.Finished);
 			appState.setState(ApplicationState.Idle);
-		}
+		} else
 		
 		
 		if(event == EventType.Process_Starts) {
-//			if (appState.getState() != ApplicationState.Idle) return;
-
 			processState.setState(ProcessState.Ongoing);
 			appState.setState(ApplicationState.Process);
-		}
+		} else
 		
 		
 		if(event == EventType.LostConnection) {
-
 			processState.setState(ProcessState.LostConnection);
 			appState.setState(ApplicationState.Idle);
 			connState.setState(ConnectionState.Disconnected);
-		}
+		} else
 		
 		if(event == EventType.ConnectionSuccessful) {
-			
 			connState.setState(ConnectionState.Connected);
-		}
+		} else
 		
 		if(event == EventType.ConnectionFailed) {
-			
 			connState.setState(ConnectionState.Disconnected);
-		}
+		} else
 		
 		if(event == EventType.Connecting_Start) {
-			
 			connState.setState(ConnectionState.Connecting);
-		}
+		} else
 		
 		if(event == EventType.Diconnection) {
-			
 			connState.setState(ConnectionState.Disconnected);
-		}
+		} else
 		
 		//---
 		
 		if(event == EventType.Calibration_Starts) {
-
 			appState.setState(ApplicationState.Calibration);
-		}
+		} else
 		
 		if(event == EventType.Calibration_Ends) {
-
 			appState.setState(ApplicationState.Idle);
 		}
 	}

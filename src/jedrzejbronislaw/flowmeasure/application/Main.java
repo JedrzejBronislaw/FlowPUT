@@ -110,7 +110,7 @@ public class Main extends Application {
 		session.getAppState().addStateListiner(state -> System.out.println(" -> New appState: " + state.toString()));
 		session.getConnState().addStateListiner(state -> System.out.println(" -> New connState: " + state.toString()));
 		session.getProcessState().addStateListiner(state -> System.out.println(" -> New processState: " + state.toString()));
-		eventManager.addListener(state -> System.out.println(" -> Event: " + state.toString()));
+		eventManager.addListener(state -> {if(state != EventType.ReceivedData) System.out.println(" -> Event: " + state.toString());});
 	}
 
 	private Session buildSession() {

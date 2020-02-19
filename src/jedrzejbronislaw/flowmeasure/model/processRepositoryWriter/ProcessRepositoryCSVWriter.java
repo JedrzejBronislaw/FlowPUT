@@ -31,7 +31,6 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	private FlowConverter flowConverter;
 	private ProcessRepositoryWriterOptions options;
 	private FileWriter writer;
-//	private Writer writer;
 	private ProcessRepository repository;
 	
 	private LocalDateTime startTime;
@@ -39,8 +38,6 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	
 	@Override
 	public boolean save(ProcessRepository repository, File file, ProcessRepositoryWriterOptions options) {
-//		DataOutputStream out;
-//		FileWriter writer;
 		flowConverter = new FlowConverter1(pulsePerLitre);
 		this.options = options;
 		this.repository = repository;
@@ -171,46 +168,6 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 			}
 			newLine();
 			
-//			Consumer<? super FlowMeasurement> action = measurement -> {
-//				Float flow;
-//				flowConverter.newDataEvent(measurement.getTime());
-//
-//				try {
-//					if(options.getTimeFormats().contains(TimeFormat.Unix)) {
-//						writer.write(Long.toString(measurement.getTime().toEpochSecond(ZoneOffset.UTC)));
-//						writer.write(";");
-//					}
-//					if(options.getTimeFormats().contains(TimeFormat.Full)) {
-//						writer.write(measurement.getTime().format(formatter));
-//						writer.write(";");
-//					}
-//					if(options.getTimeFormats().contains(TimeFormat.ProcessTime)) {
-//						writer.write(Long.toString(ChronoUnit.SECONDS.between(startTime, measurement.getTime())));
-//						writer.write(";");
-//					}
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				
-//				try {
-//					for(int i=0; i<repository.getSize(); i++) {
-//						writer.write(Integer.toString(measurement.get(i)));
-//						writer.write(";");
-//						
-//						flow = flowConverter.pulsesToLitrePerSec(measurement.get(i));
-//						if(flow != null)
-//							writer.write(Float.toString(flow));
-//						writer.write(";");
-//						
-//					}
-//					writer.write("\n");
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				
-//			};
 			data.forEach(this::action);
 				
 			writer.close();
@@ -225,7 +182,6 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 
 
 	private void action(FlowMeasurement measurement) {
-//		Float flow;
 		flowConverter.newDataEvent(measurement.getTime());
 
 		try {
@@ -246,8 +202,6 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 			e.printStackTrace();
 		}
 		
-//		try {
-		
 		
 		List<Columns> flowColumn = Arrays.asList(Columns.Flow);
 		List<Columns> pulsesColumn = Arrays.asList(Columns.Pulses);
@@ -265,11 +219,6 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		}
 		
 		newLine();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
 	}
 
 

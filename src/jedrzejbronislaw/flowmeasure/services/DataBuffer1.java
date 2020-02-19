@@ -52,12 +52,9 @@ public class DataBuffer1 implements DataBuffer {
 		pulseBuffer += flow;
 
 		do {
-//			System.out.println("1");
 			period = ChronoUnit.MILLIS.between(lastTime, now);	
 
-//			System.out.println("2");
 			if(period >= interval) {
-//				System.out.println("3");
 				float ratio = (float)interval/period;
 				
 				int portion = Math.round(pulseBuffer*ratio);

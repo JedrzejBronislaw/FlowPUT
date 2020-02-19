@@ -17,32 +17,10 @@ public class View1 implements View {
 	
 	Map<Integer, NodeAndController<FlowPreviewController>> flowViews = new HashMap<>();
 
-//	Runnable connecting;
-//	Runnable disconnected;
-//	Runnable connected;
-	
-//	Runnable diodeBlink;
+
 	showDialogInteface showDialog;
 	
 	Supplier<UARTParams> getUARTParams;
-	
-//	@Override
-//	public void connecting() {
-//		if(connecting != null)
-//			connecting.run();
-//	}
-//
-//	@Override
-//	public void disconnected() {
-//		if(disconnected != null)
-//			disconnected.run();
-//	}
-//
-//	@Override
-//	public void connected() {
-//		if(connected != null)
-//			connected.run();
-//	}
 	
 	@Override
 	public void showCurrentFlow(int nr, int flow) {
@@ -58,30 +36,10 @@ public class View1 implements View {
 		return null;
 	}
 
-//	@Override
-//	public void diodeBlink() {
-//		if(diodeBlink != null)
-//			diodeBlink.run();
-//	}
-
 	@Override
 	public void showDialog(String title, String content, int closeDelay) {
 		if(showDialog != null)
 			showDialog.run(title, content, closeDelay);
 	}
 
-//	@Override
-//	public void event(EventType event) {
-//		switch (event) {
-//		case ConnectionSuccessful:
-//			connected(); break;
-//		case ConnectionFailed:
-//			disconnected(); break;
-//		case LostConnection:
-//			disconnected(); break;
-//
-//		default:
-//			break;
-//		}
-//	}
 }

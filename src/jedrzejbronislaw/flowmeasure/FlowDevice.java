@@ -18,8 +18,6 @@ public class FlowDevice {
 	private BiConsumer<Integer, Integer> newSingleFlowReceive;
 	@Setter
 	private Consumer<int[]> newFlowsReceive;
-//	@Setter
-//	private BiConsumer<Integer, Integer> newFlowReceive;
 	@Setter
 	private Consumer<String> IncorrectMessageReceive;
 	@Setter
@@ -35,22 +33,16 @@ public class FlowDevice {
 	public boolean connect(UARTParams params) {
 		if(!connecting) {
 			connecting = true;
-			uart = new UART(params);
 			
+			uart = new UART(params);
 			uart.setReceiveMessage(message -> parse(message));
 			connected = uart.connect();
-		
-//		sendProofRequest();
-		
+				
 			connecting = false;
 			return connected;
 		} else
 			return false;
 	}
-
-//	public void write(String mess) {
-//		uart.send(mess);
-//	}
 
 	public void sendProofRequest() {
 		uart.send(PROOF_REQUEST);
@@ -66,7 +58,7 @@ public class FlowDevice {
 	}
 
 	private void parseLine(String message) {
-		int pos1, pos2;
+		int position;
 		int length;
 		int flow[];
 		
@@ -90,42 +82,29 @@ public class FlowDevice {
 		message = message.substring(1);
 		
 		
-		pos2 = message.indexOf(';');//, pos1);
-		if(pos2 == -1) {
+		position = message.indexOf(';');
+		if(position == -1) {
 			if(IncorrectMessageReceive != null)
 				IncorrectMessageReceive.accept(message);
 			return;			
 		}
 		
-		int n = Integer.parseInt(message.substring(0, pos2));
+		int n = Integer.parseInt(message.substring(0, position));
 		
 		flow = new int[n];
 		
 		
-		for(int i=0; i<n; i++) {
-//			pos1 = 1;
+		for(int i=0; i<n; i++) {			
+			message = message.substring(position+1);
 			
-		message = message.substring(pos2+1);
-			
-			pos2 = message.indexOf(';');//, pos1);
-			if(pos2 == -1) {
+			position = message.indexOf(';');
+			if(position == -1) {
 				if(IncorrectMessageReceive != null)
 					IncorrectMessageReceive.accept(message);
 				return;			
 			}
 			
-//			if(pos1 == pos2) {
-//				if(IncorrectMessageReceive != null)
-//					IncorrectMessageReceive.accept(message);
-//				return;			
-//			}
-			
-			flow[i] = Integer.parseInt(message.substring(0, pos2));
-//			System.out.println(i + ": " + flow[i]);
-//			System.out.println();
-//			if (newFlowReceive != null) {
-//				Platform.runLater(() -> newFlowReceive.accept(flow[i], i));
-//			}
+			flow[i] = Integer.parseInt(message.substring(0, position));
 		}
 		
 		
@@ -137,11 +116,6 @@ public class FlowDevice {
 				int ii = i;
 				Platform.runLater(() -> newSingleFlowReceive.accept(flow[ii], ii));
 			}
-		
-
-		
-//		System.out.println("|" + message.substring(pos1+1, pos2) + "|");
-//		System.out.println(pos1 + " -> " + pos2);
 	}
 
 	private boolean checkProofMessage(String message) {

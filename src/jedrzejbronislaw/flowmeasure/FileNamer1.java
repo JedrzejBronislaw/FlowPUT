@@ -25,7 +25,7 @@ public class FileNamer1 implements FileNamer {
 		String authorName = processMetadata.getAuthor();
 		String ifProcessName = processName.isEmpty() ? "" : " " + processName;
 		String ifAuthorName = authorName.isEmpty() ? "" : " (" +authorName + ")";
-		String initFileName = LocalDateTime.now().format(formatter) + ifProcessName + ifAuthorName;// + ".csv";
+		String initFileName = LocalDateTime.now().format(formatter) + ifProcessName + ifAuthorName;
 
 		return initFileName;
 	}

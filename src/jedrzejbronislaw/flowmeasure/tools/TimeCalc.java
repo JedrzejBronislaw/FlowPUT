@@ -33,7 +33,6 @@ public class TimeCalc {
 		output.delete(output.length() - separator.length(), output.length());
 		
 		return output.toString();
-//		return /*years + " years "+ months +" months "+ */days +" days "+ (hours%24) +" hours "+ (minutes%60) +" minutes "+ (seconds%60) +" seconds";//TODO internationalization
 	}
 	
 	public static long durationSeconds(LocalDateTime startTime, LocalDateTime endTime) {

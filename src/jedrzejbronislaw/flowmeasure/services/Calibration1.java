@@ -2,8 +2,6 @@ package jedrzejbronislaw.flowmeasure.services;
 
 import java.util.function.Consumer;
 
-import lombok.Setter;
-
 public class Calibration1 implements Calibration{
 
 	int flowmeter;

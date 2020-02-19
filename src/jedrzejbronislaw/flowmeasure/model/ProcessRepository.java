@@ -12,7 +12,6 @@ public class ProcessRepository implements FlowMeasurementConsumer{
 	@Getter
 	private ProcessMetadata metadata = new ProcessMetadata();
 	
-//	private FlowMeasurement measurement[];
 	private List<FlowMeasurement> measurement = new LinkedList<>();
 	
 	
@@ -26,9 +25,6 @@ public class ProcessRepository implements FlowMeasurementConsumer{
 	
 	public ProcessRepository(int size, String name) {
 		metadata.setName(name);
-//		measurement = new FlowMeasurement[size];
-//		for(int i=0; i<size; i++)
-//			measurement[i] = new FlowMeasurement();
 		
 		this.size = size;
 	}

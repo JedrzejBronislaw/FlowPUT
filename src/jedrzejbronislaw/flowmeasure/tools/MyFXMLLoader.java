@@ -28,7 +28,7 @@ public class MyFXMLLoader<T extends Initializable>{
 		private T controller;
 	}
 
-//	private static final String langResourceLocation = "jedrzejbronislaw.lens.lang.Labels";
+//	private static final String langResourceLocation = "jedrzejbronislaw.flowmeasure.lang.Labels";
 //	private static final String mainDir = "/jedrzejbronislaw/flowmeasure/";
 	
 	

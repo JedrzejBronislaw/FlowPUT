@@ -9,7 +9,6 @@ public class ObservableState1<T extends Enum<?>> implements ObservableState<T>, 
 	
 	@Getter
 	private T state;
-//	private List<Consumer<T>> stateListeners = new ArrayList<>();
 	private List<StateListener<T>> stateListeners = new ArrayList<>();
 
 	public ObservableState1(T initState) {

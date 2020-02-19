@@ -1,6 +1,5 @@
 package jedrzejbronislaw.flowmeasure;
 
-import java.io.BufferedReader;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -17,30 +16,16 @@ public class UART {
 
 	private SerialPort port;
 	
-//	SerialPort serialPort;
-	private final String PORT_NAME;// = "COM6";
+	private final String PORT_NAME;
+	private final int DATA_RATE;
 
-	private BufferedReader input;
-
-	/** Milliseconds to block while waiting for port open */
-	private static final int TIME_OUT = 2000;
-	/** Default bits per second for COM port. */
-	private final int DATA_RATE;// = 9600;
 	
 	@Setter
 	private Consumer<String> receiveMessage;
 	
-	public UART(UARTParams params) {
-//		PORT_NAME = "COM6";//params.PORT_NAME;
-//		DATA_RATE = 9600;//params.DATA_RATE;
-		
+	public UART(UARTParams params) {		
 		PORT_NAME = params.PORT_NAME;
 		DATA_RATE = params.DATA_RATE;
-		
-		
-		
-		
-//		connect();
 	}
 	
 	public boolean isPortOpen() {
@@ -50,18 +35,12 @@ public class UART {
 	}
 	
 	public boolean connect() {
-//		SerialPort ports[] = SerialPort.getCommPorts();
-
 		port = SerialPort.getCommPort(PORT_NAME);
-		// = ports[2];
-
 		port.setBaudRate(DATA_RATE);
 		port.openPort();
 
 		if (port.isOpen()) {
 			System.out.println("Port initialized!");
-			// timeout not needed for event based reading
-			// userPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 100, 0);
 		} else {
 			System.out.println("Port not available");
 			return false;
@@ -77,9 +56,8 @@ public class UART {
 				if (event.getEventType() != SerialPort.LISTENING_EVENT_DATA_AVAILABLE)
 					return;
 				byte[] newData = new byte[port.bytesAvailable()];
-				int numRead = port.readBytes(newData, newData.length);
-//				System.out.println("Read " + numRead + " bytes.");
-//				System.out.println("|" + new String(newData) + "|");
+//				int numRead = port.readBytes(newData, newData.length);
+				port.readBytes(newData, newData.length);
 				if(receiveMessage != null)
 					receiveMessage.accept(new String(newData));
 			}

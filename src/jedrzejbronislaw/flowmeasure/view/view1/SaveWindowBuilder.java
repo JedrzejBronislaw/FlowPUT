@@ -3,9 +3,6 @@ package jedrzejbronislaw.flowmeasure.view.view1;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -16,7 +13,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.controllers.SaveWindowController;
-import jedrzejbronislaw.flowmeasure.model.ProcessMetadata;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.SaveAction;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;

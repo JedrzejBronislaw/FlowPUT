@@ -16,8 +16,6 @@ import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import jedrzejbronislaw.flowmeasure.services.EventListener;
-import jedrzejbronislaw.flowmeasure.states.ApplicationState;
-import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
@@ -111,16 +109,12 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 		startButton.setOnAction(e -> {
 			if(startButtonAction != null)
 				startButtonAction.run();
-//			setButtonEnable(true);
 		});
 
 		endButton.setOnAction(e -> {
 			if(endButtonAction != null)
 				endButtonAction.run();
-//			setButtonEnable(false);
 		});
-		
-//		setButtonEnable(false);
 	}
 	
 	private void setButtonEnable(boolean processOngoing) {
@@ -180,8 +174,6 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 					ProcessState.Interrupted,
 					ProcessState.LostConnection))
 			setButtonEnable(false);
-			
-		
 	}
 
 }

@@ -1,7 +1,6 @@
 package jedrzejbronislaw.flowmeasure.services;
 
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalUnit;
 
 import javafx.application.Platform;
 import lombok.Getter;
@@ -11,10 +10,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ConnectionMonitor1 implements ConnectionMonitor{
 
-//	@NonNull
 	final int timeout;
 
-//	@NonNull
 	final int interval;
 
 	@NonNull
@@ -59,7 +56,6 @@ public class ConnectionMonitor1 implements ConnectionMonitor{
 		return new Thread(() -> {
 			while(monitorActive) {
 				
-//				System.out.println("Monitor...");
 				
 				if(lastTime.plusSeconds(timeout).isBefore(LocalDateTime.now())) {
 					alert = true;

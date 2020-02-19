@@ -9,7 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import jedrzejbronislaw.flowmeasure.services.EventListener;
 import lombok.Getter;
 
 public class MainWindowController implements Initializable {
@@ -28,13 +27,7 @@ public class MainWindowController implements Initializable {
 	
 	@FXML
 	private ScrollPane tablePane, chartPane, optionsPane, calibrationPane;
-	
-//	@FXML
-//	private Label flow1,flow2,flow3,flow4,flow5,flow6;
 
-//	public void addToMainVBox(Node node) {//TODO delete
-//		mainVbox.getChildren().add(node);
-//	}
 	
 	public void addFlowPreview(Node node) {
 		flowBox.getChildren().add(node);

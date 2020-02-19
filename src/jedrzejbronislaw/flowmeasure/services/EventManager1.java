@@ -37,8 +37,5 @@ public class EventManager1{
 					EventType.Saving_Process,
 					EventType.ReceivedData,
 					EventType.Exiting));
-//		return (event == EventType.Saving_Process ||
-//				event == EventType.ReceivedData ||
-//				event == EventType.Exiting);
 	}
 }
