@@ -6,6 +6,7 @@ import jedrzejbronislaw.flowmeasure.services.Calibration;
 import jedrzejbronislaw.flowmeasure.services.DataBuffer;
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
+import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.observableState.ObservableState;
 import jedrzejbronislaw.flowmeasure.tools.observableState.ObservableState1;
 import lombok.Getter;

@@ -82,11 +82,7 @@ public class CalibrationPaneController implements Initializable, EventListener {
 
 	@Override
 	public void event(EventType event) {
-//		Set<EventType> set1 = new HashSet<EventType>(EventType.Process_Ends,EventType.Process_Starts)
-		
-//		if (event == EventType.Process_Ends
-//				|| event == EventType.ConnectionSuccessful
-//				|| event == EventType.Calibration_Ends)
+
 		if (event.isOneOf(
 				EventType.Process_Ends,
 				EventType.ConnectionSuccessful,

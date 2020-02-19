@@ -15,8 +15,10 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
-import jedrzejbronislaw.flowmeasure.ProcessState;
 import jedrzejbronislaw.flowmeasure.services.EventListener;
+import jedrzejbronislaw.flowmeasure.states.ApplicationState;
+import jedrzejbronislaw.flowmeasure.states.ConnectionState;
+import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import lombok.Getter;
@@ -165,7 +167,6 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 		}
 	}
 
-
 	@Override
 	public void onChangeState(ProcessState state) {
 		processState = state;
@@ -173,12 +174,14 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 		
 		if(state == ProcessState.Ongoing)
 			setButtonEnable(true);
-		else if(state == ProcessState.Before ||
-				state == ProcessState.Finished ||
-				state == ProcessState.Interrupted ||
-				state == ProcessState.LostConnection)
+		else if(state.compare().isOneOf(
+					ProcessState.Before,
+					ProcessState.Finished,
+					ProcessState.Interrupted,
+					ProcessState.LostConnection))
 			setButtonEnable(false);
 			
 		
 	}
+
 }

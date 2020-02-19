@@ -6,6 +6,7 @@ import jedrzejbronislaw.flowmeasure.services.EventListener;
 import jedrzejbronislaw.flowmeasure.services.EventListener.EventType;
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
+import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.observableState.ObservableState1;
 import lombok.Getter;
 

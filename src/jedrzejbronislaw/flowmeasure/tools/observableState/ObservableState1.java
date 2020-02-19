@@ -5,7 +5,7 @@ import java.util.List;
 
 import lombok.Getter;
 
-public class ObservableState1<T extends Enum> implements ObservableState<T>, StateChanger<T> {
+public class ObservableState1<T extends Enum<?>> implements ObservableState<T>, StateChanger<T> {
 	
 	@Getter
 	private T state;

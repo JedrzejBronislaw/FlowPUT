@@ -64,10 +64,7 @@ public class Main extends Application {
 	public void start(Stage stage) {
 		
 		
-//		System.out.println(getClass().getResource("/res").toString());
-//		if(1==1)return;
 		resources = new SideDirResourcesRepository("res");
-//		resources = new InternalResourcesRepository("res").build();
 		
 		
 		primaryStage = stage;
@@ -88,12 +85,11 @@ public class Main extends Application {
 		session.setCurrentProcessRepository(createProcessRepository(session.getRepository()));
 		session.setDevice(device);
 
-//		eventManager.addListener(view);
 		eventManager.setCheckPermission(stateManager.getEventPermission());
 		eventManager.addListener(dialogManager);
 		eventManager.addListener(stateManager);
-		
-//		session.setSecondProcessRepository(createProcessRepository(session.getRepository()));
+
+
 		dataBuffer = new DataBuffer1(session.getCurrentProcessRepository(), 1000);
 
 		MyFXMLLoader.setResources(resources);

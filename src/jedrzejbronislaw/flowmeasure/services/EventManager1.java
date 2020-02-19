@@ -33,8 +33,12 @@ public class EventManager1{
 	}
 	
 	private boolean checkInternalPermission(EventType event){
-		return (event == EventType.Saving_Process ||
-				event == EventType.ReceivedData ||
-				event == EventType.Exiting);
+		return (event.isOneOf(
+					EventType.Saving_Process,
+					EventType.ReceivedData,
+					EventType.Exiting));
+//		return (event == EventType.Saving_Process ||
+//				event == EventType.ReceivedData ||
+//				event == EventType.Exiting);
 	}
 }
