@@ -88,7 +88,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 			newLine();
 
 			writer.write("num of flowmeters" + separator);
-			writer.write(Integer.toString(repository.getSize()));
+			writer.write(Integer.toString(repository.getNumOfFlowmeters()));
 			newLine();
 
 			writer.write("size" + separator);
@@ -110,7 +110,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 					writer.write(separator);
 				
 				if(options.isFlowmeterValuesTogether())
-					for(int i=0; i<repository.getSize(); i++)
+					for(int i=0; i<repository.getNumOfFlowmeters(); i++)
 						writer.write("flowmeter" + Integer.toString(i+1) + separator + separator);
 				else {
 
@@ -119,7 +119,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 					else
 						writer.write("f");
 
-					for(int i=0; i<repository.getSize(); i++)
+					for(int i=0; i<repository.getNumOfFlowmeters(); i++)
 						writer.write(separator);
 
 					if(options.getColumns().get(0) == Columns.Pulses)
@@ -146,21 +146,21 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 				if(options.isFlowmeterValuesTogether()) {
 					
 					if(options.getColumns().get(0) == Columns.Pulses)
-						for(int i=0; i<repository.getSize(); i++)
+						for(int i=0; i<repository.getNumOfFlowmeters(); i++)
 							writer.write("p" + separator + "f" + separator);
 					else
-						for(int i=0; i<repository.getSize(); i++)
+						for(int i=0; i<repository.getNumOfFlowmeters(); i++)
 							writer.write("f" + separator + "p" + separator);
 					
 				} else {
 					
-					for(int i=0; i<repository.getSize(); i++)
+					for(int i=0; i<repository.getNumOfFlowmeters(); i++)
 						writer.write("flowmeter" + Integer.toString(i+1) + separator);
-					for(int i=0; i<repository.getSize(); i++)
+					for(int i=0; i<repository.getNumOfFlowmeters(); i++)
 						writer.write("flowmeter" + Integer.toString(i+1) + separator);
 				}				
 			} else {
-				for(int i=0; i<repository.getSize(); i++) {
+				for(int i=0; i<repository.getNumOfFlowmeters(); i++) {
 					writer.write("flowmeter" + Integer.toString(i+1) + separator);
 					for(int j=1; j<options.getColumns().size(); j++)
 						writer.write(separator);
@@ -223,7 +223,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 
 
 	private void writeMeasurment(FlowMeasurement measurement, List<Columns> columns) {
-		for(int i=0; i<repository.getSize(); i++) {
+		for(int i=0; i<repository.getNumOfFlowmeters(); i++) {
 			int pulses = measurement.get(i);		
 			
 			

@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
-import jedrzejbronislaw.flowmeasure.FlowMeasurementConsumer;
+import jedrzejbronislaw.flowmeasure.FlowMeasurementModel;
 import lombok.Getter;
 
-public class ProcessRepository implements FlowMeasurementConsumer{
+public class ProcessRepository implements FlowMeasurementModel{
 	
 	@Getter
 	private ProcessMetadata metadata = new ProcessMetadata();
@@ -16,7 +16,7 @@ public class ProcessRepository implements FlowMeasurementConsumer{
 	
 	
 	@Getter
-	private int size = 0;
+	private int numOfFlowmeters = 0;
 	
 	public void setProcessStartTimeNow() {metadata.setStartTime(LocalDateTime.now());}
 	public void setProcessEndTimeNow() {metadata.setEndTime(LocalDateTime.now());}
@@ -26,9 +26,13 @@ public class ProcessRepository implements FlowMeasurementConsumer{
 	public ProcessRepository(int size, String name) {
 		metadata.setName(name);
 		
-		this.size = size;
+		this.numOfFlowmeters = size;
 	}
 	
+	@Override
+	public int getSize() {
+		return measurement.size();
+	}
 	
 	@Override
 	public void addFlowMeasurement(int[] pulses) {
@@ -38,7 +42,8 @@ public class ProcessRepository implements FlowMeasurementConsumer{
 		}
 		measurement.add(new FlowMeasurement(pulses));
 	}
-	
+
+	@Override
 	public void addFlowMeasurement(LocalDateTime time, int[] pulses) {
 		if(setProcessStartTimeWithNextValueFlag) {
 			setProcessStartTimeWithNextValueFlag = false;

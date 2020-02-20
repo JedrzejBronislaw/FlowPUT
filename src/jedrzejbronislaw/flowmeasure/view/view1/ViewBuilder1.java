@@ -246,7 +246,7 @@ public class ViewBuilder1 implements ViewBuilder {
 			ValueUnit unit = nac.getController().getValueUnit();
 			nac.getController().getAxisX().setLabel("time [s]");
 			
-			int numOfFlowMeters = repo.getSize();
+			int numOfFlowMeters = repo.getNumOfFlowmeters();
 //			int numOfMeasurements = data.size();
 			
 			List<Series<Number, Number>> series = new LinkedList<>();
@@ -367,7 +367,7 @@ public class ViewBuilder1 implements ViewBuilder {
 		NodeAndController<MeasurementTableController> measurementTableNAC = loaderMeasurementTable.create(MEASUREMENT_TABLE_FXML);
 		
 		measurementTableNAC.getController().setRefreshButtonAction(table -> {
-			int size = getCurrentProcessRepo().getSize();
+			int size = getCurrentProcessRepo().getNumOfFlowmeters();
 
 			table.getItems().clear();
 			table.getColumns().clear();
@@ -523,7 +523,7 @@ public class ViewBuilder1 implements ViewBuilder {
 
 //		FlowConverter flowconverter = new FlowConverter1(settings);
 		
-		for(int i=0; i< session.getCurrentProcessRepository().getSize(); i++) {
+		for(int i=0; i< session.getCurrentProcessRepository().getNumOfFlowmeters(); i++) {
 			nac = loaderFlowPreview.create(FLOW_PREVIEW_FXML);
 			flowPreviewNAC.add(nac);
 			nac.getController().setNumber(i);
