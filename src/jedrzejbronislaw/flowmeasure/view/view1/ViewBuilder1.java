@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.TableColumn;
@@ -221,7 +222,7 @@ public class ViewBuilder1 implements ViewBuilder {
 	
 	
 	
-	private Data<Number, Number> createChartData(float time, float value) {
+	private Data<Number, Number> createChartPoint(float time, float value) {
 		Data<Number, Number> data = new Data<Number, Number>(time, value);
 		
 //		flowconverter.pulsesToLitrePerSec(pulses, time, prevTime);
@@ -236,131 +237,128 @@ public class ViewBuilder1 implements ViewBuilder {
 		NodeAndController<ChartPaneController> nac = loader.create(CHART_FXML);
 		
 		nac.getController().setRefreshButtonAction(chart -> {
-			System.out.println("max hi" + chart.getMaxHeight());
-			System.out.println("max wi" + chart.getMaxWidth());
 			ProcessRepository repo = getCurrentProcessRepo();
 			List<FlowMeasurement> data = repo.getAllMeasurementCopy();
-//			List<FlowMeasurement> data2 = session.getSecondProcessRepository().getAllMeasurementCopy();
 			if(data.size() == 0) return;
+
 			LocalDateTime startTime = repo.getMetadata().getStartTime();
 			boolean lastSecOption = nac.getController().isLastSeconds();
 			ValueUnit unit = nac.getController().getValueUnit();
-			nac.getController().getAxisX().setLabel("time [s]");
+			NumberAxis axisX = nac.getController().getAxisX();
+			NumberAxis axisY = nac.getController().getAxisY();
+			
 			
 			int numOfFlowMeters = repo.getNumOfFlowmeters();
 //			int numOfMeasurements = data.size();
 			
-			List<Series<Number, Number>> series = new LinkedList<>();
+			List<Series<Number, Number>> seriesList = new LinkedList<>();
 			
-
-//			chart.getData().forEach(legacySeries -> series.add(legacySeries));
-			
+			//series reuse
 			for(int i=0; i<numOfFlowMeters; i++) {
 				if(i < chart.getData().size()) {
 					Series<Number, Number> s = chart.getData().get(i);
 					s.getData().clear();
-					series.add(s);
+					seriesList.add(s);
 				} else {
 					chart.getData().size();
 					Series<Number, Number> s = new Series<>();
 					s.setName("Flow " + (i+1));//TODO internationalization
-					series.add(s);
+					seriesList.add(s);
 				}
 			}
 			
 			int first;
+			int last;
 			if(lastSecOption)
 				first = Math.max(0,data.size()-60);
 			else {
 				first = 0;
-				data = new ItemSelector<FlowMeasurement>().select(data, 1000);
+				if(data.size() > 1000)
+					data = new ItemSelector<FlowMeasurement>().select(data, 1000);
 			}
-			int last = data.size()-1;
+			last = data.size()-1;
 
 			float begin = ChronoUnit.MILLIS.between(startTime, data.get(first).getTime())/1000f;
 			float end = ChronoUnit.MILLIS.between(startTime, data.get(last).getTime())/1000f;
-			nac.getController().getAxisX().setAutoRanging(false);
-			nac.getController().getAxisX().setLowerBound(begin);
-			nac.getController().getAxisX().setUpperBound(end);
-			nac.getController().getAxisX().setTickUnit(1);
-//			nac.getController().getAxisX().setMinorTickLength(5);
-			nac.getController().getAxisX().setMinorTickCount(5);
+			axisX.setLabel("time [s]");
+			axisX.setAutoRanging(false);
+			axisX.setLowerBound(begin);
+			axisX.setUpperBound(end);
+//			double axisWidth = axisX.getWidth();
+//			axisX.setTickUnit(axisWidth/50);
+//			axisX.setMinorTickLength(5);
+//			axisX.setMinorTickCount((int)(axisWidth/10));
+			axisX.setTickUnit(1);
+			axisX.setMinorTickCount(5);
 
 			if(unit == ValueUnit.Pulses){
-				nac.getController().getAxisY().setLabel("flow [pulses]");
-			FlowMeasurement measurement;
-			for(int i=first;i<=last;i++){
-				measurement = data.get(i);
-//			data.forEach(measurement -> {
-				float time = ChronoUnit.MILLIS.between(startTime, measurement.getTime())/1000f;
+				FlowMeasurement measurement;
+				Data<Number, Number> chartPoint;
+				Series<Number, Number> series;
+				float time;
+
+				axisY.setLabel("flow [pulses]");
+				
+				for(int i=first;i<=last;i++){
+					measurement = data.get(i);
+					time = ChronoUnit.MILLIS.between(startTime, measurement.getTime())/1000f;
 					
 				
-				for(int flowmeter=0; flowmeter<numOfFlowMeters; flowmeter++) {
-//					if(flowmeter != 1)
-					series.get(flowmeter).getData().add(createChartData(time,  measurement.get(flowmeter)));	
-				}	
-			}
-//			for(int i=first;i<=data2.size()-1;i++){
-//	
-//					series.get(1).getData().add(createChartData(ChronoUnit.MILLIS.between(session.getSecondProcessRepository().getMetadata().getStartTime(), data2.get(i).getTime())/1000f,  data2.get(i).get(0)));
-//			}
+					for(int flowmeter=0; flowmeter<numOfFlowMeters; flowmeter++) {
+						chartPoint = createChartPoint(time,  measurement.get(flowmeter));
+						series = seriesList.get(flowmeter);
+						series.getData().add(chartPoint);	
+					}	
+				}
 			}
 			
 			//-------------------------
 			
 			if(unit == ValueUnit.LitrePerSec){
-				nac.getController().getAxisY().setLabel("flow [l/s]");
 				FlowMeasurement measurement, prevMeasurement;
+				Series<Number, Number> series;
+				Data<Number, Number> createChartPoint;
+				float time;
+				float interval;
+				int pulses;
+				float value;
+				
+				axisY.setLabel("flow [l/s]");
+
 				for(int i=first;i<=last;i++){
 					if(i == 0) continue;
 					prevMeasurement = data.get(i-1);
 					measurement = data.get(i);
-//			data.forEach(measurement -> {
-					float time = ChronoUnit.MILLIS.between(startTime, measurement.getTime())/1000f;
-					float interval;
-				
+					time = ChronoUnit.MILLIS.between(startTime, measurement.getTime())/1000f;
+
 					for(int flowmeter=0; flowmeter<numOfFlowMeters; flowmeter++) {
-//						if(flowmeter == 1)continue;
+						series = seriesList.get(flowmeter);
+
 						interval = ChronoUnit.MILLIS.between(prevMeasurement.getTime(), measurement.getTime())/1000f;
+						pulses = measurement.get(flowmeter);
 						
-						int pulses = measurement.get(flowmeter);
+						value = flowconverter.pulsesToLitrePerSec(pulses, interval);
+						createChartPoint = createChartPoint(time,  value);
 						
-						float value = flowconverter.pulsesToLitrePerSec(pulses, interval);
-						series.get(flowmeter).getData().add(createChartData(time,  value));	
+						series.getData().add(createChartPoint);	
 					}
 				}
-//				for(int i=first;i<=data2.size()-1;i++){
-//					if(i == 0) continue;
-//					prevMeasurement = data2.get(i-1);
-//					measurement = data2.get(i);
-//					float interval = ChronoUnit.MILLIS.between(prevMeasurement.getTime(), measurement.getTime())/1000f;
-//					
-//					int pulses = data2.get(i).get(0);
-//					float value = flowconverter.pulsesToLitrePerSec(pulses, interval);
-//					series.get(1).getData().add(createChartData(ChronoUnit.MILLIS.between(session.getSecondProcessRepository().getMetadata().getStartTime(), measurement.getTime())/1000f,  value));
-//				}
+
 			}
-//			);
 			
 			chart.setCreateSymbols(false);
 			chart.setAnimated(false);
 			
-//			chart.getData().clear();
-//			chart.getData().addAll(series);
 			chart.getData().forEach(s -> {
-				if(series.contains(s))
-					series.remove(s);
+				if(seriesList.contains(s))
+					seriesList.remove(s);
 			});
 			
-			series.forEach(s -> {
+			seriesList.forEach(s -> {
 				if(!chart.getData().contains(s))
 					chart.getData().add(s);	
 			});
 		});
-		
-//		nac.getController().setLiveBoxAction(() -> {
-//			
-//		});
 		
 		return nac;
 	}
