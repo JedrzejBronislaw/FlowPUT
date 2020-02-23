@@ -45,6 +45,7 @@ import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
 import jedrzejbronislaw.flowmeasure.services.EventListener.EventType;
 import jedrzejbronislaw.flowmeasure.services.EventManager1;
+import jedrzejbronislaw.flowmeasure.tools.ItemSelector;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader.NodeAndController;
 import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
@@ -270,8 +271,10 @@ public class ViewBuilder1 implements ViewBuilder {
 			int first;
 			if(lastSecOption)
 				first = Math.max(0,data.size()-60);
-			else
+			else {
 				first = 0;
+				data = new ItemSelector<FlowMeasurement>().select(data, 1000);
+			}
 			int last = data.size()-1;
 
 			float begin = ChronoUnit.MILLIS.between(startTime, data.get(first).getTime())/1000f;
@@ -362,6 +365,7 @@ public class ViewBuilder1 implements ViewBuilder {
 		return nac;
 	}
 	
+
 	private NodeAndController<MeasurementTableController> table() {
 		MyFXMLLoader<MeasurementTableController> loaderMeasurementTable = new MyFXMLLoader<>();
 		NodeAndController<MeasurementTableController> measurementTableNAC = loaderMeasurementTable.create(MEASUREMENT_TABLE_FXML);

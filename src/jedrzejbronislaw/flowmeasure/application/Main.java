@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.ConnectionAttempt;
 import jedrzejbronislaw.flowmeasure.ConnectionsAttempts;
+import jedrzejbronislaw.flowmeasure.FakeProcessGenerator1;
 import jedrzejbronislaw.flowmeasure.FileNamer;
 import jedrzejbronislaw.flowmeasure.FileNamer1;
 import jedrzejbronislaw.flowmeasure.FlowConverter;
@@ -111,6 +112,16 @@ public class Main extends Application {
 		session.getConnState().addStateListiner(state -> System.out.println(" -> New connState: " + state.toString()));
 		session.getProcessState().addStateListiner(state -> System.out.println(" -> New processState: " + state.toString()));
 		eventManager.addListener(state -> {if(state != EventType.ReceivedData) System.out.println(" -> Event: " + state.toString());});
+		
+		generateFakeData();
+	}
+	
+	private void generateFakeData() {
+		FakeProcessGenerator1 generator = new FakeProcessGenerator1();
+		generator.setInterval(1000);
+		generator.setNumOfFlowmeters(6);
+		
+		generator.generate(session.getCurrentProcessRepository(), 10*60*60);
 	}
 
 	private Session buildSession() {
