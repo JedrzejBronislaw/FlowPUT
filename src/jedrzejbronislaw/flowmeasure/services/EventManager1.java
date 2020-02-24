@@ -18,7 +18,7 @@ public class EventManager1{
 		listeners.add(newListener);
 	}
 	
-	public boolean event(EventType event) {
+	public boolean submitEvent(EventType event) {
 		
 		boolean permission = permission(event);
 		if(permission)

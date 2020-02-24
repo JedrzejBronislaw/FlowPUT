@@ -486,7 +486,7 @@ public class ViewBuilder1 implements ViewBuilder {
 		
 		controller.setStart(() -> {
 //			if(session.getAppState().getState() == ApplicationState.Idle) {
-			if(eventManager.event(EventType.Calibration_Starts)) {
+			if(eventManager.submitEvent(EventType.Calibration_Starts)) {
 //				eventManager.event(EventType.Calibration_Starts);
 //				session.getAppState().setState(ApplicationState.Calibration);
 				session.setFlowConsumerType(FlowConsumerType.Calibration);
@@ -494,7 +494,7 @@ public class ViewBuilder1 implements ViewBuilder {
 		});
 		controller.setStop(() -> {
 //			if(session.getAppState().getState() == ApplicationState.Calibration) {
-			if(eventManager.event(EventType.Calibration_Ends)) {
+			if(eventManager.submitEvent(EventType.Calibration_Ends)) {
 //				eventManager.event(EventType.Calibration_Ends);	
 //				session.getAppState().setState(ApplicationState.Idle);
 				session.setFlowConsumerType(FlowConsumerType.None);
