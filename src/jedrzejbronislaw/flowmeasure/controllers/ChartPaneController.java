@@ -10,7 +10,6 @@ import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 
-import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,6 +21,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import jedrzejbronislaw.flowmeasure.tools.Refresher;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,33 +31,6 @@ public class ChartPaneController implements Initializable{
 		Pulses, Litre, LitrePerSec
 	}
 	
-	class Refresher{
-		
-		private boolean end = false;
-		
-		
-		Refresher(int interval, Runnable refresh) {
-			Thread t = new Thread(() -> {
-				while(!end) {
-					Platform.runLater(refresh);
-					try {
-						Thread.sleep(interval);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			});
-			
-			t.setDaemon(true);
-			t.start();
-						
-		}
-		
-		public void off() {
-			end = true;
-		}
-	}
 	
 	@FXML
 	private Button refreshButton, saveButton;
