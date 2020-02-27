@@ -113,7 +113,7 @@ public class Main extends Application {
 		session.getProcessState().addStateListiner(state -> System.out.println(" -> New processState: " + state.toString()));
 		eventManager.addListener(state -> {if(state != EventType.ReceivedData) System.out.println(" -> Event: " + state.toString());});
 		
-		generateFakeData();
+//		generateFakeData();
 	}
 	
 	private void generateFakeData() {

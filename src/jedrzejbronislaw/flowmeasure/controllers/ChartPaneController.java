@@ -58,23 +58,17 @@ public class ChartPaneController implements Initializable{
 	private NumberAxis axisX, axisY;
 	private LineChart<Number, Number> chart;
 	
-	private Refresher liveChartRefresher = null;
+	private Refresher liveChartRefresher = new Refresher(1000, () ->  {
+			if(refreshButtonAction != null)
+				refreshButtonAction.accept(chart);
+	});
 	
 	private void startRefresher() {
-		if(liveChartRefresher == null) {
-			liveChartRefresher = new Refresher(1000, () ->  {
-				if(refreshButtonAction != null)
-					refreshButtonAction.accept(chart);
-			});
-		}
+		liveChartRefresher.on();
 	}
 	
 	private void stopRefresher() {
-		if(liveChartRefresher != null) {
-			liveChartRefresher.off();
-			liveChartRefresher = null;
-		}
-		
+		liveChartRefresher.off();
 	}
 
 	public ValueUnit getValueUnit(){

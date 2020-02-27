@@ -3,13 +3,29 @@ package jedrzejbronislaw.flowmeasure.tools;
 import javafx.application.Platform;
 
 public class Refresher {
-	private boolean end = false;
+	
+	private class ThreadWithEnd {
+		Thread t;
+		boolean end = false;
+	}
+
+	private final int interval;
+	private final Runnable refresh;
+	private ThreadWithEnd currentThreat = null;
 	
 	
 	public Refresher(int interval, Runnable refresh) {
-		Thread t = new Thread(() -> {
-			while(!end) {
-				Platform.runLater(refresh);
+		this.interval = interval;
+		this.refresh = refresh;
+	}
+
+	public void on() {
+		ThreadWithEnd thread = new ThreadWithEnd();
+		thread.end = false;
+		
+		thread.t = new Thread(() -> {
+			while(!thread.end) {
+					Platform.runLater(refresh);
 				try {
 					Thread.sleep(interval);
 				} catch (InterruptedException e) {
@@ -18,13 +34,20 @@ public class Refresher {
 				}
 			}
 		});
+				
+		thread.t.setDaemon(true);
+		thread.t.start();
 		
-		t.setDaemon(true);
-		t.start();
-					
+		currentThreat = thread;
 	}
 	
 	public void off() {
-		end = true;
+		if(currentThreat != null)
+			currentThreat.end = true;
+	}
+	
+	public boolean isPenging() {
+		return  currentThreat != null &&
+				currentThreat.t.isAlive();
 	}
 }
