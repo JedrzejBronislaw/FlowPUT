@@ -4,14 +4,46 @@ import javafx.application.Platform;
 
 public class Refresher {
 	
-	private class ThreadWithEnd {
-		Thread t;
-		boolean end = false;
+	
+	private class LoopThread {
+		private final Thread t;
+		private boolean end = false;
+		private final int interval;
+		
+		public LoopThread(int interval, Runnable action) {
+			this.interval = interval;
+			
+			t = new Thread(() -> {
+				while(!end) {
+					Platform.runLater(action);
+					sleep();
+					}
+				});
+
+			t.setDaemon(true);
+			t.start();
+		}
+
+		public void end() {
+			end = true;
+		}
+
+		public boolean isAlive() {
+			return t.isAlive();
+		}
+
+		private void sleep() {
+			try {
+				Thread.sleep(interval);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private final int interval;
 	private final Runnable refresh;
-	private ThreadWithEnd currentThreat = null;
+	private LoopThread currentLoop = null;
 	
 	
 	public Refresher(int interval, Runnable refresh) {
@@ -20,34 +52,16 @@ public class Refresher {
 	}
 
 	public void on() {
-		ThreadWithEnd thread = new ThreadWithEnd();
-		thread.end = false;
-		
-		thread.t = new Thread(() -> {
-			while(!thread.end) {
-					Platform.runLater(refresh);
-				try {
-					Thread.sleep(interval);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-				
-		thread.t.setDaemon(true);
-		thread.t.start();
-		
-		currentThreat = thread;
+		currentLoop = new LoopThread(interval, refresh);
 	}
-	
+
 	public void off() {
-		if(currentThreat != null)
-			currentThreat.end = true;
+		if(currentLoop != null)
+			currentLoop.end();
 	}
 	
-	public boolean isPenging() {
-		return  currentThreat != null &&
-				currentThreat.t.isAlive();
+	public boolean isWorking() {
+		return  currentLoop != null &&
+				currentLoop.isAlive();
 	}
 }
