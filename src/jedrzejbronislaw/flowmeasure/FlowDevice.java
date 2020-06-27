@@ -4,6 +4,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import javafx.application.Platform;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -68,14 +69,12 @@ public class FlowDevice {
 		
 		length = message.length();
 		if (length <4) {
-			if(IncorrectMessageReceive != null)
-				IncorrectMessageReceive.accept(message);
+			Injection.run(IncorrectMessageReceive, message);
 			return;
 		}
 		
 		if(message.charAt(0) != '^' || message.charAt(length-1) != '$') {
-			if(IncorrectMessageReceive != null)
-				IncorrectMessageReceive.accept(message);
+			Injection.run(IncorrectMessageReceive, message);
 			return;			
 		}
 		
@@ -84,8 +83,7 @@ public class FlowDevice {
 		
 		position = message.indexOf(';');
 		if(position == -1) {
-			if(IncorrectMessageReceive != null)
-				IncorrectMessageReceive.accept(message);
+			Injection.run(IncorrectMessageReceive, message);
 			return;			
 		}
 		
@@ -99,8 +97,7 @@ public class FlowDevice {
 			
 			position = message.indexOf(';');
 			if(position == -1) {
-				if(IncorrectMessageReceive != null)
-					IncorrectMessageReceive.accept(message);
+				Injection.run(IncorrectMessageReceive, message);
 				return;			
 			}
 			
@@ -108,8 +105,7 @@ public class FlowDevice {
 		}
 		
 		
-		if(newFlowsReceive != null)
-			newFlowsReceive.accept(flow);
+		Injection.run(newFlowsReceive, flow);
 		
 		for(int i=0; i<n; i++)
 			if (newSingleFlowReceive != null) {
@@ -121,8 +117,7 @@ public class FlowDevice {
 	private boolean checkProofMessage(String message) {
 		if (message.equals(PROOF_MESSAGE)) {
 			correctDevice = true;
-			if(deviceConfirmation != null)
-				deviceConfirmation.run();
+			Injection.run(deviceConfirmation);
 			
 			return true;
 		}

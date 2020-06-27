@@ -3,6 +3,7 @@ package jedrzejbronislaw.flowmeasure;
 import java.util.List;
 import java.util.function.Consumer;
 
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -47,8 +48,7 @@ public class ConnectionsAttempts {
 		
 		success2 = () -> {
 			System.out.println("__sukces");
-			if(success != null)
-				success.accept(attempt.getParams().PORT_NAME);//portList[i]);
+			Injection.run(success, attempt.getParams().PORT_NAME);
 		};
 		
 		fail2 = () -> {
@@ -57,10 +57,9 @@ public class ConnectionsAttempts {
 			System.out.println("__niepowodzenie czesciowe sprobujmy " + port);
 			
 //			if(i >= portList.length)
-			if(port == null) {
-				if(fail != null)
-					fail.run();
-			} else {
+			if(port == null)
+				Injection.run(fail);
+			else {
 //				params.PORT_NAME = portList[i];
 //				attempt.changePort(portList[i]);// = new ConnectionAttempt(device, params);
 				attempt.changePort(port);// = new ConnectionAttempt(device, params);

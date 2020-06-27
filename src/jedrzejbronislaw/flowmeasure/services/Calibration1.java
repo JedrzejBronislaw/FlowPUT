@@ -2,6 +2,8 @@ package jedrzejbronislaw.flowmeasure.services;
 
 import java.util.function.Consumer;
 
+import jedrzejbronislaw.flowmeasure.tools.Injection;
+
 public class Calibration1 implements Calibration{
 
 	int flowmeter;
@@ -28,8 +30,7 @@ public class Calibration1 implements Calibration{
 		if(flowmeter > 0 && flowmeter <= pulses.length)
 			value += pulses[flowmeter-1];
 		
-		if(valueListener != null)
-			valueListener.accept(value);
+		Injection.run(valueListener, value);
 	}
 
 	@Override

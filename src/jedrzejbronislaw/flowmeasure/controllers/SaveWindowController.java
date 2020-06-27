@@ -14,6 +14,7 @@ import javafx.scene.control.RadioButton;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Columns;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 
 public class SaveWindowController implements Initializable {
 
@@ -84,11 +85,8 @@ public class SaveWindowController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		saveButton.setOnAction(e -> {
-			if (saveAction != null)
-				saveAction.accept(getOptions());
-			if (exitAction != null)
-				exitAction.run();
-			
+			Injection.run(saveAction, getOptions());
+			Injection.run(exitAction);
 		});
 
 		EventHandler<ActionEvent> timeAction = event -> {

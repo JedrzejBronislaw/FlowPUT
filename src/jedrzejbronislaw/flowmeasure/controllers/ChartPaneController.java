@@ -21,6 +21,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.Refresher;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,10 +59,7 @@ public class ChartPaneController implements Initializable{
 	private NumberAxis axisX, axisY;
 	private LineChart<Number, Number> chart;
 	
-	private Refresher liveChartRefresher = new Refresher(1000, () ->  {
-			if(refreshButtonAction != null)
-				refreshButtonAction.accept(chart);
-	});
+	private Refresher liveChartRefresher = new Refresher(1000, () ->  Injection.run(refreshButtonAction, chart));
 	
 	private void startRefresher() {
 		liveChartRefresher.on();
@@ -97,10 +95,7 @@ public class ChartPaneController implements Initializable{
 		mainPane.setCenter(chart);
 //		mainVbox.getChildren().add(0, chart);
 		
-		refreshButton.setOnAction(e -> {
-			if(refreshButtonAction != null)
-				refreshButtonAction.accept(chart);
-		});
+		refreshButton.setOnAction(e -> Injection.run(refreshButtonAction, chart));
 		
 		saveButton.setOnAction(e -> {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH_mm_ss");
@@ -116,10 +111,7 @@ public class ChartPaneController implements Initializable{
 			}
 		});
 		
-		lastSecsBox.setOnAction(e -> {
-			if(lastSecsBoxAction != null)
-				lastSecsBoxAction.run();
-		});
+		lastSecsBox.setOnAction(e -> Injection.run(lastSecsBoxAction));
 		
 		liveBox.setOnAction(e -> {
 			if(liveBox.isSelected())

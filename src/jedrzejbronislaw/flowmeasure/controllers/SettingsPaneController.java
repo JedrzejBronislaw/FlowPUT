@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import jedrzejbronislaw.flowmeasure.Settings;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Setter;
 
 public class SettingsPaneController implements Initializable {
@@ -46,10 +47,7 @@ public class SettingsPaneController implements Initializable {
 		
 		bufferSizeField.disableProperty().bind(bufferCheckbox.selectedProperty().not());
 		
-		save.setOnAction(e -> {
-			if(savingAction != null)
-				savingAction.run();
-		});
+		save.setOnAction(e -> Injection.run(savingAction));
 	}
 
 }

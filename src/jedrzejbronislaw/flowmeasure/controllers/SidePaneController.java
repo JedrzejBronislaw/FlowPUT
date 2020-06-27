@@ -17,6 +17,7 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import jedrzejbronislaw.flowmeasure.services.EventListener;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import lombok.Getter;
@@ -101,20 +102,9 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 
 		receiverDiode.setFill(gradientDiodeOff);
 		
-		saveButton.setOnAction(e -> {
-			if(saveButtonAction != null)
-				saveButtonAction.run();
-		});
-
-		startButton.setOnAction(e -> {
-			if(startButtonAction != null)
-				startButtonAction.run();
-		});
-
-		endButton.setOnAction(e -> {
-			if(endButtonAction != null)
-				endButtonAction.run();
-		});
+		saveButton.setOnAction(e  -> Injection.run(saveButtonAction));
+		startButton.setOnAction(e -> Injection.run(startButtonAction));
+		endButton.setOnAction(e   -> Injection.run(endButtonAction));
 	}
 	
 	private void setButtonEnable(boolean processOngoing) {

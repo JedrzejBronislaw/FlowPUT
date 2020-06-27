@@ -8,6 +8,7 @@ import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
 
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Setter;
 
 public class UART {
@@ -58,8 +59,7 @@ public class UART {
 				byte[] newData = new byte[port.bytesAvailable()];
 //				int numRead = port.readBytes(newData, newData.length);
 				port.readBytes(newData, newData.length);
-				if(receiveMessage != null)
-					receiveMessage.accept(new String(newData));
+				Injection.run(receiveMessage, new String(newData));
 			}
 		});
 		

@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import jedrzejbronislaw.flowmeasure.UARTParams;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import lombok.Setter;
 
@@ -62,25 +63,10 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		setDisableFields(false);
 
-		connectButton.setOnAction(e -> {
-			if(connectButtonAction != null)
-				connectButtonAction.run();
-		});
-		
-		disconnectButton.setOnAction(e -> {
-			if(disconnectButtonAction != null)
-				disconnectButtonAction.run();
-		});
-		
-		refreshPortsButton.setOnAction(e -> {
-			if(refreshPortsButtonAction != null)
-				refreshPortsButtonAction.run();
-		});
-		
-		autoConnectButton.setOnAction(e -> {
-			if(autoConnectButtonAction != null)
-				autoConnectButtonAction.run();
-		});
+		connectButton.setOnAction(e      -> Injection.run(connectButtonAction));
+		disconnectButton.setOnAction(e   -> Injection.run(disconnectButtonAction));
+		refreshPortsButton.setOnAction(e -> Injection.run(refreshPortsButtonAction));
+		autoConnectButton.setOnAction(e  -> Injection.run(autoConnectButtonAction));
 	}
 
 	@Override

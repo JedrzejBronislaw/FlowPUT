@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Setter;
 
 public class MeasurementTableController implements Initializable{
@@ -26,10 +27,7 @@ public class MeasurementTableController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
-		refreshButton.setOnAction(e -> {
-			if(refreshButtonAction != null)
-				refreshButtonAction.accept(table);
-		});
+		refreshButton.setOnAction(e -> Injection.run(refreshButtonAction, table));
 	}
 	
 	

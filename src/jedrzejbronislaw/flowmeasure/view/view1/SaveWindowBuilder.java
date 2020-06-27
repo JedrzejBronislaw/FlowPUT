@@ -15,6 +15,7 @@ import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.controllers.SaveWindowController;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.SaveAction;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader.NodeAndController;
 import lombok.NonNull;
@@ -61,15 +62,15 @@ public class SaveWindowBuilder {
 		File file;
 		
 		fileChooser.setTitle("Saving process data...");
-		fileChooser.setInitialFileName(fileNamer!=null ? fileNamer.get() : "");
+		fileChooser.setInitialFileName(Injection.get(fileNamer,""));
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Coma Separted Value", ".csv"));
 		if(initialDirectory != null)
 			fileChooser.setInitialDirectory(initialDirectory);
 		
 		file = fileChooser.showSaveDialog(null);
 		
-		if(file != null && chooseFileAction != null)
-			chooseFileAction.accept(file);
+		if(file != null)
+			Injection.run(chooseFileAction, file);
 
 		return file;
 	}

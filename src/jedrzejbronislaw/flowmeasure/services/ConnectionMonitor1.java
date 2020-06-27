@@ -3,6 +3,7 @@ package jedrzejbronislaw.flowmeasure.services;
 import java.time.LocalDateTime;
 
 import javafx.application.Platform;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

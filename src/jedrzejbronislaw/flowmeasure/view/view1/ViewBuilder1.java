@@ -46,6 +46,7 @@ import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
 import jedrzejbronislaw.flowmeasure.services.EventListener.EventType;
 import jedrzejbronislaw.flowmeasure.services.EventManager1;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.ItemSelector;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader.NodeAndController;
@@ -166,8 +167,7 @@ public class ViewBuilder1 implements ViewBuilder {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("FlowmeterPP");
 			primaryStage.setOnCloseRequest(e -> {
-				if(actions.exit != null)
-					actions.exit.run();
+				Injection.run(actions.exit);
 //				getDevice().disconnect();
 				Platform.exit();
 			});
@@ -187,18 +187,9 @@ public class ViewBuilder1 implements ViewBuilder {
 //		uartNAC.getController().setRates(UART.getRateList());
 //		uartNAC.getController().setRate("9600");
 
-		controller.setConnectButtonAction(() -> {
-			if(actions.connectButton != null)
-				actions.connectButton.run();
-		});
-		controller.setDisconnectButtonAction(() -> {
-			if(actions.disconnectButton != null)
-				actions.disconnectButton.run();
-		});
-		controller.setAutoConnectButtonAction(() -> {
-			if(actions.autoconnectButton != null)
-				actions.autoconnectButton.run();		
-		});
+		controller.setConnectButtonAction(actions.connectButton);
+		controller.setDisconnectButtonAction(actions.disconnectButton);
+		controller.setAutoConnectButtonAction(actions.autoconnectButton);
 		
 		view.getUARTParams = () -> controller.getParams();
 		
@@ -420,25 +411,19 @@ public class ViewBuilder1 implements ViewBuilder {
 		NodeAndController<SidePaneController> nac = loader.create(SIDE_PANE_FXML);
 		SidePaneController controller = nac.getController();
 
-		controller.setStartButtonAction(() -> {
-			if(actions.startButton != null)
-				actions.startButton.run();
+		controller.setStartButtonAction(actions.startButton
 //			session.getCurrentProcessRepository().setProcessStartTimeNow();
 //			session.setProcessState(ProcessState.Ongoing);
-		});
-		controller.setEndButtonAction(() -> {
-			if(actions.endButton != null)
-				actions.endButton.run();
+		);
+		controller.setEndButtonAction(actions.endButton
 //			session.getCurrentProcessRepository().setProcessEndTimeNow();
 //			session.setProcessState(ProcessState.Finished);
-		});
-		controller.setSaveButtonAction(() -> {
-			if(actions.saveButton != null)
-				actions.saveButton.run();
+		);
+		controller.setSaveButtonAction(actions.saveButton
 //			ProcessRepositoryWriter writer = new ProcessRepositoryCSVWriter();
 //			
 //			writer.save(session.getCurrentProcessRepository(), new File("D:\\fm.txt"));
-		});
+		);
 		
 //		view.diodeBlink = () -> controller.diodeBlink();
 //		session.addProcessStateListiner((state) -> controller.getProcessStateLabel().setText(state.toString()));

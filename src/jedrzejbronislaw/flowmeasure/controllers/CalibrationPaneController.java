@@ -11,6 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import jedrzejbronislaw.flowmeasure.services.EventListener;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Setter;
 
 public class CalibrationPaneController implements Initializable, EventListener {
@@ -44,25 +45,10 @@ public class CalibrationPaneController implements Initializable, EventListener {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		flowmeterField.getItems().addAll("1","2","3","4","5","6");
 		
-		startButton.setOnAction(e -> {
-			if (start != null)
-				start.run();
-		});
-		
-		resetButton.setOnAction(e -> {
-			if (reset != null)
-				reset.run();
-		});
-		
-		stopButton.setOnAction(e -> {
-			if (stop != null)
-				stop.run();
-		});
-		
-		setButton.setOnAction(e -> {
-			if (set != null)
-				set.run();
-		});
+		startButton.setOnAction(e -> Injection.run(start));
+		resetButton.setOnAction(e -> Injection.run(reset));
+		stopButton.setOnAction(e -> Injection.run(stop));
+		setButton.setOnAction(e -> Injection.run(set));
 	}
 
 	private void setEnableComponens(State state) {

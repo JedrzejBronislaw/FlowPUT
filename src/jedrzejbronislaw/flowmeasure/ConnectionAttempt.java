@@ -1,5 +1,6 @@
 package jedrzejbronislaw.flowmeasure;
 
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -69,22 +70,19 @@ public class ConnectionAttempt {
 			
 			if(portNotAvailableFlag) {
 				System.out.println("Port niedostêpny");
-				if(fail != null)
-					fail.run();
+				Injection.run(fail);
 			} else {
 			
 				System.out.println("Sprawdzam");
 				
 				if(device.isCorrectDevice()) {
 					System.out.println("\tCorrect device");
-					if (success != null)
-						success.run();
+					Injection.run(success);
 				} else {
 					System.out.println("\tIncorrect device. Roz³¹czam.");
 					device.disconnect();
 					System.out.println("Roz³¹czy³em");
-					if (fail != null)
-						fail.run();
+					Injection.run(fail);
 				}
 			}
 		});

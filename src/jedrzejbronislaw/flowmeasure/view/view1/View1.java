@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import jedrzejbronislaw.flowmeasure.UARTParams;
 import jedrzejbronislaw.flowmeasure.controllers.FlowPreviewController;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader.NodeAndController;
 import jedrzejbronislaw.flowmeasure.view.View;
 
@@ -30,10 +31,7 @@ public class View1 implements View {
 	
 	@Override
 	public UARTParams getUARTParams() {
-		if (getUARTParams != null)
-			return getUARTParams.get();
-
-		return null;
+		return Injection.get(getUARTParams, null);
 	}
 
 	@Override
