@@ -156,7 +156,6 @@ public class Main extends Application {
 //			view.disconnected();
 			device.disconnect();
 			eventManager.submitEvent(EventType.LostConnection);
-			connectionMonitor.stop();
 		});
 		
 		return monitor;

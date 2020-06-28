@@ -2,8 +2,8 @@ package jedrzejbronislaw.flowmeasure.services;
 
 import java.time.LocalDateTime;
 
-import javafx.application.Platform;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
+import jedrzejbronislaw.flowmeasure.tools.LoopThread;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 public class ConnectionMonitor1 implements ConnectionMonitor{
 
 	final int timeout;
-
 	final int interval;
 
 	@NonNull
@@ -23,26 +22,21 @@ public class ConnectionMonitor1 implements ConnectionMonitor{
 	
 	private LocalDateTime lastTime;
 	
-	private boolean monitorActive = false;
-	private Thread monitor;
-
+	private LoopThread monitor;
 
 	
 	@Override
 	public void start() {
 		refreshTime();
 		alert = false;
-		monitorActive = true;
-		monitor = createMonitorThread();
-		monitor.start();
+		monitor = createMonitorLoop();
 	}
-
 
 	@Override
 	public void stop() {
-		monitorActive = false;
+		if (monitor != null)
+			monitor.end();
 	}
-	
 		
 	@Override
 	public void newMessage() {
@@ -53,24 +47,17 @@ public class ConnectionMonitor1 implements ConnectionMonitor{
 		lastTime = LocalDateTime.now();
 	}
 	
-	private Thread createMonitorThread() {
-		return new Thread(() -> {
-			while(monitorActive) {
-				
-				
-				if(lastTime.plusSeconds(timeout).isBefore(LocalDateTime.now())) {
-					alert = true;
-					monitorActive = false;
-					if (timeoutEvent != null)
-						Platform.runLater(timeoutEvent);
-				}
-				
-				try {
-					Thread.sleep(interval);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+	private LoopThread createMonitorLoop() {
+		return new LoopThread(interval, () -> {
+			if(isTimeout()) {
+				alert = true;
+				monitor.end();
+				Injection.run(timeoutEvent);
 			}
 		});
+	}
+
+	private boolean isTimeout() {
+		return lastTime.plusSeconds(timeout).isBefore(LocalDateTime.now());
 	}
 }
