@@ -228,6 +228,7 @@ public class ViewBuilder1 implements ViewBuilder {
 		NodeAndController<ChartPaneController> nac = loader.create(CHART_FXML);
 		
 		nac.getController().setRefreshButtonAction(chart -> {
+			Platform.runLater(() -> {
 			ProcessRepository repo = getCurrentProcessRepo();
 			List<FlowMeasurement> data = repo.getAllMeasurementCopy();
 			if(data.size() == 0) return;
@@ -349,6 +350,7 @@ public class ViewBuilder1 implements ViewBuilder {
 				if(!chart.getData().contains(s))
 					chart.getData().add(s);	
 			});
+			});
 		});
 		
 		return nac;
@@ -360,6 +362,7 @@ public class ViewBuilder1 implements ViewBuilder {
 		NodeAndController<MeasurementTableController> measurementTableNAC = loaderMeasurementTable.create(MEASUREMENT_TABLE_FXML);
 		
 		measurementTableNAC.getController().setRefreshButtonAction(table -> {
+			Platform.runLater(() -> {
 			int size = getCurrentProcessRepo().getNumOfFlowmeters();
 
 			table.getItems().clear();
@@ -401,6 +404,7 @@ public class ViewBuilder1 implements ViewBuilder {
 			
 			table.getItems().addAll(getCurrentProcessRepo().getAllMeasurementCopy());
 			table.scrollTo(table.getItems().size()-1);
+		});
 		});
 		
 		return measurementTableNAC;

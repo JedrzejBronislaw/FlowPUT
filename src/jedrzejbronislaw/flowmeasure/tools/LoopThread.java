@@ -1,7 +1,5 @@
 package jedrzejbronislaw.flowmeasure.tools;
 
-import javafx.application.Platform;
-
 public class LoopThread {
 	private final Thread t;
 	private boolean end = false;
@@ -12,7 +10,7 @@ public class LoopThread {
 		
 		t = new Thread(() -> {
 			while(!end) {
-				Platform.runLater(action);
+				action.run();
 				sleep();
 				}
 			});
