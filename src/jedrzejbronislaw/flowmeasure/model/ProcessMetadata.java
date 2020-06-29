@@ -4,17 +4,17 @@ import java.time.LocalDateTime;
 
 public class ProcessMetadata {
 
-	private ProcessMetadata_raw metadate = new ProcessMetadata_raw();
+	private ProcessMetadata_raw metadata = new ProcessMetadata_raw();
 	
-	public String getAuthor() {return metadate.author;}
-	public void setAuthor(String author) {metadate.author = author;}
+	public String getAuthor() {return metadata.author;}
+	public void setAuthor(String author) {metadata.author = author;}
 	
-	public String getName() {return metadate.name;}
-	public void setName(String name) {metadate.name = name;}
+	public String getName() {return metadata.name;}
+	public void setName(String name) {metadata.name = name;}
 	
-	public LocalDateTime getStartTime() {return metadate.startTime;}
-	public void setStartTime(LocalDateTime startTime) {metadate.startTime = startTime;}
+	public LocalDateTime getStartTime() {return metadata.startTime;}
+	public void setStartTime(LocalDateTime startTime) {metadata.startTime = startTime;}
 	
-	public LocalDateTime getEndTime() {return metadate.endTime;}
-	public void setEndTime(LocalDateTime endTime) {metadate.endTime = endTime;}
+	public LocalDateTime getEndTime() {return metadata.endTime;}
+	public void setEndTime(LocalDateTime endTime) {metadata.endTime = endTime;}
 }
