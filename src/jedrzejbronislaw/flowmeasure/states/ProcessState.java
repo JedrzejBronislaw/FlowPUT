@@ -1,13 +1,13 @@
 package jedrzejbronislaw.flowmeasure.states;
 
-public enum ProcessState {
+public enum ProcessState implements State {
 	Before,
 	Ongoing,
 	Interrupted,
 	LostConnection,
 	Finished;
 	
-	public StateComparator<ProcessState> compare(){
-		return new StateComparator<ProcessState>(this);
+	public StateComparator compare(){
+		return new StateComparator(this);
 	}
 }

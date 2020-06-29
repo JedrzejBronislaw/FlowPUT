@@ -1,9 +1,9 @@
 package jedrzejbronislaw.flowmeasure.states;
 
-public enum ConnectionState {
+public enum ConnectionState implements State {
 	Disconnected, Connecting, Connected;
 	
-	public StateComparator<ConnectionState> compare(){
-		return new StateComparator<ConnectionState>(this);
+	public StateComparator compare(){
+		return new StateComparator(this);
 	}
 }

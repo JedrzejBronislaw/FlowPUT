@@ -6,13 +6,13 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class StateComparator<T extends Enum<?>> {
+public class StateComparator {
 
 	@NonNull
 	@Getter
-	private T state;
+	private State state;
 	
-	public boolean isOneOf(T ...stateTypes) {
+	public boolean isOneOf(State... stateTypes) {
 		for (int i=0; i<stateTypes.length; i++)
 			if (stateTypes[i] == state)
 				return true;

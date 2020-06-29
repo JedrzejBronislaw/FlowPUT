@@ -1,9 +1,9 @@
 package jedrzejbronislaw.flowmeasure.states;
 
-public enum ApplicationState{
+public enum ApplicationState implements State{
 	Idle, Process, Calibration;
 	
-	public StateComparator<ApplicationState> compare(){
-		return new StateComparator<ApplicationState>(this);
+	public StateComparator compare(){
+		return new StateComparator(this);
 	}
 }
