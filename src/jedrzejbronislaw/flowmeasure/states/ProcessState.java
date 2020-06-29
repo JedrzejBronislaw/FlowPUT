@@ -6,8 +6,4 @@ public enum ProcessState implements State {
 	Interrupted,
 	LostConnection,
 	Finished;
-	
-	public StateComparator compare(){
-		return new StateComparator(this);
-	}
 }
