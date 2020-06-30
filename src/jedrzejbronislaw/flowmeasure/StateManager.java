@@ -1,13 +1,14 @@
 package jedrzejbronislaw.flowmeasure;
 
 import jedrzejbronislaw.flowmeasure.services.EventListener;
+import jedrzejbronislaw.flowmeasure.services.EventType;
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.observableState.ObservableState1;
 import lombok.Getter;
 
-public class StateManager implements EventListener{
+public class StateManager implements EventListener {
 	
 	@Getter
 	private ObservableState1<ApplicationState> appState = new ObservableState1<>(ApplicationState.Idle);

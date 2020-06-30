@@ -16,6 +16,7 @@ import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import jedrzejbronislaw.flowmeasure.services.EventListener;
+import jedrzejbronislaw.flowmeasure.services.EventType;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.Delay;
 import jedrzejbronislaw.flowmeasure.tools.Injection;

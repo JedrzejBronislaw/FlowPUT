@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import jedrzejbronislaw.flowmeasure.EventPolicy;
-import jedrzejbronislaw.flowmeasure.services.EventListener.EventType;
 import lombok.Setter;
 
 public class EventManager1{

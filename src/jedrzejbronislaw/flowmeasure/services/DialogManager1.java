@@ -12,7 +12,7 @@ public class DialogManager1 implements EventListener{
 	}
 	
 	static public class builder{
-		private Map<EventType, String> messages = new HashMap<EventListener.EventType, String>();
+		private Map<EventType, String> messages = new HashMap<EventType, String>();
 		private MessageEvent messageEvent;
 		
 		public builder addMessages(EventType event, String message){
