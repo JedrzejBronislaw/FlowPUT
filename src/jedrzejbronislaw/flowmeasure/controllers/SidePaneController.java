@@ -17,6 +17,7 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import jedrzejbronislaw.flowmeasure.services.EventListener;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
+import jedrzejbronislaw.flowmeasure.tools.Delay;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
@@ -70,15 +71,7 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 	
 	public void diodeBlink() {
 		diodeON();
-		new Thread(() -> {
-			try {
-				Thread.sleep(blikDiodeDuration);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			Platform.runLater(() -> diodeOFF());
-		}).start();
+		Delay.viewAction(blikDiodeDuration, () -> diodeOFF());
 	}
 	
 	private void diodeON() {

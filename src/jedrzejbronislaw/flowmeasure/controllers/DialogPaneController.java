@@ -3,12 +3,12 @@ package jedrzejbronislaw.flowmeasure.controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import jedrzejbronislaw.flowmeasure.tools.Delay;
 import lombok.Setter;
 
 public class DialogPaneController implements Initializable{
@@ -25,15 +25,7 @@ public class DialogPaneController implements Initializable{
 	}
 
 	public void close(int delay) {
-		new Thread(() -> {
-			try {
-				Thread.sleep(delay);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
-			Platform.runLater(() -> ((StackPane)node.getParent()).getChildren().remove(node));
-		}).start();
+		Delay.viewAction(delay,() -> ((StackPane)node.getParent()).getChildren().remove(node));
 	}
 	
 	@Override
