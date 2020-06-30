@@ -4,28 +4,19 @@ import java.time.LocalDateTime;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import jedrzejbronislaw.flowmeasure.ConnectionAttempt;
-import jedrzejbronislaw.flowmeasure.ConnectionsAttempts;
 import jedrzejbronislaw.flowmeasure.FakeProcessGenerator1;
-import jedrzejbronislaw.flowmeasure.FileNamer;
-import jedrzejbronislaw.flowmeasure.FileNamer1;
 import jedrzejbronislaw.flowmeasure.FlowConverter;
 import jedrzejbronislaw.flowmeasure.FlowConverter1;
 import jedrzejbronislaw.flowmeasure.FlowDevice;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.Session;
-import jedrzejbronislaw.flowmeasure.Session.FlowConsumerType;
+import jedrzejbronislaw.flowmeasure.Settings;
+import jedrzejbronislaw.flowmeasure.SideDirResourcesRepository;
 import jedrzejbronislaw.flowmeasure.events.EventManager1;
 import jedrzejbronislaw.flowmeasure.events.EventPolicy;
 import jedrzejbronislaw.flowmeasure.events.EventType;
-import jedrzejbronislaw.flowmeasure.Settings;
-import jedrzejbronislaw.flowmeasure.SideDirResourcesRepository;
-import jedrzejbronislaw.flowmeasure.UART;
-import jedrzejbronislaw.flowmeasure.UARTParams;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.Repository;
-import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryCSVWriter;
-import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriter;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
 import jedrzejbronislaw.flowmeasure.services.Calibration1;
 import jedrzejbronislaw.flowmeasure.services.ConnectionMonitor;
@@ -35,9 +26,10 @@ import jedrzejbronislaw.flowmeasure.services.DataBuffer1;
 import jedrzejbronislaw.flowmeasure.services.DialogManager1;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
+import jedrzejbronislaw.flowmeasure.view.ActionContainer;
+import jedrzejbronislaw.flowmeasure.view.Actions;
 import jedrzejbronislaw.flowmeasure.view.View;
 import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
-import jedrzejbronislaw.flowmeasure.view.view1.SaveWindowBuilder;
 import jedrzejbronislaw.flowmeasure.view.view1.ViewBuilder1;
 
 
@@ -166,102 +158,14 @@ public class Main extends Application {
 	
 	private ViewBuilder createViewBuilder(){
 		ViewBuilder1 viewBuilder = new ViewBuilder1(primaryStage, session, settings);
+		ActionContainer actions = new Actions(
+				session, eventManager, settings, resources, view, connectionMonitor, device);
 
 		viewBuilder.setResources(resources);
 		viewBuilder.setFlowconverter(flowConverter);
 		viewBuilder.setEventManager(eventManager);
 		viewBuilder.setCalibration(calibration);
-
-		viewBuilder.getActions().setStartButton(() -> {
-			if(eventManager.submitEvent(EventType.Process_Starts)) {
-//				session.getCurrentProcessRepository().setProcessStartTimeNow();
-				session.getCurrentProcessRepository().setProcessStartTimeWithNextValue();
-				
-				if(settings.isBufferedData()) {
-					session.setFlowConsumerType(FlowConsumerType.Buffered);
-					session.setBufferInterval(settings.getBufferInterval());
-				} else
-					session.setFlowConsumerType(FlowConsumerType.Plain);
-					
-			}
-		});
-		viewBuilder.getActions().setEndButton(() -> {
-			if(eventManager.submitEvent(EventType.Process_Ends)) {
-				session.getCurrentProcessRepository().setProcessEndTimeNow();
-				session.setFlowConsumerType(FlowConsumerType.None);
-			}
-		});
-		viewBuilder.getActions().setSaveButton(() -> {
-			if(eventManager.submitEvent(EventType.Saving_Process)) {
-				ProcessRepositoryWriter writer = new ProcessRepositoryCSVWriter();
-				ProcessRepository process = session.getCurrentProcessRepository();
-				SaveWindowBuilder builder = new SaveWindowBuilder(resources, process);
-					
-				writer.setPulsePerLitre(settings.getPulsePerLitre());
-				FileNamer filenamer = new FileNamer1(process);
-				builder.setFileNamer(filenamer::createName);
-				builder.setInitialDirectory(settings.getSavePath());					
-				builder.setSaveAction(writer::save);
-				builder.setChooseFileAction(file -> {
-					settings.setSavePath(file.getParent());
-					settings.write();
-				});
-					
-				builder.build().show();					
-			}
-		});
-		
-		viewBuilder.getActions().setConnectButton(() -> {
-			UARTParams params = view.getUARTParams();
-			
-			if (params == null) return;
-			if (params.PORT_NAME == null || params.PORT_NAME.isEmpty()) return;
-
-			
-			ConnectionAttempt attempt = new ConnectionAttempt(device, params);
-			attempt.setSuccess(() -> {
-				eventManager.submitEvent(EventType.ConnectionSuccessful);
-				connectionMonitor.start();
-			});
-			attempt.setFail(() -> {
-				eventManager.submitEvent(EventType.ConnectionFailed);
-			});
-
-			eventManager.submitEvent(EventType.Connecting_Start);
-			attempt.start();
-		});
-		
-		viewBuilder.getActions().setAutoconnectButton(() -> {
-			System.out.println("\nStart autoconnect");
-			
-			ConnectionsAttempts attempts = new ConnectionsAttempts(device, UART.getPortList(), 9600);
-			attempts.setFail(() -> {
-				System.out.println("Żaden port nie pasuje");
-				eventManager.submitEvent(EventType.ConnectionFailed);
-			});
-			attempts.setSuccess(port -> {
-				System.out.println("Udało połączyć się z portem: " + port);
-				eventManager.submitEvent(EventType.ConnectionSuccessful);
-				connectionMonitor.start();
-			});
-
-			eventManager.submitEvent(EventType.Connecting_Start);
-			attempts.start();
-			
-		});
-		
-		viewBuilder.getActions().setDisconnectButton(() -> {
-			connectionMonitor.stop();
-			device.disconnect();
-
-			eventManager.submitEvent(EventType.Diconnection);
-		});
-		
-		viewBuilder.getActions().setExit(() -> {
-			eventManager.submitEvent(EventType.Exiting);
-			connectionMonitor.stop();
-			device.disconnect();
-		});
+		viewBuilder.setActions(actions);
 		
 		return viewBuilder;
 	}

@@ -34,8 +34,6 @@ import jedrzejbronislaw.flowmeasure.UART;
 import jedrzejbronislaw.flowmeasure.controllers.CalibrationPaneController;
 import jedrzejbronislaw.flowmeasure.controllers.ChartPaneController;
 import jedrzejbronislaw.flowmeasure.controllers.ChartPaneController.ValueUnit;
-import jedrzejbronislaw.flowmeasure.events.EventManager1;
-import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.controllers.DialogPaneController;
 import jedrzejbronislaw.flowmeasure.controllers.FlowPreviewController;
 import jedrzejbronislaw.flowmeasure.controllers.MainWindowController;
@@ -43,15 +41,16 @@ import jedrzejbronislaw.flowmeasure.controllers.MeasurementTableController;
 import jedrzejbronislaw.flowmeasure.controllers.SettingsPaneController;
 import jedrzejbronislaw.flowmeasure.controllers.SidePaneController;
 import jedrzejbronislaw.flowmeasure.controllers.UARTParamsController;
+import jedrzejbronislaw.flowmeasure.events.EventManager1;
+import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
-import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.ItemSelector;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader.NodeAndController;
+import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -59,25 +58,6 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class ViewBuilder1 implements ViewBuilder {
 	
-	public class ActionContainer{
-		@Setter
-		private Runnable startButton;
-		@Setter
-		private Runnable endButton;
-		@Setter
-		private Runnable saveButton;
-
-		@Setter
-		private Runnable connectButton;
-		@Setter
-		private Runnable disconnectButton;
-		@Setter
-		private Runnable autoconnectButton;
-		
-		@Setter
-		private Runnable exit;
-	}
-
 	@Setter
 	private ResourcesRepository resources;
 
@@ -113,8 +93,8 @@ public class ViewBuilder1 implements ViewBuilder {
 	@Setter
 	private FlowConverter flowconverter;
 	
-	@Getter
-	private ActionContainer actions = new ActionContainer();
+	@Setter
+	private ActionContainer actions;
 	
 	private View1 view;
 	private Pane root;
@@ -167,7 +147,7 @@ public class ViewBuilder1 implements ViewBuilder {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("FlowmeterPP");
 			primaryStage.setOnCloseRequest(e -> {
-				Injection.run(actions.exit);
+				actions.exit();
 //				getDevice().disconnect();
 				Platform.exit();
 			});
@@ -187,9 +167,9 @@ public class ViewBuilder1 implements ViewBuilder {
 //		uartNAC.getController().setRates(UART.getRateList());
 //		uartNAC.getController().setRate("9600");
 
-		controller.setConnectButtonAction(actions.connectButton);
-		controller.setDisconnectButtonAction(actions.disconnectButton);
-		controller.setAutoConnectButtonAction(actions.autoconnectButton);
+		controller.setConnectButtonAction(()     -> actions.connectFlowDevice());
+		controller.setDisconnectButtonAction(()  -> actions.disconnectFlowDevice());
+		controller.setAutoConnectButtonAction(() -> actions.autoconnectFlowDevice());
 		
 		view.getUARTParams = () -> controller.getParams();
 		
@@ -415,15 +395,15 @@ public class ViewBuilder1 implements ViewBuilder {
 		NodeAndController<SidePaneController> nac = loader.create(SIDE_PANE_FXML);
 		SidePaneController controller = nac.getController();
 
-		controller.setStartButtonAction(actions.startButton
+		controller.setStartButtonAction(() -> actions.startProcess()
 //			session.getCurrentProcessRepository().setProcessStartTimeNow();
 //			session.setProcessState(ProcessState.Ongoing);
 		);
-		controller.setEndButtonAction(actions.endButton
+		controller.setEndButtonAction(() -> actions.endProcess()
 //			session.getCurrentProcessRepository().setProcessEndTimeNow();
 //			session.setProcessState(ProcessState.Finished);
 		);
-		controller.setSaveButtonAction(actions.saveButton
+		controller.setSaveButtonAction(() -> actions.saveProcess()
 //			ProcessRepositoryWriter writer = new ProcessRepositoryCSVWriter();
 //			
 //			writer.save(session.getCurrentProcessRepository(), new File("D:\\fm.txt"));
