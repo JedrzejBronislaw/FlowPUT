@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.ConnectionAttempt;
 import jedrzejbronislaw.flowmeasure.ConnectionsAttempts;
+import jedrzejbronislaw.flowmeasure.EventPolicy;
 import jedrzejbronislaw.flowmeasure.FakeProcessGenerator1;
 import jedrzejbronislaw.flowmeasure.FileNamer;
 import jedrzejbronislaw.flowmeasure.FileNamer1;
@@ -51,6 +52,7 @@ public class Main extends Application {
 	private ConnectionMonitor connectionMonitor;
 	private EventManager1 eventManager;
 	private StateManager stateManager;
+	private EventPolicy eventPolicy;
 	private DialogManager1 dialogManager;
 	private FlowConverter flowConverter;
 	private DataBuffer dataBuffer;
@@ -75,6 +77,7 @@ public class Main extends Application {
 		flowConverter = new FlowConverter1(settings);
 		eventManager = new EventManager1();
 		stateManager = new StateManager();
+		eventPolicy = new EventPolicy(stateManager);
 		dialogManager = buildDialogManager();		
 		calibration = buildCalibration();
 		session = buildSession();
@@ -86,7 +89,7 @@ public class Main extends Application {
 		session.setCurrentProcessRepository(createProcessRepository(session.getRepository()));
 		session.setDevice(device);
 
-		eventManager.setCheckPermission(stateManager.getEventPermission());
+		eventManager.setEventPolicy(eventPolicy);
 		eventManager.addListener(dialogManager);
 		eventManager.addListener(stateManager);
 

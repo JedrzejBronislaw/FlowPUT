@@ -1,7 +1,5 @@
 package jedrzejbronislaw.flowmeasure;
 
-import java.util.function.Function;
-
 import jedrzejbronislaw.flowmeasure.services.EventListener;
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
@@ -17,25 +15,6 @@ public class StateManager implements EventListener{
 	private ObservableState1<ConnectionState> connState = new ObservableState1<>(ConnectionState.Disconnected);
 	@Getter
 	private ObservableState1<ProcessState> processState = new ObservableState1<>(ProcessState.Before);
-
-	@Getter
-	private Function<EventType, Boolean> eventPermission = new Function<EventType, Boolean>() {
-		
-		@Override
-		public Boolean apply(EventType event) {
-			return (
-				(event == EventType.Process_Ends && appState.getState() == ApplicationState.Process) ||
-				(event == EventType.Process_Starts && appState.getState() == ApplicationState.Idle && connState.getState() == ConnectionState.Connected) ||
-				(event == EventType.LostConnection && connState.getState() == ConnectionState.Connected) ||
-				(event == EventType.ConnectionSuccessful && connState.getState() == ConnectionState.Connecting) ||
-				(event == EventType.ConnectionFailed && connState.getState() == ConnectionState.Connecting) ||
-				(event == EventType.Connecting_Start && connState.getState() == ConnectionState.Disconnected) ||
-				(event == EventType.Diconnection && connState.getState() == ConnectionState.Connected) ||
-				(event == EventType.Calibration_Starts && appState.getState() == ApplicationState.Idle && connState.getState() == ConnectionState.Connected) ||
-				(event == EventType.Calibration_Ends && appState.getState() == ApplicationState.Calibration)
-					);
-		}
-	};
 	
 	
 	@Override
@@ -85,5 +64,4 @@ public class StateManager implements EventListener{
 			appState.setState(ApplicationState.Idle);
 		}
 	}
-	
 }

@@ -2,15 +2,15 @@ package jedrzejbronislaw.flowmeasure.services;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Function;
 
+import jedrzejbronislaw.flowmeasure.EventPolicy;
 import jedrzejbronislaw.flowmeasure.services.EventListener.EventType;
 import lombok.Setter;
 
 public class EventManager1{
 
 	@Setter
-	private Function<EventType, Boolean> checkPermission;
+	private EventPolicy eventPolicy;
 
 	private List<EventListener> listeners = new LinkedList<>();
 	
@@ -29,7 +29,7 @@ public class EventManager1{
 	
 	private boolean permission(EventType event){
 		return (checkInternalPermission(event) ||
-				(checkPermission != null && checkPermission.apply(event)));
+				(eventPolicy != null && eventPolicy.checkPermmision(event)));
 	}
 	
 	private boolean checkInternalPermission(EventType event){
