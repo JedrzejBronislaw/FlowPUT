@@ -1,6 +1,8 @@
 package jedrzejbronislaw.flowmeasure.services;
 
-public enum EventType {
+import jedrzejbronislaw.flowmeasure.states.MultiComparable;
+
+public enum EventType implements MultiComparable {
 	Connecting_Start,
 	ConnectionSuccessful,
 	LostConnection, 
@@ -10,11 +12,4 @@ public enum EventType {
 	ReceivedData,
 	Saving_Process,
 	Exiting;
-	
-	public boolean isOneOf(EventType... eventTypes) {
-		for (int i=0; i<eventTypes.length; i++)
-			if (eventTypes[i] == this)
-				return true;
-		return false;
-	}
 }

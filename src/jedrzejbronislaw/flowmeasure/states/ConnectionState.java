@@ -1,5 +1,5 @@
 package jedrzejbronislaw.flowmeasure.states;
 
-public enum ConnectionState implements State {
+public enum ConnectionState implements MultiComparable {
 	Disconnected, Connecting, Connected;
 }
