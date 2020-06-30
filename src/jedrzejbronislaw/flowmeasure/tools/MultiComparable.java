@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.states;
+package jedrzejbronislaw.flowmeasure.tools;
 
 public interface MultiComparable {
 	

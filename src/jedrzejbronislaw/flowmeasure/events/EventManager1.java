@@ -1,9 +1,8 @@
-package jedrzejbronislaw.flowmeasure.services;
+package jedrzejbronislaw.flowmeasure.events;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import jedrzejbronislaw.flowmeasure.EventPolicy;
 import lombok.Setter;
 
 public class EventManager1{

@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.services;
+package jedrzejbronislaw.flowmeasure.events;
 
 public interface EventListener {
 	

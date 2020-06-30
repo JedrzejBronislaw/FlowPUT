@@ -10,8 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import jedrzejbronislaw.flowmeasure.services.EventListener;
-import jedrzejbronislaw.flowmeasure.services.EventType;
+import jedrzejbronislaw.flowmeasure.events.EventListener;
+import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Setter;
 

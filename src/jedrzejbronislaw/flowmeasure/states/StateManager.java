@@ -1,10 +1,7 @@
-package jedrzejbronislaw.flowmeasure;
+package jedrzejbronislaw.flowmeasure.states;
 
-import jedrzejbronislaw.flowmeasure.services.EventListener;
-import jedrzejbronislaw.flowmeasure.services.EventType;
-import jedrzejbronislaw.flowmeasure.states.ApplicationState;
-import jedrzejbronislaw.flowmeasure.states.ConnectionState;
-import jedrzejbronislaw.flowmeasure.states.ProcessState;
+import jedrzejbronislaw.flowmeasure.events.EventListener;
+import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.tools.observableState.ObservableState1;
 import lombok.Getter;
 

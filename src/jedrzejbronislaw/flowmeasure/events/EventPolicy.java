@@ -1,8 +1,8 @@
-package jedrzejbronislaw.flowmeasure;
+package jedrzejbronislaw.flowmeasure.events;
 
-import jedrzejbronislaw.flowmeasure.services.EventType;
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
+import jedrzejbronislaw.flowmeasure.states.StateManager;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

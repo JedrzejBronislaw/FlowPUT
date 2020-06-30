@@ -1,6 +1,6 @@
-package jedrzejbronislaw.flowmeasure.services;
+package jedrzejbronislaw.flowmeasure.events;
 
-import jedrzejbronislaw.flowmeasure.states.MultiComparable;
+import jedrzejbronislaw.flowmeasure.tools.MultiComparable;
 
 public enum EventType implements MultiComparable {
 	Connecting_Start,

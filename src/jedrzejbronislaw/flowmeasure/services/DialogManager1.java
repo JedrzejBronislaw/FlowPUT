@@ -3,6 +3,9 @@ package jedrzejbronislaw.flowmeasure.services;
 import java.util.HashMap;
 import java.util.Map;
 
+import jedrzejbronislaw.flowmeasure.events.EventListener;
+import jedrzejbronislaw.flowmeasure.events.EventType;
+
 public class DialogManager1 implements EventListener{
 
 	static private final int milisecPerLetter = 40;
