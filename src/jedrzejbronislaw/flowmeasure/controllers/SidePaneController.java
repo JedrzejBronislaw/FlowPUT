@@ -24,34 +24,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class SidePaneController implements Initializable, EventListener, StateListener<ProcessState>{
-
+	
 	private static final int blikDiodeDuration = 100;
 	
 	private static final Color colorDiodeOn = Color.GREENYELLOW;
 	private static final Color colorDiodeOff = Color.gray(0.7);
-	private static final RadialGradient gradientDiodeOn = new RadialGradient(
-			0,
-            0,
-            0.25,
-            0.25,
-            1,
-            true,
-            CycleMethod.NO_CYCLE,
-            new Stop(0, colorDiodeOn),
-            new Stop(1, Color.WHITE));
-
-	private static final RadialGradient gradientDiodeOff = new RadialGradient(
-			0,
-            0,
-            0.25,
-            0.25,
-            1,
-            true,
-            CycleMethod.NO_CYCLE,
-            new Stop(0, colorDiodeOff),
-            new Stop(1, Color.WHITE));
-
-
+	private static final RadialGradient gradientDiodeOn  = createGradient(colorDiodeOn);
+	private static final RadialGradient gradientDiodeOff = createGradient(colorDiodeOff);
 	
 	@FXML
 	private Button saveButton, startButton, endButton;
@@ -76,6 +55,18 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 	private LocalDateTime endTime = null;
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 	
+	private static RadialGradient createGradient(Color color) {
+		return new RadialGradient(
+				0,
+				0,
+				0.25,
+				0.25,
+				1,
+				true,
+				CycleMethod.NO_CYCLE,
+				new Stop(0, color),
+				new Stop(1, Color.WHITE));
+	}
 	
 	public void diodeBlink() {
 		diodeON();
