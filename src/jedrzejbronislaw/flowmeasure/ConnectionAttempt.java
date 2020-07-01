@@ -9,6 +9,10 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class ConnectionAttempt {
 
+	private static final int CONNECTING_TIMEOUT    = 4000;
+	private static final int PROOF_REQUEST_DELAY   = 2000;
+	private static final int PROOF_MESSAGE_WAITING = 2000;
+
 	@NonNull
 	private FlowDevice device;
 	@NonNull
@@ -20,7 +24,7 @@ public class ConnectionAttempt {
 	@Setter
 	private Runnable fail;
 	
-	private boolean portNotAvailableFlag = false;
+	private boolean connected = false;
 	
 	void changePort(String port) {
 		System.out.println("-changePort(" + port + ")-");
@@ -28,65 +32,73 @@ public class ConnectionAttempt {
 	}
 	
 	public void start() {
-		Thread t1, t2;
-		
-		portNotAvailableFlag = false;
+		connected = false;
 
 		System.out.println("Rozpoczêto próbê po³¹czenia (port: " + params.PORT_NAME + ")");
 		
-		t2 = new Thread(() -> {
-			
-			if(device.connect(params)) {
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				device.sendProofRequest();
-			} else {
-				portNotAvailableFlag = true;
-			}
-		});
-		
-		t1 = new Thread(() -> {
+		createCheckingThread().start();
+	}
 
+	private Thread createCheckingThread() {
+		return new Thread(() -> {
 			
 			System.out.println("Uruchamiam w¹tek");
-			t2.start();
-			System.out.println("W¹tek uruchomiony");
-			System.out.println("Za 4 sek sprawdzê...");
+			connect(CONNECTING_TIMEOUT);
+			System.out.println("connectedFlag: " + connected);
 			
-			try {
-				for(int i=0; i<40; i++)
-					if(!portNotAvailableFlag)
-						Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			System.out.println("portNotAvailableFlag: " + portNotAvailableFlag);
-			
-			if(portNotAvailableFlag) {
+			if(connected) {
+				sleep(PROOF_MESSAGE_WAITING);
+				checkDevice();
+			} else {
 				System.out.println("Port niedostêpny");
 				Injection.run(fail);
-			} else {
-			
-				System.out.println("Sprawdzam");
-				
-				if(device.isCorrectDevice()) {
-					System.out.println("\tCorrect device");
-					Injection.run(success);
-				} else {
-					System.out.println("\tIncorrect device. Roz³¹czam.");
-					device.disconnect();
-					System.out.println("Roz³¹czy³em");
-					Injection.run(fail);
-				}
 			}
 		});
+	}
+
+	private void checkDevice() {
+		System.out.println("Sprawdzam");
 		
-		t1.start();
+		if(device.isCorrectDevice()) {
+			System.out.println("\tCorrect device");
+			Injection.run(success);
+		} else {
+			System.out.println("\tIncorrect device. Roz³¹czam.");
+			device.disconnect();
+			System.out.println("Roz³¹czy³em");
+			Injection.run(fail);
+		}
+	}
+	
+	private void connect(int timeout) {
+		Thread thread = new Thread(() -> connected = connect());
+		
+		thread.setDaemon(true);
+		thread.start();
+		
+		try {
+			thread.join(timeout);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private boolean connect() {
+		boolean successs = device.connect(params);
+		
+		if(successs) {
+			sleep(PROOF_REQUEST_DELAY);
+			device.sendProofRequest();
+		}
+		
+		return successs;
+	}
+
+	private void sleep(int time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
