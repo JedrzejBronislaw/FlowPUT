@@ -27,6 +27,7 @@ import lombok.Setter;
 
 public class SidePaneController implements Initializable, EventListener, StateListener<ProcessState>{
 	
+	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 	private static final int blikDiodeDuration = 100;
 	
 	private static final Color colorDiodeOn = Color.GREENYELLOW;
@@ -55,7 +56,6 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 	private ProcessState processState;
 	private LocalDateTime startTime = null;
 	private LocalDateTime endTime = null;
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 	
 	private static RadialGradient createGradient(Color color) {
 		return new RadialGradient(
