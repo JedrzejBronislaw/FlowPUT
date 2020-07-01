@@ -72,14 +72,16 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 	
 	public void diodeBlink() {
 		diodeON();
-		Delay.viewAction(blikDiodeDuration, () -> diodeOFF());
+		Delay.action(blikDiodeDuration, () -> diodeOFF());
 	}
 	
 	private void diodeON() {
-		receiverDiode.setFill(gradientDiodeOn);
+		Platform.runLater(() ->
+			receiverDiode.setFill(gradientDiodeOn));
 	}
 	private void diodeOFF() {
-		receiverDiode.setFill(gradientDiodeOff);
+		Platform.runLater(() ->
+			receiverDiode.setFill(gradientDiodeOff));
 	}
 	
 	@Override
@@ -120,7 +122,6 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 				setDurationTimeLabel(startTime, LocalDateTime.now());
 			else if (endTime != null)
 				setDurationTimeLabel(startTime, endTime);
-			
 		}
 
 		if(event == EventType.Process_Starts) {
@@ -139,7 +140,8 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 	@Override
 	public void onChangeState(ProcessState state) {
 		processState = state;
-		processStateLabel.setText(state.toString());
+		Platform.runLater(() ->
+			processStateLabel.setText(state.toString()));
 		
 		if(state == ProcessState.Ongoing)
 			setButtonEnable(true);
