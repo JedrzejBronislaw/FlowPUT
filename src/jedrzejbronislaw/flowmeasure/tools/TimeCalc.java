@@ -30,7 +30,9 @@ public class TimeCalc {
 		if ((seconds%60) > 0)		
 			output.append((seconds%60) +" seconds" + separator); //TODO internationalization
 		
-		output.delete(output.length() - separator.length(), output.length());
+		int startDel = output.length() - separator.length();
+		if(startDel >= 0)
+			output.delete(startDel, output.length());
 		
 		return output.toString();
 	}

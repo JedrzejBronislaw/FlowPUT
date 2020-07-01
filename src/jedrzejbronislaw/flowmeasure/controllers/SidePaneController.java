@@ -117,7 +117,7 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 		if(event == EventType.ReceivedData) {
 			diodeBlink();
 			if(processState == ProcessState.Ongoing)
-				setDurationTimeLabel(startTime.minusMinutes(61), LocalDateTime.now());
+				setDurationTimeLabel(startTime, LocalDateTime.now());
 			else if (endTime != null)
 				setDurationTimeLabel(startTime, endTime);
 			
