@@ -9,26 +9,23 @@ public class TimeCalc {
 		return createDurationString(startTime, endTime, " ");
 	}
 	public static String createDurationString(LocalDateTime startTime, LocalDateTime endTime, String separator) {
-		StringBuffer output = new StringBuffer();
-		
 		if (startTime == null || endTime == null) return "";
 		
-//		long years = ChronoUnit.YEARS.between(startTime, endTime);
-//		long months = ChronoUnit.MONTHS.between(startTime, endTime);
-		long days = ChronoUnit.DAYS.between(startTime, endTime);
-
-		long hours = ChronoUnit.HOURS.between(startTime, endTime);
-		long minutes = ChronoUnit.MINUTES.between(startTime, endTime);
-		long seconds = ChronoUnit.SECONDS.between(startTime, endTime);
+		StringBuffer output = new StringBuffer();
 		
-		if (days > 0)		
-			output.append(days +" days" + separator);
-		if ((hours%24) > 0)		
-			output.append((hours%24) +" hours" + separator);
-		if ((minutes%60) > 0)		
-			output.append((minutes%60) +" minutes" + separator);
-		if ((seconds%60) > 0)		
-			output.append((seconds%60) +" seconds" + separator); //TODO internationalization
+		long days       = ChronoUnit.DAYS.   between(startTime, endTime);
+		long allHours   = ChronoUnit.HOURS.  between(startTime, endTime);
+		long allMinutes = ChronoUnit.MINUTES.between(startTime, endTime);
+		long allSeconds = ChronoUnit.SECONDS.between(startTime, endTime);
+
+		int hours   = (int) (allHours   % 24);
+		int minutes = (int) (allMinutes % 60);
+		int seconds = (int) (allSeconds % 60);
+		
+		if (days > 0)    output.append(days    + " days"    + separator);
+		if (hours > 0)   output.append(hours   + " hours"   + separator);
+		if (minutes > 0) output.append(minutes + " minutes" + separator);
+		if (seconds > 0) output.append(seconds + " seconds" + separator); //TODO internationalization
 		
 		int startDel = output.length() - separator.length();
 		if(startDel >= 0)
