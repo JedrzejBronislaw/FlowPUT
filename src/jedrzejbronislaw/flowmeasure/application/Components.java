@@ -66,7 +66,7 @@ public class Components {
 		eventPolicy = new EventPolicy(stateManager);
 		dialogManager = buildDialogManager();
 		calibration = buildCalibration();
-		session = buildSession();
+		session = new Session();
 		
 		set();
 	}
@@ -149,14 +149,6 @@ public class Components {
 		return calibration;
 	}
 
-	private Session buildSession() {
-		return Session.builder().
-				setAppState(stateManager.getAppState()).
-				setConnState(stateManager.getConnState()).
-				setProcessState(stateManager.getProcessState()).
-				build();
-	}
-
 	private ViewBuilder createViewBuilder(){
 		ViewBuilder1 viewBuilder = new ViewBuilder1(primaryStage, session, settings);
 		ActionContainer actions = new Actions(this);
@@ -164,6 +156,7 @@ public class Components {
 		viewBuilder.setResources(resources);
 		viewBuilder.setFlowconverter(flowConverter);
 		viewBuilder.setEventManager(eventManager);
+		viewBuilder.setStateManager(stateManager);
 		viewBuilder.setCalibration(calibration);
 		viewBuilder.setActions(actions);
 		

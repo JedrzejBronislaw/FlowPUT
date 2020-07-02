@@ -46,6 +46,7 @@ import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
+import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.ItemSelector;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader.NodeAndController;
@@ -63,6 +64,9 @@ public class ViewBuilder1 implements ViewBuilder {
 
 	@Setter
 	private EventManager1 eventManager;
+
+	@Setter
+	private StateManager stateManager;
 
 	@Setter
 	private Calibration calibration;
@@ -186,7 +190,7 @@ public class ViewBuilder1 implements ViewBuilder {
 //			System.out.println("NIE PO£ACZONO");
 //		};
 		
-		session.getConnState().addStateListiner(controller);
+		stateManager.getConnState().addStateListiner(controller);
 		
 		return nac;
 	}
@@ -412,7 +416,7 @@ public class ViewBuilder1 implements ViewBuilder {
 //		view.diodeBlink = () -> controller.diodeBlink();
 //		session.addProcessStateListiner((state) -> controller.getProcessStateLabel().setText(state.toString()));
 //		session.getProcessState().addStateListiner((state) -> controller.getProcessStateLabel().setText(state.toString()));
-		session.getProcessState().addStateListiner(controller);
+		stateManager.getProcessState().addStateListiner(controller);
 		
 		eventManager.addListener(controller);
 		

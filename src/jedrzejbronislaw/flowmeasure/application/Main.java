@@ -17,9 +17,9 @@ public class Main extends Application {
 		
 		//-----
 		
-		components.getSession().getAppState().addStateListiner(state -> System.out.println(" -> New appState: " + state.toString()));
-		components.getSession().getConnState().addStateListiner(state -> System.out.println(" -> New connState: " + state.toString()));
-		components.getSession().getProcessState().addStateListiner(state -> System.out.println(" -> New processState: " + state.toString()));
+		components.getStateManager().getAppState().addStateListiner(state -> System.out.println(" -> New appState: " + state.toString()));
+		components.getStateManager().getConnState().addStateListiner(state -> System.out.println(" -> New connState: " + state.toString()));
+		components.getStateManager().getProcessState().addStateListiner(state -> System.out.println(" -> New processState: " + state.toString()));
 		components.getEventManager().addListener(state -> {if(state != EventType.ReceivedData) System.out.println(" -> Event: " + state.toString());});
 		
 //		generateFakeData();

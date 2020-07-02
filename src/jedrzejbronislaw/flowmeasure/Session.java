@@ -4,50 +4,11 @@ import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.Repository;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
 import jedrzejbronislaw.flowmeasure.services.DataBuffer;
-import jedrzejbronislaw.flowmeasure.states.ApplicationState;
-import jedrzejbronislaw.flowmeasure.states.ConnectionState;
-import jedrzejbronislaw.flowmeasure.states.ProcessState;
-import jedrzejbronislaw.flowmeasure.tools.observableState.ObservableState;
-import jedrzejbronislaw.flowmeasure.tools.observableState.ObservableState1;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Session {
 
-	
-	
-	public static class Builder{
-		private ObservableState1<ApplicationState> appState;
-		private ObservableState1<ConnectionState> connState;
-		private ObservableState1<ProcessState> processState;
-		
-		public Builder setAppState(ObservableState1<ApplicationState> appState) {
-			this.appState = appState;
-			return this;
-		}
-		public Builder setConnState(ObservableState1<ConnectionState> connState) {
-			this.connState = connState;
-			return this;
-		}
-		public Builder setProcessState(ObservableState1<ProcessState> processState) {
-			this.processState = processState;
-			return this;
-		}
-		
-		public Session build() {
-			Session session = new Session();
-			session.connState = this.connState;
-			session.appState = this.appState;
-			session.processState = this.processState;
-			
-			return session;
-		}
-	}
-	
-	public static Builder builder() {
-		return new Builder();
-	}
-	
 	public enum FlowConsumerType{
 		None,
 		Plain,
@@ -56,13 +17,6 @@ public class Session {
 	}
 
 
-
-
-	private ObservableState1<ApplicationState> appState;
-	private ObservableState1<ConnectionState> connState;
-	private ObservableState1<ProcessState> processState;
-	
-	
 	@Setter
 	@Getter
 	private FlowDevice device;
@@ -76,19 +30,10 @@ public class Session {
 	private ProcessRepository currentProcessRepository;
 
 	
-	private Session() {
+	public Session() {
 		setFlowConsumerType(FlowConsumerType.None);
 	}
 	
-	public ObservableState<ApplicationState> getAppState() {
-		return appState;
-	}
-	public ObservableState<ConnectionState> getConnState() {
-		return connState;
-	}
-	public ObservableState<ProcessState> getProcessState() {
-		return processState;
-	}
 	
 	@Getter
 	private FlowConsumerType flowConsumerType;
