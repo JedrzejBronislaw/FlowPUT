@@ -22,12 +22,12 @@ import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import lombok.Setter;
 
 public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
-	private static final String METADATA_HEAD = "Metadata";
-	private static final String DATA_HEAD     = "Measurement";
+	public static final String METADATA_HEAD = "Metadata";
+	public static final String DATA_HEAD     = "Measurement";
 
-	private static final String title = "Flow measurement";//"Pomiar przep³ywu";//TODO internationalization
-	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	private static final String separator = ";";
+	public static final String TITLE = "Flow measurement";//"Pomiar przep³ywu";//TODO internationalization
+	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	public static final String SEPARATOR = ";";
 	
 	@Setter
 	private float pulsePerLitre = 0;
@@ -64,7 +64,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 			List<FlowMeasurement> data = repository.getAllMeasurementCopy();
 
 
-			writer.write(title);
+			writer.write(TITLE);
 			newLine();
 
 			newLine();
@@ -72,43 +72,43 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 			writer.write(METADATA_HEAD);
 			newLine();
 
-			writer.write("name" + separator);
+			writer.write("name" + SEPARATOR);
 			writer.write(repository.getMetadata().getName());
 			newLine();
 			
-			writer.write("author" + separator);
+			writer.write("author" + SEPARATOR);
 			writer.write(repository.getMetadata().getAuthor());
 			newLine();
 			
-			writer.write("start" + separator);
+			writer.write("start" + SEPARATOR);
 			if(startTime != null)
-				writer.write(startTime.format(formatter));
+				writer.write(startTime.format(FORMATTER));
 			newLine();
 			
-			writer.write("end" + separator);
+			writer.write("end" + SEPARATOR);
 			if(endTime != null)
-				writer.write(endTime.format(formatter));
+				writer.write(endTime.format(FORMATTER));
 			newLine();
 			
 			String duration = TimeCalc.createDurationString(startTime, endTime);
 			
-			writer.write("duration" + separator);
+			writer.write("duration" + SEPARATOR);
 			writer.write(duration);
 			newLine();
 
 			newLine();
 
-			writer.write("pulse per litre" + separator);
+			writer.write("pulse per litre" + SEPARATOR);
 			writer.write(Float.toString(pulsePerLitre));
 			newLine();
 			
 			newLine();
 
-			writer.write("num of flowmeters" + separator);
+			writer.write("num of flowmeters" + SEPARATOR);
 			writer.write(Integer.toString(repository.getNumOfFlowmeters()));
 			newLine();
 
-			writer.write("size" + separator);
+			writer.write("size" + SEPARATOR);
 			writer.write(Integer.toString(data.size()));
 			newLine();
 
@@ -126,11 +126,11 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 			if(options.getColumns().size() > 1) {
 				//times
 				for(int i=0; i<options.getTimeFormats().size(); i++)
-					writer.write(separator);
+					writer.write(SEPARATOR);
 				
 				if(options.isFlowmeterValuesTogether())
 					for(int i=0; i<repository.getNumOfFlowmeters(); i++)
-						writer.write("flowmeter" + Integer.toString(i+1) + separator + separator);
+						writer.write("flowmeter" + Integer.toString(i+1) + SEPARATOR + SEPARATOR);
 				else {
 
 					if(options.getColumns().get(0) == Columns.Pulses)
@@ -139,7 +139,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 						writer.write("f");
 
 					for(int i=0; i<repository.getNumOfFlowmeters(); i++)
-						writer.write(separator);
+						writer.write(SEPARATOR);
 
 					if(options.getColumns().get(0) == Columns.Pulses)
 						writer.write("f");
@@ -152,11 +152,11 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 			}
 			
 			if(options.getTimeFormats().contains(TimeFormat.Unix))
-				writer.write("unix time" + separator);
+				writer.write("unix time" + SEPARATOR);
 			if(options.getTimeFormats().contains(TimeFormat.Full))
-				writer.write("full time" + separator);
+				writer.write("full time" + SEPARATOR);
 			if(options.getTimeFormats().contains(TimeFormat.ProcessTime))
-				writer.write("process time [s]" + separator);
+				writer.write("process time [s]" + SEPARATOR);
 
 			
 
@@ -166,23 +166,23 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 					
 					if(options.getColumns().get(0) == Columns.Pulses)
 						for(int i=0; i<repository.getNumOfFlowmeters(); i++)
-							writer.write("p" + separator + "f" + separator);
+							writer.write("p" + SEPARATOR + "f" + SEPARATOR);
 					else
 						for(int i=0; i<repository.getNumOfFlowmeters(); i++)
-							writer.write("f" + separator + "p" + separator);
+							writer.write("f" + SEPARATOR + "p" + SEPARATOR);
 					
 				} else {
 					
 					for(int i=0; i<repository.getNumOfFlowmeters(); i++)
-						writer.write("flowmeter" + Integer.toString(i+1) + separator);
+						writer.write("flowmeter" + Integer.toString(i+1) + SEPARATOR);
 					for(int i=0; i<repository.getNumOfFlowmeters(); i++)
-						writer.write("flowmeter" + Integer.toString(i+1) + separator);
+						writer.write("flowmeter" + Integer.toString(i+1) + SEPARATOR);
 				}				
 			} else {
 				for(int i=0; i<repository.getNumOfFlowmeters(); i++) {
-					writer.write("flowmeter" + Integer.toString(i+1) + separator);
+					writer.write("flowmeter" + Integer.toString(i+1) + SEPARATOR);
 					for(int j=1; j<options.getColumns().size(); j++)
-						writer.write(separator);
+						writer.write(SEPARATOR);
 				}
 			}
 			newLine();
@@ -206,15 +206,15 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		try {
 			if(options.getTimeFormats().contains(TimeFormat.Unix)) {
 				writer.write(Long.toString(measurement.getTime().toEpochSecond(ZoneOffset.UTC)));
-				writer.write(separator);
+				writer.write(SEPARATOR);
 			}
 			if(options.getTimeFormats().contains(TimeFormat.Full)) {
-				writer.write(measurement.getTime().format(formatter));
-				writer.write(separator);
+				writer.write(measurement.getTime().format(FORMATTER));
+				writer.write(SEPARATOR);
 			}
 			if(options.getTimeFormats().contains(TimeFormat.ProcessTime)) {
 				writer.write(Long.toString(ChronoUnit.SECONDS.between(startTime, measurement.getTime())));
-				writer.write(separator);
+				writer.write(SEPARATOR);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -279,7 +279,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	private void writePulses(int pulses) {
 		try {
 			writer.write(Integer.toString(pulses));
-			writer.write(separator);
+			writer.write(SEPARATOR);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -291,7 +291,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		Float flow = flowConverter.pulsesToLitrePerSec(pulses);
 		try {
 			writeFlow(flow);
-			writer.write(separator);
+			writer.write(SEPARATOR);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
