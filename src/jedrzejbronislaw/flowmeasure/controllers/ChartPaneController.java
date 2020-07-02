@@ -39,66 +39,51 @@ public class ChartPaneController implements Initializable{
 	
 	
 	@Setter
-	private Runnable lastSecsBoxAction;
-
-	@Getter
-	private boolean lastSeconds;
-	
-	@Setter
 	private Consumer<LineChart<Number, Number>> refreshButtonAction;
 	
 	@Getter
 	private NumberAxis axisX, axisY;
 	private LineChart<Number, Number> chart;
 	
+	
 	private Refresher liveChartRefresher = new Refresher(1000, () ->  Injection.run(refreshButtonAction, chart));
 	
-	private void startRefresher() {
-		liveChartRefresher.on();
-	}
-	
-	private void stopRefresher() {
-		liveChartRefresher.off();
+	public boolean isLastSeconds() {
+		return lastSecsBox.isSelected();
 	}
 
 	public ValueUnit getValueUnit(){
-		if(pulsesRadio.isSelected())
-			return ValueUnit.Pulses;
-		if(litresRadio.isSelected())
-			return ValueUnit.Litre;
-		if(litresPerSecRadio.isSelected())
-			return ValueUnit.LitrePerSec;
+		if(pulsesRadio.isSelected())       return ValueUnit.Pulses;
+		if(litresRadio.isSelected())       return ValueUnit.Litre;
+		if(litresPerSecRadio.isSelected()) return ValueUnit.LitrePerSec;
 		return null;
+	}
+	
+	public ChartPaneController() {
+		createChart();
 	}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-
-		axisX = new NumberAxis();
-		axisY = new NumberAxis();
-		chart = new LineChart<Number, Number>(axisX, axisY);
-//		axisX.setAutoRanging(true);
-//		axisY.setfobou setAutoRanging(true);
-		axisX.setForceZeroInRange(false);
-
+		mainPane.setCenter(chart);
 		
 		refreshButton.disableProperty().bind(liveBox.selectedProperty());
 		
-		mainPane.setCenter(chart);
-//		mainVbox.getChildren().add(0, chart);
-		
 		refreshButton.setOnAction(e -> Injection.run(refreshButtonAction, chart));
 		saveButton.setOnAction(e -> SnapshotSaver.withFileChooser(chart));
-		lastSecsBox.setOnAction(e -> Injection.run(lastSecsBoxAction));
-		
 		liveBox.setOnAction(e -> {
 			if(liveBox.isSelected())
-				startRefresher();
+				liveChartRefresher.on();
 			else
-				stopRefresher();
+				liveChartRefresher.off();
 		});
-		
-		lastSecsBox.setOnAction(e -> lastSeconds = lastSecsBox.isSelected());
+	}
 
+	private void createChart() {
+		axisX = new NumberAxis();
+		axisY = new NumberAxis();
+		axisX.setForceZeroInRange(false);
+		
+		chart = new LineChart<Number, Number>(axisX, axisY);
 	}
 }
