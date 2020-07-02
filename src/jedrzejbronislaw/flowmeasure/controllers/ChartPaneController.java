@@ -1,16 +1,9 @@
 package jedrzejbronislaw.flowmeasure.controllers;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-import javax.imageio.ImageIO;
-
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
@@ -18,11 +11,10 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.FileChooser;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.Refresher;
+import jedrzejbronislaw.flowmeasure.tools.SnapshotSaver;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -96,21 +88,7 @@ public class ChartPaneController implements Initializable{
 //		mainVbox.getChildren().add(0, chart);
 		
 		refreshButton.setOnAction(e -> Injection.run(refreshButtonAction, chart));
-		
-		saveButton.setOnAction(e -> {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH_mm_ss");
-			WritableImage wImage = chart.snapshot(null, null);
-			FileChooser fileChooser = new FileChooser();
-			fileChooser.setInitialFileName(LocalDateTime.now().format(formatter) + ".png");
-			File f = fileChooser.showSaveDialog(null);
-			if(f == null) return;
-			try {
-				ImageIO.write(SwingFXUtils.fromFXImage(wImage, null), "png", f);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		});
-		
+		saveButton.setOnAction(e -> SnapshotSaver.withFileChooser(chart));
 		lastSecsBox.setOnAction(e -> Injection.run(lastSecsBoxAction));
 		
 		liveBox.setOnAction(e -> {
@@ -123,6 +101,4 @@ public class ChartPaneController implements Initializable{
 		lastSecsBox.setOnAction(e -> lastSeconds = lastSecsBox.isSelected());
 
 	}
-	
-	
 }
