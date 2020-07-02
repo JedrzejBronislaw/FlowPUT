@@ -3,12 +3,14 @@ package jedrzejbronislaw.flowmeasure.model.processRepositoryWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import jedrzejbronislaw.flowmeasure.FlowConverter;
 import jedrzejbronislaw.flowmeasure.FlowConverter1;
@@ -30,11 +32,21 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	
 	private FlowConverter flowConverter;
 	private ProcessRepositoryWriterOptions options;
-	private FileWriter writer;
+	private Writer writer;
 	private ProcessRepository repository;
 	
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
+	
+	@Setter
+	private Function<File, Writer> writerCreator = file -> {
+		try {
+			return new FileWriter(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	};
 	
 	@Override
 	public boolean save(ProcessRepository repository, File file, ProcessRepositoryWriterOptions options) {
@@ -43,7 +55,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		this.repository = repository;
 		
 		try {
-			writer = new FileWriter(file);
+			writer = writerCreator.apply(file);
 			startTime = repository.getMetadata().getStartTime();
 			endTime = repository.getMetadata().getEndTime();
 			
