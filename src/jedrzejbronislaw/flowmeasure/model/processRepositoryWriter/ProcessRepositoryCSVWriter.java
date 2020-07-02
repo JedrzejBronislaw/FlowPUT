@@ -22,6 +22,8 @@ import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import lombok.Setter;
 
 public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
+	private static final String METADATA_HEAD = "Metadata";
+	private static final String DATA_HEAD     = "Measurement";
 
 	private static final String title = "Flow measurement";//"Pomiar przep³ywu";//TODO internationalization
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -67,6 +69,9 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 
 			newLine();
 
+			writer.write(METADATA_HEAD);
+			newLine();
+
 			writer.write("name" + separator);
 			writer.write(repository.getMetadata().getName());
 			newLine();
@@ -108,7 +113,9 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 			newLine();
 
 			newLine();
-			
+
+			writer.write(DATA_HEAD);
+			newLine();
 
 //			TODO flowmeters names
 //			writer.write(";;;");
