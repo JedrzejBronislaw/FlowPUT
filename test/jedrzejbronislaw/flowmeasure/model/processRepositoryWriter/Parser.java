@@ -16,7 +16,7 @@ public class Parser {
 	}
 	
 	private void parse() {
-		String[] lines = content.split(Pattern.quote("\n"));
+		String[] lines = content.split(Pattern.quote(ProcessRepositoryCSVWriter.NEW_LINE_SEPARATOR));
 		metadata = extractMetadata(lines);
 	}
 	

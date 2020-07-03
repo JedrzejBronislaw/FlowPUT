@@ -49,42 +49,42 @@ public class CSVWriterTest_simpleMetadata {
 	
 	@Test
 	public void property_name() {
-		checkProperty("name", "Measurement name");
+		checkProperty(ProcessRepositoryCSVWriter.PROP_NAME, "Measurement name");
 	}
 	
 	@Test
 	public void property_author() {
-		checkProperty("author", null);
+		checkProperty(ProcessRepositoryCSVWriter.PROP_AUTHOR, null);
 	}
 	
 	@Test
 	public void property_start() {
-		checkProperty("start", null);
+		checkProperty(ProcessRepositoryCSVWriter.PROP_START, null);
 	}
 	
 	@Test
 	public void property_end() {
-		checkProperty("end", null);
+		checkProperty(ProcessRepositoryCSVWriter.PROP_END, null);
 	}
 	
 	@Test
 	public void property_duration() {
-		checkProperty("duration", null);
+		checkProperty(ProcessRepositoryCSVWriter.PROP_DURATION, null);
 	}
 	
 	@Test
 	public void property_pulse() {
-		checkProperty("pulse per litre", "0.0");
+		checkProperty(ProcessRepositoryCSVWriter.PROP_PULSE, "0.0");
 	}
 	
 	@Test
 	public void property_flowmeters() {
-		checkProperty("num of flowmeters", "2");
+		checkProperty(ProcessRepositoryCSVWriter.PROP_FLOWMETERS, "2");
 	}
 	
 	@Test
 	public void property_size() {
-		checkProperty("size", "3");
+		checkProperty(ProcessRepositoryCSVWriter.PROP_SIZE, "3");
 	}
 	
 	@Test
