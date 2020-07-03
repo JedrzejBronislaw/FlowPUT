@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -22,6 +23,8 @@ import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import lombok.Setter;
 
 public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
+	private static final ZoneOffset timeZoneOffset = OffsetDateTime.now().getOffset();
+	
 	public static final String TITLE = "Flow measurement";//"Pomiar przep³ywu";//TODO internationalization
 	
 	public static final String METADATA_HEAD = "Metadata";
@@ -68,6 +71,18 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 			return null;
 		}
 	};
+	
+	public static String processTime(LocalDateTime time, LocalDateTime startTime) {
+		return Long.toString(ChronoUnit.SECONDS.between(startTime, time));
+	}
+
+	public static String fullTime(LocalDateTime time) {
+		return time.format(FORMATTER);
+	}
+
+	public static String unixTime(LocalDateTime time) {
+		return Long.toString(time.toEpochSecond(timeZoneOffset));
+	}
 	
 	@Override
 	public boolean save(ProcessRepository repository, File file, ProcessRepositoryWriterOptions options) {
@@ -224,19 +239,20 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 
 
 	private void action(FlowMeasurement measurement) {
-		flowConverter.newDataEvent(measurement.getTime());
+		LocalDateTime time = measurement.getTime();
+		flowConverter.newDataEvent(time);
 
 		try {
 			if(options.getTimeFormats().contains(TimeFormat.Unix)) {
-				writer.write(Long.toString(measurement.getTime().toEpochSecond(ZoneOffset.UTC)));
+				writer.write(unixTime(time));
 				writer.write(SEPARATOR);
 			}
 			if(options.getTimeFormats().contains(TimeFormat.Full)) {
-				writer.write(measurement.getTime().format(FORMATTER));
+				writer.write(fullTime(time));
 				writer.write(SEPARATOR);
 			}
 			if(options.getTimeFormats().contains(TimeFormat.ProcessTime)) {
-				writer.write(Long.toString(ChronoUnit.SECONDS.between(startTime, measurement.getTime())));
+				writer.write(processTime(time, startTime));
 				writer.write(SEPARATOR);
 			}
 		} catch (IOException e) {
