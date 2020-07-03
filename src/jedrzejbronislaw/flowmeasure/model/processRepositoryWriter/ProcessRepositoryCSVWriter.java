@@ -57,6 +57,8 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		this.repository = repository;
 		
 		try {
+			String processName = repository.getMetadata().getName();
+			String author = repository.getMetadata().getAuthor();
 			writer = writerCreator.apply(file);
 			startTime = repository.getMetadata().getStartTime();
 			endTime = repository.getMetadata().getEndTime();
@@ -73,11 +75,13 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 			newLine();
 
 			writer.write("name" + SEPARATOR);
-			writer.write(repository.getMetadata().getName());
+			if(processName != null)
+				writer.write(processName);
 			newLine();
 			
 			writer.write("author" + SEPARATOR);
-			writer.write(repository.getMetadata().getAuthor());
+			if(author != null)
+				writer.write(author);
 			newLine();
 			
 			writer.write("start" + SEPARATOR);
