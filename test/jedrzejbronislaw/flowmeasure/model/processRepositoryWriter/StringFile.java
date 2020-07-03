@@ -4,18 +4,23 @@ import java.io.StringWriter;
 
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @RequiredArgsConstructor
 public class StringFile {
 	
 	private final ProcessRepository repository;
 	private final ProcessRepositoryWriterOptions options;
+	@Setter
+	private float pulsePerLitre;
+	
 	
 	private ProcessRepositoryCSVWriter processWriter;
 	private StringWriter writer = new StringWriter();
 	
 	public String createContentOfFile() {
 		processWriter = new ProcessRepositoryCSVWriter();
+		processWriter.setPulsePerLitre(pulsePerLitre);
 		processWriter.setWriterCreator(file -> writer);
 		
 		return save(repository, options);
