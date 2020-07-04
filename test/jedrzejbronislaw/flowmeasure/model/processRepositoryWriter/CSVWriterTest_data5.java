@@ -59,12 +59,12 @@ public class CSVWriterTest_data5 {
 	}
 
 	@Test
-	public void property_headerLines() {
+	public void headerLines() {
 		assertEquals(2, parser.getDataHeader().size());
 	}
 	
 	@Test
-	public void property_firstLineHeader() {
+	public void firstLineHeader() {
 		String[] firstLine = parser.getDataHeader().get(0);
 		
 		assertEquals(5, firstLine.length);
@@ -77,7 +77,7 @@ public class CSVWriterTest_data5 {
 	}
 	
 	@Test
-	public void property_secondLineHeader() {
+	public void secondLineHeader() {
 		String[] secondLine = parser.getDataHeader().get(1);
 		
 		assertEquals(6, secondLine.length);
@@ -91,7 +91,7 @@ public class CSVWriterTest_data5 {
 	}
 	
 	@Test
-	public void property_firstLineData() {
+	public void firstLineData() {
 		String[] line = parser.getData().get(0);
 		
 		assertEquals(5, line.length);
@@ -105,7 +105,7 @@ public class CSVWriterTest_data5 {
 	}
 	
 	@Test
-	public void property_secondLineData() {
+	public void secondLineData() {
 		String[] line = parser.getData().get(1);
 		
 		assertEquals(6, line.length);
@@ -120,7 +120,7 @@ public class CSVWriterTest_data5 {
 	}
 	
 	@Test
-	public void property_thirdLineData() {
+	public void thirdLineData() {
 		String[] line = parser.getData().get(2);
 		
 		assertEquals(6, line.length);
