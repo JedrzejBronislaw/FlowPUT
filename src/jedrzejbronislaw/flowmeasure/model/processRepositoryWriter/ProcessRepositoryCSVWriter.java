@@ -18,6 +18,7 @@ import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Columns;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
+import jedrzejbronislaw.flowmeasure.tools.NumberTools;
 import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import lombok.Setter;
 
@@ -259,16 +260,11 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		csvWriter.writeWithSeparator(setDecimalSeparator(flow));
 	}
 
-	private String setDecimalSeparator(Float flow) throws IOException {
+	private String setDecimalSeparator(Float flow) {
 		if(flow == null) return "";
 		
-		String stringFlow = Float.toString(flow);
-		
-		if(options.isCommaSeparator())
-			stringFlow = stringFlow.replaceAll("\\.", ","); else
-			stringFlow = stringFlow.replaceAll(",", ".");
-		
-		return stringFlow;
+		String decimalSeparator = options.isCommaSeparator() ? "," : ".";
+		return NumberTools.floatToString(flow, decimalSeparator);
 	}
 	
 	private int numOfTimeFormats() {
