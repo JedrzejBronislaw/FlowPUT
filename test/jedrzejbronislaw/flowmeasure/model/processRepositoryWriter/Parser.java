@@ -29,7 +29,7 @@ public class Parser {
 	}
 	
 	private void parse() {
-		String[] lines = content.split(Pattern.quote(ProcessRepositoryCSVWriter.NEW_LINE_SEPARATOR));
+		String[] lines = content.split(Pattern.quote(CSVWriter.NEW_LINE_SEPARATOR));
 		metadata = extractMetadata(lines);
 		dataHeader = extractDataHeader(lines);
 		data = extractData(lines);
@@ -45,7 +45,7 @@ public class Parser {
 			if(line.equals(ProcessRepositoryCSVWriter.DATA_HEAD))     metadataLine = false; else
 			
 			if (metadataLine && !line.trim().isEmpty())
-				metadata.add(line.split(ProcessRepositoryCSVWriter.SEPARATOR));
+				metadata.add(line.split(CSVWriter.SEPARATOR));
 		}
 		
 		return metadata;
@@ -58,8 +58,8 @@ public class Parser {
 			String line = lines[i];
 			
 			if(line.equals(ProcessRepositoryCSVWriter.DATA_HEAD)) {
-				dataheader.add(lines[i+1].split(ProcessRepositoryCSVWriter.SEPARATOR));
-				dataheader.add(lines[i+2].split(ProcessRepositoryCSVWriter.SEPARATOR));
+				dataheader.add(lines[i+1].split(CSVWriter.SEPARATOR));
+				dataheader.add(lines[i+2].split(CSVWriter.SEPARATOR));
 				break;
 			}
 		}
@@ -80,7 +80,7 @@ public class Parser {
 			} else
 			
 			if (dataLine)
-				data.add(line.split(ProcessRepositoryCSVWriter.SEPARATOR));
+				data.add(line.split(CSVWriter.SEPARATOR));
 		}
 		
 		return data;

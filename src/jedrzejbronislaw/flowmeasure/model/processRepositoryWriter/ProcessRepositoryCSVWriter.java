@@ -9,7 +9,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -48,16 +47,14 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	public static final String  FLOW_COLUMNNAME = "f";
 
 	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	public static final String SEPARATOR = ";";
-	public static final String NEW_LINE_SEPARATOR = "\n";
 	
-	@Setter
 	private float pulsePerLitre = 0;
 	
 	private FlowConverter flowConverter;
 	private ProcessRepositoryWriterOptions options;
-	private Writer writer;
+	private CSVWriter csvWriter;
 	private ProcessRepository repository;
+	private List<FlowMeasurement> measurements;
 	
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
@@ -71,6 +68,12 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 			return null;
 		}
 	};
+	
+	@Override
+	public void setPulsePerLitre(float pulsePerLitre) {
+		this.pulsePerLitre = pulsePerLitre;
+		flowConverter = new FlowConverter1(pulsePerLitre);
+	}
 	
 	public static String processTime(LocalDateTime time, LocalDateTime startTime) {
 		return Long.toString(ChronoUnit.SECONDS.between(startTime, time));
@@ -86,277 +89,213 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	
 	@Override
 	public boolean save(ProcessRepository repository, File file, ProcessRepositoryWriterOptions options) {
-		flowConverter = new FlowConverter1(pulsePerLitre);
-		this.options = options;
+		this.options    = options;
 		this.repository = repository;
+		measurements    = repository.getAllMeasurementCopy();
+		startTime       = repository.getMetadata().getStartTime();
+		endTime         = repository.getMetadata().getEndTime();
 		
 		try {
-			String processName = repository.getMetadata().getName();
-			String author = repository.getMetadata().getAuthor();
-			writer = writerCreator.apply(file);
-			startTime = repository.getMetadata().getStartTime();
-			endTime = repository.getMetadata().getEndTime();
 			
-			List<FlowMeasurement> data = repository.getAllMeasurementCopy();
-
-
-			writer.write(TITLE);
-			newLine();
-
-			newLine();
-
-			writer.write(METADATA_HEAD);
-			newLine();
-
-			writer.write(PROP_NAME + SEPARATOR);
-			if(processName != null)
-				writer.write(processName);
-			newLine();
+			csvWriter = new CSVWriter(writerCreator.apply(file));
+			writeFile();
+			csvWriter.close();
 			
-			writer.write(PROP_AUTHOR + SEPARATOR);
-			if(author != null)
-				writer.write(author);
-			newLine();
-			
-			writer.write(PROP_START + SEPARATOR);
-			if(startTime != null)
-				writer.write(startTime.format(FORMATTER));
-			newLine();
-			
-			writer.write(PROP_END + SEPARATOR);
-			if(endTime != null)
-				writer.write(endTime.format(FORMATTER));
-			newLine();
-			
-			String duration = TimeCalc.createDurationString(startTime, endTime);
-			
-			writer.write(PROP_DURATION + SEPARATOR);
-			writer.write(duration);
-			newLine();
-
-			newLine();
-
-			writer.write(PROP_PULSE + SEPARATOR);
-			writer.write(Float.toString(pulsePerLitre));
-			newLine();
-			
-			newLine();
-
-			writer.write(PROP_FLOWMETERS + SEPARATOR);
-			writer.write(Integer.toString(repository.getNumOfFlowmeters()));
-			newLine();
-
-			writer.write(PROP_SIZE + SEPARATOR);
-			writer.write(Integer.toString(data.size()));
-			newLine();
-
-			newLine();
-
-			writer.write(DATA_HEAD);
-			newLine();
-
-//			TODO flowmeters names
-//			writer.write(";;;");
-//			for(int i=0; i<data.size(); i++)
-//				writer.write("flowmeter" + (i+1) + ";");
-//			writer.write("\n");
-			
-			if(options.getColumns().size() > 1) {
-				//times
-				for(int i=0; i<options.getTimeFormats().size(); i++)
-					writer.write(SEPARATOR);
-				
-				if(options.isFlowmeterValuesTogether())
-					for(int i=0; i<repository.getNumOfFlowmeters(); i++)
-						writer.write(DEF_FLOWMETER_NAME + Integer.toString(i+1) + SEPARATOR + SEPARATOR);
-				else {
-
-					if(options.getColumns().get(0) == Columns.Pulses)
-						writer.write(PULSE_COLUMNNAME);
-					else
-						writer.write(FLOW_COLUMNNAME);
-
-					for(int i=0; i<repository.getNumOfFlowmeters(); i++)
-						writer.write(SEPARATOR);
-
-					if(options.getColumns().get(0) == Columns.Pulses)
-						writer.write(FLOW_COLUMNNAME);
-					else
-						writer.write(PULSE_COLUMNNAME);
-
-				}
-			} else {
-				//times
-				for(int i=0; i<options.getTimeFormats().size(); i++)
-					writer.write(SEPARATOR);
-				
-				if(options.getColumns().get(0) == Columns.Pulses)
-					writer.write(PULSE_COLUMNNAME);
-				else
-					writer.write(FLOW_COLUMNNAME);
-			}
-			
-			newLine();
-				
-			
-			if(options.getTimeFormats().contains(TimeFormat.Unix))
-				writer.write(UNIX_TIME_HEAD + SEPARATOR);
-			if(options.getTimeFormats().contains(TimeFormat.Full))
-				writer.write(FULL_TIME_HEAD + SEPARATOR);
-			if(options.getTimeFormats().contains(TimeFormat.ProcessTime))
-				writer.write(PROCESS_TIME_HEAD + SEPARATOR);
-
-			
-
-			if(options.getColumns().size() > 1) {
-
-				if(options.isFlowmeterValuesTogether()) {
-					
-					if(options.getColumns().get(0) == Columns.Pulses)
-						for(int i=0; i<repository.getNumOfFlowmeters(); i++)
-							writer.write(PULSE_COLUMNNAME + SEPARATOR + FLOW_COLUMNNAME + SEPARATOR);
-					else
-						for(int i=0; i<repository.getNumOfFlowmeters(); i++)
-							writer.write(FLOW_COLUMNNAME + SEPARATOR + PULSE_COLUMNNAME + SEPARATOR);
-					
-				} else {
-					
-					for(int i=0; i<repository.getNumOfFlowmeters(); i++)
-						writer.write(DEF_FLOWMETER_NAME + Integer.toString(i+1) + SEPARATOR);
-					for(int i=0; i<repository.getNumOfFlowmeters(); i++)
-						writer.write(DEF_FLOWMETER_NAME + Integer.toString(i+1) + SEPARATOR);
-				}				
-			} else {
-				for(int i=0; i<repository.getNumOfFlowmeters(); i++) {
-					writer.write(DEF_FLOWMETER_NAME + Integer.toString(i+1) + SEPARATOR);
-					for(int j=1; j<options.getColumns().size(); j++)
-						writer.write(SEPARATOR);
-				}
-			}
-			newLine();
-			
-			data.forEach(this::action);
-				
-			writer.close();
-				
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-		// TODO Auto-generated method stub
-		return false;
+		
+		return true;
 	}
 
+	private void writeFile() throws IOException {
+		csvWriter.line(TITLE);
+		csvWriter.newLine();
 
-	private void action(FlowMeasurement measurement) {
+		writeMetadata();
+		csvWriter.newLine();
+		writeData();
+	}
+
+	private void writeData() throws IOException {
+		csvWriter.line(DATA_HEAD);
+
+		writeDataHeader();
+		for (FlowMeasurement m : measurements) writeMeasurementLine(m);
+	}
+
+	private void writeMetadata() throws IOException {
+		String processName = repository.getMetadata().getName();
+		String author = repository.getMetadata().getAuthor();
+		
+		csvWriter.line(METADATA_HEAD);
+
+		csvWriter.property(PROP_NAME, processName);
+		csvWriter.property(PROP_AUTHOR, author);
+		csvWriter.property(PROP_START, startTime);
+		csvWriter.property(PROP_END, endTime);
+		csvWriter.property(PROP_DURATION, TimeCalc.createDurationString(startTime, endTime));
+		csvWriter.newLine();
+
+		csvWriter.property(PROP_PULSE, pulsePerLitre);
+		csvWriter.newLine();
+
+		csvWriter.property(PROP_FLOWMETERS, numOfFlowmeters());
+		csvWriter.property(PROP_SIZE, repository.getSize());
+	}
+
+	private void writeDataHeader() throws IOException {
+		if(numOfColumns() > 1)
+			if(flowmeterValuesTogether())
+				writeHeader_ManyColumns_FlowmeterTogther(); else
+				writeHeader_ManyColumns_FlowmeterNotTogther();
+		else
+			writeHeader_OneColumn();
+	}
+
+	private void writeHeader_OneColumn() throws IOException {
+		csvWriter.writeSeparators(numOfTimeFormats());
+		csvWriter.write(columnName(0));
+		csvWriter.newLine();
+
+		writeTimeHeadres();
+		for(int i=0; i<numOfFlowmeters(); i++)
+			csvWriter.writeWithSeparator(flowmeterName(i));
+
+		csvWriter.newLine();
+	}
+
+	private void writeHeader_ManyColumns_FlowmeterNotTogther() throws IOException {
+		csvWriter.writeSeparators(numOfTimeFormats());
+		csvWriter.write(columnName(0));
+		csvWriter.writeSeparators(numOfFlowmeters());
+		csvWriter.write(columnName(1));
+		csvWriter.newLine();
+
+		writeTimeHeadres();
+		for(int i=0; i<numOfColumns(); i++)
+			for(int j=0; j<numOfFlowmeters(); j++)
+				csvWriter.writeWithSeparator(flowmeterName(j));
+
+		csvWriter.newLine();
+	}
+
+	private void writeHeader_ManyColumns_FlowmeterTogther() throws IOException {
+		csvWriter.writeSeparators(numOfTimeFormats());
+		for(int i=0; i<numOfFlowmeters(); i++) {
+			csvWriter.write(flowmeterName(i));
+			csvWriter.writeSeparators(numOfColumns());
+		}
+		csvWriter.newLine();
+		
+		writeTimeHeadres();
+		for(int i=0; i<numOfFlowmeters(); i++) {
+			csvWriter.writeWithSeparator(columnName(0));
+			csvWriter.writeWithSeparator(columnName(1));
+		}
+
+		csvWriter.newLine();
+	}
+
+	private void writeTimeHeadres() throws IOException {
+		if(isSelected(TimeFormat.Unix))        csvWriter.writeWithSeparator(UNIX_TIME_HEAD);
+		if(isSelected(TimeFormat.Full))        csvWriter.writeWithSeparator(FULL_TIME_HEAD);
+		if(isSelected(TimeFormat.ProcessTime)) csvWriter.writeWithSeparator(PROCESS_TIME_HEAD);
+	}
+	
+	private String columnName(int index) {
+		return columnName(getColumn(index));
+	}
+	
+	private String columnName(Columns column) {
+		if (column == Columns.Pulses) return PULSE_COLUMNNAME;
+		if (column == Columns.Flow)   return FLOW_COLUMNNAME;
+		return "";
+	}
+
+	private void writeMeasurementLine(FlowMeasurement measurement) throws IOException {
+		List<Columns> columns = options.getColumns();
 		LocalDateTime time = measurement.getTime();
 		flowConverter.newDataEvent(time);
 
-		try {
-			if(options.getTimeFormats().contains(TimeFormat.Unix)) {
-				writer.write(unixTime(time));
-				writer.write(SEPARATOR);
-			}
-			if(options.getTimeFormats().contains(TimeFormat.Full)) {
-				writer.write(fullTime(time));
-				writer.write(SEPARATOR);
-			}
-			if(options.getTimeFormats().contains(TimeFormat.ProcessTime)) {
-				writer.write(processTime(time, startTime));
-				writer.write(SEPARATOR);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		List<Columns> flowColumn = Arrays.asList(Columns.Flow);
-		List<Columns> pulsesColumn = Arrays.asList(Columns.Pulses);
+		if(isSelected(TimeFormat.Unix))        csvWriter.writeWithSeparator(unixTime(time));
+		if(isSelected(TimeFormat.Full))        csvWriter.writeWithSeparator(fullTime(time));
+		if(isSelected(TimeFormat.ProcessTime)) csvWriter.writeWithSeparator(processTime(time, startTime));
 
-		if(options.isFlowmeterValuesTogether() || options.getColumns().size() <= 1)
-			writeMeasurment(measurement, options.getColumns());
-		else {
-			if(options.getColumns().get(0) == Columns.Flow) {
-				writeMeasurment(measurement, flowColumn);
-				writeMeasurment(measurement, pulsesColumn);
-			} else {
-				writeMeasurment(measurement, pulsesColumn);
-				writeMeasurment(measurement, flowColumn);				
-			}
-		}
+
+		if(flowmeterValuesTogether())
+			writeMeasurementFlowmeterTogether(measurement, columns); else
+			writeMeasurementColumnTogether(measurement, columns);
 		
-		newLine();
+		csvWriter.newLine();
 	}
 
+	private void writeMeasurementColumnTogether(FlowMeasurement measurement, List<Columns> columns) throws IOException {
 
-	private void writeMeasurment(FlowMeasurement measurement, List<Columns> columns) {
-		for(int i=0; i<repository.getNumOfFlowmeters(); i++) {
-			int pulses = measurement.get(i);		
-			
-			
-			if(columns.contains(Columns.Pulses) && columns.contains(Columns.Flow))
-				if(columns.get(0) == Columns.Pulses) {
-					writePulses(pulses);
-					writeFlow(pulses);
-				} else {
-					writeFlow(pulses);
-					writePulses(pulses);
-				}
-			else
-			if(columns.contains(Columns.Pulses)) 
-				writePulses(pulses);
-			else
-			if(columns.contains(Columns.Flow)) 
-				writeFlow(pulses);
-			
-					
-		}
+		for (Columns column : columns)
+			for(int i=0; i<numOfFlowmeters(); i++)
+				writeMeasurement(column, measurement.get(i));
 	}
 
+	private void writeMeasurementFlowmeterTogether(FlowMeasurement measurement, List<Columns> columns) throws IOException {
 
-	private void newLine(){
-		try {
-			writer.write(NEW_LINE_SEPARATOR);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	};
+		for(int i=0; i<numOfFlowmeters(); i++)
+			for (Columns column : columns)
+				writeMeasurement(column, measurement.get(i));
+	}
 
+	private void writeMeasurement(Columns column, int pulses) throws IOException {
+		if (column == Columns.Pulses) writePulses(pulses);
+		if (column == Columns.Flow)   writeFlow(pulses);
+	}
+
+	private void writePulses(int pulses) throws IOException {
+		csvWriter.writeWithSeparator(pulses);
+	}
 	
-	private void writePulses(int pulses) {
-		try {
-			writer.write(Integer.toString(pulses));
-			writer.write(SEPARATOR);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	
-	private void writeFlow(int pulses) {
+	private void writeFlow(int pulses) throws IOException {
 		Float flow = flowConverter.pulsesToLitrePerSec(pulses);
-		try {
-			writeFlow(flow);
-			writer.write(SEPARATOR);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		csvWriter.writeWithSeparator(setDecimalSeparator(flow));
 	}
 
-
-	private void writeFlow(Float flow) throws IOException {
-		if(flow != null) {
-			String stringFlow = Float.toString(flow);
-			if(options.isCommaSeparator())
-				stringFlow = stringFlow.replaceAll("\\.", ",");
-			else
-				stringFlow = stringFlow.replaceAll(",", ".");
-			writer.write(stringFlow);
-		}
+	private String setDecimalSeparator(Float flow) throws IOException {
+		if(flow == null) return "";
+		
+		String stringFlow = Float.toString(flow);
+		
+		if(options.isCommaSeparator())
+			stringFlow = stringFlow.replaceAll("\\.", ","); else
+			stringFlow = stringFlow.replaceAll(",", ".");
+		
+		return stringFlow;
+	}
+	
+	private int numOfTimeFormats() {
+		return options.getTimeFormats().size();
 	}
 
+	private boolean flowmeterValuesTogether() {
+		return options.isFlowmeterValuesTogether();
+	}
+
+	private int numOfColumns() {
+		return options.getColumns().size();
+	}
+
+	private int numOfFlowmeters() {
+		return repository.getNumOfFlowmeters();
+	}
+	
+	private Columns getColumn(int index) {
+		return options.getColumns().get(index);
+	}
+	
+	private boolean isSelected(TimeFormat timeformat) {
+		return options.getTimeFormats().contains(timeformat);
+	}
+
+	private String flowmeterName(int index) {
+		return DEF_FLOWMETER_NAME + Integer.toString(index+1);
+	}
 }
