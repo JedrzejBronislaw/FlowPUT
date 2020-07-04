@@ -125,4 +125,9 @@ public class CSVWriterTest_data4 {
 		assertEquals("2", line[3]);
 		assertEquals("4", line[4]);
 	}
+	
+	@Test
+	public void numberOfDataLine() {
+		assertEquals(3, parser.getData().size());
+	}
 }

@@ -134,4 +134,9 @@ public class CSVWriterTest_data6 {
 		assertEquals(4/pulsePerLitre, Float.parseFloat(line[4]), deltaFlow);
 		assertEquals("4", line[5]);
 	}
+	
+	@Test
+	public void numberOfDataLine() {
+		assertEquals(3, parser.getData().size());
+	}
 }
