@@ -185,9 +185,19 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 						writer.write(PULSE_COLUMNNAME);
 
 				}
+			} else {
+				//times
+				for(int i=0; i<options.getTimeFormats().size(); i++)
+					writer.write(SEPARATOR);
 				
-				newLine();
+				if(options.getColumns().get(0) == Columns.Pulses)
+					writer.write(PULSE_COLUMNNAME);
+				else
+					writer.write(FLOW_COLUMNNAME);
 			}
+			
+			newLine();
+				
 			
 			if(options.getTimeFormats().contains(TimeFormat.Unix))
 				writer.write(UNIX_TIME_HEAD + SEPARATOR);
