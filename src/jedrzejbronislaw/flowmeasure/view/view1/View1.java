@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 import jedrzejbronislaw.flowmeasure.UARTParams;
 import jedrzejbronislaw.flowmeasure.controllers.FlowPreviewController;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader.NodeAndController;
 import jedrzejbronislaw.flowmeasure.view.View;
 
 public class View1 implements View {
@@ -16,7 +15,7 @@ public class View1 implements View {
 		void run(String title, String content, int closeDelay);
 	}
 	
-	Map<Integer, NodeAndController<FlowPreviewController>> flowViews = new HashMap<>();
+	Map<Integer, FlowPreviewController> flowViews = new HashMap<>();
 
 
 	showDialogInteface showDialog;
@@ -25,7 +24,7 @@ public class View1 implements View {
 	
 	@Override
 	public void showCurrentFlow(int nr, int flow) {
-		flowViews.get(nr).getController().addPulses(flow);
+		flowViews.get(nr).addPulses(flow);
 	}
 
 	

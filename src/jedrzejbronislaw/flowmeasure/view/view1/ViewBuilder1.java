@@ -1,55 +1,27 @@
 package jedrzejbronislaw.flowmeasure.view.view1;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import javafx.application.Platform;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart.Data;
-import javafx.scene.chart.XYChart.Series;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import jedrzejbronislaw.flowmeasure.FlowConverter;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.Session;
-import jedrzejbronislaw.flowmeasure.Session.FlowConsumerType;
 import jedrzejbronislaw.flowmeasure.Settings;
-import jedrzejbronislaw.flowmeasure.UART;
-import jedrzejbronislaw.flowmeasure.controllers.CalibrationPaneController;
-import jedrzejbronislaw.flowmeasure.controllers.ChartPaneController;
-import jedrzejbronislaw.flowmeasure.controllers.ChartPaneController.ValueUnit;
-import jedrzejbronislaw.flowmeasure.controllers.DialogPaneController;
-import jedrzejbronislaw.flowmeasure.controllers.FlowPreviewController;
-import jedrzejbronislaw.flowmeasure.controllers.MainWindowController;
-import jedrzejbronislaw.flowmeasure.controllers.MeasurementTableController;
-import jedrzejbronislaw.flowmeasure.controllers.SettingsPaneController;
-import jedrzejbronislaw.flowmeasure.controllers.SidePaneController;
-import jedrzejbronislaw.flowmeasure.controllers.UARTParamsController;
+import jedrzejbronislaw.flowmeasure.builders.CalibrationPaneBuild;
+import jedrzejbronislaw.flowmeasure.builders.ChartPaneBuilder;
+import jedrzejbronislaw.flowmeasure.builders.DialogPaneBuilder;
+import jedrzejbronislaw.flowmeasure.builders.FlowPreviewBuilder;
+import jedrzejbronislaw.flowmeasure.builders.MainWindowBuilder;
+import jedrzejbronislaw.flowmeasure.builders.MeasurementTableBuilder;
+import jedrzejbronislaw.flowmeasure.builders.SettingsPaneBuilder;
+import jedrzejbronislaw.flowmeasure.builders.SidePaneBuilder;
+import jedrzejbronislaw.flowmeasure.builders.UARTParamsBuilder;
 import jedrzejbronislaw.flowmeasure.events.EventManager1;
-import jedrzejbronislaw.flowmeasure.events.EventType;
-import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
-import jedrzejbronislaw.flowmeasure.tools.ItemSelector;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader.NodeAndController;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
 import lombok.NonNull;
@@ -58,6 +30,21 @@ import lombok.Setter;
 
 @RequiredArgsConstructor
 public class ViewBuilder1 implements ViewBuilder {
+	
+	private static final int WINDOW_HEIGHT = 400;
+	private static final int WINDOW_WIDTH = 900;
+	private static final String WINDOW_TITLE = "FlowmeterPP";
+	private static final String CSS_FILENAME = "application.css";
+	
+	@NonNull
+	private Stage primaryStage;
+	
+	@NonNull
+	private Session session;
+	
+	@NonNull
+	private Settings settings;
+
 	
 	@Setter
 	private ResourcesRepository resources;
@@ -71,53 +58,22 @@ public class ViewBuilder1 implements ViewBuilder {
 	@Setter
 	private Calibration calibration;
 
-	
-	private static final String FLOW_PREVIEW_FXML = "FlowPreview.fxml";
-	private static final String MAIN_WINDOW_FXML = "MainWindow.fxml";
-	private static final String SIDE_PANE_FXML = "SidePane.fxml";
-	private static final String MEASUREMENT_TABLE_FXML = "MeasurementTable.fxml";
-	private static final String CHART_FXML = "ChartPane.fxml";
-	private static final String UART_PARAMS_FXML = "UARTParams.fxml";
-	private static final String DIALOG_PANE_FXML = "DialogPane.fxml";
-	private static final String SETTINGS_PANE_FXML = "SettingsPane.fxml";
-	private static final String CALIBRATION_FXML = "CalibrationPane.fxml";
-	
-	private static final int WINDOW_HEIGHT = 400;
-	private static final int WINDOW_WIDTH = 900;
-
-	@NonNull
-	private Stage primaryStage;
-
-	@NonNull
-	private Session session;
-	
-	@NonNull
-	private Settings settings;
-	
 	@Setter
 	private FlowConverter flowconverter;
 	
 	@Setter
 	private ActionContainer actions;
 	
+	
 	private View1 view;
 	private Pane root;
 	
-//	private FlowDevice getDevice() {
-//		return session.getDevice();
-//	}
-	
-	private ProcessRepository getCurrentProcessRepo() {
-		return session.getCurrentProcessRepository();
-	}
 	
 	@Override
 	public View1 build() {
 		view = new View1();
 		
-		NodeAndController<MainWindowController> mainWindowNAC = mainWindow();
-		
-		root = (Pane) mainWindowNAC.getNode();
+		root = (Pane) mainWindow();
 		buildWindow(root);
 		buildDialog();
 		
@@ -125,403 +81,108 @@ public class ViewBuilder1 implements ViewBuilder {
 	}
 	
 	private void buildDialog() {
-				
 		view.showDialog = (title, content, closeDelay) -> {
-			MyFXMLLoader<DialogPaneController> loader = new MyFXMLLoader<>();
-			NodeAndController<DialogPaneController> nac = loader.create(DIALOG_PANE_FXML);
-			DialogPaneController controller = nac.getController();
-			
-			((Pane)nac.getNode()).setBackground(new Background(new BackgroundFill(Color.ALICEBLUE,CornerRadii.EMPTY, Insets.EMPTY)));
-			controller.setNode(nac.getNode());
-			controller.setMessage(title, content);
-			Platform.runLater(() -> 
-				root.getChildren().add(nac.getNode())
-				);
-			controller.close(closeDelay);
+			DialogPaneBuilder builder = new DialogPaneBuilder(root, title, content, closeDelay);
+			builder.build();
 		};
-		
 	}
 	
 	private void buildWindow(Pane root) {
 		try {
+			
 			Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-//			scene.getStylesheets().add(getClass().getResource("/jedrzejbronislaw/flowmeasure/application/"+"application.css").toExternalForm());
-//			scene.getStylesheets().add(new URL("file:D:/temp/"+"application.css").toExternalForm());
-			scene.getStylesheets().add(resources.getResourcePath("application.css"));
+			scene.getStylesheets().add(resources.getResourcePath(CSS_FILENAME));
+			
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("FlowmeterPP");
+			primaryStage.setTitle(WINDOW_TITLE);
 			primaryStage.setOnCloseRequest(e -> {
 				actions.exit();
-//				getDevice().disconnect();
 				Platform.exit();
 			});
 			primaryStage.show();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private NodeAndController<UARTParamsController> uart() {
-		MyFXMLLoader<UARTParamsController> loader = new MyFXMLLoader<>();
-		NodeAndController<UARTParamsController> nac = loader.create(UART_PARAMS_FXML);
-		UARTParamsController controller = nac.getController();
+	private Node uart() {
+		UARTParamsBuilder builder = new UARTParamsBuilder(actions);
+		builder.build();
 		
-		controller.setPortsNames(UART.getPortList());
-		controller.setRefreshPortsButtonAction(() -> controller.setPortsNames(UART.getPortList()));
-//		uartNAC.getController().setRates(UART.getRateList());
-//		uartNAC.getController().setRate("9600");
-
-		controller.setConnectButtonAction(()     -> actions.connectFlowDevice());
-		controller.setDisconnectButtonAction(()  -> actions.disconnectFlowDevice());
-		controller.setAutoConnectButtonAction(() -> actions.autoconnectFlowDevice());
+		view.getUARTParams = () -> builder.getController().getParams();
+		stateManager.getConnState().addStateListiner(builder.getController());
 		
-		view.getUARTParams = () -> controller.getParams();
-		
-//		view.connecting = () -> {
-//			uartNAC.getController().setDisableFields(true);
-//		};
-//		view.connected = () -> {
-//			uartNAC.getController().setDisableFields(true);
-//			System.out.println("PO£ACZONO");
-////			view.showDialog("Po³¹czono", "Nawi¹zano po³¹czenie z urz¹dzeniem FlowPP", 2000);
-//		};
-//		view.disconnected = () -> {
-//			uartNAC.getController().setDisableFields(false);
-//			System.out.println("NIE PO£ACZONO");
-//		};
-		
-		stateManager.getConnState().addStateListiner(controller);
-		
-		return nac;
+		return builder.getNode();
 	}
 	
 	
-	
-	private Data<Number, Number> createChartPoint(float time, float value) {
-		Data<Number, Number> data = new Data<Number, Number>(time, value);
+	private Node chart() {
+		ChartPaneBuilder builder = new ChartPaneBuilder(this::getCurrentProcessRepo, flowconverter);
+		builder.build();
 		
-//		flowconverter.pulsesToLitrePerSec(pulses, time, prevTime);
-//		data.setNode(new Rectangle(3, 3));
-//		data.getNode().setVisible(false);
-		
-		return data;
-	}
-	
-	private NodeAndController<ChartPaneController> chart() {
-		MyFXMLLoader<ChartPaneController> loader = new MyFXMLLoader<>();
-		NodeAndController<ChartPaneController> nac = loader.create(CHART_FXML);
-		
-		nac.getController().setRefreshButtonAction(chart -> {
-			Platform.runLater(() -> {
-			ProcessRepository repo = getCurrentProcessRepo();
-			List<FlowMeasurement> data = repo.getAllMeasurement();
-			if(data.size() == 0) return;
-
-			LocalDateTime startTime = repo.getMetadata().getStartTime();
-			boolean lastSecOption = nac.getController().isLastSeconds();
-			ValueUnit unit = nac.getController().getValueUnit();
-			NumberAxis axisX = nac.getController().getAxisX();
-			NumberAxis axisY = nac.getController().getAxisY();
-			
-			
-			int numOfFlowMeters = repo.getNumOfFlowmeters();
-//			int numOfMeasurements = data.size();
-			
-			List<Series<Number, Number>> seriesList = new LinkedList<>();
-			
-			//series reuse
-			for(int i=0; i<numOfFlowMeters; i++) {
-				if(i < chart.getData().size()) {
-					Series<Number, Number> s = chart.getData().get(i);
-					s.getData().clear();
-					seriesList.add(s);
-				} else {
-					chart.getData().size();
-					Series<Number, Number> s = new Series<>();
-					s.setName("Flow " + (i+1));//TODO internationalization
-					seriesList.add(s);
-				}
-			}
-			
-			int first;
-			int last;
-			if(lastSecOption)
-				first = Math.max(0,data.size()-60);
-			else {
-				first = 0;
-				if(data.size() > 1000)
-					data = new ItemSelector<FlowMeasurement>().select(data, 1000);
-			}
-			last = data.size()-1;
-
-			float begin = ChronoUnit.MILLIS.between(startTime, data.get(first).getTime())/1000f;
-			float end = ChronoUnit.MILLIS.between(startTime, data.get(last).getTime())/1000f;
-			axisX.setLabel("time [s]");
-			axisX.setAutoRanging(false);
-			axisX.setLowerBound(begin);
-			axisX.setUpperBound(end);
-//			double axisWidth = axisX.getWidth();
-//			axisX.setTickUnit(axisWidth/50);
-//			axisX.setMinorTickLength(5);
-//			axisX.setMinorTickCount((int)(axisWidth/10));
-			axisX.setTickUnit(1);
-			axisX.setMinorTickCount(5);
-
-			if(unit == ValueUnit.Pulses){
-				FlowMeasurement measurement;
-				Data<Number, Number> chartPoint;
-				Series<Number, Number> series;
-				float time;
-
-				axisY.setLabel("flow [pulses]");
-				
-				for(int i=first;i<=last;i++){
-					measurement = data.get(i);
-					time = ChronoUnit.MILLIS.between(startTime, measurement.getTime())/1000f;
-					
-				
-					for(int flowmeter=0; flowmeter<numOfFlowMeters; flowmeter++) {
-						chartPoint = createChartPoint(time,  measurement.get(flowmeter));
-						series = seriesList.get(flowmeter);
-						series.getData().add(chartPoint);	
-					}	
-				}
-			}
-			
-			//-------------------------
-			
-			if(unit == ValueUnit.LitrePerSec){
-				FlowMeasurement measurement, prevMeasurement;
-				Series<Number, Number> series;
-				Data<Number, Number> createChartPoint;
-				float time;
-				float interval;
-				int pulses;
-				float value;
-				
-				axisY.setLabel("flow [l/s]");
-
-				for(int i=first;i<=last;i++){
-					if(i == 0) continue;
-					prevMeasurement = data.get(i-1);
-					measurement = data.get(i);
-					time = ChronoUnit.MILLIS.between(startTime, measurement.getTime())/1000f;
-
-					for(int flowmeter=0; flowmeter<numOfFlowMeters; flowmeter++) {
-						series = seriesList.get(flowmeter);
-
-						interval = ChronoUnit.MILLIS.between(prevMeasurement.getTime(), measurement.getTime())/1000f;
-						pulses = measurement.get(flowmeter);
-						
-						value = flowconverter.pulsesToLitrePerSec(pulses, interval);
-						createChartPoint = createChartPoint(time,  value);
-						
-						series.getData().add(createChartPoint);	
-					}
-				}
-
-			}
-			
-			chart.setCreateSymbols(false);
-			chart.setAnimated(false);
-			
-			chart.getData().forEach(s -> {
-				if(seriesList.contains(s))
-					seriesList.remove(s);
-			});
-			
-			seriesList.forEach(s -> {
-				if(!chart.getData().contains(s))
-					chart.getData().add(s);	
-			});
-			});
-		});
-		
-		return nac;
+		return builder.getNode();
 	}
 	
 
-	private NodeAndController<MeasurementTableController> table() {
-		MyFXMLLoader<MeasurementTableController> loaderMeasurementTable = new MyFXMLLoader<>();
-		NodeAndController<MeasurementTableController> measurementTableNAC = loaderMeasurementTable.create(MEASUREMENT_TABLE_FXML);
+	private Node table() {
+		MeasurementTableBuilder builder = new MeasurementTableBuilder(this::getCurrentProcessRepo);
+		builder.build();
 		
-		measurementTableNAC.getController().setRefreshButtonAction(table -> {
-			Platform.runLater(() -> {
-			int size = getCurrentProcessRepo().getNumOfFlowmeters();
-
-			table.getItems().clear();
-			table.getColumns().clear();
-			
-			TableColumn<FlowMeasurement, String> columnT;
-			columnT = new TableColumn<>();
-//			DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-			DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
-		    
-			columnT.setText("Time");
-			columnT.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<FlowMeasurement,String>, ObservableValue<String>>() {
-				
-				@Override
-				public ObservableValue<String> call(CellDataFeatures<FlowMeasurement, String> fm) {
-					return new SimpleStringProperty(fm.getValue().getTime().format(timeFormat));
-				}
-			});
-			
-			table.getColumns().add(columnT);
-			
-			TableColumn<FlowMeasurement, Integer> column;
-			for(int i=0; i<size; i++) {
-				column = new TableColumn<>();
-		        
-				column.setText("Flow " + (i+1));
-				int ii = i;
-				column.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<FlowMeasurement,Integer>, ObservableValue<Integer>>() {
-					
-					@Override
-					public ObservableValue<Integer> call(CellDataFeatures<FlowMeasurement, Integer> fm) {
-
-						return new SimpleIntegerProperty(fm.getValue().get(ii)).asObject();
-					}
-				});
-				
-				table.getColumns().add(column);
-			}
-			
-			table.getItems().addAll(getCurrentProcessRepo().getAllMeasurement());
-			table.scrollTo(table.getItems().size()-1);
-		});
-		});
-		
-		return measurementTableNAC;
+		return builder.getNode();
 	}
 	
-	private NodeAndController<SidePaneController> sidePane(){
-		MyFXMLLoader<SidePaneController> loader = new MyFXMLLoader<>();
-		NodeAndController<SidePaneController> nac = loader.create(SIDE_PANE_FXML);
-		SidePaneController controller = nac.getController();
-
-		controller.setStartButtonAction(() -> actions.startProcess()
-//			session.getCurrentProcessRepository().setProcessStartTimeNow();
-//			session.setProcessState(ProcessState.Ongoing);
-		);
-		controller.setEndButtonAction(() -> actions.endProcess()
-//			session.getCurrentProcessRepository().setProcessEndTimeNow();
-//			session.setProcessState(ProcessState.Finished);
-		);
-		controller.setSaveButtonAction(() -> actions.saveProcess()
-//			ProcessRepositoryWriter writer = new ProcessRepositoryCSVWriter();
-//			
-//			writer.save(session.getCurrentProcessRepository(), new File("D:\\fm.txt"));
-		);
+	private Node sidePane(){
+		SidePaneBuilder builder = new SidePaneBuilder(actions);
+		builder.build();
 		
-//		view.diodeBlink = () -> controller.diodeBlink();
-//		session.addProcessStateListiner((state) -> controller.getProcessStateLabel().setText(state.toString()));
-//		session.getProcessState().addStateListiner((state) -> controller.getProcessStateLabel().setText(state.toString()));
-		stateManager.getProcessState().addStateListiner(controller);
+		stateManager.getProcessState().addStateListiner(builder.getController());
+		eventManager.addListener(builder.getController());
 		
-		eventManager.addListener(controller);
-		
-		return nac;
+		return builder.getNode();
 	}
 	
-	private NodeAndController<SettingsPaneController> settingsPane(){
-		MyFXMLLoader<SettingsPaneController> loader = new MyFXMLLoader<SettingsPaneController>();
-		NodeAndController<SettingsPaneController> nac = loader.create(SETTINGS_PANE_FXML);
-
-		SettingsPaneController controller = nac.getController();
+	private Node settingsPane(){
+		SettingsPaneBuilder builder = new SettingsPaneBuilder(settings);
+		builder.build();
 		
-		controller.setSettings(settings);
-		
-		controller.setSavingAction(() -> {
-			try {
-				settings.setPulsePerLitre(controller.getPulsesPerLitre());
-			} catch (NumberFormatException e) {
-				
-			}
-			settings.setBufferedData(controller.isSelectedBuffer());
-			try {
-				settings.setBufferInterval(controller.getBufferSize());
-			} catch (NumberFormatException e) {
-				
-			}
-			
-			settings.write();
-		});
-		
-		settings.addChangeListiner(() -> controller.setSettings(settings));
-		
-		return nac;
+		return builder.getNode();
 	}
 
-	private NodeAndController<CalibrationPaneController> calibration() {
-		MyFXMLLoader<CalibrationPaneController> loader = new MyFXMLLoader<>();
-		NodeAndController<CalibrationPaneController> nac = loader.create(CALIBRATION_FXML);
-		CalibrationPaneController controller = nac.getController();
+	private Node calibration() {
+		CalibrationPaneBuild builder = new CalibrationPaneBuild(eventManager, session, settings, calibration);
+		builder.build();
 		
-		controller.setStart(() -> {
-//			if(session.getAppState().getState() == ApplicationState.Idle) {
-			if(eventManager.submitEvent(EventType.Calibration_Starts)) {
-//				eventManager.event(EventType.Calibration_Starts);
-//				session.getAppState().setState(ApplicationState.Calibration);
-				session.setFlowConsumerType(FlowConsumerType.Calibration);
-			}
-		});
-		controller.setStop(() -> {
-//			if(session.getAppState().getState() == ApplicationState.Calibration) {
-			if(eventManager.submitEvent(EventType.Calibration_Ends)) {
-//				eventManager.event(EventType.Calibration_Ends);	
-//				session.getAppState().setState(ApplicationState.Idle);
-				session.setFlowConsumerType(FlowConsumerType.None);
-			}
-		});
-		controller.setReset(() -> {
-			calibration.reset();
-		});
-		controller.setSet(() -> {
-			settings.setPulsePerLitre(calibration.getValue());
-			settings.write();
-		});
+		return builder.getNode();
+	}
+
+	private Node flowPreview(int number) {
+		FlowPreviewBuilder builder = new FlowPreviewBuilder(number, flowconverter);
+		builder.build();
 		
-		calibration.setValueListener(value -> controller.setCurrentValue(value));
+		view.flowViews.put(number, builder.getController());
 		
-		eventManager.addListener(controller);
-		
-		return nac;
+		return builder.getNode();
 	}
 	
-	private NodeAndController<MainWindowController> mainWindow() {
-		MyFXMLLoader<MainWindowController> loaderMainWindow = new MyFXMLLoader<>();
-		NodeAndController<MainWindowController> mainWindowNAC = loaderMainWindow.create(MAIN_WINDOW_FXML);
+	private Node mainWindow() {
+		MainWindowBuilder builder = new MainWindowBuilder();
+		builder.build();
 		
-		MyFXMLLoader<FlowPreviewController> loaderFlowPreview = new MyFXMLLoader<>();
-		List<NodeAndController<FlowPreviewController>> flowPreviewNAC = new ArrayList<>();
-		NodeAndController<FlowPreviewController> nac;
+		for(int i=0; i< getCurrentProcessRepo().getNumOfFlowmeters(); i++)
+			builder.getController().addFlowPreview(flowPreview(i));
 
-//		FlowConverter flowconverter = new FlowConverter1(settings);
-		
-		for(int i=0; i< session.getCurrentProcessRepository().getNumOfFlowmeters(); i++) {
-			nac = loaderFlowPreview.create(FLOW_PREVIEW_FXML);
-			flowPreviewNAC.add(nac);
-			nac.getController().setNumber(i);
-			nac.getController().setFlowconverter(flowconverter);
-			mainWindowNAC.getController().addFlowPreview(nac.getNode());
-			view.flowViews.put(i, nac);
-		}
-		
-		NodeAndController<UARTParamsController> uartNAC = uart();
-		NodeAndController<MeasurementTableController> measurementTableNAC = table();
-		NodeAndController<ChartPaneController> chartPaneNAC = chart();
-		NodeAndController<CalibrationPaneController> calibrationPaneNAC = calibration();
-		NodeAndController<SidePaneController> sidePaneNAC = sidePane();
-		NodeAndController<SettingsPaneController> settingsPaneNAC = settingsPane();
+		builder.getController().getBorderPane().setLeft(sidePane());
+		builder.getController().getBorderPane().setRight(uart());
+		builder.getController().setTablePane(table());
+		builder.getController().setChartPane(chart());
+		builder.getController().setSettingsPane(settingsPane());
+		builder.getController().setCalibrationPane(calibration());
 
-		mainWindowNAC.getController().getBorderPane().setLeft(sidePaneNAC.getNode());
-		mainWindowNAC.getController().getBorderPane().setRight(uartNAC.getNode());
-		mainWindowNAC.getController().setTablePane(measurementTableNAC.getNode());
-		mainWindowNAC.getController().setChartPane(chartPaneNAC.getNode());
-		mainWindowNAC.getController().setSettingsPane(settingsPaneNAC.getNode());
-		mainWindowNAC.getController().setCalibrationPane(calibrationPaneNAC.getNode());
-		
-		return mainWindowNAC;
+		return builder.getNode();
 	}
 	
+	private ProcessRepository getCurrentProcessRepo() {
+		return session.getCurrentProcessRepository();
+	}
 }
