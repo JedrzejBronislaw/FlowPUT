@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
-import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Columns;
+import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
 
 public class CSVWriterTest_emptyMetadata {
 	
@@ -23,7 +23,7 @@ public class CSVWriterTest_emptyMetadata {
 	private static ProcessRepositoryWriterOptions createOptions() {
 		ProcessRepositoryWriterOptions options = new ProcessRepositoryWriterOptions();
 		
-		options.getColumns().add(Columns.Pulses);
+		options.getUnits().add(Unit.Pulses);
 		
 		return options;
 	}

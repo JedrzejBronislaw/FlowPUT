@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions;
-import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Columns;
+import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 
@@ -22,7 +22,7 @@ public class SaveWindowController implements Initializable {
 	private CheckBox unixTime, fullTime, processTime;
 
 	@FXML
-	private CheckBox col_pulses, col_flow;
+	private CheckBox unit_pulses, unit_flow;
 	
 	@FXML
 	private RadioButton pulses_first, flow_first;
@@ -59,20 +59,20 @@ public class SaveWindowController implements Initializable {
 		if(processTime.isSelected())
 			options.getTimeFormats().add(TimeFormat.ProcessTime);
 		
-		if(col_pulses.isSelected() && col_flow.isSelected()) {
+		if(unit_pulses.isSelected() && unit_flow.isSelected()) {
 			if(flow_first.isSelected()) {
-				options.getColumns().add(Columns.Flow);
-				options.getColumns().add(Columns.Pulses);
+				options.getUnits().add(Unit.Flow);
+				options.getUnits().add(Unit.Pulses);
 			} else {
-				options.getColumns().add(Columns.Pulses);
-				options.getColumns().add(Columns.Flow);
+				options.getUnits().add(Unit.Pulses);
+				options.getUnits().add(Unit.Flow);
 			}
 		} else
-			if (col_pulses.isSelected())
-			options.getColumns().add(Columns.Pulses);
+			if (unit_pulses.isSelected())
+			options.getUnits().add(Unit.Pulses);
 		else
-			if (col_flow.isSelected())
-			options.getColumns().add(Columns.Flow);
+			if (unit_flow.isSelected())
+			options.getUnits().add(Unit.Flow);
 		
 		options.setFlowmeterValuesTogether(together.isSelected());
 
@@ -99,13 +99,13 @@ public class SaveWindowController implements Initializable {
 		processTime.setOnAction(timeAction);
 		
 
-		EventHandler<ActionEvent> columnAction = event -> {
-			if(!col_flow.isSelected() && !col_pulses.isSelected()) 
+		EventHandler<ActionEvent> unitAction = event -> {
+			if(!unit_flow.isSelected() && !unit_pulses.isSelected()) 
 				((CheckBox)event.getSource()).setSelected(true);
 		};
 		
-		col_flow.setOnAction(columnAction);
-		col_pulses.setOnAction(columnAction);
+		unit_flow.setOnAction(unitAction);
+		unit_pulses.setOnAction(unitAction);
 		
 		
 	}

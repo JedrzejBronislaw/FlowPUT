@@ -10,7 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
-import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Columns;
+import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
 import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 
 public class CSVWriterTest_allMetadata {
@@ -32,7 +32,7 @@ public class CSVWriterTest_allMetadata {
 	private static ProcessRepositoryWriterOptions createOptions() {
 		ProcessRepositoryWriterOptions options = new ProcessRepositoryWriterOptions();
 		
-		options.getColumns().add(Columns.Pulses);
+		options.getUnits().add(Unit.Pulses);
 		
 		return options;
 	}

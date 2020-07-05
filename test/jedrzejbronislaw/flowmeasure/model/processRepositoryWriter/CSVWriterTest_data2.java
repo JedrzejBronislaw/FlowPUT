@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
-import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Columns;
+import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
 
 public class CSVWriterTest_data2 {
@@ -32,7 +32,7 @@ public class CSVWriterTest_data2 {
 		ProcessRepositoryWriterOptions options = new ProcessRepositoryWriterOptions();
 
 		options.setFlowmeterValuesTogether(false);
-		options.getColumns().add(Columns.Pulses);
+		options.getUnits().add(Unit.Pulses);
 		options.getTimeFormats().add(TimeFormat.Full);
 		
 		return options;

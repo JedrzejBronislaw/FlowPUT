@@ -22,14 +22,14 @@
             </VBox>
             <VBox>
                <children>
-                  <Label text="Columns:" />
-                  <CheckBox fx:id="col_pulses" mnemonicParsing="false" selected="true" text="pulses" />
-                  <CheckBox fx:id="col_flow" mnemonicParsing="false" selected="true" text="flow" />
+                  <Label text="Units:" />
+                  <CheckBox fx:id="unit_pulses" mnemonicParsing="false" selected="true" text="pulses" />
+                  <CheckBox fx:id="unit_flow" mnemonicParsing="false" selected="true" text="flow" />
                </children>
             </VBox>
             <VBox>
                <children>
-                  <Label text="Columns order:" />
+                  <Label text="Units order:" />
                   <RadioButton fx:id="pulses_first" mnemonicParsing="false" selected="true" text="pulses first">
                      <toggleGroup>
                         <ToggleGroup fx:id="columnsOrder" />

@@ -10,23 +10,16 @@ import lombok.Setter;
 
 public class ProcessRepositoryWriterOptions {
 
-	public enum TimeFormat{
-		Unix, Full, ProcessTime
-	}
-	
-	public enum Columns{
-		Pulses, Flow
-	}
+	public enum TimeFormat{Unix, Full, ProcessTime}
+	public enum Unit{Pulses, Flow}
 	
 	@Getter
 	private Set<TimeFormat> timeFormats = new HashSet<>();
 	@Getter
-	private List<Columns> columns = new ArrayList<>();
-	@Getter
-	@Setter
+	private List<Unit> units = new ArrayList<>();
+	@Getter @Setter
 	private boolean flowmeterValuesTogether;
-	@Getter
-	@Setter
+	@Getter @Setter
 	private boolean commaSeparator;
 
 }
