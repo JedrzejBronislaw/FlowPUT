@@ -22,21 +22,21 @@ public class FlowConverter1 implements FlowConverter{
 	
 	@Override
 	public float pulsesToLitre(int pulses) {
-		return pulses/settings.getPulsePerLitre();
+		return pulses/factor();
 	}
 	
 	@Override
 	public Float pulsesToLitrePerSec(int pulses) {
 		if(oldTime != null && lastTime != null) {
-			float interval = (ChronoUnit.MILLIS.between(oldTime, lastTime)/1000f);
-			return pulses/settings.getPulsePerLitre()/interval;
+			float interval = ChronoUnit.MILLIS.between(oldTime, lastTime) / 1000f;
+			return pulsesToLitrePerSec(pulses, interval);
 		} else
 			return null;
 	}
 
 	@Override
 	public float pulsesToLitrePerSec(int pulses, float interval) {
-		return pulses/settings.getPulsePerLitre()/interval;
+		return pulses/factor()/interval;
 	}
 
 	@Override
@@ -51,13 +51,7 @@ public class FlowConverter1 implements FlowConverter{
 		lastTime = time;
 	}
 
-	@Override
-	public String getFlowUnit() {
-		return "l/s";
-	}
-
-	@Override
-	public String getVolumeUnit() {
-		return "l";
+	private float factor() {
+		return settings.getPulsePerLitre();
 	}
 }
