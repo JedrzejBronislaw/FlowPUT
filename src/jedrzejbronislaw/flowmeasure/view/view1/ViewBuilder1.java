@@ -214,7 +214,7 @@ public class ViewBuilder1 implements ViewBuilder {
 		nac.getController().setRefreshButtonAction(chart -> {
 			Platform.runLater(() -> {
 			ProcessRepository repo = getCurrentProcessRepo();
-			List<FlowMeasurement> data = repo.getAllMeasurementCopy();
+			List<FlowMeasurement> data = repo.getAllMeasurement();
 			if(data.size() == 0) return;
 
 			LocalDateTime startTime = repo.getMetadata().getStartTime();
@@ -386,7 +386,7 @@ public class ViewBuilder1 implements ViewBuilder {
 				table.getColumns().add(column);
 			}
 			
-			table.getItems().addAll(getCurrentProcessRepo().getAllMeasurementCopy());
+			table.getItems().addAll(getCurrentProcessRepo().getAllMeasurement());
 			table.scrollTo(table.getItems().size()-1);
 		});
 		});

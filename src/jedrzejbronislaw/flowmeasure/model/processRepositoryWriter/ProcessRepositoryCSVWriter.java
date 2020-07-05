@@ -92,7 +92,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	public boolean save(ProcessRepository repository, File file, ProcessRepositoryWriterOptions options) {
 		this.options    = options;
 		this.repository = repository;
-		measurements    = repository.getAllMeasurementCopy();
+		measurements    = repository.getAllMeasurement();
 		startTime       = repository.getMetadata().getStartTime();
 		endTime         = repository.getMetadata().getEndTime();
 		

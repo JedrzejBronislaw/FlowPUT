@@ -31,7 +31,7 @@ public class Actions implements ActionContainer {
 	public void startProcess() {
 		if(eventManager().submitEvent(EventType.Process_Starts)) {
 //			session.getCurrentProcessRepository().setProcessStartTimeNow();
-			session().getCurrentProcessRepository().setProcessStartTimeWithNextValue();
+			session().getCurrentProcessRepository().setStartWithNextValueFlag();
 			
 			if(settings().isBufferedData()) {
 				session().setFlowConsumerType(FlowConsumerType.Buffered);
