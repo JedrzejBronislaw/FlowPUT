@@ -76,7 +76,7 @@ public class ChartRefresher implements Consumer<LineChart<Number, Number>> {
 			data = new ItemSelector<FlowMeasurement>().select(data, 1000);
 
 		firstMeasureIndex = getFirst();
-		lastMeasureIndex = data.size()-1;
+		lastMeasureIndex  = getLast();
 	}
 
 	private void updateLocalVars() {
@@ -169,9 +169,20 @@ public class ChartRefresher implements Consumer<LineChart<Number, Number>> {
 	}
 	
 	private int getFirst() {
-		if (lastSecOption)
-			return Math.max(0, data.size()-LAST_SEC_NUMER); else
-			return 0;
+		if (!lastSecOption) return 0;
+
+		int lastIndex = getLast();
+		FlowMeasurement lastMeasure = data.get(lastIndex);
+		
+		for (int i=lastIndex-1; i>=0; i--)
+			if (timeSec(data.get(i).getTime(), lastMeasure) >= LAST_SEC_NUMER)
+				return i;
+		
+		return 0;
+	}
+
+	private int getLast() {
+		return data.size()-1;
 	}
 
 	private void addSeries(LineChart<Number, Number> chart) {
