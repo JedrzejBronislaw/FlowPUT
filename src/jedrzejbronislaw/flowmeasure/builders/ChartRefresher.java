@@ -158,8 +158,8 @@ public class ChartRefresher implements Consumer<LineChart<Number, Number>> {
 		
 		axisX.setLabel(AXIS_LABEL_TIME);
 		axisX.setAutoRanging(false);
-		axisX.setLowerBound(beginTimeSec);
-		axisX.setUpperBound(endTimeSec);
+		axisX.setLowerBound(Math.ceil(beginTimeSec));
+		axisX.setUpperBound(Math.ceil(endTimeSec));
 //		double axisWidth = axisX.getWidth();
 //		axisX.setTickUnit(axisWidth/50);
 //		axisX.setMinorTickLength(5);
