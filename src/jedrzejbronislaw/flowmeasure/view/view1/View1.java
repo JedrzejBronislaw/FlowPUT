@@ -11,32 +11,18 @@ import jedrzejbronislaw.flowmeasure.view.View;
 
 public class View1 implements View {
 
-	interface showDialogInteface{
-		void run(String title, String content, int closeDelay);
-	}
-	
 	Map<Integer, FlowPreviewController> flowViews = new HashMap<>();
 
-
-	showDialogInteface showDialog;
-	
 	Supplier<UARTParams> getUARTParams;
+	
 	
 	@Override
 	public void showCurrentFlow(int nr, int flow) {
 		flowViews.get(nr).addPulses(flow);
 	}
-
 	
 	@Override
 	public UARTParams getUARTParams() {
 		return Injection.get(getUARTParams, null);
 	}
-
-	@Override
-	public void showDialog(String title, String content, int closeDelay) {
-		if(showDialog != null)
-			showDialog.run(title, content, closeDelay);
-	}
-
 }

@@ -137,7 +137,6 @@ public class Components {
 				addMessages(EventType.ConnectionSuccessful, "Nawi¹zano po³¹czenie z urz¹dzeniem FlowPP").
 				addMessages(EventType.LostConnection, "Utracono po³¹czenie z urz¹dzeniem FlowPP").
 				addMessages(EventType.ConnectionFailed, "Nie uda³o siê nawi¹zaæ po³¹czenia z urz¹dzeniem FLowPP").
-				setShowMessage((title, content, closeDelay) -> view.showDialog(title, content, closeDelay)).
 				build();
 	}
 
@@ -157,6 +156,7 @@ public class Components {
 		viewBuilder.setFlowconverter(flowConverter);
 		viewBuilder.setEventManager(eventManager);
 		viewBuilder.setStateManager(stateManager);
+		viewBuilder.setDialogManager(dialogManager);
 		viewBuilder.setCalibration(calibration);
 		viewBuilder.setActions(actions);
 		

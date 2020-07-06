@@ -7,5 +7,4 @@ public interface View{
 	void showCurrentFlow(int nr, int flow);
 	
 	UARTParams getUARTParams();
-	void showDialog(String title, String content, int closeDelay);
 }

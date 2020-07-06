@@ -5,6 +5,7 @@ import java.util.Map;
 
 import jedrzejbronislaw.flowmeasure.events.EventListener;
 import jedrzejbronislaw.flowmeasure.events.EventType;
+import lombok.Setter;
 
 public class DialogManager1 implements EventListener{
 
@@ -29,15 +30,13 @@ public class DialogManager1 implements EventListener{
 		}
 		
 		public DialogManager1 build() {
-			if(messages.size() == 0 || messageEvent == null)
-				return null;
-			else
-				return new DialogManager1(messages, messageEvent);
+			return new DialogManager1(messages, messageEvent);
 		}
 	}
 
 	
 	private Map<EventType, String> messages;
+	@Setter
 	private MessageEvent showMessage;
 
 	
@@ -48,6 +47,8 @@ public class DialogManager1 implements EventListener{
 	
 	@Override
 	public void event(EventType event) {
+		if (showMessage == null) return;
+		
 		String message = messages.get(event);
 		if(message != null) 
 			showMessage.show(event.toString(), message, time(message));
@@ -56,6 +57,4 @@ public class DialogManager1 implements EventListener{
 	private int time(String message) {
 		return Math.max(1000, milisecPerLetter * message.length());
 	}
-	
-	
 }

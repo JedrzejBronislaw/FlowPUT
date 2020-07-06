@@ -21,6 +21,7 @@ import jedrzejbronislaw.flowmeasure.builders.UARTParamsBuilder;
 import jedrzejbronislaw.flowmeasure.events.EventManager1;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
+import jedrzejbronislaw.flowmeasure.services.DialogManager1;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
@@ -56,6 +57,9 @@ public class ViewBuilder1 implements ViewBuilder {
 	private StateManager stateManager;
 
 	@Setter
+	private DialogManager1 dialogManager;
+	
+	@Setter
 	private Calibration calibration;
 
 	@Setter
@@ -81,10 +85,10 @@ public class ViewBuilder1 implements ViewBuilder {
 	}
 	
 	private void buildDialog() {
-		view.showDialog = (title, content, closeDelay) -> {
-			DialogPaneBuilder builder = new DialogPaneBuilder(root, title, content, closeDelay);
-			builder.build();
-		};
+		DialogPaneBuilder builder = new DialogPaneBuilder(root);
+		builder.build();
+		
+		dialogManager.setShowMessage(builder.getController()::show);
 	}
 	
 	private void buildWindow(Pane root) {
