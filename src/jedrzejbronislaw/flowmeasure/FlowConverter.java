@@ -2,7 +2,9 @@ package jedrzejbronislaw.flowmeasure;
 
 import java.time.LocalDateTime;
 
-public interface FlowConverter {
+import jedrzejbronislaw.flowmeasure.events.EventListener;
+
+public interface FlowConverter extends EventListener{
 	String FLOW_UNIT = "l/s";
 	String VOLUME_UNIT = "l";
 	

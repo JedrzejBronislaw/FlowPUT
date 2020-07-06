@@ -81,6 +81,8 @@ public class Components {
 		eventManager.setEventPolicy(eventPolicy);
 		eventManager.addListener(dialogManager);
 		eventManager.addListener(stateManager);
+		eventManager.addListener(connectionMonitor);
+		eventManager.addListener(flowConverter);
 
 
 		dataBuffer = new DataBuffer1(session.getCurrentProcessRepository(), 1000);
@@ -104,9 +106,6 @@ public class Components {
 		
 		device.setNewFlowsReceive(flows -> {
 			eventManager.submitEvent(EventType.ReceivedData);
-			flowConverter.newDataEvent();
-			connectionMonitor.newMessage();
-
 			session.getFlowConsumer().addFlowMeasurement(flows);
 		});
 

@@ -1,6 +1,8 @@
 package jedrzejbronislaw.flowmeasure.services;
 
-public interface ConnectionMonitor {
+import jedrzejbronislaw.flowmeasure.events.EventListener;
+
+public interface ConnectionMonitor extends EventListener {
 
 	void start();
 	void stop();

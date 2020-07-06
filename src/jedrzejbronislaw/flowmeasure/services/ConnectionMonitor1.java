@@ -2,6 +2,7 @@ package jedrzejbronislaw.flowmeasure.services;
 
 import java.time.LocalDateTime;
 
+import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.LoopThread;
 import lombok.Getter;
@@ -59,5 +60,10 @@ public class ConnectionMonitor1 implements ConnectionMonitor{
 
 	private boolean isTimeout() {
 		return lastTime.plusSeconds(timeout).isBefore(LocalDateTime.now());
+	}
+	
+	@Override
+	public void event(EventType event) {
+		if (event == EventType.ReceivedData) newMessage();
 	}
 }

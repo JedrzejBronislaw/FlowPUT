@@ -3,6 +3,7 @@ package jedrzejbronislaw.flowmeasure;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import jedrzejbronislaw.flowmeasure.events.EventType;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -53,5 +54,10 @@ public class FlowConverter1 implements FlowConverter{
 
 	private float factor() {
 		return settings.getPulsePerLitre();
+	}
+	
+	@Override
+	public void event(EventType event) {
+		if (event == EventType.ReceivedData) newDataEvent();
 	}
 }
