@@ -26,9 +26,9 @@ import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.Actions;
-import jedrzejbronislaw.flowmeasure.view.ViewMediator;
 import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
 import jedrzejbronislaw.flowmeasure.view.view1.ViewBuilder1;
+import jedrzejbronislaw.flowmeasure.view.view1.ViewMediator1;
 import lombok.Getter;
 
 @Getter
@@ -50,7 +50,7 @@ public class Components {
 	private FlowConverter flowConverter;
 	private DataBuffer dataBuffer;
 	private Calibration calibration;
-	private ViewMediator viewMediator;
+	private ViewMediator1 viewMediator;
 	
 	public Components(Stage stage) {
 		primaryStage = stage;
@@ -58,6 +58,7 @@ public class Components {
 		resources = new SideDirResourcesRepository("res");
 		
 		settings = new Settings();
+		viewMediator = new ViewMediator1();
 		device = buildFlowDevice();
 		connectionMonitor = buildConnectionMonitor();
 		flowConverter = new FlowConverter1(settings);
@@ -86,8 +87,7 @@ public class Components {
 		dataBuffer = new DataBuffer1(session.getCurrentProcessRepository(), 1000);
 
 		MyFXMLLoader.setResources(resources);
-		ViewBuilder viewBuilder = createViewBuilder();
-		viewMediator = viewBuilder.build();
+		createViewBuilder().build();
 
 //		settings.setBufferedFlowConsumer(dataBuffer);
 //		settings.setPlainFlowConsumer(session.getCurrentProcessRepository());
@@ -101,10 +101,7 @@ public class Components {
 	private FlowDevice buildFlowDevice() {
 		FlowDevice device = new FlowDevice();
 
-		
-		device.setNewSingleFlowReceive((flow, nr) -> {
-			viewMediator.showCurrentFlow(nr, flow);
-		});
+		device.setNewSingleFlowReceive(viewMediator::showCurrentFlow);
 		
 		device.setNewFlowsReceive(flows -> {
 			eventManager.submitEvent(EventType.ReceivedData);
@@ -158,6 +155,7 @@ public class Components {
 		viewBuilder.setStateManager(stateManager);
 		viewBuilder.setDialogManager(dialogManager);
 		viewBuilder.setCalibration(calibration);
+		viewBuilder.setViewMediator(viewMediator);
 		viewBuilder.setActions(actions);
 		
 		return viewBuilder;

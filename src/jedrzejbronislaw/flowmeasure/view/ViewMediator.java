@@ -4,7 +4,7 @@ import jedrzejbronislaw.flowmeasure.UARTParams;
 
 public interface ViewMediator {
 	
-	void showCurrentFlow(int nr, int flow);
+	void showCurrentFlow(int flow, int nr);
 	
 	UARTParams getUARTParams();
 }
