@@ -5,7 +5,7 @@ import java.util.List;
 
 import lombok.Setter;
 
-public class EventManager1{
+public class EventManager {
 
 	@Setter
 	private EventPolicy eventPolicy;

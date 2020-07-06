@@ -4,7 +4,7 @@ import jedrzejbronislaw.flowmeasure.Session;
 import jedrzejbronislaw.flowmeasure.Session.FlowConsumerType;
 import jedrzejbronislaw.flowmeasure.Settings;
 import jedrzejbronislaw.flowmeasure.controllers.CalibrationPaneController;
-import jedrzejbronislaw.flowmeasure.events.EventManager1;
+import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
 import lombok.Getter;
@@ -15,7 +15,7 @@ public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
 
 	@Getter private String fxmlFilePath = "CalibrationPane.fxml";
 
-	private final EventManager1 eventManager;
+	private final EventManager eventManager;
 	private final Session session;
 	private final Settings settings;
 	private final Calibration calibration;

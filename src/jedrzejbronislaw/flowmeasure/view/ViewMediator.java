@@ -9,7 +9,7 @@ import jedrzejbronislaw.flowmeasure.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Setter;
 
-public class ViewMediator1 {
+public class ViewMediator {
 
 	private Map<Integer, Consumer<Integer>> flowViews = new HashMap<>();
 

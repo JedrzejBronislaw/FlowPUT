@@ -10,7 +10,7 @@ import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.Session;
 import jedrzejbronislaw.flowmeasure.Settings;
 import jedrzejbronislaw.flowmeasure.SideDirResourcesRepository;
-import jedrzejbronislaw.flowmeasure.events.EventManager1;
+import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventPolicy;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
@@ -21,13 +21,13 @@ import jedrzejbronislaw.flowmeasure.services.ConnectionMonitor;
 import jedrzejbronislaw.flowmeasure.services.ConnectionMonitor1;
 import jedrzejbronislaw.flowmeasure.services.DataBuffer;
 import jedrzejbronislaw.flowmeasure.services.DataBuffer1;
-import jedrzejbronislaw.flowmeasure.services.DialogManager1;
+import jedrzejbronislaw.flowmeasure.services.DialogManager;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.Actions;
-import jedrzejbronislaw.flowmeasure.view.ViewBuilder1;
-import jedrzejbronislaw.flowmeasure.view.ViewMediator1;
+import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
+import jedrzejbronislaw.flowmeasure.view.ViewMediator;
 import lombok.Getter;
 
 @Getter
@@ -42,14 +42,14 @@ public class Components {
 	private Session session;
 	private Settings settings;
 	private ConnectionMonitor connectionMonitor;
-	private EventManager1 eventManager;
+	private EventManager eventManager;
 	private StateManager stateManager;
 	private EventPolicy eventPolicy;
-	private DialogManager1 dialogManager;
+	private DialogManager dialogManager;
 	private FlowConverter flowConverter;
 	private DataBuffer dataBuffer;
 	private Calibration calibration;
-	private ViewMediator1 viewMediator;
+	private ViewMediator viewMediator;
 	
 	public Components(Stage stage) {
 		primaryStage = stage;
@@ -57,11 +57,11 @@ public class Components {
 		resources = new SideDirResourcesRepository("res");
 		
 		settings = new Settings();
-		viewMediator = new ViewMediator1();
+		viewMediator = new ViewMediator();
 		device = buildFlowDevice();
 		connectionMonitor = buildConnectionMonitor();
 		flowConverter = new FlowConverter1(settings);
-		eventManager = new EventManager1();
+		eventManager = new EventManager();
 		stateManager = new StateManager();
 		eventPolicy = new EventPolicy(stateManager);
 		dialogManager = buildDialogManager();
@@ -128,8 +128,8 @@ public class Components {
 		return monitor;
 	}
 
-	private DialogManager1 buildDialogManager() {
-		return new DialogManager1.builder().
+	private DialogManager buildDialogManager() {
+		return new DialogManager.builder().
 				addMessages(EventType.ConnectionSuccessful, "Nawi¹zano po³¹czenie z urz¹dzeniem FlowPP").
 				addMessages(EventType.LostConnection, "Utracono po³¹czenie z urz¹dzeniem FlowPP").
 				addMessages(EventType.ConnectionFailed, "Nie uda³o siê nawi¹zaæ po³¹czenia z urz¹dzeniem FLowPP").
@@ -144,8 +144,8 @@ public class Components {
 		return calibration;
 	}
 
-	private ViewBuilder1 createViewBuilder(){
-		ViewBuilder1 viewBuilder = new ViewBuilder1(primaryStage, session, settings);
+	private ViewBuilder createViewBuilder(){
+		ViewBuilder viewBuilder = new ViewBuilder(primaryStage, session, settings);
 		ActionContainer actions = new Actions(this);
 
 		viewBuilder.setResources(resources);

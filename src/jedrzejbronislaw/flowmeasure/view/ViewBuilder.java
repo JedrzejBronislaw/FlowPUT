@@ -18,17 +18,17 @@ import jedrzejbronislaw.flowmeasure.builders.MeasurementTableBuilder;
 import jedrzejbronislaw.flowmeasure.builders.SettingsPaneBuilder;
 import jedrzejbronislaw.flowmeasure.builders.SidePaneBuilder;
 import jedrzejbronislaw.flowmeasure.builders.UARTParamsBuilder;
-import jedrzejbronislaw.flowmeasure.events.EventManager1;
+import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
-import jedrzejbronislaw.flowmeasure.services.DialogManager1;
+import jedrzejbronislaw.flowmeasure.services.DialogManager;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @RequiredArgsConstructor
-public class ViewBuilder1 {
+public class ViewBuilder {
 	
 	private static final int WINDOW_HEIGHT = 400;
 	private static final int WINDOW_WIDTH = 900;
@@ -49,13 +49,13 @@ public class ViewBuilder1 {
 	private ResourcesRepository resources;
 
 	@Setter
-	private EventManager1 eventManager;
+	private EventManager eventManager;
 
 	@Setter
 	private StateManager stateManager;
 
 	@Setter
-	private DialogManager1 dialogManager;
+	private DialogManager dialogManager;
 	
 	@Setter
 	private Calibration calibration;
@@ -67,7 +67,7 @@ public class ViewBuilder1 {
 	private ActionContainer actions;
 	
 	@Setter
-	private ViewMediator1 viewMediator;
+	private ViewMediator viewMediator;
 	
 	
 	private Pane root;

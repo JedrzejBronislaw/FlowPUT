@@ -12,7 +12,7 @@ import jedrzejbronislaw.flowmeasure.Settings;
 import jedrzejbronislaw.flowmeasure.UART;
 import jedrzejbronislaw.flowmeasure.UARTParams;
 import jedrzejbronislaw.flowmeasure.application.Components;
-import jedrzejbronislaw.flowmeasure.events.EventManager1;
+import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryCSVWriter;
@@ -127,7 +127,7 @@ public class Actions implements ActionContainer {
 	
 	
 	
-	private EventManager1 eventManager() {
+	private EventManager eventManager() {
 		return components.getEventManager();
 	}
 	
@@ -139,7 +139,7 @@ public class Actions implements ActionContainer {
 		return components.getDevice();
 	}
 	
-	private ViewMediator1 viewMediator() {
+	private ViewMediator viewMediator() {
 		return components.getViewMediator();
 	}
 	

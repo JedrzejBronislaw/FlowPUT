@@ -7,7 +7,7 @@ import jedrzejbronislaw.flowmeasure.events.EventListener;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import lombok.Setter;
 
-public class DialogManager1 implements EventListener{
+public class DialogManager implements EventListener {
 
 	static private final int milisecPerLetter = 40;
 	
@@ -29,8 +29,8 @@ public class DialogManager1 implements EventListener{
 			return this;
 		}
 		
-		public DialogManager1 build() {
-			return new DialogManager1(messages, messageEvent);
+		public DialogManager build() {
+			return new DialogManager(messages, messageEvent);
 		}
 	}
 
@@ -40,7 +40,7 @@ public class DialogManager1 implements EventListener{
 	private MessageEvent showMessage;
 
 	
-	private DialogManager1(Map<EventType, String> messages, MessageEvent messageEvent) {
+	private DialogManager(Map<EventType, String> messages, MessageEvent messageEvent) {
 		this.messages = messages;
 		this.showMessage = messageEvent;
 	}
