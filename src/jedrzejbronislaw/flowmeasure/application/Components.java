@@ -26,9 +26,8 @@ import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.Actions;
-import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
-import jedrzejbronislaw.flowmeasure.view.view1.ViewBuilder1;
-import jedrzejbronislaw.flowmeasure.view.view1.ViewMediator1;
+import jedrzejbronislaw.flowmeasure.view.ViewBuilder1;
+import jedrzejbronislaw.flowmeasure.view.ViewMediator1;
 import lombok.Getter;
 
 @Getter
@@ -145,7 +144,7 @@ public class Components {
 		return calibration;
 	}
 
-	private ViewBuilder createViewBuilder(){
+	private ViewBuilder1 createViewBuilder(){
 		ViewBuilder1 viewBuilder = new ViewBuilder1(primaryStage, session, settings);
 		ActionContainer actions = new Actions(this);
 

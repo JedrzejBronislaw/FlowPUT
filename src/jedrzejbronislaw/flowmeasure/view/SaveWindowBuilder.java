@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view.view1;
+package jedrzejbronislaw.flowmeasure.view;
 
 import java.awt.Desktop;
 import java.io.File;

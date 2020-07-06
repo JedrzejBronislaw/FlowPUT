@@ -18,7 +18,6 @@ import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryCSVWriter;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriter;
 import jedrzejbronislaw.flowmeasure.services.ConnectionMonitor;
-import jedrzejbronislaw.flowmeasure.view.view1.SaveWindowBuilder;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -140,7 +139,7 @@ public class Actions implements ActionContainer {
 		return components.getDevice();
 	}
 	
-	private ViewMediator viewMediator() {
+	private ViewMediator1 viewMediator() {
 		return components.getViewMediator();
 	}
 	

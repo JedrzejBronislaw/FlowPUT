@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view.view1;
+package jedrzejbronislaw.flowmeasure.view;
 
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -23,14 +23,12 @@ import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
 import jedrzejbronislaw.flowmeasure.services.DialogManager1;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
-import jedrzejbronislaw.flowmeasure.view.ActionContainer;
-import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @RequiredArgsConstructor
-public class ViewBuilder1 implements ViewBuilder {
+public class ViewBuilder1 {
 	
 	private static final int WINDOW_HEIGHT = 400;
 	private static final int WINDOW_WIDTH = 900;
@@ -75,7 +73,6 @@ public class ViewBuilder1 implements ViewBuilder {
 	private Pane root;
 	
 	
-	@Override
 	public void build() {
 		root = (Pane) mainWindow();
 		buildWindow(root);

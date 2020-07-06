@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view.view1;
+package jedrzejbronislaw.flowmeasure.view;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,10 +7,9 @@ import java.util.function.Supplier;
 
 import jedrzejbronislaw.flowmeasure.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
-import jedrzejbronislaw.flowmeasure.view.ViewMediator;
 import lombok.Setter;
 
-public class ViewMediator1 implements ViewMediator {
+public class ViewMediator1 {
 
 	private Map<Integer, Consumer<Integer>> flowViews = new HashMap<>();
 
@@ -21,12 +20,10 @@ public class ViewMediator1 implements ViewMediator {
 		flowViews.put(nr, flowConsumer);
 	}
 	
-	@Override
 	public void showCurrentFlow(int flow, int nr) {
 		flowViews.get(nr).accept(flow);
 	}
 	
-	@Override
 	public UARTParams getUARTParams() {
 		return Injection.get(uartParamsGetter, null);
 	}
