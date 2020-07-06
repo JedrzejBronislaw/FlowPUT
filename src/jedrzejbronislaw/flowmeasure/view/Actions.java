@@ -73,7 +73,7 @@ public class Actions implements ActionContainer {
 
 	@Override
 	public void connectFlowDevice() {
-		UARTParams params = view().getUARTParams();
+		UARTParams params = viewMediator().getUARTParams();
 		
 		if (params == null) return;
 		if (params.PORT_NAME == null || params.PORT_NAME.isEmpty()) return;
@@ -140,8 +140,8 @@ public class Actions implements ActionContainer {
 		return components.getDevice();
 	}
 	
-	private View view() {
-		return components.getView();
+	private ViewMediator viewMediator() {
+		return components.getViewMediator();
 	}
 	
 	private ResourcesRepository resources() {

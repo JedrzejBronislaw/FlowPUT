@@ -26,7 +26,7 @@ import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.Actions;
-import jedrzejbronislaw.flowmeasure.view.View;
+import jedrzejbronislaw.flowmeasure.view.ViewMediator;
 import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
 import jedrzejbronislaw.flowmeasure.view.view1.ViewBuilder1;
 import lombok.Getter;
@@ -50,7 +50,7 @@ public class Components {
 	private FlowConverter flowConverter;
 	private DataBuffer dataBuffer;
 	private Calibration calibration;
-	private View view;
+	private ViewMediator viewMediator;
 	
 	public Components(Stage stage) {
 		primaryStage = stage;
@@ -87,7 +87,7 @@ public class Components {
 
 		MyFXMLLoader.setResources(resources);
 		ViewBuilder viewBuilder = createViewBuilder();
-		view = viewBuilder.build();
+		viewMediator = viewBuilder.build();
 
 //		settings.setBufferedFlowConsumer(dataBuffer);
 //		settings.setPlainFlowConsumer(session.getCurrentProcessRepository());
@@ -103,7 +103,7 @@ public class Components {
 
 		
 		device.setNewSingleFlowReceive((flow, nr) -> {
-			view.showCurrentFlow(nr, flow);
+			viewMediator.showCurrentFlow(nr, flow);
 		});
 		
 		device.setNewFlowsReceive(flows -> {

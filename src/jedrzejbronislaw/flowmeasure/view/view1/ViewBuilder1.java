@@ -69,19 +69,19 @@ public class ViewBuilder1 implements ViewBuilder {
 	private ActionContainer actions;
 	
 	
-	private View1 view;
+	private ViewMediator1 viewMediator;
 	private Pane root;
 	
 	
 	@Override
-	public View1 build() {
-		view = new View1();
+	public ViewMediator1 build() {
+		viewMediator = new ViewMediator1();
 		
 		root = (Pane) mainWindow();
 		buildWindow(root);
 		buildDialog();
 		
-		return view;
+		return viewMediator;
 	}
 	
 	private void buildDialog() {
@@ -114,7 +114,7 @@ public class ViewBuilder1 implements ViewBuilder {
 		UARTParamsBuilder builder = new UARTParamsBuilder(actions);
 		builder.build();
 		
-		view.getUARTParams = () -> builder.getController().getParams();
+		viewMediator.getUARTParams = () -> builder.getController().getParams();
 		stateManager.getConnState().addStateListiner(builder.getController());
 		
 		return builder.getNode();
@@ -164,7 +164,7 @@ public class ViewBuilder1 implements ViewBuilder {
 		FlowPreviewBuilder builder = new FlowPreviewBuilder(number, flowconverter);
 		builder.build();
 		
-		view.flowViews.put(number, builder.getController());
+		viewMediator.flowViews.put(number, builder.getController());
 		
 		return builder.getNode();
 	}

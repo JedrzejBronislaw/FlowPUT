@@ -2,7 +2,7 @@ package jedrzejbronislaw.flowmeasure.view;
 
 import jedrzejbronislaw.flowmeasure.UARTParams;
 
-public interface View{
+public interface ViewMediator {
 	
 	void showCurrentFlow(int nr, int flow);
 	
