@@ -16,11 +16,11 @@ public class SnapshotSaver {
 	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH_mm_ss");
 	
 	public static void withFileChooser(Node node) {
-		File file = selectFile();
+		WritableImage wImage = node.snapshot(null, null);
 		
+		File file = selectFile();
 		if(file == null) return;
 		
-		WritableImage wImage = node.snapshot(null, null);
 		try {
 			ImageIO.write(SwingFXUtils.fromFXImage(wImage, null), "png", file);
 		} catch (IOException e1) {
