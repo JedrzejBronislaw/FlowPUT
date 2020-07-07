@@ -12,6 +12,7 @@ import jedrzejbronislaw.flowmeasure.Settings;
 import jedrzejbronislaw.flowmeasure.UART;
 import jedrzejbronislaw.flowmeasure.UARTParams;
 import jedrzejbronislaw.flowmeasure.application.Components;
+import jedrzejbronislaw.flowmeasure.builders.SaveWindowBuilder;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
