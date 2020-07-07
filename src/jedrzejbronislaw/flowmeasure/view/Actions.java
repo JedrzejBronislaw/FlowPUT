@@ -62,12 +62,13 @@ public class Actions implements ActionContainer {
 			builder.setFileNamer(filenamer::createName);
 			builder.setInitialDirectory(settings().getSavePath());
 			builder.setSaveAction(writer::save);
-			builder.setChooseFileAction(file -> {
+			builder.setOnFileChoose(file -> {
 				settings().setSavePath(file.getParent());
 				settings().write();
 			});
 				
-			builder.build().show();					
+			builder.build();
+			builder.showWindow();
 		}
 	}
 

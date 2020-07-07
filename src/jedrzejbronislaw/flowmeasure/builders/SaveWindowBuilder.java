@@ -14,19 +14,24 @@ import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.controllers.SaveWindowController;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
+import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.SaveAction;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader.NodeAndController;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @RequiredArgsConstructor
-public class SaveWindowBuilder {
+public class SaveWindowBuilder extends Builder<SaveWindowController> {
 
-//	private double WINDOW_WIDTH = 500;
-//	private double WINDOW_HEIGHT = 200;
+	private final static String WINDOW_TITLE = "Saving measurement...";
+	private final static String FILE_CHOOSER_TITLE = "Saving process data...";
+	private final static String CSS_FILE_NAME = "application.css";
+	
+	
+	@Getter private String fxmlFilePath = "SaveMeasurementWindow.fxml";
+
 
 	@NonNull
 	private ResourcesRepository resources;
@@ -39,10 +44,12 @@ public class SaveWindowBuilder {
 	private SaveAction saveAction;
 	
 	@Setter
-	private Consumer<File> chooseFileAction;
+	private Consumer<File> onFileChoose;
 	
 	@Setter
 	private Supplier<String> fileNamer;
+	
+	private Stage stage;
 	
 	public boolean setInitialDirectory(String initialDirectory) {
 		
@@ -61,56 +68,55 @@ public class SaveWindowBuilder {
 		FileChooser fileChooser = new FileChooser();
 		File file;
 		
-		fileChooser.setTitle("Saving process data...");
-		fileChooser.setInitialFileName(Injection.get(fileNamer,""));
+		fileChooser.setTitle(FILE_CHOOSER_TITLE);
+		fileChooser.setInitialFileName(Injection.get(fileNamer, ""));
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Coma Separted Value", ".csv"));
 		if(initialDirectory != null)
 			fileChooser.setInitialDirectory(initialDirectory);
 		
 		file = fileChooser.showSaveDialog(null);
 		
-		if(file != null)
-			Injection.run(chooseFileAction, file);
+		if(file != null) Injection.run(onFileChoose, file);
 
 		return file;
 	}
+
+	@Override
+	void afterBuild() {
+		buildStage();
+
+		controller.setExitAction(stage::close);
+		controller.setSaveAction(this::save);
+	}
+
+	private void save(ProcessRepositoryWriterOptions options) {
+		File file = choosingFileAction();
+		if(file == null) return;
 		
-	public Stage build() {
-		Parent root;
-		
-		MyFXMLLoader<SaveWindowController> loader = new MyFXMLLoader<>();
-		NodeAndController<SaveWindowController> nac = loader.create("SaveMeasurementWindow.fxml");
-		root = (Parent) nac.getNode();
-		SaveWindowController controller = nac.getController();
-		
-		Scene scene = new Scene(root);//, WINDOW_WIDTH, WINDOW_HEIGHT);
-		scene.getStylesheets().add(resources.getResourcePath("application.css"));
-		Stage stage = new Stage();
-		stage.setScene(scene);
-		stage.setTitle("Saving measurement...");
-		stage.show();
-		controller.setExitAction(() -> {
-			stage.close();
-		});
-			
-		controller.setSaveAction(options -> {
-			File f = choosingFileAction();
-			if(f == null) return;
-			
-			saveAction.save(process, f, options);
-			
-			if(Desktop.isDesktopSupported()) {
-				if(f.exists()) {
-					try {
-						Desktop.getDesktop().open(f);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+		saveAction.save(process, file, options);
+		tryOpenFileInDefaultApplication(file);
+	}
+
+	private void tryOpenFileInDefaultApplication(File f) {
+		if(f.exists() && Desktop.isDesktopSupported()) {
+			try {
+				Desktop.getDesktop().open(f);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		});
-			
-		return stage;
+		}
+	}
+
+	private void buildStage() {
+		Scene scene = new Scene((Parent)node);
+		scene.getStylesheets().add(resources.getResourcePath(CSS_FILE_NAME));
+		
+		stage = new Stage();
+		stage.setScene(scene);
+		stage.setTitle(WINDOW_TITLE);
+	}
+	
+	public void showWindow() {
+		if (stage != null) stage.show();
 	}
 }
