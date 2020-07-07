@@ -18,21 +18,30 @@ public class SettingsPaneBuilder extends Builder<SettingsPaneController> {
 		controller.setSettings(settings);
 		
 		controller.setSavingAction(() -> {
-			try {
-				settings.setPulsePerLitre(controller.getPulsesPerLitre());
-			} catch (NumberFormatException e) {
-				
-			}
-			settings.setBufferedData(controller.isSelectedBuffer());
-			try {
-				settings.setBufferInterval(controller.getBufferSize());
-			} catch (NumberFormatException e) {
-				
-			}
+			
+			controller.suspendUpdating();
+			setSettings();
+			controller.resumeUpdating();
 			
 			settings.write();
 		});
 		
 		settings.addChangeListiner(() -> controller.setSettings(settings));
+	}
+
+	private void setSettings() {
+		float pulsesPerLitre = controller.getPulsesPerLitre();
+		boolean isBuffer     = controller.isSelectedBuffer();
+		int bufferSize       = controller.getBufferSize();
+		
+		try {
+			settings.setPulsePerLitre(pulsesPerLitre);
+		} catch (NumberFormatException e) {}
+		
+		settings.setBufferedData(isBuffer);
+		
+		try {
+			settings.setBufferInterval(bufferSize);
+		} catch (NumberFormatException e) {}
 	}
 }

@@ -26,6 +26,8 @@ public class SettingsPaneController implements Initializable {
 	@Setter
 	private Runnable savingAction;
 
+	private boolean activeUpdating = true;
+
 	public float getPulsesPerLitre() {
 		return Float.parseFloat(pulsesPerLitre.getText());
 	}
@@ -37,6 +39,8 @@ public class SettingsPaneController implements Initializable {
 	}
 	
 	public void setSettings(Settings settings) {
+		if (!activeUpdating ) return;
+		
 		pulsesPerLitre.setText(Float.toString(settings.getPulsePerLitre()));
 		bufferCheckbox.setSelected(settings.isBufferedData());
 		bufferSizeField.setText(Integer.toString(settings.getBufferInterval()));
@@ -48,6 +52,14 @@ public class SettingsPaneController implements Initializable {
 		bufferSizeField.disableProperty().bind(bufferCheckbox.selectedProperty().not());
 		
 		save.setOnAction(e -> Injection.run(savingAction));
+	}
+	
+	public void suspendUpdating() {
+		activeUpdating = false;
+	}
+	
+	public void resumeUpdating() {
+		activeUpdating = true;
 	}
 
 }
