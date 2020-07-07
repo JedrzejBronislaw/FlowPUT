@@ -16,7 +16,8 @@ public class DataBuffer1 implements DataBuffer {
 	@Setter @Getter
 	private int interval;
 	
-	private int pulseBuffer = 0;
+	@Getter
+	private int buffer = 0;
 	private LocalDateTime lastTime = null;
 	
 	public DataBuffer1(ProcessRepository repository, int interval) {
@@ -44,10 +45,10 @@ public class DataBuffer1 implements DataBuffer {
 		System.out.println(
 				lastTime.toString() + "\t" +
 				flow + "\t" +
-				pulseBuffer + "\t" +
-				LocalDateTime.now());
+				buffer + "\t" +
+				time);
 		
-		pulseBuffer += flow;
+		buffer += flow;
 
 		out(time);
 	}
@@ -63,6 +64,7 @@ public class DataBuffer1 implements DataBuffer {
 		int portion;
 		
 		while((period = sinceLastTime(now)) >= interval) {
+			System.out.println("period >= interval (" + period + ">=" + interval + ")");
 			portion = takePortion(period);
 			
 			updateLastTime();
@@ -81,8 +83,8 @@ public class DataBuffer1 implements DataBuffer {
 	private int takePortion(long sinceLastTime) {
 		float ratio = (float)interval/sinceLastTime;
 		
-		int portion = Math.round(pulseBuffer*ratio);
-		pulseBuffer -= portion;
+		int portion = Math.round(buffer*ratio);
+		buffer -= portion;
 		
 		return portion;
 	}
@@ -93,9 +95,8 @@ public class DataBuffer1 implements DataBuffer {
 		System.out.println("  " +
 			time.toString() + "\t" +
 			flow + "\t" +
-			(ChronoUnit.MILLIS.between(repository.getMetadata().getStartTime(), time)) + "\t" +
-			(ChronoUnit.MILLIS.between(repository.getMetadata().getStartTime(), time)/1000));
-		
+			repository.getMetadata().getStartTime());
+
 		tempFlows[0] = flow;
 		repository.addFlowMeasurement(time, tempFlows);
 	}
