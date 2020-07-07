@@ -1,8 +1,11 @@
 package jedrzejbronislaw.flowmeasure.controllers;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,6 +18,7 @@ import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessReposit
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
+import lombok.Setter;
 
 public class SaveWindowController implements Initializable {
 
@@ -36,46 +40,35 @@ public class SaveWindowController implements Initializable {
 	@FXML
 	private Button saveButton;
 
-	private Consumer<ProcessRepositoryWriterOptions> saveAction;
-	private Runnable exitAction;
 
-	public SaveWindowController setSaveAction(Consumer<ProcessRepositoryWriterOptions> saveAction) {
-		this.saveAction = saveAction;
-		return this;
-	}
-	public SaveWindowController setExitAction(Runnable exitAction) {
-		this.exitAction = exitAction;
-		return this;
-	}
+	@Setter
+	private Consumer<ProcessRepositoryWriterOptions> saveAction;
+
+	@Setter
+	private Runnable exitAction;
 
 	
 	private ProcessRepositoryWriterOptions getOptions() {
 		ProcessRepositoryWriterOptions options = new ProcessRepositoryWriterOptions();
+		Set<TimeFormat> timeFormats = options.getTimeFormats();
+		List<Unit> units = options.getUnits();
 
-		if(unixTime.isSelected())
-			options.getTimeFormats().add(TimeFormat.Unix);
-		if(fullTime.isSelected())
-			options.getTimeFormats().add(TimeFormat.Full);
-		if(processTime.isSelected())
-			options.getTimeFormats().add(TimeFormat.ProcessTime);
+		if(unixTime.isSelected())    timeFormats.add(TimeFormat.Unix);
+		if(fullTime.isSelected())    timeFormats.add(TimeFormat.Full);
+		if(processTime.isSelected()) timeFormats.add(TimeFormat.ProcessTime);
 		
-		if(unit_pulses.isSelected() && unit_flow.isSelected()) {
+		if(unit_pulses.isSelected() && unit_flow.isSelected())
 			if(flow_first.isSelected()) {
-				options.getUnits().add(Unit.Flow);
-				options.getUnits().add(Unit.Pulses);
+				units.add(Unit.Flow);
+				units.add(Unit.Pulses);
 			} else {
-				options.getUnits().add(Unit.Pulses);
-				options.getUnits().add(Unit.Flow);
+				units.add(Unit.Pulses);
+				units.add(Unit.Flow);
 			}
-		} else
-			if (unit_pulses.isSelected())
-			options.getUnits().add(Unit.Pulses);
-		else
-			if (unit_flow.isSelected())
-			options.getUnits().add(Unit.Flow);
+		else if (unit_pulses.isSelected()) units.add(Unit.Pulses);
+		else if (unit_flow.isSelected())   units.add(Unit.Flow);
 		
 		options.setFlowmeterValuesTogether(together.isSelected());
-
 		options.setCommaSeparator(comma_separator.isSelected());
 		
 		return options;
@@ -89,25 +82,23 @@ public class SaveWindowController implements Initializable {
 			Injection.run(exitAction);
 		});
 
-		EventHandler<ActionEvent> timeAction = event -> {
-			if(!unixTime.isSelected() && !fullTime.isSelected() && !processTime.isSelected()) 
-				((CheckBox)event.getSource()).setSelected(true);
-		};
-		
+		EventHandler<ActionEvent> timeAction = oneMustBeSelected(unixTime, fullTime, processTime);
 		unixTime.setOnAction(timeAction);
 		fullTime.setOnAction(timeAction);
 		processTime.setOnAction(timeAction);
 		
-
-		EventHandler<ActionEvent> unitAction = event -> {
-			if(!unit_flow.isSelected() && !unit_pulses.isSelected()) 
-				((CheckBox)event.getSource()).setSelected(true);
-		};
-		
+		EventHandler<ActionEvent> unitAction = oneMustBeSelected(unit_flow, unit_pulses);
 		unit_flow.setOnAction(unitAction);
 		unit_pulses.setOnAction(unitAction);
-		
-		
 	}
 
+
+	private EventHandler<ActionEvent> oneMustBeSelected(CheckBox... boxes) {
+		return event -> {
+			CheckBox sourceBox = (CheckBox) event.getSource();
+			
+			if (Stream.of(boxes).allMatch(box -> !box.isSelected()))
+				sourceBox.setSelected(true);
+		};
+	}
 }
