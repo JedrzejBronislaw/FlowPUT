@@ -145,6 +145,8 @@ public class ViewBuilder {
 		SettingsPaneBuilder builder = new SettingsPaneBuilder(settings);
 		builder.build();
 		
+		stateManager.getProcessState().addStateListiner(builder.getController());
+		
 		return builder.getNode();
 	}
 

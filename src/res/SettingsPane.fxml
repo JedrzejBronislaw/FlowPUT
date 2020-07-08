@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox alignment="CENTER" spacing="5.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.controllers.SettingsPaneController">
+<VBox fx:id="mainBox" alignment="CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.controllers.SettingsPaneController">
    <children>
       <GridPane hgap="10.0" vgap="5.0">
          <columnConstraints>
@@ -38,7 +37,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </GridPane>
-      <Button fx:id="save" mnemonicParsing="false" text="Save" />
+      <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -8,17 +8,23 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import jedrzejbronislaw.flowmeasure.Settings;
+import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
+import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import lombok.Setter;
 
-public class SettingsPaneController implements Initializable {
+public class SettingsPaneController implements Initializable, StateListener<ProcessState> {
+	
+	@FXML
+	private VBox mainBox;
 	
 	@FXML
 	private TextField pulsesPerLitre, bufferSizeField;
 	
 	@FXML
-	private Button save;
+	private Button saveButton;
 	
 	@FXML
 	private CheckBox bufferCheckbox;
@@ -51,7 +57,7 @@ public class SettingsPaneController implements Initializable {
 		
 		bufferSizeField.disableProperty().bind(bufferCheckbox.selectedProperty().not());
 		
-		save.setOnAction(e -> Injection.run(savingAction));
+		saveButton.setOnAction(e -> Injection.run(savingAction));
 	}
 	
 	public void suspendUpdating() {
@@ -60,6 +66,11 @@ public class SettingsPaneController implements Initializable {
 	
 	public void resumeUpdating() {
 		activeUpdating = true;
+	}
+	
+	@Override
+	public void onChangeState(ProcessState state) {
+		mainBox.setDisable(state == ProcessState.Ongoing);
 	}
 
 }
