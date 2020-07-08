@@ -3,6 +3,7 @@ package jedrzejbronislaw.flowmeasure.services;
 import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import org.junit.Test;
 
@@ -10,8 +11,10 @@ import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 
 public class DataBuffer1Test {
 	
+	private static final int BUFFER_TIME = 1000;
+	
 	private ProcessRepository repository = new ProcessRepository(1, "");
-	private DataBuffer1 buffer = new DataBuffer1(repository, 1000);
+	private DataBuffer1 buffer = new DataBuffer1(repository, BUFFER_TIME);
 	private LocalDateTime time = LocalDateTime.now();
 
 	private void addMilis(long milis) {
@@ -31,10 +34,37 @@ public class DataBuffer1Test {
 		return repository.getFlowMeasurement(index).get(0);
 	}
 
+	private LocalDateTime getTime(int index) {
+		return repository.getFlowMeasurement(index).getTime();
+	}
+	
+	private long timeBetween(LocalDateTime time1, LocalDateTime time2) {
+		return ChronoUnit.MILLIS.between(time1, time2);
+	}
+	
+	private void checkTime() {
+		int size = repository.getSize();
+		if (size == 0) return;
+		
+		LocalDateTime prevTime = getTime(0);
+		LocalDateTime time;
+		long interval;
+		
+		
+		for (int i=1; i<size; i++) {
+			time = getTime(i);
+			interval = timeBetween(prevTime, time);
+			assertEquals("wrong time (index: " + i + ")", BUFFER_TIME, interval);
+			prevTime = time;
+		}
+	}
+
 	@Test
 	public void noAction() {
 		assertEquals(0, repository.getSize());
 		assertEquals(0, buffer.getBuffer());
+		
+		checkTime();
 	}
 
 	@Test
@@ -48,6 +78,8 @@ public class DataBuffer1Test {
 		
 		assertEquals(0, repository.getSize());
 		assertEquals(500, buffer.getBuffer());
+		
+		checkTime();
 	}
 	
 	@Test
@@ -58,9 +90,11 @@ public class DataBuffer1Test {
 		
 		assertEquals(1, repository.getSize());
 		assertEquals(2000, getMeasurement(0));
-		assertEquals(0, buffer.getBuffer());
+		assertEquals(   0, buffer.getBuffer());
+		
+		checkTime();
 	}
-	
+
 	@Test
 	public void fourTimes1000_residue1000InBuffer() {
 		addFlowAndTime(1000, 500);
@@ -71,6 +105,8 @@ public class DataBuffer1Test {
 		assertEquals(1, repository.getSize());
 		assertEquals(2000, getMeasurement(0));
 		assertEquals(1000, buffer.getBuffer());
+		
+		checkTime();
 	}
 	
 	@Test
@@ -86,6 +122,8 @@ public class DataBuffer1Test {
 		assertEquals(2000, getMeasurement(0));
 		assertEquals(2000, getMeasurement(1));
 		assertEquals(1000, buffer.getBuffer());
+		
+		checkTime();
 	}
 	
 	@Test
@@ -101,6 +139,8 @@ public class DataBuffer1Test {
 		assertEquals(0, getMeasurement(0));
 		assertEquals(0, getMeasurement(1));
 		assertEquals(0, buffer.getBuffer());
+		
+		checkTime();
 	}
 	
 	@Test
@@ -116,6 +156,8 @@ public class DataBuffer1Test {
 		assertEquals(   0, getMeasurement(0));
 		assertEquals(2000, getMeasurement(1));
 		assertEquals(1000, buffer.getBuffer());
+		
+		checkTime();
 	}
 	
 	@Test
@@ -130,14 +172,16 @@ public class DataBuffer1Test {
 		assertEquals(1, repository.getSize());
 		assertEquals(3333, getMeasurement(0));
 		assertEquals(1667, buffer.getBuffer());
+		
+		checkTime();
 	}
 	
 	@Test
 	public void timeEqualsBufferTime() {
-		addFlowAndTime(1000, 1000);
-		addFlowAndTime(1000, 1000);
-		addFlowAndTime(1000, 1000);
-		addFlowAndTime(1000, 1000);
+		addFlowAndTime(1000, BUFFER_TIME);
+		addFlowAndTime(1000, BUFFER_TIME);
+		addFlowAndTime(1000, BUFFER_TIME);
+		addFlowAndTime(1000, BUFFER_TIME);
 		addFlow(1000);
 		
 		assertEquals(4, repository.getSize());
@@ -146,6 +190,8 @@ public class DataBuffer1Test {
 		assertEquals(1000, getMeasurement(2));
 		assertEquals(1000, getMeasurement(3));
 		assertEquals(   0, buffer.getBuffer());
+		
+		checkTime();
 	}
 	
 	@Test
@@ -167,6 +213,8 @@ public class DataBuffer1Test {
 		assertEquals(250, getMeasurement(7));
 		assertEquals(667, getMeasurement(8));
 		assertEquals(333, buffer.getBuffer());
+		
+		checkTime();
 	}
 
 	@Test
@@ -191,5 +239,7 @@ public class DataBuffer1Test {
 		assertEquals(1000, getMeasurement(7));
 		assertEquals(1000, getMeasurement(8));
 		assertEquals(   0, buffer.getBuffer());
+		
+		checkTime();
 	}
 }
