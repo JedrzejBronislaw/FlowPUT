@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 
-public class DataBuffer1Test {
+public class DataBuffer1Test_OneFlowMeter {
 	
 	private static final int BUFFER_TIME = 1000;
 	
@@ -58,11 +58,23 @@ public class DataBuffer1Test {
 			prevTime = time;
 		}
 	}
+	
+	private void checkRepositorySize(int expectedSize) {
+		assertEquals(expectedSize, repository.getSize());
+	}
+	
+	private void checkMeasurement(int expectedValue, int measurement) {
+		assertEquals(expectedValue, getMeasurement(measurement));
+	}
+	
+	private void checkBuffer(int expectedBuffer) {
+		assertEquals(expectedBuffer, buffer.getBuffer()[0]);
+	}
 
 	@Test
 	public void noAction() {
-		assertEquals(0, repository.getSize());
-		assertEquals(0, buffer.getBuffer());
+		checkRepositorySize(0);
+		checkBuffer(0);
 		
 		checkTime();
 	}
@@ -76,8 +88,8 @@ public class DataBuffer1Test {
 		addFlowAndTime(100, 200);
 		addFlow(100);
 		
-		assertEquals(0, repository.getSize());
-		assertEquals(500, buffer.getBuffer());
+		checkRepositorySize(0);
+		checkBuffer(500);
 		
 		checkTime();
 	}
@@ -88,9 +100,9 @@ public class DataBuffer1Test {
 		addFlowAndTime(1000, 500);
 		addFlow(1000);
 		
-		assertEquals(1, repository.getSize());
-		assertEquals(2000, getMeasurement(0));
-		assertEquals(   0, buffer.getBuffer());
+		checkRepositorySize(1);
+		checkMeasurement(2000, 0);
+		checkBuffer(0);
 		
 		checkTime();
 	}
@@ -102,9 +114,9 @@ public class DataBuffer1Test {
 		addFlowAndTime(1000, 500);
 		addFlow(1000);
 		
-		assertEquals(1, repository.getSize());
-		assertEquals(2000, getMeasurement(0));
-		assertEquals(1000, buffer.getBuffer());
+		checkRepositorySize(1);
+		checkMeasurement(2000, 0);
+		checkBuffer(1000);
 		
 		checkTime();
 	}
@@ -118,10 +130,10 @@ public class DataBuffer1Test {
 		addFlowAndTime(1000, 500);
 		addFlow(1000);
 		
-		assertEquals(2, repository.getSize());
-		assertEquals(2000, getMeasurement(0));
-		assertEquals(2000, getMeasurement(1));
-		assertEquals(1000, buffer.getBuffer());
+		checkRepositorySize(2);
+		checkMeasurement(2000, 0);
+		checkMeasurement(2000, 1);
+		checkBuffer(1000);
 		
 		checkTime();
 	}
@@ -135,10 +147,10 @@ public class DataBuffer1Test {
 		addFlowAndTime(0, 500);
 		addFlow(0);
 		
-		assertEquals(2, repository.getSize());
-		assertEquals(0, getMeasurement(0));
-		assertEquals(0, getMeasurement(1));
-		assertEquals(0, buffer.getBuffer());
+		checkRepositorySize(2);
+		checkMeasurement(0, 0);
+		checkMeasurement(0, 1);
+		checkBuffer(0);
 		
 		checkTime();
 	}
@@ -152,10 +164,10 @@ public class DataBuffer1Test {
 		addFlowAndTime(1000, 500);
 		addFlow(1000);
 		
-		assertEquals(2, repository.getSize());
-		assertEquals(   0, getMeasurement(0));
-		assertEquals(2000, getMeasurement(1));
-		assertEquals(1000, buffer.getBuffer());
+		checkRepositorySize(2);
+		checkMeasurement(   0, 0);
+		checkMeasurement(2000, 1);
+		checkBuffer(1000);
 		
 		checkTime();
 	}
@@ -169,9 +181,9 @@ public class DataBuffer1Test {
 		addFlowAndTime(1000, 300);
 		addFlow(1000);
 		
-		assertEquals(1, repository.getSize());
-		assertEquals(3333, getMeasurement(0));
-		assertEquals(1667, buffer.getBuffer());
+		checkRepositorySize(1);
+		checkMeasurement(3333, 0);
+		checkBuffer(1667);
 		
 		checkTime();
 	}
@@ -184,12 +196,12 @@ public class DataBuffer1Test {
 		addFlowAndTime(1000, BUFFER_TIME);
 		addFlow(1000);
 		
-		assertEquals(4, repository.getSize());
-		assertEquals(1000, getMeasurement(0));
-		assertEquals(1000, getMeasurement(1));
-		assertEquals(1000, getMeasurement(2));
-		assertEquals(1000, getMeasurement(3));
-		assertEquals(   0, buffer.getBuffer());
+		checkRepositorySize(4);
+		checkMeasurement(1000, 0);
+		checkMeasurement(1000, 1);
+		checkMeasurement(1000, 2);
+		checkMeasurement(1000, 3);
+		checkBuffer(0);
 		
 		checkTime();
 	}
@@ -202,17 +214,17 @@ public class DataBuffer1Test {
 		addFlowAndTime(1000, 1500);
 		addFlow(1000);
 		
-		assertEquals(9, repository.getSize());
-		assertEquals(500, getMeasurement(0));
-		assertEquals(500, getMeasurement(1));
-		assertEquals(500, getMeasurement(2));
-		assertEquals(500, getMeasurement(3));
-		assertEquals(250, getMeasurement(4));
-		assertEquals(250, getMeasurement(5));
-		assertEquals(250, getMeasurement(6));
-		assertEquals(250, getMeasurement(7));
-		assertEquals(667, getMeasurement(8));
-		assertEquals(333, buffer.getBuffer());
+		checkRepositorySize(9);
+		checkMeasurement(500, 0);
+		checkMeasurement(500, 1);
+		checkMeasurement(500, 2);
+		checkMeasurement(500, 3);
+		checkMeasurement(250, 4);
+		checkMeasurement(250, 5);
+		checkMeasurement(250, 6);
+		checkMeasurement(250, 7);
+		checkMeasurement(667, 8);
+		checkBuffer(333);
 		
 		checkTime();
 	}
@@ -228,17 +240,17 @@ public class DataBuffer1Test {
 		addFlowAndTime(   5,  288);
 		addFlow(288);
 		
-		assertEquals(9, repository.getSize());
-		assertEquals(1000, getMeasurement(0));
-		assertEquals(1000, getMeasurement(1));
-		assertEquals(1000, getMeasurement(2));
-		assertEquals(1000, getMeasurement(3));
-		assertEquals(1000, getMeasurement(4));
-		assertEquals(1000, getMeasurement(5));
-		assertEquals(1000, getMeasurement(6));
-		assertEquals(1000, getMeasurement(7));
-		assertEquals(1000, getMeasurement(8));
-		assertEquals(   0, buffer.getBuffer());
+		checkRepositorySize(9);
+		checkMeasurement(1000, 0);
+		checkMeasurement(1000, 1);
+		checkMeasurement(1000, 2);
+		checkMeasurement(1000, 3);
+		checkMeasurement(1000, 4);
+		checkMeasurement(1000, 5);
+		checkMeasurement(1000, 6);
+		checkMeasurement(1000, 7);
+		checkMeasurement(1000, 8);
+		checkBuffer(0);
 		
 		checkTime();
 	}

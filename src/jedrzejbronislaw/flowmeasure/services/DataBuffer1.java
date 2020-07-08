@@ -17,12 +17,17 @@ public class DataBuffer1 implements DataBuffer {
 	private int interval;
 	
 	@Getter
-	private int buffer = 0;
+	private int size;
+	@Getter
+	private int[] buffer;
 	private LocalDateTime lastTime = null;
 	
 	public DataBuffer1(ProcessRepository repository, int interval) {
 		this.repository = repository;
 		this.interval = interval;
+		
+		size = repository.getNumOfFlowmeters();
+		buffer = new int[size];
 	}
 	
 	@Override
@@ -32,7 +37,7 @@ public class DataBuffer1 implements DataBuffer {
 	
 	@Override
 	public void newFlows(int[] flows) {
-		newFlow(flows[0]);
+		newFlow(LocalDateTime.now(), flows);
 	}
 
 	@Override
@@ -41,9 +46,20 @@ public class DataBuffer1 implements DataBuffer {
 	}
 	
 	public void newFlow(LocalDateTime time, int flow) {
+		newFlow(time, new int[] {flow});
+	}
+
+	public void newFlow(LocalDateTime time, int[] flows) {
 		if (firstTime(time)) return;
-		buffer += flow;
+		addToBuffer(flows);
 		out(time);
+	}
+
+	private void addToBuffer(int[] flows) {
+		int length = Math.min(flows.length, size);
+		
+		for(int i=0; i<length; i++)
+			buffer[i] += flows[i];
 	}
 
 	private boolean firstTime(LocalDateTime time) {
@@ -71,19 +87,19 @@ public class DataBuffer1 implements DataBuffer {
 		return ChronoUnit.MILLIS.between(lastTime, now);
 	}
 
-	private int takePortion(long sinceLastTime) {
+	private int[] takePortion(long sinceLastTime) {
+		int[] portion = new int[size];
 		float ratio = (float)interval/sinceLastTime;
 		
-		int portion = Math.round(buffer*ratio);
-		buffer -= portion;
+		for(int i=0; i<size; i++) {
+			portion[i] = Math.round(buffer[i]*ratio);
+			buffer[i] -= portion[i];
+		}
 		
 		return portion;
 	}
 	
-	public void saveToRepository(LocalDateTime time, int flow) {
-		int[] tempFlows = new int[6];
-
-		tempFlows[0] = flow;
-		repository.addFlowMeasurement(time, tempFlows);
+	public void saveToRepository(LocalDateTime time, int[] flows) {
+		repository.addFlowMeasurement(time, flows);
 	}
 }
