@@ -26,6 +26,11 @@ public class DataBuffer1 implements DataBuffer {
 	}
 	
 	@Override
+	public void addFlowMeasurement(int[] pulses) {
+		newFlows(pulses);
+	}
+	
+	@Override
 	public void newFlows(int[] flows) {
 		newFlow(flows[0]);
 	}
@@ -36,44 +41,30 @@ public class DataBuffer1 implements DataBuffer {
 	}
 	
 	public void newFlow(LocalDateTime time, int flow) {
-
-		if (lastTime == null) {
-			firstTime(time);
-			return;
-		}
-		
-		System.out.println(
-				lastTime.toString() + "\t" +
-				flow + "\t" +
-				buffer + "\t" +
-				time);
-		
+		if (firstTime(time)) return;
 		buffer += flow;
-
 		out(time);
 	}
 
-	private void firstTime(LocalDateTime now) {
-		lastTime = now;
-		System.out.println("now:   " + now.toString());
-		System.out.println("start: " + repository.getMetadata().getStartTime());
+	private boolean firstTime(LocalDateTime time) {
+		if (lastTime == null) {
+			lastTime = time;
+			return true;
+		}
+		
+		return false;
 	}
 
 	private void out(LocalDateTime now) {
 		long period;
-		int portion;
 		
-		while((period = sinceLastTime(now)) >= interval) {
-			System.out.println("period >= interval (" + period + ">=" + interval + ")");
-			portion = takePortion(period);
-			
-			updateLastTime();
-			saveToRepository(LocalDateTime.from(lastTime), portion);
-		}
+		while((period = sinceLastTime(now)) >= interval)
+			saveToRepository(updateTime(), takePortion(period));
 	}
 
-	private void updateLastTime() {
+	private LocalDateTime updateTime() {
 		lastTime = lastTime.plus(interval, ChronoUnit.MILLIS);
+		return lastTime;
 	}
 
 	private long sinceLastTime(LocalDateTime now) {
@@ -91,18 +82,8 @@ public class DataBuffer1 implements DataBuffer {
 	
 	public void saveToRepository(LocalDateTime time, int flow) {
 		int[] tempFlows = new int[6];
-		
-		System.out.println("  " +
-			time.toString() + "\t" +
-			flow + "\t" +
-			repository.getMetadata().getStartTime());
 
 		tempFlows[0] = flow;
 		repository.addFlowMeasurement(time, tempFlows);
-	}
-	
-	@Override
-	public void addFlowMeasurement(int[] pulses) {
-		newFlows(pulses);
 	}
 }
