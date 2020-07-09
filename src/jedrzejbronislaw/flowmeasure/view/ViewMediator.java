@@ -21,7 +21,9 @@ public class ViewMediator {
 	}
 	
 	public void showCurrentFlow(int flow, int nr) {
-		flowViews.get(nr).accept(flow);
+		Consumer<Integer> view = flowViews.get(nr);
+		
+		if (view != null) view.accept(flow);
 	}
 	
 	public UARTParams getUARTParams() {
