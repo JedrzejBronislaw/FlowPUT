@@ -170,7 +170,7 @@ public class ViewBuilder {
 		MainWindowBuilder builder = new MainWindowBuilder();
 		builder.build();
 		
-		for(int i=0; i< getCurrentProcessRepo().getNumOfFlowmeters(); i++)
+		for(int i=0; i<6; i++)
 			builder.getController().addFlowPreview(flowPreview(i));
 
 		builder.getController().getBorderPane().setLeft(sidePane());

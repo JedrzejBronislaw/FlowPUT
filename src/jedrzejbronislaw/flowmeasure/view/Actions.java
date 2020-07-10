@@ -30,15 +30,13 @@ public class Actions implements ActionContainer {
 	@Override
 	public void startProcess() {
 		if(eventManager().submitEvent(EventType.Process_Starts)) {
-//			session.getCurrentProcessRepository().setProcessStartTimeNow();
+			session().createNewProcessRepository("untitled");
 			session().getCurrentProcessRepository().setStartWithNextValueFlag();
 			
-			if(settings().isBufferedData()) {
+			if(settings().isBufferedData())
 				session().setFlowConsumerType(FlowConsumerType.Buffered);
-				session().setBufferInterval(settings().getBufferInterval());
-			} else
+			else
 				session().setFlowConsumerType(FlowConsumerType.Plain);
-				
 		}
 	}
 

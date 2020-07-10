@@ -13,7 +13,6 @@ import jedrzejbronislaw.flowmeasure.SideDirResourcesRepository;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventPolicy;
 import jedrzejbronislaw.flowmeasure.events.EventType;
-import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.Repository;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
 import jedrzejbronislaw.flowmeasure.services.Calibration1;
@@ -32,8 +31,6 @@ import lombok.Getter;
 
 @Getter
 public class Components {
-
-	private final static int FLOWMETERS_NUMBER = 6;
 
 	private Stage primaryStage;
 
@@ -66,7 +63,7 @@ public class Components {
 		eventPolicy = new EventPolicy(stateManager);
 		dialogManager = buildDialogManager();
 		calibration = buildCalibration();
-		session = new Session();
+		session = new Session(new Repository());
 		
 		set();
 	}
@@ -74,8 +71,8 @@ public class Components {
 	private void set() {
 		settings.read();
 		
-		session.setRepository(new Repository());
-		session.setCurrentProcessRepository(createProcessRepository(session.getRepository()));
+		session.setBufferCreator(() -> new DataBuffer1(session.getCurrentProcessRepository(), settings.getBufferInterval()));
+		session.setCalibration(calibration);
 		session.setDevice(device);
 
 		eventManager.setEventPolicy(eventPolicy);
@@ -84,19 +81,8 @@ public class Components {
 		eventManager.addListener(connectionMonitor);
 		eventManager.addListener(flowConverter);
 
-
-		dataBuffer = new DataBuffer1(session.getCurrentProcessRepository(), 1000);
-
 		MyFXMLLoader.setResources(resources);
 		createViewBuilder().build();
-
-//		settings.setBufferedFlowConsumer(dataBuffer);
-//		settings.setPlainFlowConsumer(session.getCurrentProcessRepository());
-//		settings.setPlainFlowMeasurementConsumer();
-		session.setBufferedFlowConsumer(dataBuffer);
-		session.setPlainFlowConsumer(session.getCurrentProcessRepository());
-//		session.setPlainFlowMeasurementConsumer();
-		session.setCalibration(calibration);
 	}
 	
 	private FlowDevice buildFlowDevice() {
@@ -157,12 +143,5 @@ public class Components {
 		viewBuilder.setActions(actions);
 		
 		return viewBuilder;
-	}
-	
-	private ProcessRepository createProcessRepository(Repository repository) {
-		ProcessRepository processRepo = repository.createNewProcessRepository(FLOWMETERS_NUMBER, "untitled");
-		processRepo.getMetadata().setAuthor("unknown");
-		
-		return processRepo;
 	}
 }

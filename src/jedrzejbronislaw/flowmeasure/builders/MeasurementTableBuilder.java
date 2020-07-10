@@ -32,12 +32,15 @@ public class MeasurementTableBuilder extends Builder<MeasurementTableController>
 	
 	void refreshTable(TableView<FlowMeasurement> table) {
 		Platform.runLater(() -> {
+			if (currentProcess.get() == null) return;
+			creatingColumns(table);
 			table.getItems().addAll(currentProcess.get().getAllMeasurement());
 			table.scrollTo(table.getItems().size()-1);
 		});
 	}
 
 	private void creatingColumns(TableView<FlowMeasurement> table) {
+		if (currentProcess.get() == null) return;
 		int numOfFlowmeters = currentProcess.get().getNumOfFlowmeters();
 
 		table.getItems().clear();

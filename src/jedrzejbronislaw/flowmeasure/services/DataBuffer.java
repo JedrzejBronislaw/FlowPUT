@@ -6,6 +6,5 @@ public interface DataBuffer extends FlowMeasurementConsumer {
 	void newFlows(int[] flows);
 	void newFlow(int flow);
 
-	void setInterval(int interal);
 	int getInterval();
 }

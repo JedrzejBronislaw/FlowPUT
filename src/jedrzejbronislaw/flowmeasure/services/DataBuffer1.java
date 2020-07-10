@@ -6,14 +6,13 @@ import java.time.temporal.ChronoUnit;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 
 public class DataBuffer1 implements DataBuffer {
 
 	@NonNull
 	private ProcessRepository repository;
 	
-	@Setter @Getter
+	@Getter
 	private int interval;
 	
 	@Getter

@@ -49,6 +49,8 @@ public class ChartRefresher implements Consumer<LineChart<Number, Number>> {
 	
 	@Override
 	public void accept(LineChart<Number, Number> chart) {
+		if (currentProcess.get() == null) return;
+		
 		Platform.runLater(() -> {
 			updateLocalVars();
 			if(data.size() == 0) return;

@@ -1,13 +1,17 @@
 package jedrzejbronislaw.flowmeasure;
 
+import java.util.function.Supplier;
+
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.Repository;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
-import jedrzejbronislaw.flowmeasure.services.DataBuffer;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Session {
+
+	private final static int FLOWMETERS_NUMBER = 6;
 
 	public enum FlowConsumerType{
 		None,
@@ -21,16 +25,23 @@ public class Session {
 	@Getter
 	private FlowDevice device;
 
-	@Setter
-	@Getter
-	private Repository repository;
+	private final Repository repository;
 
-	@Setter
 	@Getter
 	private ProcessRepository currentProcessRepository;
 
+	public ProcessRepository createNewProcessRepository(String name) {
+		ProcessRepository processRepository = repository.createNewProcessRepository(FLOWMETERS_NUMBER, name);
+		processRepository.getMetadata().setAuthor("unknown");
+
+		plainFlowConsumer = currentProcessRepository = processRepository;
+		
+		return processRepository;
+	}
+
 	
-	public Session() {
+	public Session(Repository repository) {
+		this.repository = repository;
 		setFlowConsumerType(FlowConsumerType.None);
 	}
 	
@@ -49,7 +60,7 @@ public class Session {
 			flowConsumer = plainFlowConsumer;
 			break;
 		case Buffered:
-			flowConsumer = bufferedFlowConsumer;
+			flowConsumer = Injection.get(bufferCreator, noneFlowConsumer);
 			break;
 		case Calibration:
 			flowConsumer = calibration;
@@ -63,13 +74,6 @@ public class Session {
 	
 //----	
 
-	public boolean setBufferInterval(int bufferInterval) {
-		if(bufferedFlowConsumer != null) {
-			bufferedFlowConsumer.setInterval(bufferInterval);
-			return true;
-		} else
-			return false;
-	}
 	
 	@Getter
 	private FlowMeasurementConsumer flowConsumer;
@@ -79,15 +83,9 @@ public class Session {
 	@Setter
 	private Calibration calibration;
 	
-	@Setter
 	private ProcessRepository plainFlowConsumer;
-
-//	@Setter
-	private DataBuffer bufferedFlowConsumer;
 	
-	public void setBufferedFlowConsumer(DataBuffer bufferedFlowConsumer) {
-		this.bufferedFlowConsumer = bufferedFlowConsumer;
-	}	
-	
+	@Setter
+	private Supplier<FlowMeasurementConsumer> bufferCreator;
 
 }
