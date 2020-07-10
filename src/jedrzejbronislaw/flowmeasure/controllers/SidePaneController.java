@@ -148,7 +148,6 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 		else if(state.isOneOf(
 					ProcessState.Before,
 					ProcessState.Finished,
-					ProcessState.Interrupted,
 					ProcessState.LostConnection))
 			setButtonEnable(false);
 	}
