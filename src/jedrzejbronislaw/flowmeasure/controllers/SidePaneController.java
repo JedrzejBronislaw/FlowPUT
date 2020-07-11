@@ -36,7 +36,7 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 	private static final RadialGradient gradientDiodeOff = createGradient(colorDiodeOff);
 	
 	@FXML
-	private Button saveButton, startButton, endButton;
+	private Button saveButton, closeButton, startButton, endButton;
 	
 	@FXML
 	@Getter
@@ -48,6 +48,8 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 	
 	@Setter
 	private Runnable saveButtonAction;
+	@Setter
+	private Runnable closeButtonAction;
 	@Setter
 	private Runnable startButtonAction;
 	@Setter
@@ -90,6 +92,7 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 		receiverDiode.setFill(gradientDiodeOff);
 		
 		saveButton.setOnAction(e  -> Injection.run(saveButtonAction));
+		closeButton.setOnAction(e -> Injection.run(closeButtonAction));
 		startButton.setOnAction(e -> Injection.run(startButtonAction));
 		endButton.setOnAction(e   -> Injection.run(endButtonAction));
 	}

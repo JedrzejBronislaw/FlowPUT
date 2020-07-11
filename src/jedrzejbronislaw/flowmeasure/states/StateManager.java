@@ -35,6 +35,11 @@ public class StateManager implements EventListener {
 			appState.setState(ApplicationState.Idle);
 			connState.setState(ConnectionState.Disconnected);
 		} else
+			
+			
+		if(event == EventType.Close_Process) {
+			processState.setState(ProcessState.Before);
+		} else
 		
 		if(event == EventType.ConnectionSuccessful) {
 			connState.setState(ConnectionState.Connected);

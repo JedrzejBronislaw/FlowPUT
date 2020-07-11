@@ -69,6 +69,11 @@ public class Actions implements ActionContainer {
 			builder.showWindow();
 		}
 	}
+	
+	@Override
+	public void closeProcess() {
+		eventManager().submitEvent(EventType.Close_Process);
+	}
 
 	@Override
 	public void connectFlowDevice() {

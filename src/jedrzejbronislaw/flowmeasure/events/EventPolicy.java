@@ -2,6 +2,7 @@ package jedrzejbronislaw.flowmeasure.events;
 
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
+import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +20,7 @@ public class EventPolicy {
 			(event == EventType.ConnectionFailed     && connState() == ConnectionState.Connecting) ||
 			(event == EventType.Connecting_Start     && connState() == ConnectionState.Disconnected) ||
 			(event == EventType.Diconnection         && connState() == ConnectionState.Connected) ||
+			(event == EventType.Close_Process        && procState() == ProcessState.Finished) ||
 			(event == EventType.Calibration_Starts   && appState()  == ApplicationState.Idle && connState() == ConnectionState.Connected) ||
 			(event == EventType.Calibration_Ends     && appState()  == ApplicationState.Calibration)
 		);
@@ -30,5 +32,9 @@ public class EventPolicy {
 	
 	private ConnectionState connState() {
 		return stateManager.getConnState().getState();
+	}
+	
+	private ProcessState procState() {
+		return stateManager.getProcessState().getState();
 	}
 }

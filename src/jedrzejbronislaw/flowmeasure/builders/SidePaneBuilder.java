@@ -17,5 +17,6 @@ public class SidePaneBuilder extends Builder<SidePaneController> {
 		controller.setStartButtonAction(actions::startProcess);
 		controller.setEndButtonAction(  actions::endProcess);
 		controller.setSaveButtonAction( actions::saveProcess);
+		controller.setCloseButtonAction(actions::closeProcess);
 	}
 }

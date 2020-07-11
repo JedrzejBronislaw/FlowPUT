@@ -53,6 +53,7 @@
                </children>
             </GridPane>
             <Button fx:id="saveButton" mnemonicParsing="false" text="Save measurement" />
+            <Button fx:id="closeButton" mnemonicParsing="false" text="Close measurement" />
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

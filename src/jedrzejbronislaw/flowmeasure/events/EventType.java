@@ -10,6 +10,6 @@ public enum EventType implements MultiComparable {
 	Process_Starts, Process_Ends,
 	Calibration_Starts, Calibration_Ends,
 	ReceivedData,
-	Saving_Process,
+	Saving_Process, Close_Process,
 	Exiting;
 }
