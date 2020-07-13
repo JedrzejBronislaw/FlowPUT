@@ -97,9 +97,9 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 		endButton.setOnAction(e   -> Injection.run(endButtonAction));
 	}
 	
-	private void setButtonEnable(boolean processOngoing) {
-		endButton.setDisable(!processOngoing);
-		startButton.setDisable(processOngoing);
+	private void setButtonsEnable(boolean startEnable, boolean endEnable) {
+		startButton.setDisable(!startEnable);
+		endButton.setDisable(!endEnable);
 	}
 	
 	private void setDurationTimeLabel(LocalDateTime start, LocalDateTime end) {
@@ -145,13 +145,19 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 		processState = state;
 		Platform.runLater(() ->
 			processStateLabel.setText(state.toString()));
-		
-		if(state == ProcessState.Ongoing)
-			setButtonEnable(true);
+
+		if(state == ProcessState.Before)
+			setButtonsEnable(true, false);
+		else if(state == ProcessState.Ongoing)
+			setButtonsEnable(false, true);
 		else if(state.isOneOf(
-					ProcessState.Before,
 					ProcessState.Finished,
 					ProcessState.LostConnection))
-			setButtonEnable(false);
+			setButtonsEnable(false, false);
+		
+		saveButton.setDisable(state == ProcessState.Before);
+		closeButton.setDisable(!state.isOneOf(
+				ProcessState.Finished,
+				ProcessState.LostConnection));
 	}
 }
