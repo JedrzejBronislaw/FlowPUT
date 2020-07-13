@@ -1,5 +1,10 @@
 package jedrzejbronislaw.flowmeasure.view;
 
+import java.util.Optional;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import jedrzejbronislaw.flowmeasure.ConnectionAttempt;
 import jedrzejbronislaw.flowmeasure.ConnectionsAttempts;
 import jedrzejbronislaw.flowmeasure.FileNamer;
@@ -72,7 +77,15 @@ public class Actions implements ActionContainer {
 	
 	@Override
 	public void closeProcess() {
-		eventManager().submitEvent(EventType.Close_Process);
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Close the process");
+		alert.setHeaderText("Are you sure you want to close the process?");
+		alert.setContentText("The measurement will be lost.");
+		
+		Optional<ButtonType> result = alert.showAndWait();
+		
+		if (result.get() == ButtonType.OK)
+			eventManager().submitEvent(EventType.Close_Process);
 	}
 
 	@Override
