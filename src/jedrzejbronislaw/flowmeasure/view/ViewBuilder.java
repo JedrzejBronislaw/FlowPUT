@@ -9,6 +9,7 @@ import jedrzejbronislaw.flowmeasure.FlowConverter;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.Session;
 import jedrzejbronislaw.flowmeasure.Settings;
+import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.builders.CalibrationPaneBuild;
 import jedrzejbronislaw.flowmeasure.builders.ChartPaneBuilder;
 import jedrzejbronislaw.flowmeasure.builders.DialogPaneBuilder;
@@ -25,7 +26,6 @@ import jedrzejbronislaw.flowmeasure.services.DialogManager;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 @RequiredArgsConstructor
 public class ViewBuilder {
@@ -34,40 +34,12 @@ public class ViewBuilder {
 	private static final int WINDOW_WIDTH = 900;
 	private static final String WINDOW_TITLE = "FlowmeterPP";
 	private static final String CSS_FILENAME = "application.css";
+
+	@NonNull
+	private Components components;
 	
 	@NonNull
-	private Stage primaryStage;
-	
-	@NonNull
-	private Session session;
-	
-	@NonNull
-	private Settings settings;
-
-	
-	@Setter
-	private ResourcesRepository resources;
-
-	@Setter
-	private EventManager eventManager;
-
-	@Setter
-	private StateManager stateManager;
-
-	@Setter
-	private DialogManager dialogManager;
-	
-	@Setter
-	private Calibration calibration;
-
-	@Setter
-	private FlowConverter flowconverter;
-	
-	@Setter
 	private ActionContainer actions;
-	
-	@Setter
-	private ViewMediator viewMediator;
 	
 	
 	private Pane root;
@@ -83,22 +55,22 @@ public class ViewBuilder {
 		DialogPaneBuilder builder = new DialogPaneBuilder(root);
 		builder.build();
 		
-		dialogManager.setShowMessage(builder.getController()::show);
+		dialogManager().setShowMessage(builder.getController()::show);
 	}
 	
 	private void buildWindow(Pane root) {
 		try {
 			
 			Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-			scene.getStylesheets().add(resources.getResourcePath(CSS_FILENAME));
+			scene.getStylesheets().add(resources().getResourcePath(CSS_FILENAME));
 			
-			primaryStage.setScene(scene);
-			primaryStage.setTitle(WINDOW_TITLE);
-			primaryStage.setOnCloseRequest(e -> {
+			primaryStage().setScene(scene);
+			primaryStage().setTitle(WINDOW_TITLE);
+			primaryStage().setOnCloseRequest(e -> {
 				actions.exit();
 				Platform.exit();
 			});
-			primaryStage.show();
+			primaryStage().show();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,15 +81,15 @@ public class ViewBuilder {
 		UARTParamsBuilder builder = new UARTParamsBuilder(actions);
 		builder.build();
 		
-		viewMediator.setUartParamsGetter(builder.getController()::getParams);
-		stateManager.getConnState().addStateListiner(builder.getController());
+		viewMediator().setUartParamsGetter(builder.getController()::getParams);
+		stateManager().getConnState().addStateListiner(builder.getController());
 		
 		return builder.getNode();
 	}
 	
 	
 	private Node chart() {
-		ChartPaneBuilder builder = new ChartPaneBuilder(this::getCurrentProcessRepo, flowconverter);
+		ChartPaneBuilder builder = new ChartPaneBuilder(this::getCurrentProcessRepo, flowconverter());
 		builder.build();
 		
 		return builder.getNode();
@@ -135,33 +107,33 @@ public class ViewBuilder {
 		SidePaneBuilder builder = new SidePaneBuilder(actions);
 		builder.build();
 		
-		stateManager.getProcessState().addStateListiner(builder.getController());
-		eventManager.addListener(builder.getController());
+		stateManager().getProcessState().addStateListiner(builder.getController());
+		eventManager().addListener(builder.getController());
 		
 		return builder.getNode();
 	}
 	
 	private Node settingsPane(){
-		SettingsPaneBuilder builder = new SettingsPaneBuilder(settings);
+		SettingsPaneBuilder builder = new SettingsPaneBuilder(settings());
 		builder.build();
 		
-		stateManager.getProcessState().addStateListiner(builder.getController());
+		stateManager().getProcessState().addStateListiner(builder.getController());
 		
 		return builder.getNode();
 	}
 
-	private Node calibration() {
-		CalibrationPaneBuild builder = new CalibrationPaneBuild(eventManager, session, settings, calibration);
+	private Node calibrationPane() {
+		CalibrationPaneBuild builder = new CalibrationPaneBuild(eventManager(), session(), settings(), calibration());
 		builder.build();
 		
 		return builder.getNode();
 	}
 
 	private Node flowPreview(int number) {
-		FlowPreviewBuilder builder = new FlowPreviewBuilder(number, flowconverter);
+		FlowPreviewBuilder builder = new FlowPreviewBuilder(number, flowconverter());
 		builder.build();
 		
-		viewMediator.setFlowPreviewer(number, builder.getController()::addPulses);
+		viewMediator().setFlowPreviewer(number, builder.getController()::addPulses);
 		
 		return builder.getNode();
 	}
@@ -178,12 +150,55 @@ public class ViewBuilder {
 		builder.getController().setTablePane(table());
 		builder.getController().setChartPane(chart());
 		builder.getController().setSettingsPane(settingsPane());
-		builder.getController().setCalibrationPane(calibration());
+		builder.getController().setCalibrationPane(calibrationPane());
 
 		return builder.getNode();
 	}
 	
+	
 	private ProcessRepository getCurrentProcessRepo() {
-		return session.getCurrentProcessRepository();
+		return session().getCurrentProcessRepository();
+	}
+
+	
+	private Stage primaryStage() {
+		return components.getPrimaryStage();
+	}
+	
+	private Session session() {
+		return components.getSession();
+	}
+	
+	private Settings settings() {
+		return components.getSettings();
+	}
+
+	
+	private ResourcesRepository resources() {
+		return components.getResources();
+	}
+	
+	private EventManager eventManager() {
+		return components.getEventManager();
+	}
+	
+	private StateManager stateManager() {
+		return components.getStateManager();
+	}
+	
+	private DialogManager dialogManager() {
+		return components.getDialogManager();
+	}
+	
+	private Calibration calibration() {
+		return components.getCalibration();
+	}
+	
+	private FlowConverter flowconverter() {
+		return components.getFlowConverter();
+	}
+	
+	private ViewMediator viewMediator() {
+		return components.getViewMediator();
 	}
 }

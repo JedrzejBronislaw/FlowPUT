@@ -23,7 +23,6 @@ import jedrzejbronislaw.flowmeasure.services.DataBuffer1;
 import jedrzejbronislaw.flowmeasure.services.DialogManager;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
-import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.Actions;
 import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
 import jedrzejbronislaw.flowmeasure.view.ViewMediator;
@@ -130,18 +129,6 @@ public class Components {
 	}
 
 	private ViewBuilder createViewBuilder(){
-		ViewBuilder viewBuilder = new ViewBuilder(primaryStage, session, settings);
-		ActionContainer actions = new Actions(this);
-
-		viewBuilder.setResources(resources);
-		viewBuilder.setFlowconverter(flowConverter);
-		viewBuilder.setEventManager(eventManager);
-		viewBuilder.setStateManager(stateManager);
-		viewBuilder.setDialogManager(dialogManager);
-		viewBuilder.setCalibration(calibration);
-		viewBuilder.setViewMediator(viewMediator);
-		viewBuilder.setActions(actions);
-		
-		return viewBuilder;
+		return new ViewBuilder(this, new Actions(this));
 	}
 }
