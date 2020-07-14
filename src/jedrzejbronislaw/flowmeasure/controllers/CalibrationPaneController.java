@@ -71,12 +71,13 @@ public class CalibrationPaneController implements Initializable, EventListener {
 	public void event(EventType event) {
 
 		if (event.isOneOf(
-				EventType.Process_Ends,
+				EventType.Close_Process,
 				EventType.ConnectionSuccessful,
 				EventType.Calibration_Ends))
 			setEnableComponens(State.available);
 		else if (event.isOneOf(
 				EventType.Process_Starts,
+				EventType.Process_Ends,
 				EventType.ConnectionFailed,
 				EventType.LostConnection))
 			setEnableComponens(State.unavailable);

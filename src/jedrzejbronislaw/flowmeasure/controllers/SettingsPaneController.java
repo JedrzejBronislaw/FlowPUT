@@ -70,7 +70,7 @@ public class SettingsPaneController implements Initializable, StateListener<Proc
 	
 	@Override
 	public void onChangeState(ProcessState state) {
-		mainBox.setDisable(state == ProcessState.Ongoing);
+		mainBox.setDisable(state != ProcessState.Before);
 	}
 
 }
