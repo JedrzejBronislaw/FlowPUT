@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
+import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.DecimalSeparator;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
 
 public class CSVWriterTest_data8 {
@@ -33,7 +34,7 @@ public class CSVWriterTest_data8 {
 		ProcessRepositoryWriterOptions options = new ProcessRepositoryWriterOptions();
 		
 		options.setFlowmeterValuesTogether(true);
-		options.setCommaSeparator(true);
+		options.setDecimalSeparator(DecimalSeparator.Comma);
 		
 		options.getUnits().add(Unit.Flow);
 		

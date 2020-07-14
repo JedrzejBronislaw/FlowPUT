@@ -16,6 +16,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
+import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.DecimalSeparator;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Setter;
@@ -69,7 +70,7 @@ public class SaveWindowController implements Initializable {
 		else if (unit_flow.isSelected())   units.add(Unit.Flow);
 		
 		options.setFlowmeterValuesTogether(together.isSelected());
-		options.setCommaSeparator(comma_separator.isSelected());
+		options.setDecimalSeparator(comma_separator.isSelected() ? DecimalSeparator.Comma : DecimalSeparator.Point);
 		
 		return options;
 	}

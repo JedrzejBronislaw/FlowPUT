@@ -262,8 +262,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	private String setDecimalSeparator(Float flow) {
 		if(flow == null) return "";
 		
-		String decimalSeparator = options.isCommaSeparator() ? "," : ".";
-		return NumberTools.floatToString(flow, decimalSeparator);
+		return NumberTools.floatToString(flow, options.getDecimalSeparator().toString());
 	}
 	
 	private int numOfTimeFormats() {

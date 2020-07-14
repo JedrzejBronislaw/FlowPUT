@@ -12,6 +12,18 @@ public class ProcessRepositoryWriterOptions {
 
 	public enum TimeFormat{Unix, Full, ProcessTime}
 	public enum Unit{Pulses, Flow}
+	public enum DecimalSeparator{Point("."), Comma(",");
+
+		String separator;
+		DecimalSeparator(String separator) {
+			this.separator = separator;
+		}
+		
+		@Override
+		public String toString() {
+			return separator;
+		}
+	}
 	
 	@Getter
 	private Set<TimeFormat> timeFormats = new HashSet<>();
@@ -20,6 +32,6 @@ public class ProcessRepositoryWriterOptions {
 	@Getter @Setter
 	private boolean flowmeterValuesTogether;
 	@Getter @Setter
-	private boolean commaSeparator;
+	private DecimalSeparator decimalSeparator = DecimalSeparator.Point;
 
 }
