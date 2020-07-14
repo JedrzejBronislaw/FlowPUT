@@ -34,6 +34,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	public static final String PROP_START      = "start";
 	public static final String PROP_END        = "end";
 	public static final String PROP_DURATION   = "duration";
+	public static final String PROP_BUFFER     = "buffer [ms]";
 	public static final String PROP_PULSE      = "pulse per litre";
 	public static final String PROP_FLOWMETERS = "num of flowmeters";
 	public static final String PROP_SIZE       = "size";
@@ -50,6 +51,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	
 	private float pulsePerLitre = 0;
+	private int bufferInterval  = 0;
 	
 	private FlowConverter flowConverter;
 	private ProcessRepositoryWriterOptions options;
@@ -74,6 +76,11 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	public void setPulsePerLitre(float pulsePerLitre) {
 		this.pulsePerLitre = pulsePerLitre;
 		flowConverter = new FlowConverter1(pulsePerLitre);
+	}
+	
+	@Override
+	public void setBufferInterval(int interval) {
+		bufferInterval = interval;
 	}
 	
 	public static String processTime(LocalDateTime time, LocalDateTime startTime) {
@@ -139,6 +146,8 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		csvWriter.property(PROP_DURATION, TimeCalc.createDurationString(startTime, endTime));
 		csvWriter.newLine();
 
+		if (bufferInterval>0)
+			csvWriter.property(PROP_BUFFER, bufferInterval);
 		csvWriter.property(PROP_PULSE, pulsePerLitre);
 		csvWriter.newLine();
 

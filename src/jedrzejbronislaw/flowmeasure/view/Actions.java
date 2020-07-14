@@ -60,7 +60,11 @@ public class Actions implements ActionContainer {
 			ProcessRepository process = session().getCurrentProcessRepository();
 			SaveWindowBuilder builder = new SaveWindowBuilder(resources(), process);
 				
+			System.out.println(session().getFlowConsumerType());
+			if(settings().isBufferedData())
+				writer.setBufferInterval(settings().getBufferInterval());
 			writer.setPulsePerLitre(settings().getPulsePerLitre());
+			
 			FileNamer filenamer = new FileNamer1(process);
 			builder.setFileNamer(filenamer::createName);
 			builder.setInitialDirectory(settings().getSavePath());

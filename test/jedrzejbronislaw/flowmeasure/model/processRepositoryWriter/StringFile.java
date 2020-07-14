@@ -13,6 +13,8 @@ public class StringFile {
 	private final ProcessRepositoryWriterOptions options;
 	@Setter
 	private float pulsePerLitre;
+	@Setter
+	private int bufferInterval;
 	
 	
 	private ProcessRepositoryCSVWriter processWriter;
@@ -21,6 +23,7 @@ public class StringFile {
 	public String createContentOfFile() {
 		processWriter = new ProcessRepositoryCSVWriter();
 		processWriter.setPulsePerLitre(pulsePerLitre);
+		processWriter.setBufferInterval(bufferInterval);
 		processWriter.setWriterCreator(file -> writer);
 		
 		return save(repository, options);

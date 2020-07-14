@@ -26,6 +26,7 @@ public class CSVWriterTest_allMetadata {
 	public static void prepare() {
 		StringFile file = new StringFile(createRepository(), createOptions());
 		file.setPulsePerLitre(350);
+		file.setBufferInterval(1500);
 		parser = new Parser(file.createContentOfFile());
 	}
 	
@@ -87,6 +88,11 @@ public class CSVWriterTest_allMetadata {
 	public void property_duration() {
 		checkProperty(ProcessRepositoryCSVWriter.PROP_DURATION,
 				TimeCalc.createDurationString(startTime, endTime));
+	}
+	
+	@Test
+	public void property_buffer() {
+		checkProperty(ProcessRepositoryCSVWriter.PROP_BUFFER, "1500");
 	}
 	
 	@Test
