@@ -6,8 +6,8 @@ import jedrzejbronislaw.flowmeasure.controllers.CalibrationPaneController;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
+import jedrzejbronislaw.flowmeasure.settings.PropertyName;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
-import jedrzejbronislaw.flowmeasure.settings.Settings.PropertyName;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
