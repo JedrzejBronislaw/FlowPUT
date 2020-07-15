@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -39,11 +40,14 @@ public class SaveWindowController implements Initializable {
 	private RadioButton comma_separator, dot_separator;
 	
 	@FXML
+	private CheckBox openBox;
+	
+	@FXML
 	private Button saveButton;
 
 
 	@Setter
-	private Consumer<ProcessRepositoryWriterOptions> saveAction;
+	private BiConsumer<ProcessRepositoryWriterOptions, Boolean> saveAction;
 
 	@Setter
 	private Runnable exitAction;
@@ -79,7 +83,7 @@ public class SaveWindowController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		saveButton.setOnAction(e -> {
-			Injection.run(saveAction, getOptions());
+			Injection.run(saveAction, getOptions(), openAfterSaving());
 			Injection.run(exitAction);
 		});
 
@@ -101,5 +105,10 @@ public class SaveWindowController implements Initializable {
 			if (Stream.of(boxes).allMatch(box -> !box.isSelected()))
 				sourceBox.setSelected(true);
 		};
+	}
+
+
+	private boolean openAfterSaving() {
+		return openBox.isSelected();
 	}
 }

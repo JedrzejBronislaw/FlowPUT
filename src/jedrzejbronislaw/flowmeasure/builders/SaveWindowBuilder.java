@@ -89,12 +89,12 @@ public class SaveWindowBuilder extends Builder<SaveWindowController> {
 		controller.setSaveAction(this::save);
 	}
 
-	private void save(ProcessRepositoryWriterOptions options) {
+	private void save(ProcessRepositoryWriterOptions options, boolean openFile) {
 		File file = choosingFileAction();
 		if(file == null) return;
 		
 		saveAction.save(process, file, options);
-		tryOpenFileInDefaultApplication(file);
+		if (openFile) tryOpenFileInDefaultApplication(file);
 	}
 
 	private void tryOpenFileInDefaultApplication(File f) {

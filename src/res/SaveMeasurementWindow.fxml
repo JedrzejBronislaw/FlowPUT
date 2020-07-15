@@ -60,6 +60,7 @@
             </VBox>
          </children>
       </HBox>
+      <CheckBox fx:id="openBox" mnemonicParsing="false" selected="true" text="Open after saving" />
       <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
    </children>
 </VBox>
