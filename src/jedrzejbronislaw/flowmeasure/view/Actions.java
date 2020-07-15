@@ -13,7 +13,6 @@ import jedrzejbronislaw.flowmeasure.FlowDevice;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.Session;
 import jedrzejbronislaw.flowmeasure.Session.FlowConsumerType;
-import jedrzejbronislaw.flowmeasure.Settings;
 import jedrzejbronislaw.flowmeasure.UART;
 import jedrzejbronislaw.flowmeasure.UARTParams;
 import jedrzejbronislaw.flowmeasure.application.Components;
@@ -24,6 +23,7 @@ import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryCSVWriter;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriter;
 import jedrzejbronislaw.flowmeasure.services.ConnectionMonitor;
+import jedrzejbronislaw.flowmeasure.settings.Settings;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

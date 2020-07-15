@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import jedrzejbronislaw.flowmeasure.events.EventType;
+import jedrzejbronislaw.flowmeasure.settings.Settings;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 

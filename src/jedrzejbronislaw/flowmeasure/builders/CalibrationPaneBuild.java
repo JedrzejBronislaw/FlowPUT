@@ -2,11 +2,11 @@ package jedrzejbronislaw.flowmeasure.builders;
 
 import jedrzejbronislaw.flowmeasure.Session;
 import jedrzejbronislaw.flowmeasure.Session.FlowConsumerType;
-import jedrzejbronislaw.flowmeasure.Settings;
 import jedrzejbronislaw.flowmeasure.controllers.CalibrationPaneController;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
+import jedrzejbronislaw.flowmeasure.settings.Settings;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

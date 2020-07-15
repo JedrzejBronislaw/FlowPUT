@@ -1,7 +1,7 @@
 package jedrzejbronislaw.flowmeasure.builders;
 
-import jedrzejbronislaw.flowmeasure.Settings;
 import jedrzejbronislaw.flowmeasure.controllers.SettingsPaneController;
+import jedrzejbronislaw.flowmeasure.settings.Settings;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

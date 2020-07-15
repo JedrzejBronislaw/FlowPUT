@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure;
+package jedrzejbronislaw.flowmeasure.settings;
 
 import java.io.File;
 import java.io.FileInputStream;
