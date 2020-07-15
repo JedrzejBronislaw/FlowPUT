@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
+import jedrzejbronislaw.flowmeasure.settings.Settings.PropertyName;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +20,7 @@ public class FlowConverter1 implements FlowConverter{
 
 	public FlowConverter1(float pulsePerLitre) {
 		settings = new Settings();
-		settings.setPulsePerLitre(pulsePerLitre);
+		settings.setProperty(PropertyName.PULSE_PER_LITRE, pulsePerLitre);
 	}
 	
 	@Override
@@ -54,7 +55,7 @@ public class FlowConverter1 implements FlowConverter{
 	}
 
 	private float factor() {
-		return settings.getPulsePerLitre();
+		return settings.getPropertyFloatValue(PropertyName.PULSE_PER_LITRE).get();
 	}
 	
 	@Override

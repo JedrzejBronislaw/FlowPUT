@@ -24,6 +24,7 @@ import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessReposit
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriter;
 import jedrzejbronislaw.flowmeasure.services.ConnectionMonitor;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
+import jedrzejbronislaw.flowmeasure.settings.Settings.PropertyName;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -38,7 +39,7 @@ public class Actions implements ActionContainer {
 			session().createNewProcessRepository("untitled");
 			session().getCurrentProcessRepository().setStartWithNextValueFlag();
 			
-			if(settings().isBufferedData())
+			if(isBufferedData())
 				session().setFlowConsumerType(FlowConsumerType.Buffered);
 			else
 				session().setFlowConsumerType(FlowConsumerType.Plain);
@@ -61,16 +62,16 @@ public class Actions implements ActionContainer {
 			SaveWindowBuilder builder = new SaveWindowBuilder(resources(), process);
 				
 			System.out.println(session().getFlowConsumerType());
-			if(settings().isBufferedData())
-				writer.setBufferInterval(settings().getBufferInterval());
-			writer.setPulsePerLitre(settings().getPulsePerLitre());
+			if(isBufferedData())
+				writer.setBufferInterval(settings().getInt(PropertyName.BUFFER_INTERVAL));
+			writer.setPulsePerLitre(settings().getFloat(PropertyName.PULSE_PER_LITRE));
 			
 			FileNamer filenamer = new FileNamer1(process);
 			builder.setFileNamer(filenamer::createName);
-			builder.setInitialDirectory(settings().getSavePath());
+			builder.setInitialDirectory(settings().getString(PropertyName.SAVE_PATH));
 			builder.setSaveAction(writer::save);
 			builder.setOnFileChoose(file -> {
-				settings().setSavePath(file.getParent());
+				settings().setProperty(PropertyName.SAVE_PATH, file.getParent());
 				settings().write();
 			});
 				
@@ -145,6 +146,12 @@ public class Actions implements ActionContainer {
 		eventManager().submitEvent(EventType.Exiting);
 		connectionMonitor().stop();
 		device().disconnect();
+	}
+	
+
+
+	private boolean isBufferedData() {
+		return settings().getPropertyBoolValue(PropertyName.BUFFERED_DATA).get();
 	}
 	
 	

@@ -2,6 +2,7 @@ package jedrzejbronislaw.flowmeasure.builders;
 
 import jedrzejbronislaw.flowmeasure.controllers.SettingsPaneController;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
+import jedrzejbronislaw.flowmeasure.settings.Settings.PropertyName;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -35,13 +36,13 @@ public class SettingsPaneBuilder extends Builder<SettingsPaneController> {
 		int bufferSize       = controller.getBufferSize();
 		
 		try {
-			settings.setPulsePerLitre(pulsesPerLitre);
+			settings.setProperty(PropertyName.PULSE_PER_LITRE, pulsesPerLitre);
 		} catch (NumberFormatException e) {}
 		
-		settings.setBufferedData(isBuffer);
+		settings.setProperty(PropertyName.BUFFERED_DATA, isBuffer);
 		
 		try {
-			settings.setBufferInterval(bufferSize);
+			settings.setProperty(PropertyName.BUFFER_INTERVAL, bufferSize);
 		} catch (NumberFormatException e) {}
 	}
 }

@@ -7,68 +7,136 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
-
-import lombok.Getter;
 
 public class Settings {
 	
 	private static final String settingsFileName = "properties.xml";
-	private Properties defaultProperties;// = new Properties();
 	
 	private Properties properties;// = new Properties(defaultPropierties);
 	private File file;
 	
+	public enum PropertyName {
+		PULSE_PER_LITRE("pulsePerLitre"),
+		BUFFERED_DATA("bufferedData"),
+		BUFFER_INTERVAL("bufferInterval"),
+		SAVE_PATH("savePath"),
+		AUTHOR("author"),
+		PROCESS_NAME("processName");
+		
+		String name;
 	
+		PropertyName(String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String toString() {
+			return name;
+		}
+	};
 	
-	@Getter
-	private float pulsePerLitre = 450;
+	private Map<String, Property> propertyMap = new HashMap<>();
 
-	@Getter
-	private boolean bufferedData = false;
+	private void addProperty(PropertyName name, Property property) {
+		propertyMap.put(name.toString(), property);
+	}
+	
+	public String getString(PropertyName name) {
+		return getPropertyValue(name);
+	}
+	
+	public boolean getBool(PropertyName name) {
+		return getPropertyBoolValue(name).get();
+	}
+	
+	public int getInt(PropertyName name) {
+		return getPropertyIntValue(name).get();
+	}
+	
+	public float getFloat(PropertyName name) {
+		return getPropertyFloatValue(name).get();
+	}
+	
+	public String getPropertyValue(PropertyName name) {
+		Property property = propertyMap.get(name.toString());
+		
+		return property==null ? null : property.toString();
+	}
+	
+	public Optional<Integer> getPropertyIntValue(PropertyName name) {
+		IntProperty property;
+		
+		try {
+			property = (IntProperty) getProperty(name);
+		} catch	(ClassCastException e) {
+			return Optional.empty();
+		}
+		
+		return Optional.of(property.get());
+	}
+	
+	public Optional<Float> getPropertyFloatValue(PropertyName name) {
+		FloatProperty property;
+		
+		try {
+			property = (FloatProperty) getProperty(name);
+		} catch	(ClassCastException e) {
+			return Optional.empty();
+		}
+		
+		return Optional.of(property.get());
+	}
+	
+	public Optional<Boolean> getPropertyBoolValue(PropertyName name) {
+		BoolProperty property;
+		
+		try {
+			property = (BoolProperty) getProperty(name);
+		} catch	(ClassCastException e) {
+			return Optional.empty();
+		}
+		
+		return Optional.of(property.get());
+	}
+	
+	public Property getProperty(PropertyName name) {
+		return propertyMap.get(name.toString());
+	}
+	
+	public void setProperty(PropertyName name, String value) {
+		Property property = propertyMap.get(name.toString());
 
-	@Getter
-	private int bufferInterval = 1000;
-	
-	@Getter
-	private String savePath = "";
-	
-	@Getter
-	private String author = "";
-	
-	@Getter
-	private String processName = "";
-	
-	
-	
-	public void setPulsePerLitre(float pulsePerLitre) {
-		this.pulsePerLitre = pulsePerLitre;
-		changeAction();
-	}
-	public void setBufferedData(boolean bufferedData) {
-		this.bufferedData = bufferedData;
-		changeAction();
-	}
-	public void setBufferInterval(int bufferInterval) {
-		this.bufferInterval = bufferInterval;
-		changeAction();
-	}
-	public void setSavePath(String savePath) {
-		this.savePath = savePath;
-		changeAction();
-	}
-	public void setAuthor(String author) {
-		this.author = author;
-		changeAction();
-	}
-	public void setProcessName(String processName) {
-		this.processName = processName;
-		changeAction();
+		if(property != null && value != null && property.set(value))
+			changeAction();
 	}
 	
-
+	public void setProperty(PropertyName name, int value) {
+		setProperty(name, Integer.toString(value));
+	}
+	
+	public void setProperty(PropertyName name, float value) {
+		setProperty(name, Float.toString(value));
+	}
+	
+	public void setProperty(PropertyName name, boolean value) {
+		setProperty(name, Boolean.toString(value));
+	}
+	
+	
 	public Settings() {
+		
+		addProperty(PropertyName.PULSE_PER_LITRE, new FloatProperty("450"));
+		addProperty(PropertyName.BUFFERED_DATA,   new BoolProperty("false"));
+		addProperty(PropertyName.BUFFER_INTERVAL, new IntProperty("1000"));
+		addProperty(PropertyName.SAVE_PATH,       new StringProperty(""));
+		addProperty(PropertyName.AUTHOR,          new StringProperty(""));
+		addProperty(PropertyName.PROCESS_NAME,    new StringProperty(""));
+		
 		
 		file = new File(settingsFileName);
 		if(!file.exists())
@@ -79,13 +147,7 @@ public class Settings {
 				e.printStackTrace();
 			}
 		
-		defaultProperties = new Properties();
-		
-		defaultProperties.setProperty("pulsePerLiter", "450");
-		defaultProperties.setProperty("bufferedData","false");
-		defaultProperties.setProperty("bufferInterval", "1000");
-		
-		properties = new Properties(defaultProperties);
+		properties = new Properties();
 	}
 	
 	
@@ -94,10 +156,9 @@ public class Settings {
 		try(InputStream stream = new FileInputStream(file)){
 			properties.loadFromXML(stream);
 			
-			pulsePerLitre = Float.parseFloat(properties.getProperty("pulsePerLitre"));
-			bufferedData = Boolean.parseBoolean(properties.getProperty("bufferedData"));
-			bufferInterval = Integer.parseInt(properties.getProperty("bufferInterval"));
-			savePath = properties.getProperty("savePath");
+			for (PropertyName name : PropertyName.values())
+				setProperty(name, properties.getProperty(name.toString()));
+			
 		} catch (IOException e) {
 			System.out.println("error read properties");
 //			e.printStackTrace();
@@ -106,14 +167,13 @@ public class Settings {
 		
 		return true;
 	}
-	
+
 	public boolean write() {
 		try(OutputStream stream = new FileOutputStream(file)){
 			
-			properties.setProperty("pulsePerLitre",Float.toString(pulsePerLitre));
-			properties.setProperty("bufferedData",Boolean.toString(bufferedData));
-			properties.setProperty("bufferInterval",Integer.toString(bufferInterval));
-			properties.setProperty("savePath",savePath);
+			for (PropertyName name : PropertyName.values())
+				properties.setProperty(name.toString(),  getPropertyValue(name));
+				
 			properties.storeToXML(stream, "properties");
 		} catch (IOException e) {
 			System.out.println("error write properties");
