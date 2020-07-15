@@ -39,7 +39,7 @@ public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
 		
 		controller.setSet(() -> {
 			settings.setProperty(PropertyName.PULSE_PER_LITRE, calibration.getValue());
-			settings.write();
+			settings.saveToFile();
 		});
 		
 		eventManager.addListener(controller);

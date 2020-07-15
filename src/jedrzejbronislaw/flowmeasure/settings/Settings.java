@@ -1,24 +1,15 @@
 package jedrzejbronislaw.flowmeasure.settings;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Properties;
 
 public class Settings {
 	
 	private static final String settingsFileName = "properties.xml";
-	
-	private Properties properties;// = new Properties(defaultPropierties);
-	private File file;
+	private PropertyFile propertyFile;
 	
 	private Map<String, Property> propertyMap = new HashMap<>();
 
@@ -118,49 +109,19 @@ public class Settings {
 		addProperty(PropertyName.PROCESS_NAME,    new StringProperty(""));
 		
 		
-		file = new File(settingsFileName);
-		if(!file.exists())
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		properties = new Properties();
+		propertyFile = new PropertyFile(
+				settingsFileName,
+				this::setProperty,
+				this::getPropertyValue);
 	}
 	
-	
-	
-	public boolean read(){
-		try(InputStream stream = new FileInputStream(file)){
-			properties.loadFromXML(stream);
-			
-			for (PropertyName name : PropertyName.values())
-				setProperty(name, properties.getProperty(name.toString()));
-			
-		} catch (IOException e) {
-			System.out.println("error read properties");
-//			e.printStackTrace();
-			return false;
-		}
-		
-		return true;
-	}
 
-	public boolean write() {
-		try(OutputStream stream = new FileOutputStream(file)){
-			
-			for (PropertyName name : PropertyName.values())
-				properties.setProperty(name.toString(),  getPropertyValue(name));
-				
-			properties.storeToXML(stream, "properties");
-		} catch (IOException e) {
-			System.out.println("error write properties");
-			return false;
-		}
-		
-		return true;
+	public boolean saveToFile() {
+		return propertyFile.write();
+	}
+	
+	public boolean loadFromFile() {
+		return propertyFile.read();
 	}
 	
 	

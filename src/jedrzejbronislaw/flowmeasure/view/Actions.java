@@ -72,7 +72,7 @@ public class Actions implements ActionContainer {
 			builder.setSaveAction(writer::save);
 			builder.setOnFileChoose(file -> {
 				settings().setProperty(PropertyName.SAVE_PATH, file.getParent());
-				settings().write();
+				settings().saveToFile();
 			});
 				
 			builder.build();

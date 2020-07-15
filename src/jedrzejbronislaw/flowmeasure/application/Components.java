@@ -69,7 +69,7 @@ public class Components {
 	}
 
 	private void set() {
-		settings.read();
+		settings.loadFromFile();
 		
 		session.setBufferCreator(() ->
 			new DataBuffer1(
