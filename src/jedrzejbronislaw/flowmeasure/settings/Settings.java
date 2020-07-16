@@ -47,42 +47,8 @@ public class Settings implements PropertyAccess {
 		return properties.get(name);
 	}
 	
+	
 	public void addChangeListiner(Runnable listener) {
 		listenerManager.add(listener);
 	}
-	
-	/*
-	public boolean setBufferInterval(int bufferInterval) {
-		if(bufferedFlowConsumer != null) {
-			this.bufferInterval = bufferInterval;
-			bufferedFlowConsumer.setInterval(bufferInterval);
-			return true;
-		} else
-			return false;
-	}
-	
-	@Getter
-	private FlowMeasurementConsumer flowConsumer;
-	
-	public void setPlainFlowMeasurementConsumer() {
-		flowConsumer = plainFlowConsumer;
-		bufferedData = false;
-	}
-	public void setBufferedFlowMeasurementConsumer() {
-		flowConsumer = bufferedFlowConsumer;
-		bufferedData = true;
-	}
-	
-
-	@Setter
-	private ProcessRepository plainFlowConsumer;
-
-//	@Setter
-	private DataBuffer bufferedFlowConsumer;
-	
-	public void setBufferedFlowConsumer(DataBuffer bufferedFlowConsumer) {
-		this.bufferedFlowConsumer = bufferedFlowConsumer;
-		bufferInterval = bufferedFlowConsumer.getInterval();
-	}
-*/
 }
