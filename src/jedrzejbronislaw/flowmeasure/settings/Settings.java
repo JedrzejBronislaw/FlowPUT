@@ -1,127 +1,50 @@
 package jedrzejbronislaw.flowmeasure.settings;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-public class Settings {
+public class Settings implements PropertyAccess {
 	
 	private static final String settingsFileName = "properties.xml";
-	private PropertyFile propertyFile;
-	
-	private Map<String, Property> propertyMap = new HashMap<>();
-
-	private void addProperty(PropertyName name, Property property) {
-		propertyMap.put(name.toString(), property);
-	}
-	
-	public String getString(PropertyName name) {
-		return getPropertyValue(name);
-	}
-	
-	public boolean getBool(PropertyName name) {
-		return getPropertyBoolValue(name).get();
-	}
-	
-	public int getInt(PropertyName name) {
-		return getPropertyIntValue(name).get();
-	}
-	
-	public float getFloat(PropertyName name) {
-		return getPropertyFloatValue(name).get();
-	}
-	
-	public String getPropertyValue(PropertyName name) {
-		Property property = propertyMap.get(name.toString());
-		
-		return property==null ? null : property.toString();
-	}
-	
-	public Optional<Integer> getPropertyIntValue(PropertyName name) {
-		IntProperty property;
-		
-		try {
-			property = (IntProperty) getProperty(name);
-		} catch	(ClassCastException e) {
-			return Optional.empty();
-		}
-		
-		return Optional.of(property.get());
-	}
-	
-	public Optional<Float> getPropertyFloatValue(PropertyName name) {
-		FloatProperty property;
-		
-		try {
-			property = (FloatProperty) getProperty(name);
-		} catch	(ClassCastException e) {
-			return Optional.empty();
-		}
-		
-		return Optional.of(property.get());
-	}
-	
-	public Optional<Boolean> getPropertyBoolValue(PropertyName name) {
-		BoolProperty property;
-		
-		try {
-			property = (BoolProperty) getProperty(name);
-		} catch	(ClassCastException e) {
-			return Optional.empty();
-		}
-		
-		return Optional.of(property.get());
-	}
-	
-	public Property getProperty(PropertyName name) {
-		return propertyMap.get(name.toString());
-	}
-	
-	public void setProperty(PropertyName name, String value) {
-		Property property = propertyMap.get(name.toString());
-
-		if(property != null && value != null && property.set(value))
-			changeAction();
-	}
-	
-	public void setProperty(PropertyName name, int value) {
-		setProperty(name, Integer.toString(value));
-	}
-	
-	public void setProperty(PropertyName name, float value) {
-		setProperty(name, Float.toString(value));
-	}
-	
-	public void setProperty(PropertyName name, boolean value) {
-		setProperty(name, Boolean.toString(value));
-	}
-	
+	private final PropertyFile propertyFile;
+	private final Properties properties = new Properties();
 	
 	public Settings() {
 		
-		addProperty(PropertyName.PULSE_PER_LITRE, new FloatProperty("450"));
-		addProperty(PropertyName.BUFFERED_DATA,   new BoolProperty("false"));
-		addProperty(PropertyName.BUFFER_INTERVAL, new IntProperty("1000"));
-		addProperty(PropertyName.SAVE_PATH,       new StringProperty(""));
-		addProperty(PropertyName.AUTHOR,          new StringProperty(""));
-		addProperty(PropertyName.PROCESS_NAME,    new StringProperty(""));
+		properties.add(PropertyName.PULSE_PER_LITRE, new FloatProperty("450"));
+		properties.add(PropertyName.BUFFERED_DATA,   new BoolProperty("false"));
+		properties.add(PropertyName.BUFFER_INTERVAL, new IntProperty("1000"));
+		properties.add(PropertyName.SAVE_PATH,       new StringProperty(""));
+		properties.add(PropertyName.AUTHOR,          new StringProperty(""));
+		properties.add(PropertyName.PROCESS_NAME,    new StringProperty(""));
+		
+		properties.setChangeAction(this::changeAction);
 		
 		
 		propertyFile = new PropertyFile(
 				settingsFileName,
-				this::setProperty,
-				this::getPropertyValue);
+				properties::setProperty,
+				properties::getPropertyValue);
 	}
-	
 
+	
 	public boolean saveToFile() {
 		return propertyFile.write();
 	}
 	
 	public boolean loadFromFile() {
 		return propertyFile.read();
+	}
+	
+	
+	@Override
+	public void set(PropertyName name, String value) {
+		properties.set(name, value);
+	}
+	
+	@Override
+	public Property get(PropertyName name) {
+		return properties.get(name);
 	}
 	
 	
