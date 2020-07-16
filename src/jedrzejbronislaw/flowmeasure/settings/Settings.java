@@ -1,13 +1,13 @@
 package jedrzejbronislaw.flowmeasure.settings;
 
-import java.util.ArrayList;
-import java.util.List;
+import jedrzejbronislaw.flowmeasure.tools.SimpleListenerManager;
 
 public class Settings implements PropertyAccess {
 	
 	private static final String settingsFileName = "properties.xml";
 	private final PropertyFile propertyFile;
 	private final Properties properties = new Properties();
+	private final SimpleListenerManager listenerManager = new SimpleListenerManager();
 	
 	public Settings() {
 		
@@ -18,7 +18,7 @@ public class Settings implements PropertyAccess {
 		properties.add(PropertyName.AUTHOR,          new StringProperty(""));
 		properties.add(PropertyName.PROCESS_NAME,    new StringProperty(""));
 		
-		properties.setChangeAction(this::changeAction);
+		properties.setChangeAction(listenerManager::action);
 		
 		
 		propertyFile = new PropertyFile(
@@ -47,18 +47,8 @@ public class Settings implements PropertyAccess {
 		return properties.get(name);
 	}
 	
-	
-	
-	private List<Runnable> changeListeners = new ArrayList<>();
-
-	
-	private void changeAction() {
-		changeListeners.forEach(listiner -> listiner.run());
-	}
-	
 	public void addChangeListiner(Runnable listener) {
-		changeListeners.add(listener);
-		listener.run();
+		listenerManager.add(listener);
 	}
 	
 	/*
