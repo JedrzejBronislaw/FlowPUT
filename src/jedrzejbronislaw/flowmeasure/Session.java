@@ -21,10 +21,6 @@ public class Session {
 	}
 
 
-	@Setter
-	@Getter
-	private FlowDevice device;
-
 	private final Repository repository;
 
 	@Getter

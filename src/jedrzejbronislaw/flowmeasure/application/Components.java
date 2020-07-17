@@ -77,7 +77,6 @@ public class Components {
 				settings.getInt(AppProperties.BUFFER_INTERVAL)
 			));
 		session.setCalibration(calibration);
-		session.setDevice(device);
 
 		eventManager.setEventPolicy(eventPolicy);
 		eventManager.addListener(dialogManager);
