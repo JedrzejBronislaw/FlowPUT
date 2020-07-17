@@ -1,7 +1,7 @@
 package jedrzejbronislaw.flowmeasure.builders;
 
-import jedrzejbronislaw.flowmeasure.Session;
-import jedrzejbronislaw.flowmeasure.Session.FlowConsumerType;
+import jedrzejbronislaw.flowmeasure.FlowManager;
+import jedrzejbronislaw.flowmeasure.FlowManager.FlowConsumerType;
 import jedrzejbronislaw.flowmeasure.controllers.CalibrationPaneController;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
@@ -17,7 +17,7 @@ public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
 	@Getter private String fxmlFilePath = "CalibrationPane.fxml";
 
 	private final EventManager eventManager;
-	private final Session session;
+	private final FlowManager flowManager;
 	private final Settings settings;
 	private final Calibration calibration;
 	
@@ -25,12 +25,12 @@ public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
 	void afterBuild() {
 		controller.setStart(() -> {
 			if(eventManager.submitEvent(EventType.Calibration_Starts))
-				session.setFlowConsumerType(FlowConsumerType.Calibration);
+				flowManager.setFlowConsumerType(FlowConsumerType.Calibration);
 		});
 		
 		controller.setStop(() -> {
 			if(eventManager.submitEvent(EventType.Calibration_Ends))
-				session.setFlowConsumerType(FlowConsumerType.None);
+				flowManager.setFlowConsumerType(FlowConsumerType.None);
 		});
 		
 		controller.setReset(calibration::reset);

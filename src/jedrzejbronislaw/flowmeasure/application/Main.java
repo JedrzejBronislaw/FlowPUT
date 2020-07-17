@@ -30,7 +30,7 @@ public class Main extends Application {
 		generator.setInterval(1000);
 		generator.setNumOfFlowmeters(6);
 		
-		generator.generate(components.getSession().getCurrentProcessRepository(), 10*60*60);
+		generator.generate(components.getFlowManager().getCurrentProcessRepository(), 10*60*60);
 	}
 	
 	public static void main(String[] args) {

@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.FlowConverter;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
-import jedrzejbronislaw.flowmeasure.Session;
+import jedrzejbronislaw.flowmeasure.FlowManager;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.builders.CalibrationPaneBuild;
 import jedrzejbronislaw.flowmeasure.builders.ChartPaneBuilder;
@@ -123,7 +123,7 @@ public class ViewBuilder {
 	}
 
 	private Node calibrationPane() {
-		CalibrationPaneBuild builder = new CalibrationPaneBuild(eventManager(), session(), settings(), calibration());
+		CalibrationPaneBuild builder = new CalibrationPaneBuild(eventManager(), flowManager(), settings(), calibration());
 		builder.build();
 		
 		return builder.getNode();
@@ -157,7 +157,7 @@ public class ViewBuilder {
 	
 	
 	private ProcessRepository getCurrentProcessRepo() {
-		return session().getCurrentProcessRepository();
+		return flowManager().getCurrentProcessRepository();
 	}
 
 	
@@ -165,8 +165,8 @@ public class ViewBuilder {
 		return components.getPrimaryStage();
 	}
 	
-	private Session session() {
-		return components.getSession();
+	private FlowManager flowManager() {
+		return components.getFlowManager();
 	}
 	
 	private Settings settings() {

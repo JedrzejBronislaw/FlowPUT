@@ -11,8 +11,8 @@ import jedrzejbronislaw.flowmeasure.FileNamer;
 import jedrzejbronislaw.flowmeasure.FileNamer1;
 import jedrzejbronislaw.flowmeasure.FlowDevice;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
-import jedrzejbronislaw.flowmeasure.Session;
-import jedrzejbronislaw.flowmeasure.Session.FlowConsumerType;
+import jedrzejbronislaw.flowmeasure.FlowManager;
+import jedrzejbronislaw.flowmeasure.FlowManager.FlowConsumerType;
 import jedrzejbronislaw.flowmeasure.UART;
 import jedrzejbronislaw.flowmeasure.UARTParams;
 import jedrzejbronislaw.flowmeasure.application.Components;
@@ -36,21 +36,21 @@ public class Actions implements ActionContainer {
 	@Override
 	public void startProcess() {
 		if(eventManager().submitEvent(EventType.Process_Starts)) {
-			session().createNewProcessRepository("untitled");
-			session().getCurrentProcessRepository().setStartWithNextValueFlag();
+			flowManager().createNewProcessRepository("untitled");
+			flowManager().getCurrentProcessRepository().setStartWithNextValueFlag();
 			
 			if(isBufferedData())
-				session().setFlowConsumerType(FlowConsumerType.Buffered);
+				flowManager().setFlowConsumerType(FlowConsumerType.Buffered);
 			else
-				session().setFlowConsumerType(FlowConsumerType.Plain);
+				flowManager().setFlowConsumerType(FlowConsumerType.Plain);
 		}
 	}
 
 	@Override
 	public void endProcess() {
 		if(eventManager().submitEvent(EventType.Process_Ends)) {
-			session().getCurrentProcessRepository().setProcessEndTimeNow();
-			session().setFlowConsumerType(FlowConsumerType.None);
+			flowManager().getCurrentProcessRepository().setProcessEndTimeNow();
+			flowManager().setFlowConsumerType(FlowConsumerType.None);
 		}
 	}
 
@@ -58,10 +58,10 @@ public class Actions implements ActionContainer {
 	public void saveProcess() {
 		if(eventManager().submitEvent(EventType.Saving_Process)) {
 			ProcessRepositoryWriter writer = new ProcessRepositoryCSVWriter();
-			ProcessRepository process = session().getCurrentProcessRepository();
+			ProcessRepository process = flowManager().getCurrentProcessRepository();
 			SaveWindowBuilder builder = new SaveWindowBuilder(resources(), process);
 				
-			System.out.println(session().getFlowConsumerType());
+			System.out.println(flowManager().getFlowConsumerType());
 			if(isBufferedData())
 				writer.setBufferInterval(settings().getInt(AppProperties.BUFFER_INTERVAL));
 			writer.setPulsePerLitre(settings().getFloat(AppProperties.PULSE_PER_LITRE));
@@ -176,8 +176,8 @@ public class Actions implements ActionContainer {
 		return components.getResources();
 	}
 	
-	private Session session() {
-		return components.getSession();
+	private FlowManager flowManager() {
+		return components.getFlowManager();
 	}
 	
 	private Settings settings() {

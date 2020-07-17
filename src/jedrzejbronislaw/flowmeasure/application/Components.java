@@ -7,7 +7,7 @@ import jedrzejbronislaw.flowmeasure.FlowConverter;
 import jedrzejbronislaw.flowmeasure.FlowConverter1;
 import jedrzejbronislaw.flowmeasure.FlowDevice;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
-import jedrzejbronislaw.flowmeasure.Session;
+import jedrzejbronislaw.flowmeasure.FlowManager;
 import jedrzejbronislaw.flowmeasure.SideDirResourcesRepository;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventPolicy;
@@ -36,7 +36,7 @@ public class Components {
 
 	private ResourcesRepository resources;
 	private FlowDevice device;
-	private Session session;
+	private FlowManager flowManager;
 	private Settings settings;
 	private ConnectionMonitor connectionMonitor;
 	private EventManager eventManager;
@@ -63,7 +63,7 @@ public class Components {
 		eventPolicy = new EventPolicy(stateManager);
 		dialogManager = buildDialogManager();
 		calibration = buildCalibration();
-		session = new Session(new Repository());
+		flowManager = new FlowManager(new Repository());
 		
 		set();
 	}
@@ -71,12 +71,12 @@ public class Components {
 	private void set() {
 		settings.loadFromFile();
 		
-		session.setBufferCreator(() ->
+		flowManager.setBufferCreator(() ->
 			new DataBuffer1(
-				session.getCurrentProcessRepository(),
+				flowManager.getCurrentProcessRepository(),
 				settings.getInt(AppProperties.BUFFER_INTERVAL)
 			));
-		session.setCalibration(calibration);
+		flowManager.setCalibration(calibration);
 
 		eventManager.setEventPolicy(eventPolicy);
 		eventManager.addListener(dialogManager);
@@ -95,7 +95,7 @@ public class Components {
 		
 		device.setNewFlowsReceive(flows -> {
 			eventManager.submitEvent(EventType.ReceivedData);
-			session.getFlowConsumer().addFlowMeasurement(flows);
+			flowManager.getFlowConsumer().addFlowMeasurement(flows);
 		});
 
 		device.setIncorrectMessageReceive(m -> System.out.println("(" + LocalDateTime.now().toString() + ") Incorrect Message: " + m));

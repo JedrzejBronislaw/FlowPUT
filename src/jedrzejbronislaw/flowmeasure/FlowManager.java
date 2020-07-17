@@ -9,7 +9,7 @@ import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Session {
+public class FlowManager {
 
 	private final static int FLOWMETERS_NUMBER = 6;
 
@@ -36,7 +36,7 @@ public class Session {
 	}
 
 	
-	public Session(Repository repository) {
+	public FlowManager(Repository repository) {
 		this.repository = repository;
 		setFlowConsumerType(FlowConsumerType.None);
 	}
