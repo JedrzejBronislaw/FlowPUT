@@ -55,7 +55,7 @@ public class FlowConverter1 implements FlowConverter{
 	}
 
 	private float factor() {
-		return settings.getPropertyFloatValue(AppProperties.PULSE_PER_LITRE).get();
+		return settings.getFloat(AppProperties.PULSE_PER_LITRE);
 	}
 	
 	@Override

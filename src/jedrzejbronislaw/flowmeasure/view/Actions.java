@@ -151,7 +151,7 @@ public class Actions implements ActionContainer {
 
 
 	private boolean isBufferedData() {
-		return settings().getPropertyBoolValue(AppProperties.BUFFERED_DATA).get();
+		return settings().getBool(AppProperties.BUFFERED_DATA);
 	}
 	
 	

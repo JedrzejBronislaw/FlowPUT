@@ -74,7 +74,7 @@ public class Components {
 		session.setBufferCreator(() ->
 			new DataBuffer1(
 				session.getCurrentProcessRepository(),
-				settings.getPropertyIntValue(AppProperties.BUFFER_INTERVAL).get()
+				settings.getInt(AppProperties.BUFFER_INTERVAL)
 			));
 		session.setCalibration(calibration);
 		session.setDevice(device);
