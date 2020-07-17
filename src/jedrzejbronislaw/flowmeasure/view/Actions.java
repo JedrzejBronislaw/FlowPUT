@@ -23,7 +23,7 @@ import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryCSVWriter;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriter;
 import jedrzejbronislaw.flowmeasure.services.ConnectionMonitor;
-import jedrzejbronislaw.flowmeasure.settings.PropertyName;
+import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import lombok.RequiredArgsConstructor;
 
@@ -63,15 +63,15 @@ public class Actions implements ActionContainer {
 				
 			System.out.println(session().getFlowConsumerType());
 			if(isBufferedData())
-				writer.setBufferInterval(settings().getInt(PropertyName.BUFFER_INTERVAL));
-			writer.setPulsePerLitre(settings().getFloat(PropertyName.PULSE_PER_LITRE));
+				writer.setBufferInterval(settings().getInt(AppProperties.BUFFER_INTERVAL));
+			writer.setPulsePerLitre(settings().getFloat(AppProperties.PULSE_PER_LITRE));
 			
 			FileNamer filenamer = new FileNamer1(process);
 			builder.setFileNamer(filenamer::createName);
-			builder.setInitialDirectory(settings().getString(PropertyName.SAVE_PATH));
+			builder.setInitialDirectory(settings().getString(AppProperties.SAVE_PATH));
 			builder.setSaveAction(writer::save);
 			builder.setOnFileChoose(file -> {
-				settings().setProperty(PropertyName.SAVE_PATH, file.getParent());
+				settings().setProperty(AppProperties.SAVE_PATH, file.getParent());
 				settings().saveToFile();
 			});
 				
@@ -151,7 +151,7 @@ public class Actions implements ActionContainer {
 
 
 	private boolean isBufferedData() {
-		return settings().getPropertyBoolValue(PropertyName.BUFFERED_DATA).get();
+		return settings().getPropertyBoolValue(AppProperties.BUFFERED_DATA).get();
 	}
 	
 	

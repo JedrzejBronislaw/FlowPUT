@@ -15,10 +15,10 @@ public class PropertyFile {
 	private final Properties properties;
 	private final File file;
 	
-	private final BiConsumer<PropertyName, String> propertySetter;
-	private final Function<PropertyName, String> propertyGetter;
+	private final BiConsumer<PropertyDesc, String> propertySetter;
+	private final Function<PropertyDesc, String> propertyGetter;
 	
-	public PropertyFile(String fileName, BiConsumer<PropertyName, String> propertySetter, Function<PropertyName, String> propertyGetter) {
+	public PropertyFile(String fileName, BiConsumer<PropertyDesc, String> propertySetter, Function<PropertyDesc, String> propertyGetter) {
 		
 		this.propertySetter = propertySetter;
 		this.propertyGetter = propertyGetter;
@@ -42,7 +42,7 @@ public class PropertyFile {
 		try(InputStream stream = new FileInputStream(file)){
 			properties.loadFromXML(stream);
 			
-			for (PropertyName name : PropertyName.values())
+			for (AppProperties name : AppProperties.values())
 				propertySetter.accept(name, properties.getProperty(name.toString()));
 			
 		} catch (IOException e) {
@@ -56,7 +56,7 @@ public class PropertyFile {
 	public boolean write() {
 		try(OutputStream stream = new FileOutputStream(file)){
 			
-			for (PropertyName name : PropertyName.values())
+			for (AppProperties name : AppProperties.values())
 				properties.setProperty(name.toString(),  propertyGetter.apply(name));
 				
 			properties.storeToXML(stream, "properties");

@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import jedrzejbronislaw.flowmeasure.settings.PropertyName;
+import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
@@ -48,9 +48,9 @@ public class SettingsPaneController implements Initializable, StateListener<Proc
 	public void setSettings(Settings settings) {
 		if (!activeUpdating ) return;
 		
-		pulsesPerLitre.setText(settings.getPropertyValue(PropertyName.PULSE_PER_LITRE));
-		bufferCheckbox.setSelected(settings.getBool(PropertyName.BUFFERED_DATA));
-		bufferSizeField.setText(settings.getPropertyValue(PropertyName.BUFFER_INTERVAL));
+		pulsesPerLitre.setText(settings.getPropertyValue(AppProperties.PULSE_PER_LITRE));
+		bufferCheckbox.setSelected(settings.getBool(AppProperties.BUFFERED_DATA));
+		bufferSizeField.setText(settings.getPropertyValue(AppProperties.BUFFER_INTERVAL));
 	}
 	
 	@Override

@@ -4,18 +4,18 @@ import java.util.Optional;
 
 public interface PropertyAccess {
 
-	void set(PropertyName name, String value);
-	Property get(PropertyName name);
+	void set(PropertyDesc propertyDesc, String value);
+	Property get(PropertyDesc propertyDesc);
 
 
 	
-	default String getPropertyValue(PropertyName name) {
+	default String getPropertyValue(PropertyDesc name) {
 		Property property = get(name);
 		
 		return property==null ? null : property.toString();
 	}
 
-	default Optional<Integer> getPropertyIntValue(PropertyName name) {
+	default Optional<Integer> getPropertyIntValue(PropertyDesc name) {
 		IntProperty property;
 		
 		try {
@@ -27,7 +27,7 @@ public interface PropertyAccess {
 		return Optional.of(property.get());
 	}
 
-	default Optional<Float> getPropertyFloatValue(PropertyName name) {
+	default Optional<Float> getPropertyFloatValue(PropertyDesc name) {
 		FloatProperty property;
 		
 		try {
@@ -39,7 +39,7 @@ public interface PropertyAccess {
 		return Optional.of(property.get());
 	}
 
-	default Optional<Boolean> getPropertyBoolValue(PropertyName name) {
+	default Optional<Boolean> getPropertyBoolValue(PropertyDesc name) {
 		BoolProperty property;
 		
 		try {
@@ -53,37 +53,37 @@ public interface PropertyAccess {
 	
 	
 	
-	default String getString(PropertyName name) {
+	default String getString(PropertyDesc name) {
 		return getPropertyValue(name);
 	}
 	
-	default boolean getBool(PropertyName name) {
+	default boolean getBool(PropertyDesc name) {
 		return getPropertyBoolValue(name).get();
 	}
 
-	default int getInt(PropertyName name) {
+	default int getInt(PropertyDesc name) {
 		return getPropertyIntValue(name).get();
 	}
 
-	default float getFloat(PropertyName name) {
+	default float getFloat(PropertyDesc name) {
 		return getPropertyFloatValue(name).get();
 	}
 	
 	
 
-	default void setProperty(PropertyName name, String value) {
+	default void setProperty(PropertyDesc name, String value) {
 		set(name, value);
 	}
 	
-	default void setProperty(PropertyName name, int value) {
+	default void setProperty(PropertyDesc name, int value) {
 		set(name, Integer.toString(value));
 	}
 
-	default void setProperty(PropertyName name, float value) {
+	default void setProperty(PropertyDesc name, float value) {
 		set(name, Float.toString(value));
 	}
 
-	default void setProperty(PropertyName name, boolean value) {
+	default void setProperty(PropertyDesc name, boolean value) {
 		set(name, Boolean.toString(value));
 	}
 }

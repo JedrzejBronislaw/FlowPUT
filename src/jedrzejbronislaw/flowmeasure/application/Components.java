@@ -20,7 +20,7 @@ import jedrzejbronislaw.flowmeasure.services.ConnectionMonitor1;
 import jedrzejbronislaw.flowmeasure.services.DataBuffer;
 import jedrzejbronislaw.flowmeasure.services.DataBuffer1;
 import jedrzejbronislaw.flowmeasure.services.DialogManager;
-import jedrzejbronislaw.flowmeasure.settings.PropertyName;
+import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
@@ -74,7 +74,7 @@ public class Components {
 		session.setBufferCreator(() ->
 			new DataBuffer1(
 				session.getCurrentProcessRepository(),
-				settings.getPropertyIntValue(PropertyName.BUFFER_INTERVAL).get()
+				settings.getPropertyIntValue(AppProperties.BUFFER_INTERVAL).get()
 			));
 		session.setCalibration(calibration);
 		session.setDevice(device);

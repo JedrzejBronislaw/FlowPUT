@@ -6,7 +6,7 @@ import jedrzejbronislaw.flowmeasure.controllers.CalibrationPaneController;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
-import jedrzejbronislaw.flowmeasure.settings.PropertyName;
+import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
 		calibration.setValueListener(value -> controller.setCurrentValue(value));
 		
 		controller.setSet(() -> {
-			settings.setProperty(PropertyName.PULSE_PER_LITRE, calibration.getValue());
+			settings.setProperty(AppProperties.PULSE_PER_LITRE, calibration.getValue());
 			settings.saveToFile();
 		});
 		
