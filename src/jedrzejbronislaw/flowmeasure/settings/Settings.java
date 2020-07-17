@@ -15,6 +15,7 @@ public class Settings implements PropertyAccess {
 		
 		propertyFile = new PropertyFile(
 				settingsFileName,
+				AppProperties.values(),
 				properties::setProperty,
 				properties::getPropertyValue);
 	}
