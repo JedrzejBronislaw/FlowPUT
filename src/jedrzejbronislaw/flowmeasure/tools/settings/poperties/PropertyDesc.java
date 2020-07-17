@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.settings;
+package jedrzejbronislaw.flowmeasure.tools.settings.poperties;
 
 public interface PropertyDesc {
 

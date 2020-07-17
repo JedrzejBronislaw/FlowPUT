@@ -1,9 +1,10 @@
-package jedrzejbronislaw.flowmeasure.settings;
+package jedrzejbronislaw.flowmeasure.tools.settings.poperties;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import jedrzejbronislaw.flowmeasure.tools.Injection;
+import jedrzejbronislaw.flowmeasure.tools.settings.PropertyAccess;
 import lombok.Setter;
 
 public class Properties implements PropertyAccess {

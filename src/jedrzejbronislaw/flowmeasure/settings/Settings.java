@@ -1,6 +1,11 @@
 package jedrzejbronislaw.flowmeasure.settings;
 
 import jedrzejbronislaw.flowmeasure.tools.SimpleListenerManager;
+import jedrzejbronislaw.flowmeasure.tools.settings.PropertyAccess;
+import jedrzejbronislaw.flowmeasure.tools.settings.PropertyFile;
+import jedrzejbronislaw.flowmeasure.tools.settings.poperties.Properties;
+import jedrzejbronislaw.flowmeasure.tools.settings.poperties.Property;
+import jedrzejbronislaw.flowmeasure.tools.settings.poperties.PropertyDesc;
 
 public class Settings implements PropertyAccess {
 	

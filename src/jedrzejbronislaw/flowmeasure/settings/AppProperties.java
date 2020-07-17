@@ -1,5 +1,7 @@
 package jedrzejbronislaw.flowmeasure.settings;
 
+import jedrzejbronislaw.flowmeasure.tools.settings.poperties.PropertyDesc;
+import jedrzejbronislaw.flowmeasure.tools.settings.poperties.PropertyType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

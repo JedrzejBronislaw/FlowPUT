@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.settings;
+package jedrzejbronislaw.flowmeasure.tools.settings;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import java.util.Properties;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+
+import jedrzejbronislaw.flowmeasure.tools.settings.poperties.PropertyDesc;
 
 public class PropertyFile {
 

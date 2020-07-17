@@ -1,6 +1,12 @@
-package jedrzejbronislaw.flowmeasure.settings;
+package jedrzejbronislaw.flowmeasure.tools.settings;
 
 import java.util.Optional;
+
+import jedrzejbronislaw.flowmeasure.tools.settings.poperties.BoolProperty;
+import jedrzejbronislaw.flowmeasure.tools.settings.poperties.FloatProperty;
+import jedrzejbronislaw.flowmeasure.tools.settings.poperties.IntProperty;
+import jedrzejbronislaw.flowmeasure.tools.settings.poperties.Property;
+import jedrzejbronislaw.flowmeasure.tools.settings.poperties.PropertyDesc;
 
 public interface PropertyAccess {
 
