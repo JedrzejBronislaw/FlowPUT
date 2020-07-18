@@ -20,20 +20,18 @@ public class FlowManager {
 		Calibration
 	}
 
+	
+	@Getter private FlowConsumerType flowConsumerType;
+	        private FlowMeasurementConsumer flowConsumer;
+	
+	        private FlowMeasurementConsumer noneFlowConsumer = pulses -> {};
+	        private ProcessRepository plainFlowConsumer;
+	@Setter private Supplier<FlowMeasurementConsumer> bufferCreator;
+	@Setter private Calibration calibration;
 
-	private final Repository repository;
-
-	@Getter
-	private ProcessRepository currentProcessRepository;
-
-	public ProcessRepository createNewProcessRepository(String name) {
-		ProcessRepository processRepository = repository.createNewProcessRepository(FLOWMETERS_NUMBER, name);
-		processRepository.getMetadata().setAuthor("unknown");
-
-		plainFlowConsumer = currentProcessRepository = processRepository;
-		
-		return processRepository;
-	}
+	
+	        private final Repository repository;
+	@Getter private ProcessRepository currentProcessRepository;
 
 	
 	public FlowManager(Repository repository) {
@@ -41,47 +39,29 @@ public class FlowManager {
 		setFlowConsumerType(FlowConsumerType.None);
 	}
 	
+	public ProcessRepository createNewProcessRepository(String name) {
+		ProcessRepository processRepository = repository.createNewProcessRepository(FLOWMETERS_NUMBER, name);
+		processRepository.getMetadata().setAuthor("unknown");
+		
+		plainFlowConsumer = currentProcessRepository = processRepository;
+		
+		return processRepository;
+	}
 	
-	@Getter
-	private FlowConsumerType flowConsumerType;
+	public void addFlowMeasurement(int[] pulses) {
+		flowConsumer.addFlowMeasurement(pulses);
+	}
 	
 	public void setFlowConsumerType(FlowConsumerType flowConsumerType) {
 		this.flowConsumerType = flowConsumerType;
 		
 		switch (flowConsumerType) {
-		case None:
-			flowConsumer = noneFlowConsumer;
-			break;
-		case Plain:
-			flowConsumer = plainFlowConsumer;
-			break;
-		case Buffered:
-			flowConsumer = Injection.get(bufferCreator, noneFlowConsumer);
-			break;
-		case Calibration:
-			flowConsumer = calibration;
-			break;
-
-		default:
-			flowConsumer = noneFlowConsumer;
-			break;
+			case None:        flowConsumer = noneFlowConsumer; break;
+			case Plain:       flowConsumer = plainFlowConsumer; break;
+			case Buffered:    flowConsumer = Injection.get(bufferCreator, noneFlowConsumer); break;
+			case Calibration: flowConsumer = calibration; break;
+	
+			default:          flowConsumer = noneFlowConsumer; break;
 		}
 	}
-	
-//----	
-
-	
-	@Getter
-	private FlowMeasurementConsumer flowConsumer;
-	
-	private FlowMeasurementConsumer noneFlowConsumer = pulses -> {};
-	
-	@Setter
-	private Calibration calibration;
-	
-	private ProcessRepository plainFlowConsumer;
-	
-	@Setter
-	private Supplier<FlowMeasurementConsumer> bufferCreator;
-
 }

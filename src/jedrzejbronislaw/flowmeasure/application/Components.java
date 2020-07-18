@@ -95,7 +95,7 @@ public class Components {
 		
 		device.setNewFlowsReceive(flows -> {
 			eventManager.submitEvent(EventType.ReceivedData);
-			flowManager.getFlowConsumer().addFlowMeasurement(flows);
+			flowManager.addFlowMeasurement(flows);
 		});
 
 		device.setIncorrectMessageReceive(m -> System.out.println("(" + LocalDateTime.now().toString() + ") Incorrect Message: " + m));
