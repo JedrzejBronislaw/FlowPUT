@@ -1,6 +1,7 @@
 package jedrzejbronislaw.flowmeasure.controllers;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
@@ -26,6 +27,9 @@ public class CalibrationPaneController implements Initializable, EventListener {
 	
 	@FXML
 	private Button startButton, resetButton, stopButton, setButton;
+	
+	@FXML
+	private Button newMeasureButton;
 
 	@FXML
 	private ComboBox<String> flowmeterField;
@@ -33,23 +37,33 @@ public class CalibrationPaneController implements Initializable, EventListener {
 	@FXML
 	private Label flowLabel;
 	
+	@FXML
+	private Label aveFlowLabel;
+	
 	
 	@Setter
 	private Runnable start,stop, reset, set;
+	@Setter
+	private Runnable newMeasure;
 	
 
-	public void setCurrentValue(int value) {
-		Platform.runLater(() -> flowLabel.setText(Integer.toString(value)));
+	public void setCurrentValues(List<Integer> values) {
+		Platform.runLater(() -> flowLabel.setText(formatValues(values)));
+	}
+	
+	public void setCurrentAveValue(float value) {
+		Platform.runLater(() -> aveFlowLabel.setText(Float.toString(value)));
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		flowmeterField.getItems().addAll("1","2","3","4","5","6");
 		
-		startButton.setOnAction(e -> Injection.run(start));
-		resetButton.setOnAction(e -> Injection.run(reset));
-		stopButton .setOnAction(e -> Injection.run(stop));
-		setButton  .setOnAction(e -> Injection.run(set));
+		startButton     .setOnAction(e -> Injection.run(start));
+		resetButton     .setOnAction(e -> Injection.run(reset));
+		stopButton      .setOnAction(e -> Injection.run(stop));
+		setButton       .setOnAction(e -> Injection.run(set));
+		newMeasureButton.setOnAction(e -> Injection.run(newMeasure));
 	}
 
 	private void setEnableComponens(State state) {
@@ -57,9 +71,10 @@ public class CalibrationPaneController implements Initializable, EventListener {
 		
 		boolean ongoing = (state == State.ongoing);
 
-		startButton   .setDisable( ongoing);
-		stopButton    .setDisable(!ongoing);
-		flowmeterField.setDisable( ongoing);
+		startButton     .setDisable( ongoing);
+		stopButton      .setDisable(!ongoing);
+		flowmeterField  .setDisable( ongoing);
+		newMeasureButton.setDisable(!ongoing);
 	}
 
 	@Override
@@ -78,5 +93,18 @@ public class CalibrationPaneController implements Initializable, EventListener {
 			setEnableComponens(State.unavailable);
 		else if (event == EventType.Calibration_Starts)
 			setEnableComponens(State.ongoing);
+	}
+	
+	private String formatValues(List<Integer> value) {
+		StringBuffer sb = new StringBuffer();
+		
+		for (int i=0; i<value.size()-1; i++) {
+			sb.append(value.get(i));
+			sb.append(System.lineSeparator());
+		}
+		sb.append(value.get(value.size()-1));
+		
+		String strValues = sb.toString();
+		return strValues;
 	}
 }

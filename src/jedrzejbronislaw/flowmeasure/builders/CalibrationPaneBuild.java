@@ -32,13 +32,15 @@ public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
 		});
 		
 		controller.setSet(() -> {
-			settings.setProperty(AppProperties.PULSE_PER_LITRE, calibration.getValue());
+			settings.setProperty(AppProperties.PULSE_PER_LITRE, calibration.getAveValue());
 			settings.saveToFile();
 		});
 		
+		controller.setNewMeasure(calibration::newMeasure);
 		controller.setReset(calibration::reset);
 		
-		calibration.setValueListener(value -> controller.setCurrentValue(value));
+		calibration.setAveValueListener(value -> controller.setCurrentAveValue(value));
+		calibration.setValuesListener  (value -> controller.setCurrentValues(value));
 		eventManager.addListener(controller);
 	}
 

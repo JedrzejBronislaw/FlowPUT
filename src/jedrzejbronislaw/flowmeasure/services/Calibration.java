@@ -1,5 +1,6 @@
 package jedrzejbronislaw.flowmeasure.services;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import jedrzejbronislaw.flowmeasure.FlowMeasurementConsumer;
@@ -8,9 +9,10 @@ public interface Calibration extends FlowMeasurementConsumer{
 
 	void setFlowmeter(int flowmeter);
 	void setVolume(float volumeInLiters);
-	float getValue();
+	float getAveValue();
 	void reset();
-	void newMeasurment();
+	void newMeasure();
 	
-	void setValueListener(Consumer<Integer> valueListener);
+	void setAveValueListener(Consumer<Float>         valueListener);
+	void setValuesListener  (Consumer<List<Integer>> valueListener);
 }

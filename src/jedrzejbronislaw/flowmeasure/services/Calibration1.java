@@ -1,5 +1,8 @@
 package jedrzejbronislaw.flowmeasure.services;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import jedrzejbronislaw.flowmeasure.tools.Injection;
@@ -9,20 +12,24 @@ import lombok.Setter;
 public class Calibration1 implements Calibration{
 
 	@Setter private int flowmeter;
-	@Getter private float value = 0;
+	@Getter private float aveValue = 0;
+	        private List<Integer> values = new LinkedList<>();
 	@Setter private float volume = 0;
 
-	@Setter private Consumer<Integer> valueListener = null;
+	@Setter private Consumer<Float>         aveValueListener = null;
+	@Setter private Consumer<List<Integer>> valuesListener   = null;
 
 	
 	public Calibration1(int flowmeter) {
 		this.flowmeter = flowmeter;
+		newMeasure();
 	}
 	
 	@Override
 	public void addFlowMeasurement(int[] pulses) {
-		value += selectFlow(pulses);
-		Injection.run(valueListener, (int)value);
+		addToCurrentMeasure(selectFlow(pulses));
+		computeAverage();
+		listinerAction();
 	}
 
 	private int selectFlow(int[] pulses) {
@@ -35,12 +42,30 @@ public class Calibration1 implements Calibration{
 	
 	@Override
 	public void reset() {
-		value = 0;
-		Injection.run(valueListener, (int)value);
+		values.clear();
+		newMeasure();
+		computeAverage();
+		listinerAction();
+	}
+
+	private void addToCurrentMeasure(int pulse) {
+		int index  = values.size()-1;
+		int oldVal = values.get(index);
+		
+		values.set(index, oldVal + pulse);
+	}
+
+	private void computeAverage() {
+		aveValue = (float) values.stream().mapToInt(x->x).average().orElse(0);
 	}
 
 	@Override
-	public void newMeasurment() {
-		reset();
+	public void newMeasure() {
+		values.add(0);
+	}
+	
+	private void listinerAction() {
+		Injection.run(aveValueListener, aveValue);
+		Injection.run(valuesListener,   Collections.unmodifiableList(values));
 	}
 }
