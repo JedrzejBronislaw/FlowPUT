@@ -7,10 +7,10 @@ import jedrzejbronislaw.flowmeasure.FlowMeasurementConsumer;
 public interface Calibration extends FlowMeasurementConsumer{
 
 	void setFlowmeter(int flowmeter);
-	void reset();
 	void setVolume(float volumeInLiters);
-	void newMeasurment();
 	float getValue();
+	void reset();
+	void newMeasurment();
 	
 	void setValueListener(Consumer<Integer> valueListener);
 }

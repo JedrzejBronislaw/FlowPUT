@@ -3,39 +3,34 @@ package jedrzejbronislaw.flowmeasure.services;
 import java.util.function.Consumer;
 
 import jedrzejbronislaw.flowmeasure.tools.Injection;
+import lombok.Getter;
+import lombok.Setter;
 
 public class Calibration1 implements Calibration{
 
-	int flowmeter;
-	int value;
-	float volume;
+	@Setter private int flowmeter;
+	@Getter private float value = 0;
+	@Setter private float volume = 0;
 
-	private Consumer<Integer> valueListener = null;
+	@Setter private Consumer<Integer> valueListener = null;
 
 	
 	public Calibration1(int flowmeter) {
 		this.flowmeter = flowmeter;
-		this.value = 0;
-		volume = 0;
-	}
-
-
-	@Override
-	public void setValueListener(Consumer<Integer> valueListener) {
-		this.valueListener = valueListener;
 	}
 	
 	@Override
 	public void addFlowMeasurement(int[] pulses) {
-		if(flowmeter > 0 && flowmeter <= pulses.length)
-			value += pulses[flowmeter-1];
-		
-		Injection.run(valueListener, value);
+		value += selectFlow(pulses);
+		Injection.run(valueListener, (int)value);
 	}
 
-	@Override
-	public void setFlowmeter(int flowmeter) {
-		this.flowmeter = flowmeter;
+	private int selectFlow(int[] pulses) {
+		try {
+			return pulses[flowmeter-1];
+		} catch(ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
 	}
 	
 	@Override
@@ -44,18 +39,7 @@ public class Calibration1 implements Calibration{
 	}
 
 	@Override
-	public void setVolume(float volumeInLiters) {
-		volume = volumeInLiters;
-	}
-
-	@Override
 	public void newMeasurment() {
 		reset();
 	}
-
-	@Override
-	public float getValue() {
-		return value;
-	}
-
 }

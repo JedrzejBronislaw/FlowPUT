@@ -24,24 +24,29 @@ public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
 	@Override
 	void afterBuild() {
 		controller.setStart(() -> {
-			if(eventManager.submitEvent(EventType.Calibration_Starts))
-				flowManager.setFlowConsumerType(FlowConsumerType.Calibration);
+			if(event(EventType.Calibration_Starts)) switchFlow(FlowConsumerType.Calibration);
 		});
 		
 		controller.setStop(() -> {
-			if(eventManager.submitEvent(EventType.Calibration_Ends))
-				flowManager.setFlowConsumerType(FlowConsumerType.None);
+			if(event(EventType.Calibration_Ends))   switchFlow(FlowConsumerType.None);
 		});
-		
-		controller.setReset(calibration::reset);
-		
-		calibration.setValueListener(value -> controller.setCurrentValue(value));
 		
 		controller.setSet(() -> {
 			settings.setProperty(AppProperties.PULSE_PER_LITRE, calibration.getValue());
 			settings.saveToFile();
 		});
 		
+		controller.setReset(calibration::reset);
+		
+		calibration.setValueListener(value -> controller.setCurrentValue(value));
 		eventManager.addListener(controller);
+	}
+
+	private boolean event(EventType event) {
+		return eventManager.submitEvent(event);
+	}
+
+	private void switchFlow(FlowConsumerType flowConsumerType) {
+		flowManager.setFlowConsumerType(flowConsumerType);
 	}
 }

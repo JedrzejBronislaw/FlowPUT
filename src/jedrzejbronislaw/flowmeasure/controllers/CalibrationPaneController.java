@@ -48,23 +48,18 @@ public class CalibrationPaneController implements Initializable, EventListener {
 		
 		startButton.setOnAction(e -> Injection.run(start));
 		resetButton.setOnAction(e -> Injection.run(reset));
-		stopButton.setOnAction(e -> Injection.run(stop));
-		setButton.setOnAction(e -> Injection.run(set));
+		stopButton .setOnAction(e -> Injection.run(stop));
+		setButton  .setOnAction(e -> Injection.run(set));
 	}
 
 	private void setEnableComponens(State state) {
-		boolean ongoing;
 		mainVbox.setDisable(state == State.unavailable);
 		
-		ongoing = (state == State.ongoing);
+		boolean ongoing = (state == State.ongoing);
 
-		startButton.setDisable(ongoing);
-		flowmeterField.setDisable(ongoing);
-
-		stopButton.setDisable(!ongoing);
-//		resetButton.setDisable(!ongoing);
-//		setButton.setDisable(!ongoing);
-		
+		startButton   .setDisable( ongoing);
+		stopButton    .setDisable(!ongoing);
+		flowmeterField.setDisable( ongoing);
 	}
 
 	@Override
