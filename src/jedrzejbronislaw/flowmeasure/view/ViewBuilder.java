@@ -6,8 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.FlowConverter;
-import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.FlowManager;
+import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.builders.CalibrationPaneBuild;
 import jedrzejbronislaw.flowmeasure.builders.ChartPaneBuilder;
@@ -157,7 +157,7 @@ public class ViewBuilder {
 	
 	
 	private ProcessRepository getCurrentProcessRepo() {
-		return flowManager().getCurrentProcessRepository();
+		return components.getRepository().getCurrentProcessRepository();
 	}
 
 	

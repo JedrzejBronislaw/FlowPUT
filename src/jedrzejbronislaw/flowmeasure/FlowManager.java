@@ -11,8 +11,6 @@ import lombok.Setter;
 
 public class FlowManager {
 
-	private final static int FLOWMETERS_NUMBER = 6;
-
 	public enum FlowConsumerType{
 		None,
 		Plain,
@@ -25,27 +23,15 @@ public class FlowManager {
 	        private FlowMeasurementConsumer flowConsumer;
 	
 	        private FlowMeasurementConsumer noneFlowConsumer = pulses -> {};
-	        private ProcessRepository plainFlowConsumer;
 	@Setter private Supplier<FlowMeasurementConsumer> bufferCreator;
 	@Setter private Calibration calibration;
 
-	
 	        private final Repository repository;
-	@Getter private ProcessRepository currentProcessRepository;
 
 	
 	public FlowManager(Repository repository) {
 		this.repository = repository;
 		setFlowConsumerType(FlowConsumerType.None);
-	}
-	
-	public ProcessRepository createNewProcessRepository(String name) {
-		ProcessRepository processRepository = repository.createNewProcessRepository(FLOWMETERS_NUMBER, name);
-		processRepository.getMetadata().setAuthor("unknown");
-		
-		plainFlowConsumer = currentProcessRepository = processRepository;
-		
-		return processRepository;
 	}
 	
 	public void addFlowMeasurement(int[] pulses) {
@@ -57,11 +43,20 @@ public class FlowManager {
 		
 		switch (flowConsumerType) {
 			case None:        flowConsumer = noneFlowConsumer; break;
-			case Plain:       flowConsumer = plainFlowConsumer; break;
+			case Plain:       flowConsumer = processRepository(); break;
 			case Buffered:    flowConsumer = Injection.get(bufferCreator, noneFlowConsumer); break;
-			case Calibration: flowConsumer = calibration; break;
+			case Calibration: flowConsumer = calibration(); break;
 	
 			default:          flowConsumer = noneFlowConsumer; break;
 		}
+	}
+
+	private FlowMeasurementConsumer calibration() {
+		return calibration != null ? calibration : noneFlowConsumer;
+	}
+	
+	private FlowMeasurementConsumer processRepository() {
+		ProcessRepository processRepository = repository.getCurrentProcessRepository();
+		return processRepository != null ? processRepository : noneFlowConsumer;
 	}
 }

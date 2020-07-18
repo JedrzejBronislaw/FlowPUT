@@ -20,6 +20,7 @@ import jedrzejbronislaw.flowmeasure.builders.SaveWindowBuilder;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
+import jedrzejbronislaw.flowmeasure.model.Repository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryCSVWriter;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriter;
 import jedrzejbronislaw.flowmeasure.services.ConnectionMonitor;
@@ -36,8 +37,7 @@ public class Actions implements ActionContainer {
 	@Override
 	public void startProcess() {
 		if(eventManager().submitEvent(EventType.Process_Starts)) {
-			flowManager().createNewProcessRepository("untitled");
-			flowManager().getCurrentProcessRepository().setStartWithNextValueFlag();
+			repository().createNewProcessRepository("untitled").setStartWithNextValueFlag();
 			
 			if(isBufferedData())
 				flowManager().setFlowConsumerType(FlowConsumerType.Buffered);
@@ -49,7 +49,7 @@ public class Actions implements ActionContainer {
 	@Override
 	public void endProcess() {
 		if(eventManager().submitEvent(EventType.Process_Ends)) {
-			flowManager().getCurrentProcessRepository().setProcessEndTimeNow();
+			repository().getCurrentProcessRepository().setProcessEndTimeNow();
 			flowManager().setFlowConsumerType(FlowConsumerType.None);
 		}
 	}
@@ -58,7 +58,7 @@ public class Actions implements ActionContainer {
 	public void saveProcess() {
 		if(eventManager().submitEvent(EventType.Saving_Process)) {
 			ProcessRepositoryWriter writer = new ProcessRepositoryCSVWriter();
-			ProcessRepository process = flowManager().getCurrentProcessRepository();
+			ProcessRepository process = repository().getCurrentProcessRepository();
 			SaveWindowBuilder builder = new SaveWindowBuilder(resources(), process);
 				
 			System.out.println(flowManager().getFlowConsumerType());
@@ -182,5 +182,9 @@ public class Actions implements ActionContainer {
 	
 	private Settings settings() {
 		return components.getSettings();
+	}
+	
+	private Repository repository() {
+		return components.getRepository();
 	}
 }

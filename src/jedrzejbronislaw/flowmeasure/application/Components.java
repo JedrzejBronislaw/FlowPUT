@@ -47,6 +47,7 @@ public class Components {
 	private DataBuffer dataBuffer;
 	private Calibration calibration;
 	private ViewMediator viewMediator;
+	private Repository repository;
 	
 	public Components(Stage stage) {
 		primaryStage = stage;
@@ -63,7 +64,8 @@ public class Components {
 		eventPolicy = new EventPolicy(stateManager);
 		dialogManager = buildDialogManager();
 		calibration = buildCalibration();
-		flowManager = new FlowManager(new Repository());
+		repository = new Repository();
+		flowManager = new FlowManager(repository);
 		
 		set();
 	}
@@ -73,7 +75,7 @@ public class Components {
 		
 		flowManager.setBufferCreator(() ->
 			new DataBuffer1(
-				flowManager.getCurrentProcessRepository(),
+				repository.getCurrentProcessRepository(),
 				settings.getInt(AppProperties.BUFFER_INTERVAL)
 			));
 		flowManager.setCalibration(calibration);
