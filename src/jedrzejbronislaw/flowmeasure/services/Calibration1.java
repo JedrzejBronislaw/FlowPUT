@@ -36,6 +36,7 @@ public class Calibration1 implements Calibration{
 	@Override
 	public void reset() {
 		value = 0;
+		Injection.run(valueListener, (int)value);
 	}
 
 	@Override
