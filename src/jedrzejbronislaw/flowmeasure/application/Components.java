@@ -125,7 +125,7 @@ public class Components {
 	}
 
 	private Calibration buildCalibration() {
-		Calibration calibration = new Calibration1(1);
+		Calibration calibration = new Calibration1();
 		calibration.setVolume(1);
 		calibration.reset();
 		

@@ -19,9 +19,8 @@ public class Calibration1 implements Calibration{
 	@Setter private Consumer<Float>         aveValueListener = null;
 	@Setter private Consumer<List<Integer>> valuesListener   = null;
 
-	
-	public Calibration1(int flowmeter) {
-		this.flowmeter = flowmeter;
+
+	public Calibration1() {
 		newMeasure();
 	}
 	

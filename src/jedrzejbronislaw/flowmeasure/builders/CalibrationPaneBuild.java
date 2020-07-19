@@ -6,7 +6,7 @@ import jedrzejbronislaw.flowmeasure.controllers.CalibrationPaneController;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
-import jedrzejbronislaw.flowmeasure.settings.AppProperties;
+import jedrzejbronislaw.flowmeasure.settings.RatioProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +20,12 @@ public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
 	private final FlowManager flowManager;
 	private final Settings settings;
 	private final Calibration calibration;
+	private int flowmeterNumber;
 	
 	@Override
 	void afterBuild() {
-		controller.setStart(() -> {
+		controller.setStart(flowmeter -> {
+			setFlowmeter(flowmeter);
 			if(event(EventType.Calibration_Starts)) switchFlow(FlowConsumerType.Calibration);
 		});
 		
@@ -32,10 +34,11 @@ public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
 		});
 		
 		controller.setSet(() -> {
-			settings.setProperty(AppProperties.PULSE_PER_LITRE, calibration.getAveValue());
+			settings.setProperty(new RatioProperty(flowmeterNumber-1), calibration.getAveValue());
 			settings.saveToFile();
 		});
 		
+		controller.setOnChangeFlowmeter(this::setFlowmeter);
 		controller.setNewMeasure(calibration::newMeasure);
 		controller.setReset(calibration::reset);
 		
@@ -50,5 +53,11 @@ public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
 
 	private void switchFlow(FlowConsumerType flowConsumerType) {
 		flowManager.setFlowConsumerType(flowConsumerType);
+	}
+
+	private void setFlowmeter(int flowmeter) {
+		flowmeterNumber = flowmeter;
+		calibration.setFlowmeter(flowmeter);
+		calibration.reset();
 	}
 }

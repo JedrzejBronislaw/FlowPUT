@@ -3,6 +3,8 @@ package jedrzejbronislaw.flowmeasure.controllers;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -32,7 +34,7 @@ public class CalibrationPaneController implements Initializable, EventListener {
 	private Button newMeasureButton;
 
 	@FXML
-	private ComboBox<String> flowmeterField;
+	private ComboBox<Integer> flowmeterField;
 	
 	@FXML
 	private Label flowLabel;
@@ -40,11 +42,15 @@ public class CalibrationPaneController implements Initializable, EventListener {
 	@FXML
 	private Label aveFlowLabel;
 	
-	
+
 	@Setter
-	private Runnable start,stop, reset, set;
+	private Consumer<Integer> start;
+	@Setter
+	private Runnable stop, reset, set;
 	@Setter
 	private Runnable newMeasure;
+	@Setter
+	private Consumer<Integer> onChangeFlowmeter;
 	
 
 	public void setCurrentValues(List<Integer> values) {
@@ -57,9 +63,11 @@ public class CalibrationPaneController implements Initializable, EventListener {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		flowmeterField.getItems().addAll("1","2","3","4","5","6");
+		IntStream.range(1, 7).forEach(flowmeterField.getItems()::add);
+		flowmeterField.getSelectionModel().select(0);
+		flowmeterField.setOnAction(e -> Injection.run(onChangeFlowmeter, flowmeterField.getValue()));
 		
-		startButton     .setOnAction(e -> Injection.run(start));
+		startButton     .setOnAction(e -> Injection.run(start, flowmeterField.getValue()));
 		resetButton     .setOnAction(e -> Injection.run(reset));
 		stopButton      .setOnAction(e -> Injection.run(stop));
 		setButton       .setOnAction(e -> Injection.run(set));
