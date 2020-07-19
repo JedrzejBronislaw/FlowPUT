@@ -15,17 +15,24 @@ public class Settings implements PropertyAccess {
 	private final SimpleListenerManager listenerManager = new SimpleListenerManager();
 	
 	public Settings() {
-		properties.add(AppProperties.values());
+		
+		PropertyDesc[] propertyDesc = PropertyDesc.sum(
+			RatioProperty.generate(6),
+			AppProperties.values()
+		);
+		
+		
+		properties.add(propertyDesc);
 		properties.setChangeAction(listenerManager::action);
 		
 		propertyFile = new PropertyFile(
 				settingsFileName,
-				AppProperties.values(),
+				propertyDesc,
 				properties::setProperty,
 				properties::getPropertyValue);
 	}
 
-	
+
 	public boolean saveToFile() {
 		return propertyFile.write();
 	}
