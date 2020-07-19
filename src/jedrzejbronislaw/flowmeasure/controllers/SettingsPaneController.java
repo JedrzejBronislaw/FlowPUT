@@ -22,7 +22,7 @@ public class SettingsPaneController implements Initializable, StateListener<Proc
 	private VBox mainBox;
 	
 	@FXML
-	private TextField pulsesPerLitre, bufferSizeField;
+	private TextField bufferSizeField;
 	
 	@FXML
 	private Button saveButton;
@@ -33,11 +33,7 @@ public class SettingsPaneController implements Initializable, StateListener<Proc
 	@Setter
 	private Runnable savingAction;
 
-	private boolean activeUpdating = true;
 
-	public float getPulsesPerLitre() {
-		return Float.parseFloat(pulsesPerLitre.getText());
-	}
 	public int getBufferSize() {
 		return Integer.parseInt(bufferSizeField.getText());
 	}
@@ -46,9 +42,6 @@ public class SettingsPaneController implements Initializable, StateListener<Proc
 	}
 	
 	public void setSettings(Settings settings) {
-		if (!activeUpdating ) return;
-		
-		pulsesPerLitre.setText(settings.getPropertyValue(AppProperties.PULSE_PER_LITRE));
 		bufferCheckbox.setSelected(settings.getBool(AppProperties.BUFFERED_DATA));
 		bufferSizeField.setText(settings.getPropertyValue(AppProperties.BUFFER_INTERVAL));
 	}
@@ -59,14 +52,6 @@ public class SettingsPaneController implements Initializable, StateListener<Proc
 		bufferSizeField.disableProperty().bind(bufferCheckbox.selectedProperty().not());
 		
 		saveButton.setOnAction(e -> Injection.run(savingAction));
-	}
-	
-	public void suspendUpdating() {
-		activeUpdating = false;
-	}
-	
-	public void resumeUpdating() {
-		activeUpdating = true;
 	}
 	
 	@Override
