@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.FlowConverter;
+import jedrzejbronislaw.flowmeasure.FlowConverters;
 import jedrzejbronislaw.flowmeasure.FlowManager;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.application.Components;
@@ -89,7 +90,7 @@ public class ViewBuilder {
 	
 	
 	private Node chart() {
-		ChartPaneBuilder builder = new ChartPaneBuilder(this::getCurrentProcessRepo, flowconverter());
+		ChartPaneBuilder builder = new ChartPaneBuilder(this::getCurrentProcessRepo, flowconverters());
 		builder.build();
 		
 		return builder.getNode();
@@ -130,7 +131,7 @@ public class ViewBuilder {
 	}
 
 	private Node flowPreview(int number) {
-		FlowPreviewBuilder builder = new FlowPreviewBuilder(number, flowconverter());
+		FlowPreviewBuilder builder = new FlowPreviewBuilder(number, flowconverter(number));
 		builder.build();
 		
 		viewMediator().setFlowPreviewer(number, builder.getController()::addPulses);
@@ -194,8 +195,12 @@ public class ViewBuilder {
 		return components.getCalibration();
 	}
 	
-	private FlowConverter flowconverter() {
-		return components.getFlowConverter();
+	private FlowConverters flowconverters() {
+		return components.getFlowConverters();
+	}
+	
+	private FlowConverter flowconverter(int flowmeter) {
+		return flowconverters().get(flowmeter);
 	}
 	
 	private ViewMediator viewMediator() {

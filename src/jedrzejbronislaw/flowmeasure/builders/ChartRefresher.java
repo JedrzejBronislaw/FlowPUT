@@ -14,6 +14,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import jedrzejbronislaw.flowmeasure.FlowConverter;
+import jedrzejbronislaw.flowmeasure.FlowConverters;
 import jedrzejbronislaw.flowmeasure.controllers.ChartPaneController;
 import jedrzejbronislaw.flowmeasure.controllers.ChartPaneController.ValueUnit;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
@@ -31,7 +32,7 @@ public class ChartRefresher implements Consumer<LineChart<Number, Number>> {
 	private static final String AXIS_LABEL_L_PER_SEC = "flow [" + FlowConverter.FLOW_UNIT + "]";
 
 	private final Supplier<ProcessRepository> currentProcess;
-	private final FlowConverter flowconverter;
+	private final FlowConverters flowconverters;
 	private final ChartPaneController controller;
 	
 	private List<FlowMeasurement> data;
@@ -141,7 +142,7 @@ public class ChartRefresher implements Consumer<LineChart<Number, Number>> {
 
 				interval = timeSec(prevMeasurement.getTime(), measurement);
 				pulses = measurement.get(flowmeter);
-				value = flowconverter.pulsesToLitrePerSec(pulses, interval);
+				value = flowconverter(flowmeter).pulsesToLitrePerSec(pulses, interval);
 				
 				chartPoint = createChartPoint(time,  value);
 				
@@ -149,7 +150,7 @@ public class ChartRefresher implements Consumer<LineChart<Number, Number>> {
 			}
 		}
 	}
-	
+
 	private Data<Number, Number> createChartPoint(float time, float value) {
 		return new Data<Number, Number>(time, value);
 	}
@@ -226,6 +227,10 @@ public class ChartRefresher implements Consumer<LineChart<Number, Number>> {
 		}
 		
 		this.seriesList = seriesList;
+	}
+	
+	private FlowConverter flowconverter(int flowmeter) {
+		return flowconverters.get(flowmeter);
 	}
 
 	private String flowSeriesName(int i) {

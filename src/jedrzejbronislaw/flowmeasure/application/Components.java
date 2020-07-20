@@ -3,8 +3,7 @@ package jedrzejbronislaw.flowmeasure.application;
 import java.time.LocalDateTime;
 
 import javafx.stage.Stage;
-import jedrzejbronislaw.flowmeasure.FlowConverter;
-import jedrzejbronislaw.flowmeasure.FlowConverter1;
+import jedrzejbronislaw.flowmeasure.FlowConverters;
 import jedrzejbronislaw.flowmeasure.FlowDevice;
 import jedrzejbronislaw.flowmeasure.FlowManager;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
@@ -31,6 +30,8 @@ import lombok.Getter;
 @Getter
 public class Components {
 
+	private static final int FLOWMETER_NUMBER = 6;
+	
 	private Stage primaryStage;
 
 	private ResourcesRepository resources;
@@ -42,7 +43,7 @@ public class Components {
 	private StateManager stateManager;
 	private EventPolicy eventPolicy;
 	private DialogManager dialogManager;
-	private FlowConverter flowConverter;
+	private FlowConverters flowConverters;
 	private Calibration calibration;
 	private ViewMediator viewMediator;
 	private Repository repository;
@@ -56,7 +57,7 @@ public class Components {
 		viewMediator = new ViewMediator();
 		device = buildFlowDevice();
 		connectionMonitor = buildConnectionMonitor();
-		flowConverter = new FlowConverter1(settings);
+		flowConverters = new FlowConverters(settings, FLOWMETER_NUMBER);
 		eventManager = new EventManager();
 		stateManager = new StateManager();
 		eventPolicy = new EventPolicy(stateManager);
@@ -82,7 +83,7 @@ public class Components {
 		eventManager.addListener(dialogManager);
 		eventManager.addListener(stateManager);
 		eventManager.addListener(connectionMonitor);
-		eventManager.addListener(flowConverter);
+		eventManager.addListener(flowConverters);
 
 		MyFXMLLoader.setResources(resources);
 		createViewBuilder().build();

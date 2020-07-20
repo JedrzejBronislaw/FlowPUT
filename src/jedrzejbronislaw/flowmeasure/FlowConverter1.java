@@ -4,23 +4,30 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import jedrzejbronislaw.flowmeasure.events.EventType;
-import jedrzejbronislaw.flowmeasure.settings.AppProperties;
+import jedrzejbronislaw.flowmeasure.settings.RatioProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
+import jedrzejbronislaw.flowmeasure.tools.settings.poperties.PropertyDesc;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class FlowConverter1 implements FlowConverter{
 
 	@NonNull
-	private Settings settings;
+	private final Settings settings;
+	private final PropertyDesc ratioProperty;
 
 	private LocalDateTime lastTime = null;
 	private LocalDateTime oldTime = null;
 
+	
+	public FlowConverter1(Settings settings, int flowmeter) {
+		this.settings = settings;
+		ratioProperty = new RatioProperty(flowmeter);
+	}
+	
 	public FlowConverter1(float pulsePerLitre) {
+		ratioProperty = new RatioProperty(1);
 		settings = new Settings();
-		settings.setProperty(AppProperties.PULSE_PER_LITRE, pulsePerLitre);
+		settings.setProperty(ratioProperty, pulsePerLitre);
 	}
 	
 	@Override
@@ -55,7 +62,7 @@ public class FlowConverter1 implements FlowConverter{
 	}
 
 	private float factor() {
-		return settings.getFloat(AppProperties.PULSE_PER_LITRE);
+		return settings.getFloat(ratioProperty);
 	}
 	
 	@Override
