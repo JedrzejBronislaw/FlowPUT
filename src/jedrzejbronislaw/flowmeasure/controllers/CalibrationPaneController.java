@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 import jedrzejbronislaw.flowmeasure.events.EventListener;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
@@ -24,6 +25,8 @@ public class CalibrationPaneController implements Initializable, EventListener {
 	enum State {
 		unavailable, available, ongoing
 	}
+	
+	public static final String DEF_FLOWMETER_NAME = "Flowmeter";
 
 	@FXML
 	private VBox mainVbox;
@@ -65,6 +68,7 @@ public class CalibrationPaneController implements Initializable, EventListener {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		IntStream.range(0, Consts.FLOWMETERS_NUMBER).map(x -> x+1).forEach(flowmeterField.getItems()::add);
+		flowmeterField.setConverter(createFlowmeterNameConverter());
 		flowmeterField.getSelectionModel().select(0);
 		flowmeterField.setOnAction(e -> Injection.run(onChangeFlowmeter, flowmeterField.getValue()));
 		
@@ -115,5 +119,18 @@ public class CalibrationPaneController implements Initializable, EventListener {
 		
 		String strValues = sb.toString();
 		return strValues;
+	}
+	
+	private StringConverter<Integer> createFlowmeterNameConverter() {
+		return new StringConverter<Integer>() {
+			
+			@Override
+			public String toString(Integer flowmeterNumber) {
+				return DEF_FLOWMETER_NAME + " " + flowmeterNumber;
+			}
+			
+			@Override
+			public Integer fromString(String string) {return null;}
+		};
 	}
 }
