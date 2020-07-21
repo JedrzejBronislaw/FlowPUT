@@ -4,6 +4,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -33,13 +34,15 @@ public class FlowPreviewController implements Initializable{
 	public void addPulses(int value) {
 		pulses += value;
 		
-		if(flowconverter != null) {
-			pulsesLabel.setText(computeFlow(value));
-			secPulsesLabel.setText(computeVolume(pulses));
-		} else {
-			pulsesLabel.setText(Integer.toString(value));
-			secPulsesLabel.setText(Integer.toString(pulses));
-		}
+		Platform.runLater(() -> {
+			if(flowconverter != null) {
+				pulsesLabel.setText(computeFlow(value));
+				secPulsesLabel.setText(computeVolume(pulses));
+			} else {
+				pulsesLabel.setText(Integer.toString(value));
+				secPulsesLabel.setText(Integer.toString(pulses));
+			}
+		});
 	}
 
 	private String computeFlow(int value) {

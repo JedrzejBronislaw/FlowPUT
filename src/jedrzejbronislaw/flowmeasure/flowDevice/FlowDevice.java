@@ -4,7 +4,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import javafx.application.Platform;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Getter;
 import lombok.Setter;
@@ -120,7 +119,7 @@ public class FlowDevice {
 		for(int i=0; i<n; i++)
 			if (newSingleFlowReceive != null) {
 				int ii = i;
-				Platform.runLater(() -> newSingleFlowReceive.accept(flow[ii], ii));
+				newSingleFlowReceive.accept(flow[ii], ii);
 			}
 	}
 
