@@ -25,14 +25,13 @@ import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessReposit
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriter;
 import jedrzejbronislaw.flowmeasure.services.ConnectionMonitor;
 import jedrzejbronislaw.flowmeasure.settings.AppProperties;
+import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.RatioProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class Actions implements ActionContainer {
-	
-	public static final int FLOWMETER_NUMBER = 6;
 	
 	private final Components components;
 
@@ -84,10 +83,10 @@ public class Actions implements ActionContainer {
 	}
 
 	private float[] getPulseRatios() {
-		RatioProperty[] ratioProperties = RatioProperty.generate(FLOWMETER_NUMBER);
-		float[] outcome = new float[FLOWMETER_NUMBER];
+		RatioProperty[] ratioProperties = RatioProperty.generate(Consts.FLOWMETERS_NUMBER);
+		float[] outcome = new float[Consts.FLOWMETERS_NUMBER];
 		
-		for (int i=0; i<FLOWMETER_NUMBER; i++)
+		for (int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
 			outcome[i] = settings().getFloat(ratioProperties[i]);
 		
 		return outcome;

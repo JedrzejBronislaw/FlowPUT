@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.FakeProcessGenerator1;
 import jedrzejbronislaw.flowmeasure.events.EventType;
+import jedrzejbronislaw.flowmeasure.settings.Consts;
 
 
 public class Main extends Application {
@@ -28,7 +29,7 @@ public class Main extends Application {
 	private void generateFakeData() {
 		FakeProcessGenerator1 generator = new FakeProcessGenerator1();
 		generator.setInterval(1000);
-		generator.setNumOfFlowmeters(6);
+		generator.setNumOfFlowmeters(Consts.FLOWMETERS_NUMBER);
 		
 		generator.generate(components.getRepository().getCurrentProcessRepository(), 10*60*60);
 	}

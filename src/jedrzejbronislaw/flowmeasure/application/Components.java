@@ -19,6 +19,7 @@ import jedrzejbronislaw.flowmeasure.services.ConnectionMonitor1;
 import jedrzejbronislaw.flowmeasure.services.DataBuffer1;
 import jedrzejbronislaw.flowmeasure.services.DialogManager;
 import jedrzejbronislaw.flowmeasure.settings.AppProperties;
+import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
@@ -29,8 +30,6 @@ import lombok.Getter;
 
 @Getter
 public class Components {
-
-	private static final int FLOWMETER_NUMBER = 6;
 	
 	private Stage primaryStage;
 
@@ -57,7 +56,7 @@ public class Components {
 		viewMediator = new ViewMediator();
 		device = buildFlowDevice();
 		connectionMonitor = buildConnectionMonitor();
-		flowConverters = new FlowConverters(settings, FLOWMETER_NUMBER);
+		flowConverters = new FlowConverters(settings, Consts.FLOWMETERS_NUMBER);
 		eventManager = new EventManager();
 		stateManager = new StateManager();
 		eventPolicy = new EventPolicy(stateManager);

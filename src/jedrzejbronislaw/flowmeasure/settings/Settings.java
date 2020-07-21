@@ -17,7 +17,7 @@ public class Settings implements PropertyAccess {
 	public Settings() {
 		
 		PropertyDesc[] propertyDesc = PropertyDesc.sum(
-			RatioProperty.generate(6),
+			RatioProperty.generate(Consts.FLOWMETERS_NUMBER),
 			AppProperties.values()
 		);
 		

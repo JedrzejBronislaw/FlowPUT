@@ -23,6 +23,7 @@ import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
 import jedrzejbronislaw.flowmeasure.services.DialogManager;
+import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import lombok.NonNull;
@@ -143,7 +144,7 @@ public class ViewBuilder {
 		MainWindowBuilder builder = new MainWindowBuilder();
 		builder.build();
 		
-		for(int i=0; i<6; i++)
+		for(int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
 			builder.getController().addFlowPreview(flowPreview(i));
 
 		builder.getController().getBorderPane().setLeft(sidePane());

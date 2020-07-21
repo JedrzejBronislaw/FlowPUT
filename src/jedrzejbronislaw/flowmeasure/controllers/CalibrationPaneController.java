@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import jedrzejbronislaw.flowmeasure.events.EventListener;
 import jedrzejbronislaw.flowmeasure.events.EventType;
+import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Setter;
 
@@ -63,7 +64,7 @@ public class CalibrationPaneController implements Initializable, EventListener {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		IntStream.range(1, 7).forEach(flowmeterField.getItems()::add);
+		IntStream.range(0, Consts.FLOWMETERS_NUMBER).map(x -> x+1).forEach(flowmeterField.getItems()::add);
 		flowmeterField.getSelectionModel().select(0);
 		flowmeterField.setOnAction(e -> Injection.run(onChangeFlowmeter, flowmeterField.getValue()));
 		
