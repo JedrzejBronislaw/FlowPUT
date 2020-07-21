@@ -17,7 +17,7 @@ public class CSVWriterTest_data2 {
 	
 	private static final String AUTHOR = "Andy";
 	private static final String MEASUREMENT_NAME = "Measurement name";
-	private static final float pulsePerLitre = 350;
+	private static final float[] pulsePerLitre = new float[]{350, 350};
 	private static final LocalDateTime startTime = LocalDateTime.of(2020, 7, 3, 14, 22, 11);
 	private static final LocalDateTime endTime   = LocalDateTime.of(2020, 8, 5, 17, 21, 30);
 

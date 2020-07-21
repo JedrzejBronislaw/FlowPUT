@@ -76,7 +76,8 @@ public class CSVWriterTest_emptyMetadata {
 	
 	@Test
 	public void property_pulse() {
-		checkProperty(ProcessRepositoryCSVWriter.PROP_PULSE, "0.0");
+		assertFalse(parser.propertyExists(ProcessRepositoryCSVWriter.PROP_PULSE + "0"));
+		assertFalse(parser.propertyExists(ProcessRepositoryCSVWriter.PROP_PULSE + "1"));
 	}
 	
 	@Test

@@ -11,14 +11,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
-import jedrzejbronislaw.flowmeasure.FlowConverter;
-import jedrzejbronislaw.flowmeasure.FlowConverter1;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
-import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
-import jedrzejbronislaw.flowmeasure.tools.NumberTools;
+import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
 import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import lombok.Setter;
 
@@ -35,7 +33,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	public static final String PROP_END        = "end";
 	public static final String PROP_DURATION   = "duration";
 	public static final String PROP_BUFFER     = "buffer [ms]";
-	public static final String PROP_PULSE      = "pulse per litre";
+	public static final String PROP_PULSE      = "pulse per litre ";
 	public static final String PROP_FLOWMETERS = "num of flowmeters";
 	public static final String PROP_SIZE       = "size";
 	
@@ -50,10 +48,11 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 
 	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	
-	private float pulsePerLitre = 0;
+	@Setter
+	private float pulsePerLitre[];
+	private FlowmeterCSVWriter[] flowmeterWriters;
 	private int bufferInterval  = 0;
 	
-	private FlowConverter flowConverter;
 	private ProcessRepositoryWriterOptions options;
 	private CSVWriter csvWriter;
 	private ProcessRepository repository;
@@ -71,11 +70,19 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 			return null;
 		}
 	};
+
+	private void createFlowmeterWriters() {
+		if (pulsePerLitre == null) return;
+		
+		int size = pulsePerLitre.length;
+		flowmeterWriters = new FlowmeterCSVWriter[size];
+		
+		for(int i=0; i<size; i++)
+			flowmeterWriters[i] = new FlowmeterCSVWriter(csvWriter, i, pulsePerLitre[i], options);
+	}
 	
-	@Override
-	public void setPulsePerLitre(float pulsePerLitre) {
-		this.pulsePerLitre = pulsePerLitre;
-		flowConverter = new FlowConverter1(pulsePerLitre);
+	private void delFlowWriters() {
+		flowmeterWriters = null;
 	}
 	
 	@Override
@@ -106,7 +113,11 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		try {
 			
 			csvWriter = new CSVWriter(writerCreator.apply(file));
+			createFlowmeterWriters();
+			
 			writeFile();
+			
+			delFlowWriters();
 			csvWriter.close();
 			
 		} catch (IOException e) {
@@ -148,7 +159,12 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 
 		if (bufferInterval>0)
 			csvWriter.property(PROP_BUFFER, bufferInterval);
-		csvWriter.property(PROP_PULSE, pulsePerLitre);
+		
+		if (pulsePerLitre != null)
+			for(int i=0; i<pulsePerLitre.length; i++)
+				csvWriter.property(PROP_PULSE + (i+1), pulsePerLitre[i]);
+			
+		
 		csvWriter.newLine();
 
 		csvWriter.property(PROP_FLOWMETERS, numOfFlowmeters());
@@ -217,7 +233,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	private void writeMeasurementLine(FlowMeasurement measurement) throws IOException {
 		List<Unit> units = options.getUnits();
 		LocalDateTime time = measurement.getTime();
-		flowConverter.newDataEvent(time);
+		Stream.of(flowmeterWriters).forEach(flowWriter -> flowWriter.newDataEvent(time));
 
 		if(isSelected(TimeFormat.Unix))        csvWriter.writeWithSeparator(unixTime(time));
 		if(isSelected(TimeFormat.Full))        csvWriter.writeWithSeparator(fullTime(time));
@@ -235,36 +251,16 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 
 		for (Unit unit : units)
 			for(int i=0; i<numOfFlowmeters(); i++)
-				writeMeasurement(unit, measurement.get(i));
+				flowmeterWriters[i].writeMeasurement(unit, measurement);
 	}
 
 	private void writeMeasurementFlowmeterTogether(FlowMeasurement measurement, List<Unit> units) throws IOException {
 
 		for(int i=0; i<numOfFlowmeters(); i++)
 			for (Unit unit : units)
-				writeMeasurement(unit, measurement.get(i));
+				flowmeterWriters[i].writeMeasurement(unit, measurement);
 	}
 
-	private void writeMeasurement(Unit unit, int pulses) throws IOException {
-		if (unit == Unit.Pulses) writePulses(pulses);
-		if (unit == Unit.Flow)   writeFlow(pulses);
-	}
-
-	private void writePulses(int pulses) throws IOException {
-		csvWriter.writeWithSeparator(pulses);
-	}
-	
-	private void writeFlow(int pulses) throws IOException {
-		Float flow = flowConverter.pulsesToLitrePerSec(pulses);
-		csvWriter.writeWithSeparator(setDecimalSeparator(flow));
-	}
-
-	private String setDecimalSeparator(Float flow) {
-		if(flow == null) return "";
-		
-		return NumberTools.floatToString(flow, options.getDecimalSeparator().toString());
-	}
-	
 	private int numOfTimeFormats() {
 		return options.getTimeFormats().size();
 	}

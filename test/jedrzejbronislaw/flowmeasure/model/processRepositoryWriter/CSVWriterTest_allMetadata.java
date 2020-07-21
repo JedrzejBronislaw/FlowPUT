@@ -25,7 +25,7 @@ public class CSVWriterTest_allMetadata {
 	@BeforeClass
 	public static void prepare() {
 		StringFile file = new StringFile(createRepository(), createOptions());
-		file.setPulsePerLitre(350);
+		file.setPulsePerLitre(new float[]{350, 350});
 		file.setBufferInterval(1500);
 		parser = new Parser(file.createContentOfFile());
 	}
@@ -97,7 +97,8 @@ public class CSVWriterTest_allMetadata {
 	
 	@Test
 	public void property_pulse() {
-		checkProperty(ProcessRepositoryCSVWriter.PROP_PULSE, "350.0");
+		checkProperty(ProcessRepositoryCSVWriter.PROP_PULSE + 1, "350.0");
+		checkProperty(ProcessRepositoryCSVWriter.PROP_PULSE + 2, "350.0");
 	}
 	
 	@Test

@@ -10,9 +10,9 @@ import jedrzejbronislaw.flowmeasure.ConnectionsAttempts;
 import jedrzejbronislaw.flowmeasure.FileNamer;
 import jedrzejbronislaw.flowmeasure.FileNamer1;
 import jedrzejbronislaw.flowmeasure.FlowDevice;
-import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.FlowManager;
 import jedrzejbronislaw.flowmeasure.FlowManager.FlowConsumerType;
+import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.UART;
 import jedrzejbronislaw.flowmeasure.UARTParams;
 import jedrzejbronislaw.flowmeasure.application.Components;
@@ -25,11 +25,14 @@ import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessReposit
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriter;
 import jedrzejbronislaw.flowmeasure.services.ConnectionMonitor;
 import jedrzejbronislaw.flowmeasure.settings.AppProperties;
+import jedrzejbronislaw.flowmeasure.settings.RatioProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class Actions implements ActionContainer {
+	
+	public static final int FLOWMETER_NUMBER = 6;
 	
 	private final Components components;
 
@@ -64,7 +67,7 @@ public class Actions implements ActionContainer {
 			System.out.println(flowManager().getFlowConsumerType());
 			if(isBufferedData())
 				writer.setBufferInterval(settings().getInt(AppProperties.BUFFER_INTERVAL));
-			writer.setPulsePerLitre(settings().getFloat(AppProperties.PULSE_PER_LITRE));
+			writer.setPulsePerLitre(getPulseRatios());
 			
 			FileNamer filenamer = new FileNamer1(process);
 			builder.setFileNamer(filenamer::createName);
@@ -78,6 +81,16 @@ public class Actions implements ActionContainer {
 			builder.build();
 			builder.showWindow();
 		}
+	}
+
+	private float[] getPulseRatios() {
+		RatioProperty[] ratioProperties = RatioProperty.generate(FLOWMETER_NUMBER);
+		float[] outcome = new float[FLOWMETER_NUMBER];
+		
+		for (int i=0; i<FLOWMETER_NUMBER; i++)
+			outcome[i] = settings().getFloat(ratioProperties[i]);
+		
+		return outcome;
 	}
 	
 	@Override

@@ -17,7 +17,7 @@ public class CSVWriterTest_data4 {
 	
 	private static final String AUTHOR = "Andy";
 	private static final String MEASUREMENT_NAME = "Measurement name";
-	private static final float pulsePerLitre = 350;
+	private static final float[] pulsePerLitre = new float[]{350, 350};
 	private static final LocalDateTime startTime = LocalDateTime.of(2020, 7, 3, 14, 22, 11);
 	private static final LocalDateTime endTime   = LocalDateTime.of(2020, 8, 5, 17, 21, 30);
 
@@ -107,8 +107,8 @@ public class CSVWriterTest_data4 {
 		assertEquals(5, line.length);
 		
 		assertEquals(ProcessRepositoryCSVWriter.processTime(startTime.plusSeconds(1), startTime), line[0]);
-		assertEquals(1/pulsePerLitre, Float.parseFloat(line[1]), deltaFlow);
-		assertEquals(2/pulsePerLitre, Float.parseFloat(line[2]), deltaFlow);
+		assertEquals(1/pulsePerLitre[0], Float.parseFloat(line[1]), deltaFlow);
+		assertEquals(2/pulsePerLitre[1], Float.parseFloat(line[2]), deltaFlow);
 		assertEquals("1", line[3]);
 		assertEquals("2", line[4]);
 	}
@@ -120,8 +120,8 @@ public class CSVWriterTest_data4 {
 		assertEquals(5, line.length);
 		
 		assertEquals(ProcessRepositoryCSVWriter.processTime(startTime.plusSeconds(2), startTime), line[0]);
-		assertEquals(2/pulsePerLitre, Float.parseFloat(line[1]), deltaFlow);
-		assertEquals(4/pulsePerLitre, Float.parseFloat(line[2]), deltaFlow);
+		assertEquals(2/pulsePerLitre[0], Float.parseFloat(line[1]), deltaFlow);
+		assertEquals(4/pulsePerLitre[1], Float.parseFloat(line[2]), deltaFlow);
 		assertEquals("2", line[3]);
 		assertEquals("4", line[4]);
 	}

@@ -12,7 +12,7 @@ public class StringFile {
 	private final ProcessRepository repository;
 	private final ProcessRepositoryWriterOptions options;
 	@Setter
-	private float pulsePerLitre;
+	private float[] pulsePerLitre;
 	@Setter
 	private int bufferInterval;
 	
