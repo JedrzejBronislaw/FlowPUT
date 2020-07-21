@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure;
+package jedrzejbronislaw.flowmeasure.flowDevice;
 
 public class UARTParams {
 

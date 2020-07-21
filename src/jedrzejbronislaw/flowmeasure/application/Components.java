@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.FlowConverters;
-import jedrzejbronislaw.flowmeasure.FlowDevice;
 import jedrzejbronislaw.flowmeasure.FlowManager;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.SideDirResourcesRepository;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventPolicy;
 import jedrzejbronislaw.flowmeasure.events.EventType;
+import jedrzejbronislaw.flowmeasure.flowDevice.FlowDevice;
 import jedrzejbronislaw.flowmeasure.model.Repository;
 import jedrzejbronislaw.flowmeasure.services.Calibration;
 import jedrzejbronislaw.flowmeasure.services.Calibration1;

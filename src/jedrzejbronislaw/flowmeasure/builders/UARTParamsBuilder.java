@@ -1,7 +1,7 @@
 package jedrzejbronislaw.flowmeasure.builders;
 
-import jedrzejbronislaw.flowmeasure.UART;
 import jedrzejbronislaw.flowmeasure.controllers.UARTParamsController;
+import jedrzejbronislaw.flowmeasure.flowDevice.UART;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

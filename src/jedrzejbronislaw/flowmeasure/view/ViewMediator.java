@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import jedrzejbronislaw.flowmeasure.UARTParams;
+import jedrzejbronislaw.flowmeasure.flowDevice.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Setter;
 

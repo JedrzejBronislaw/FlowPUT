@@ -3,6 +3,8 @@ package jedrzejbronislaw.flowmeasure;
 import java.util.List;
 import java.util.function.Consumer;
 
+import jedrzejbronislaw.flowmeasure.flowDevice.FlowDevice;
+import jedrzejbronislaw.flowmeasure.flowDevice.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

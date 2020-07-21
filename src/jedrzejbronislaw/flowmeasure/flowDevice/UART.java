@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure;
+package jedrzejbronislaw.flowmeasure.flowDevice;
 
 import java.util.LinkedList;
 import java.util.List;

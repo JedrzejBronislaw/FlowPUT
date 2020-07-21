@@ -1,5 +1,7 @@
 package jedrzejbronislaw.flowmeasure;
 
+import jedrzejbronislaw.flowmeasure.flowDevice.FlowDevice;
+import jedrzejbronislaw.flowmeasure.flowDevice.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Getter;
 import lombok.NonNull;
