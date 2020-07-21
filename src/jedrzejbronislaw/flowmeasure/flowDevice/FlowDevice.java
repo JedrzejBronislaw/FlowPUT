@@ -110,7 +110,12 @@ public class FlowDevice {
 				return;			
 			}
 			
-			flow[i] = Integer.parseInt(message.substring(0, position));
+			try {
+				flow[i] = Integer.parseInt(message.substring(0, position));
+			} catch (NumberFormatException e) {
+				Injection.run(IncorrectMessageReceive, message);
+				return;
+			}
 		}
 		
 		

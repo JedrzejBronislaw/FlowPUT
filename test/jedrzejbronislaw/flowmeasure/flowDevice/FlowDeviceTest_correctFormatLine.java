@@ -97,4 +97,18 @@ public class FlowDeviceTest_correctFormatLine {
 		
 		assertArrayEquals(expectedsFlows, flows);
 	}
+	
+	@Test
+	public void one_letter() {
+		mockUART.createMessage("^3;1;a;3;$");
+		
+		assertNull(flows);
+	}
+	
+	@Test
+	public void one_empty() {
+		mockUART.createMessage("^3;1;;3;$");
+		
+		assertNull(flows);
+	}
 }
