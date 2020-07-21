@@ -2,6 +2,7 @@ package jedrzejbronislaw.flowmeasure.flowDevice;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import javafx.application.Platform;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
@@ -13,7 +14,7 @@ public class FlowDevice {
 	private static final String PROOF_REQUEST = "FlowDevice";
 	private static final String PROOF_MESSAGE = "FD present!";
 
-	private UART uart;
+	private IUART uart;
 
 	@Setter
 	private BiConsumer<Integer, Integer> newSingleFlowReceive;
@@ -23,6 +24,8 @@ public class FlowDevice {
 	private Consumer<String> IncorrectMessageReceive;
 	@Setter
 	private Runnable deviceConfirmation;
+	@Setter
+	private Function<UARTParams, IUART> uartGenerator = UART::new;
 	
 	@Getter
 	private boolean connected = false;
@@ -31,11 +34,18 @@ public class FlowDevice {
 	
 	private boolean connecting = false;
 	
+
+	public FlowDevice() {}
+	public FlowDevice(Function<UARTParams, IUART> uartGenerator) {
+		if (uartGenerator != null) this.uartGenerator = uartGenerator;
+	}
+	
+	
 	public boolean connect(UARTParams params) {
 		if(!connecting) {
 			connecting = true;
 			
-			uart = new UART(params);
+			uart = uartGenerator.apply(params);
 			uart.setReceiveMessage(message -> parse(message));
 			connected = uart.connect();
 				

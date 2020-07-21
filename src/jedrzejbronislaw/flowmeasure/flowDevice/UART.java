@@ -11,7 +11,7 @@ import com.fazecast.jSerialComm.SerialPortEvent;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Setter;
 
-public class UART {
+public class UART implements IUART {
 
 	public static final String rates[] = {"300", "1200", "2400", "4800", "9600", "19200"};
 
