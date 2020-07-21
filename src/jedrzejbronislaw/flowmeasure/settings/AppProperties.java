@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum AppProperties implements PropertyDesc {
 	
-	PULSE_PER_LITRE("pulsePerLitre",  PropertyType.FLOAT,  "450"),
 	BUFFERED_DATA  ("bufferedData",   PropertyType.BOOL,   "false"),
 	BUFFER_INTERVAL("bufferInterval", PropertyType.INT,    "1000"),
 	SAVE_PATH      ("savePath",       PropertyType.STRING, ""),
