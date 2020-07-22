@@ -4,9 +4,12 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import jedrzejbronislaw.flowmeasure.ConncetionResult;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Getter;
 import lombok.Setter;
+
+import static jedrzejbronislaw.flowmeasure.ConncetionResult.*;
 
 public abstract class UARTDevice {
 
@@ -39,8 +42,8 @@ public abstract class UARTDevice {
 	}
 
 
-	public boolean connect(UARTParams params) {
-		if(connecting) return false;
+	public ConncetionResult connect(UARTParams params) {
+		if(connecting) return BUSY;
 		connecting = true;
 		
 		uart = uartGenerator.apply(params);
@@ -49,7 +52,7 @@ public abstract class UARTDevice {
 		
 		connecting = false;
 		
-		return connected;
+		return connected ? CONNECTED : CONNECTION_ERROR;
 	}
 
 	public void disconnect() {

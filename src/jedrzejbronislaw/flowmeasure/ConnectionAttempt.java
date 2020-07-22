@@ -8,6 +8,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import static jedrzejbronislaw.flowmeasure.ConncetionResult.*;
+
 @RequiredArgsConstructor
 public class ConnectionAttempt {
 
@@ -26,7 +28,7 @@ public class ConnectionAttempt {
 	@Setter
 	private Runnable fail;
 	
-	private boolean connected = false;
+	private ConncetionResult connected = null;
 	
 	void changePort(String port) {
 		System.out.println("-changePort(" + port + ")-");
@@ -34,7 +36,7 @@ public class ConnectionAttempt {
 	}
 	
 	public void start() {
-		connected = false;
+		connected = null;
 
 		System.out.println("Rozpoczêto próbê po³¹czenia (port: " + params.PORT_NAME + ")");
 		
@@ -48,7 +50,7 @@ public class ConnectionAttempt {
 			connect(CONNECTING_TIMEOUT);
 			System.out.println("connectedFlag: " + connected);
 			
-			if(connected) {
+			if(connected == CONNECTED) {
 				sleep(PROOF_MESSAGE_WAITING);
 				checkDevice();
 			} else {
@@ -75,6 +77,7 @@ public class ConnectionAttempt {
 	private void connect(int timeout) {
 		Thread thread = new Thread(() -> connected = connect());
 		
+		connected = DURING;
 		thread.setDaemon(true);
 		thread.start();
 		
@@ -83,17 +86,19 @@ public class ConnectionAttempt {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		if (connected == DURING) connected = NO_RESPONSE;
 	}
 
-	private boolean connect() {
-		boolean successs = device.connect(params);
+	private ConncetionResult connect() {
+		ConncetionResult result = device.connect(params);
 		
-		if(successs) {
+		if(result == CONNECTED) {
 			sleep(PROOF_REQUEST_DELAY);
 			device.sendProofRequest();
 		}
 		
-		return successs;
+		return result;
 	}
 
 	private void sleep(int time) {
