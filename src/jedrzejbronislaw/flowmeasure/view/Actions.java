@@ -139,11 +139,11 @@ public class Actions implements ActionContainer {
 		System.out.println("\nStart autoconnect");
 		
 		ConnectionsAttempts attempts = new ConnectionsAttempts(device(), UART.getPortList(), 9600);
-		attempts.setFail(() -> {
+		attempts.setIfFail(() -> {
 			System.out.println("¯aden port nie pasuje");
 			eventManager().submitEvent(EventType.ConnectionFailed);
 		});
-		attempts.setSuccess(port -> {
+		attempts.setIfSuccess(port -> {
 			System.out.println("Uda³o po³¹czyæ siê z portem: " + port);
 			eventManager().submitEvent(EventType.ConnectionSuccessful);
 			connectionMonitor().start();
