@@ -1,8 +1,9 @@
 package jedrzejbronislaw.flowmeasure.flowDevice;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
@@ -20,9 +21,9 @@ public class UART implements IUART {
 	private final String PORT_NAME;
 	private final int DATA_RATE;
 
-	
 	@Setter
 	private Consumer<String> receiveMessage;
+	
 	
 	public UART(UARTParams params) {		
 		PORT_NAME = params.PORT_NAME;
@@ -30,46 +31,51 @@ public class UART implements IUART {
 	}
 	
 	public boolean isPortOpen() {
-		if (port != null)
-			return port.isOpen();
-		return false;
+		return (port != null && port.isOpen());
 	}
 	
 	public boolean connect() {
 		port = SerialPort.getCommPort(PORT_NAME);
 		port.setBaudRate(DATA_RATE);
 		port.openPort();
-
-		if (port.isOpen()) {
-			System.out.println("Port initialized!");
-		} else {
+		
+		if (!port.isOpen()) {
 			System.out.println("Port not available");
 			return false;
 		}
 		
-		port.addDataListener(new SerialPortDataListener() {
+		System.out.println("Port initialized!");
+		
+		port.addDataListener(generateDataListener());
+		
+		return true;
+	}
+
+	private SerialPortDataListener generateDataListener() {
+		return new SerialPortDataListener() {
+			
 			@Override
 			public int getListeningEvents() {
 				return SerialPort.LISTENING_EVENT_DATA_AVAILABLE;
 			}
 
 			public void serialEvent(SerialPortEvent event) {
-				if (event.getEventType() != SerialPort.LISTENING_EVENT_DATA_AVAILABLE)
-					return;
+				if (event.getEventType() != SerialPort.LISTENING_EVENT_DATA_AVAILABLE) return;
+				
 				byte[] newData = new byte[port.bytesAvailable()];
-//				int numRead = port.readBytes(newData, newData.length);
 				port.readBytes(newData, newData.length);
+				
 				Injection.run(receiveMessage, new String(newData));
 			}
-		});
-		
-		return true;
+		};
+	}
+
+	public void disconnect() {
+		port.closePort();
 	}
 	
 	public boolean send(String message) {
-		if(!port.isOpen())
-			return false;
-		
+		if(!port.isOpen()) return false;
 		
 		port.writeBytes(message.getBytes(), message.length());
 		
@@ -79,29 +85,12 @@ public class UART implements IUART {
 
 
 	public static List<String> getRateList() {
-		List<String> list = new LinkedList<String>();
-		
-		for(int i=0; i<rates.length; i++)
-			list.add(rates[i]);
-		
-		return list;
+		return Stream.of(rates).collect(Collectors.toList());
 	}
 
 	public static List<String> getPortList() {
-
-		List<String> list = new LinkedList<String>();
-		
-		SerialPort ports[] = SerialPort.getCommPorts();
-		
-		for(int i=0; i<ports.length; i++)
-			list.add(ports[i].getSystemPortName());
-		
-		return list;
-		
+		return Stream.of(SerialPort.getCommPorts())
+				.map(port -> port.getSystemPortName())
+				.collect(Collectors.toList());
 	}
-
-	public void disconnect() {
-		port.closePort();
-	}
-
 }
