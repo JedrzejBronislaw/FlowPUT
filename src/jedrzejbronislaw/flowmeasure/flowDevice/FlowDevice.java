@@ -3,6 +3,8 @@ package jedrzejbronislaw.flowmeasure.flowDevice;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Getter;
@@ -10,26 +12,28 @@ import lombok.Setter;
 
 public class FlowDevice {
 
+	private enum MessageTag {
+		CORRECT, INCORRECT, IGNORED
+	}
+	
+	private static final String LINE_SEPARATOR_REGEX = "\\r?\\n";
+	private static final String VALUE_SEPARATOR = ";";
+	private static final char LINE_FIRST_CHAR   = '^';
+	private static final char LINE_LAST_CHAR    = '$';
+	
 	private static final String PROOF_REQUEST = "FlowDevice";
 	private static final String PROOF_MESSAGE = "FD present!";
 
 	private IUART uart;
 
-	@Setter
-	private BiConsumer<Integer, Integer> newSingleFlowReceive;
-	@Setter
-	private Consumer<int[]> newFlowsReceive;
-	@Setter
-	private Consumer<String> IncorrectMessageReceive;
-	@Setter
-	private Runnable deviceConfirmation;
-	@Setter
-	private Function<UARTParams, IUART> uartGenerator = UART::new;
+	@Setter private BiConsumer<Integer, Integer> newSingleFlowReceive;
+	@Setter private Consumer<int[]> newFlowsReceive;
+	@Setter private Consumer<String> incorrectMessageReceive;
+	@Setter private Runnable deviceConfirmation;
+	@Setter private Function<UARTParams, IUART> uartGenerator = UART::new;
 	
-	@Getter
-	private boolean connected = false;
-	@Getter
-	private boolean correctDevice = false;
+	@Getter private boolean connected     = false;
+	@Getter private boolean correctDevice = false;
 	
 	private boolean connecting = false;
 	
@@ -41,109 +45,104 @@ public class FlowDevice {
 	
 	
 	public boolean connect(UARTParams params) {
-		if(!connecting) {
-			connecting = true;
-			
-			uart = uartGenerator.apply(params);
-			uart.setReceiveMessage(message -> parse(message));
-			connected = uart.connect();
-				
-			connecting = false;
-			return connected;
-		} else
-			return false;
+		if(connecting) return false;
+		connecting = true;
+		
+		uart = uartGenerator.apply(params);
+		uart.setReceiveMessage(message -> handleMessage(message));
+		connected = uart.connect();
+		
+		connecting = false;
+		
+		return connected;
+	}
+
+	public void disconnect() {
+		if(uart == null || !uart.isPortOpen()) return;
+		
+		uart.disconnect();
+		connected = false;
+		correctDevice = false;
 	}
 
 	public void sendProofRequest() {
 		uart.send(PROOF_REQUEST);
 	}
 
-	private void parse(String message) {
-		if(message.isEmpty()) return;
+	private void handleMessage(String messageLines) {
+		if(messageLines == null || messageLines.isEmpty()) return;
 		
-		String[] lines = message.split("\\r?\\n");
+		String[] messages = messageLines.split(LINE_SEPARATOR_REGEX);
 		
-		for(int i=0; i<lines.length; i++)
-			parseLine(lines[i]);
+		Stream.of(messages).filter(this::unexecuted).forEach(message -> Injection.run(incorrectMessageReceive, message));
+	}
+	
+	private boolean unexecuted(String message) {
+		return handleMessageLine(message) == MessageTag.INCORRECT;
 	}
 
-	private void parseLine(String message) {
-		int position;
-		int length;
-		int flow[];
+	private MessageTag handleMessageLine(String message) {
+		if(isProofMessage(message))     return MessageTag.CORRECT;
+		if(!correctDevice)              return MessageTag.IGNORED;
+		if(!correctLineFormat(message)) return MessageTag.INCORRECT;
+
+		String content = extraxtContent(message);
+		int numbers[]  = extractNumbers(content);
 		
-		if(checkProofMessage(message)) return;
+		if(numbers == null)             return MessageTag.INCORRECT;
+		if(correctSize(numbers))        return MessageTag.INCORRECT;
 		
-		if(!correctDevice) return;
+		int[] flow = extractFlow(numbers);
+
+		deliverFlow(flow);
 		
-		length = message.length();
-		if (length <4) {
-			Injection.run(IncorrectMessageReceive, message);
-			return;
-		}
-		
-		if(message.charAt(0) != '^' || message.charAt(length-1) != '$') {
-			Injection.run(IncorrectMessageReceive, message);
-			return;			
-		}
-		
-		message = message.substring(1);
-		
-		
-		position = message.indexOf(';');
-		if(position == -1) {
-			Injection.run(IncorrectMessageReceive, message);
-			return;			
-		}
-		
-		int n = Integer.parseInt(message.substring(0, position));
-		
-		flow = new int[n];
-		
-		
-		for(int i=0; i<n; i++) {			
-			message = message.substring(position+1);
-			
-			position = message.indexOf(';');
-			if(position == -1) {
-				Injection.run(IncorrectMessageReceive, message);
-				return;			
-			}
-			
-			try {
-				flow[i] = Integer.parseInt(message.substring(0, position));
-			} catch (NumberFormatException e) {
-				Injection.run(IncorrectMessageReceive, message);
-				return;
-			}
-		}
-		
-		
+		return MessageTag.CORRECT;
+	}
+	
+	private void deliverFlow(int[] flow) {
 		Injection.run(newFlowsReceive, flow);
 		
-		for(int i=0; i<n; i++)
-			if (newSingleFlowReceive != null) {
-				int ii = i;
-				newSingleFlowReceive.accept(flow[ii], ii);
-			}
+		if (newSingleFlowReceive != null)
+			for(int i=0; i<flow.length; i++) newSingleFlowReceive.accept(flow[i], i);
 	}
 
-	private boolean checkProofMessage(String message) {
-		if (message.equals(PROOF_MESSAGE)) {
-			correctDevice = true;
-			Injection.run(deviceConfirmation);
-			
-			return true;
-		}
-		return false;
-	}
-
-	public void disconnect() {
-		if(uart != null && uart.isPortOpen()) {
-			uart.disconnect();
-			connected = false;
-			correctDevice = false;
+	private int[] extractNumbers(String message) {
+		String strNumbers[] = message.split(VALUE_SEPARATOR);
+		
+		try {
+			return Stream.of(strNumbers).mapToInt(Integer::parseInt).toArray();
+		} catch (NumberFormatException e) {
+			return null;
 		}
 	}
+	
+	private String extraxtContent(String message) {
+		return message.substring(1, message.length()-1);
+	}
+	
+	private int[] extractFlow(int[] numbers) {
+		return IntStream.rangeClosed(1, numbers[0]).map(i -> numbers[i]).toArray();
+	}
+	
+	private boolean correctSize(int[] numbers) {
+		return numbers[0]+1 > numbers.length;
+	}
 
+	private boolean correctLineFormat(String message) {
+		int length = message.length();
+		
+		return length >= 4
+			&& message.charAt(0) == LINE_FIRST_CHAR
+			&& message.charAt(length-1) == LINE_LAST_CHAR;
+		
+	}
+
+	private boolean isProofMessage(String message) {
+		if (!message.equals(PROOF_MESSAGE)) return false;
+		
+		correctDevice = true;
+		Injection.run(deviceConfirmation);
+		
+		return true;
+	}
 }

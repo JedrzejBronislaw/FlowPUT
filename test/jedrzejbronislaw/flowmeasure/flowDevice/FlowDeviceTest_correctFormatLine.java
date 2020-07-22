@@ -34,9 +34,11 @@ public class FlowDeviceTest_correctFormatLine {
 	
 	@Test
 	public void _6_123456_withoutEndingSemicolon() {
+		int[] expectedsFlows = new int[] {1, 2, 3, 4, 5, 6};
+		
 		mockUART.createMessage("^6;1;2;3;4;5;6$");
-
-		assertNull(flows);
+		
+		assertArrayEquals(expectedsFlows, flows);
 	}
 	
 	@Test
