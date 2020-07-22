@@ -6,7 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import jedrzejbronislaw.flowmeasure.ConnectionAttempt;
-import jedrzejbronislaw.flowmeasure.ConnectionsAttempts;
+import jedrzejbronislaw.flowmeasure.AutoConnection;
 import jedrzejbronislaw.flowmeasure.FileNamer;
 import jedrzejbronislaw.flowmeasure.FileNamer1;
 import jedrzejbronislaw.flowmeasure.FlowManager;
@@ -138,7 +138,7 @@ public class Actions implements ActionContainer {
 	public void autoconnectFlowDevice() {
 		System.out.println("\nStart autoconnect");
 		
-		ConnectionsAttempts attempts = new ConnectionsAttempts(device(), UART.getPortList(), 9600);
+		AutoConnection attempts = new AutoConnection(device(), UART.getPortList(), 9600);
 		attempts.setIfFail(() -> {
 			System.out.println("¯aden port nie pasuje");
 			eventManager().submitEvent(EventType.ConnectionFailed);

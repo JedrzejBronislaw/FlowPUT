@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @RequiredArgsConstructor
-public class ConnectionsAttempts {
+public class AutoConnection {
 
 	@NonNull private FlowDevice device;
 	@NonNull private List<String> portList;
