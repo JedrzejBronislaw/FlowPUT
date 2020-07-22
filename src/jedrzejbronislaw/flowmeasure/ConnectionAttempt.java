@@ -30,7 +30,7 @@ public class ConnectionAttempt {
 	@Setter
 	private Consumer<ConncetionResult> fail;
 	
-	private ConncetionResult connected = null;
+	private ConncetionResult conncetionResult = null;
 	
 	void changePort(String port) {
 		System.out.println("-changePort(" + port + ")-");
@@ -38,7 +38,7 @@ public class ConnectionAttempt {
 	}
 	
 	public void start() {
-		connected = null;
+		conncetionResult = null;
 
 		System.out.println("Rozpoczêto próbê po³¹czenia (port: " + params.PORT_NAME + ")");
 		
@@ -50,14 +50,14 @@ public class ConnectionAttempt {
 			
 			System.out.println("Uruchamiam w¹tek");
 			connect(CONNECTING_TIMEOUT);
-			System.out.println("connectedFlag: " + connected);
+			System.out.println("connectedFlag: " + conncetionResult);
 			
-			if(connected == CONNECTED) {
+			if(conncetionResult == CONNECTED) {
 				sleep(PROOF_MESSAGE_WAITING);
 				checkDevice();
 			} else {
 				System.out.println("Port niedostêpny");
-				Injection.run(fail, connected);
+				Injection.run(fail, conncetionResult);
 			}
 		});
 	}
@@ -77,9 +77,9 @@ public class ConnectionAttempt {
 	}
 	
 	private void connect(int timeout) {
-		Thread thread = new Thread(() -> connected = connect());
+		Thread thread = new Thread(() -> conncetionResult = connect());
 		
-		connected = DURING;
+		conncetionResult = DURING;
 		thread.setDaemon(true);
 		thread.start();
 		
@@ -89,7 +89,7 @@ public class ConnectionAttempt {
 			e.printStackTrace();
 		}
 		
-		if (connected == DURING) connected = NO_RESPONSE;
+		if (conncetionResult == DURING) conncetionResult = NO_RESPONSE;
 	}
 
 	private ConncetionResult connect() {
