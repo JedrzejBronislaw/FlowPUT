@@ -10,6 +10,8 @@ import lombok.Setter;
 
 import static jedrzejbronislaw.flowmeasure.ConncetionResult.*;
 
+import java.util.function.Consumer;
+
 @RequiredArgsConstructor
 public class ConnectionAttempt {
 
@@ -26,7 +28,7 @@ public class ConnectionAttempt {
 	@Setter
 	private Runnable success;
 	@Setter
-	private Runnable fail;
+	private Consumer<ConncetionResult> fail;
 	
 	private ConncetionResult connected = null;
 	
@@ -55,7 +57,7 @@ public class ConnectionAttempt {
 				checkDevice();
 			} else {
 				System.out.println("Port niedostêpny");
-				Injection.run(fail);
+				Injection.run(fail, connected);
 			}
 		});
 	}
@@ -70,7 +72,7 @@ public class ConnectionAttempt {
 			System.out.println("\tIncorrect device. Roz³¹czam.");
 			device.disconnect();
 			System.out.println("Roz³¹czy³em");
-			Injection.run(fail);
+			Injection.run(fail, WRONG_DEVICE);
 		}
 	}
 	

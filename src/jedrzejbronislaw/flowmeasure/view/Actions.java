@@ -118,7 +118,7 @@ public class Actions implements ActionContainer {
 			eventManager().submitEvent(EventType.ConnectionSuccessful);
 			connectionMonitor().start();
 		});
-		attempt.setFail(() -> {
+		attempt.setFail(reason -> {
 			eventManager().submitEvent(EventType.ConnectionFailed);
 		});
 

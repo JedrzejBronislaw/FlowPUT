@@ -13,6 +13,8 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class AutoConnection {
 
+	private static final int WAITING_FOR_RELAUNCH = 500;
+	
 	@NonNull private FlowDevice device;
 	@NonNull private List<String> portList;
 	         private final int rate;
@@ -42,7 +44,18 @@ public class AutoConnection {
 		attempt.start();
 	}
 
-	private void singleFail() {
+	private void singleFail(ConncetionResult reason) {
+		if (reason == ConncetionResult.BUSY)
+			relaunch(WAITING_FOR_RELAUNCH); else
+			tryNextPort();
+	}
+
+	private void singleSuccess() {
+		System.out.println("__sukces");
+		Injection.run(ifSuccess, attempt.getParams().PORT_NAME);
+	}
+
+	private void tryNextPort() {
 		String port = getNextPort();
 		System.out.println("__niepowodzenie czesciowe sprobujmy " + port);
 		
@@ -51,15 +64,26 @@ public class AutoConnection {
 			relaunch(port);
 	}
 
-	private void singleSuccess() {
-		System.out.println("__sukces");
-		Injection.run(ifSuccess, attempt.getParams().PORT_NAME);
-	}
-	
 	private void relaunch(String port) {
 		attempt.changePort(port);
 		System.out.println("zmieniono port na " + port);
+	
+		attempt.start();
+	}
+	
+	private void relaunch(int sleep) {
+		System.out.println("ponowna próba port " + attempt.getParams().PORT_NAME);
+	
+		sleep(sleep);
 		
 		attempt.start();
+	}
+
+	private void sleep(int time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
