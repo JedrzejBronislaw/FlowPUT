@@ -2,7 +2,6 @@ package jedrzejbronislaw.flowmeasure.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,11 +20,11 @@ public class MeasurementTableController implements Initializable{
 	private Button refreshButton;
 	
 	@Setter
-	private Consumer<TableView<FlowMeasurement>> refreshButtonAction;
+	private Runnable refreshButtonAction;
 	
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		refreshButton.setOnAction(e -> Injection.run(refreshButtonAction, table));
+		refreshButton.setOnAction(e -> Injection.run(refreshButtonAction));
 	}
 }
