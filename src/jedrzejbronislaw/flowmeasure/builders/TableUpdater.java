@@ -23,6 +23,7 @@ public class TableUpdater {
 	public void refreshTable(ProcessRepository currentProcess) {
 		Platform.runLater(() -> {
 			if (currentProcess == null) return;
+			
 			creatingColumns(currentProcess);
 			table.getItems().addAll(currentProcess.getAllMeasurement());
 			table.scrollTo(table.getItems().size()-1);
@@ -36,10 +37,8 @@ public class TableUpdater {
 		table.getItems().clear();
 		table.getColumns().clear();
 		
-		table.getColumns().add(createTimeColumn());
-		
-		for(int i=0; i<numOfFlowmeters; i++)
-			table.getColumns().add(createFlowColumn(i));
+		addColumn(createTimeColumn());
+		for(int i=0; i<numOfFlowmeters; i++) addColumn(createFlowColumn(i));
 	}
 
 	private TableColumn<FlowMeasurement, String> createTimeColumn() {
@@ -66,5 +65,9 @@ public class TableUpdater {
 
 	private String flowColumnName(int i) {
 		return FLOW_COMUMN_NAME_PREFIX + (i+1);
+	}
+	
+	private void addColumn(TableColumn<FlowMeasurement, ?> column) {
+		table.getColumns().add(column);
 	}
 }

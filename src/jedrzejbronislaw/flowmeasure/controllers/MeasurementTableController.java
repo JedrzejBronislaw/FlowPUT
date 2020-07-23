@@ -14,13 +14,10 @@ import lombok.Setter;
 
 public class MeasurementTableController implements Initializable{
 
-	@FXML @Getter
-	private TableView<FlowMeasurement> table;
-	@FXML
-	private Button refreshButton;
+	@Getter @FXML private TableView<FlowMeasurement> table;
+	        @FXML private Button refreshButton;
 	
-	@Setter
-	private Runnable refreshButtonAction;
+	@Setter private Runnable refreshButtonAction;
 	
 
 	@Override
