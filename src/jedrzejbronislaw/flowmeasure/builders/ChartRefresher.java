@@ -2,15 +2,11 @@ package jedrzejbronislaw.flowmeasure.builders;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.LinkedList;
 import java.util.List;
 
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart.Data;
-import javafx.scene.chart.XYChart.Series;
 import jedrzejbronislaw.flowmeasure.FlowConverters;
 import jedrzejbronislaw.flowmeasure.builders.chart.ChartDataUpdater;
 import jedrzejbronislaw.flowmeasure.builders.chart.ChartLpSDataUpdater;
@@ -18,13 +14,13 @@ import jedrzejbronislaw.flowmeasure.builders.chart.ChartOptions;
 import jedrzejbronislaw.flowmeasure.builders.chart.ChartPulseDataUpdater;
 import jedrzejbronislaw.flowmeasure.builders.chart.ChartRange;
 import jedrzejbronislaw.flowmeasure.builders.chart.ChartRange.Range;
+import jedrzejbronislaw.flowmeasure.builders.chart.SeriesManager;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import lombok.NonNull;
 
 public class ChartRefresher {
 	
-	private static final String FLOW_SERIES_NAME_PREFIX = "Flow ";
 	private static final String AXIS_LABEL_TIME = "time [s]";
 
 	@NonNull private final LineChart<Number, Number> chart;
@@ -33,24 +29,24 @@ public class ChartRefresher {
 	private ProcessRepository process;
 	
 	private List<FlowMeasurement> data;
-	private int numOfFlowMeters;
 	private NumberAxis xAxis;
-	private List<Series<Number, Number>> seriesList;
-	
-	
 
 	private ChartPulseDataUpdater pulseUpdater;
 	private ChartLpSDataUpdater lpsUpdater;
 	
-
+	private SeriesManager seriesManager;
 	private ChartRange chartRange = new ChartRange();
 	private Range range;
+	
+	
 	
 	public ChartRefresher(FlowConverters flowConverters, LineChart<Number, Number> chart) {
 		this.chart = chart;
 		
-		pulseUpdater = new ChartPulseDataUpdater(chart, this::setChartPoint);
-		lpsUpdater   = new ChartLpSDataUpdater  (chart, this::setChartPoint, flowConverters);
+		seriesManager = new SeriesManager(chart);
+		
+		pulseUpdater = new ChartPulseDataUpdater(chart, seriesManager::setChartPoint);
+		lpsUpdater   = new ChartLpSDataUpdater  (chart, seriesManager::setChartPoint, flowConverters);
 
 		xAxis = (NumberAxis) chart.getXAxis();
 		
@@ -63,19 +59,18 @@ public class ChartRefresher {
 		
 		this.options = options;
 		this.process = process;
-		data            = process.getAllMeasurement();
-		numOfFlowMeters = process.getNumOfFlowmeters();
+		data         = process.getAllMeasurement();
 		if(data.size() == 0) return;
 		
 		range = chartRange.get(data, options);
 		
 		Platform.runLater(() -> {
-			prepareSeries();
+			seriesManager.prepareSeries(process.getNumOfFlowmeters());
 			
 			updateXAxis();
 			updateValues();
 			
-			addSeries();
+			seriesManager.updateSeries();
 		});
 	}
 
@@ -113,42 +108,6 @@ public class ChartRefresher {
 		}
 	}
 
-	private void setChartPoint(int flowmeterNumber, Data<Number, Number> chartPoint) {
-		seriesList.get(flowmeterNumber).getData().add(chartPoint);
-	}
-
-	private void prepareSeries() {
-		List<Series<Number, Number>> seriesList = new LinkedList<>();
-		ObservableList<Series<Number, Number>> oldSeries = chart.getData();
-		
-		for(int i=0; i<numOfFlowMeters; i++) {
-			if(i < oldSeries.size()) {
-				//series reuse
-				Series<Number, Number> series = oldSeries.get(i);
-				series.getData().clear();
-				seriesList.add(series);
-			} else {
-				Series<Number, Number> series = new Series<>();
-				series.setName(flowSeriesName(i));
-				seriesList.add(series);
-			}
-		}
-		
-		this.seriesList = seriesList;
-	}
-
-	private void addSeries() {
-		chart.getData().forEach(oldSeries -> {
-			if (seriesList.contains(oldSeries))
-				seriesList.remove(oldSeries);
-		});
-		
-		seriesList.forEach(newSeries -> {
-			if (!chart.getData().contains(newSeries))
-				 chart.getData().add(newSeries);
-		});
-	}
-
 	public static float timeSec(LocalDateTime startTime, FlowMeasurement measurement) {
 		return ChronoUnit.MILLIS.between(startTime, measurement.getTime()) / 1000f;
 	}
@@ -156,9 +115,5 @@ public class ChartRefresher {
 	private float timeSec(FlowMeasurement measurement) {
 		LocalDateTime startTime = process.getMetadata().getStartTime();
 		return timeSec(startTime, measurement);
-	}
-
-	private String flowSeriesName(int i) {
-		return FLOW_SERIES_NAME_PREFIX + (i+1);
 	}
 }
