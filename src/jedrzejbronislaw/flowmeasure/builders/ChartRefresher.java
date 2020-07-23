@@ -16,14 +16,14 @@ import jedrzejbronislaw.flowmeasure.builders.chart.ChartDataUpdater;
 import jedrzejbronislaw.flowmeasure.builders.chart.ChartLpSDataUpdater;
 import jedrzejbronislaw.flowmeasure.builders.chart.ChartOptions;
 import jedrzejbronislaw.flowmeasure.builders.chart.ChartPulseDataUpdater;
+import jedrzejbronislaw.flowmeasure.builders.chart.ChartRange;
+import jedrzejbronislaw.flowmeasure.builders.chart.ChartRange.Range;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
-import jedrzejbronislaw.flowmeasure.tools.ItemSelector;
 import lombok.NonNull;
 
 public class ChartRefresher {
 	
-	private static final int LAST_SEC_NUMER = 60;
 	private static final String FLOW_SERIES_NAME_PREFIX = "Flow ";
 	private static final String AXIS_LABEL_TIME = "time [s]";
 
@@ -42,9 +42,9 @@ public class ChartRefresher {
 	private ChartPulseDataUpdater pulseUpdater;
 	private ChartLpSDataUpdater lpsUpdater;
 	
-	
-	private int firstMeasureIndex;
-	private int lastMeasureIndex;
+
+	private ChartRange chartRange = new ChartRange();
+	private Range range;
 	
 	public ChartRefresher(FlowConverters flowConverters, LineChart<Number, Number> chart) {
 		this.chart = chart;
@@ -67,7 +67,7 @@ public class ChartRefresher {
 		numOfFlowMeters = process.getNumOfFlowmeters();
 		if(data.size() == 0) return;
 		
-		prepareScopeOfData();
+		range = chartRange.get(data, options);
 		
 		Platform.runLater(() -> {
 			prepareSeries();
@@ -93,15 +93,15 @@ public class ChartRefresher {
 	}
 
 	private void updateXAxis() {
-		float beginTimeSec = timeSec(data.get(firstMeasureIndex));
-		float endTimeSec   = timeSec(data.get(lastMeasureIndex));
+		float beginTimeSec = timeSec(data.get(range.getFirst()));
+		float endTimeSec   = timeSec(data.get(range.getLast()));
 
 		xAxis.setLowerBound(Math.ceil(beginTimeSec));
 		xAxis.setUpperBound(Math.ceil(endTimeSec));
 	}
 
 	private void updateValues() {
-		chartUpdater().update(firstMeasureIndex, lastMeasureIndex, process);
+		chartUpdater().update(range.getFirst(), range.getLast(), process);
 	}
 
 	private ChartDataUpdater chartUpdater() {
@@ -115,31 +115,6 @@ public class ChartRefresher {
 
 	private void setChartPoint(int flowmeterNumber, Data<Number, Number> chartPoint) {
 		seriesList.get(flowmeterNumber).getData().add(chartPoint);
-	}
-
-	private void prepareScopeOfData() {
-		if(!options.isLastSecOption() && data.size() > 1000)
-			data = new ItemSelector<FlowMeasurement>().select(data, 1000);
-
-		firstMeasureIndex = getFirst();
-		lastMeasureIndex  = getLast();
-	}
-	
-	private int getFirst() {
-		if (!options.isLastSecOption()) return 0;
-
-		int lastIndex = getLast();
-		FlowMeasurement lastMeasure = data.get(lastIndex);
-		
-		for (int i=lastIndex-1; i>=0; i--)
-			if (timeSec(data.get(i).getTime(), lastMeasure) >= LAST_SEC_NUMER)
-				return i;
-		
-		return 0;
-	}
-
-	private int getLast() {
-		return data.size()-1;
 	}
 
 	private void prepareSeries() {
