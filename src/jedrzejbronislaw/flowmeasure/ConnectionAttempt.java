@@ -33,45 +33,33 @@ public class ConnectionAttempt {
 	private ConncetionResult conncetionResult = null;
 	
 	void changePort(String port) {
-		System.out.println("-changePort(" + port + ")-");
 		params.PORT_NAME = port;
 	}
 	
 	public void start() {
 		conncetionResult = null;
-
-		System.out.println("Rozpoczêto próbê po³¹czenia (port: " + params.PORT_NAME + ")");
-		
 		createCheckingThread().start();
 	}
 
 	private Thread createCheckingThread() {
 		return new Thread(() -> {
 			
-			System.out.println("Uruchamiam w¹tek");
 			connect(CONNECTING_TIMEOUT);
-			System.out.println("connectedFlag: " + conncetionResult);
 			
 			if(conncetionResult == CONNECTED) {
 				sleep(PROOF_MESSAGE_WAITING);
 				checkDevice();
-			} else {
-				System.out.println("Port niedostêpny");
+			} else
 				Injection.run(fail, conncetionResult);
-			}
 		});
 	}
 
 	private void checkDevice() {
-		System.out.println("Sprawdzam");
 		
 		if(device.isCorrectDevice()) {
-			System.out.println("\tCorrect device");
 			Injection.run(success);
 		} else {
-			System.out.println("\tIncorrect device. Roz³¹czam.");
 			device.disconnect();
-			System.out.println("Roz³¹czy³em");
 			Injection.run(fail, WRONG_DEVICE);
 		}
 	}

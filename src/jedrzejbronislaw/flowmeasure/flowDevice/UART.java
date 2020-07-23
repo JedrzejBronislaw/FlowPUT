@@ -39,12 +39,7 @@ public class UART implements IUART {
 		port.setBaudRate(DATA_RATE);
 		port.openPort();
 		
-		if (!port.isOpen()) {
-			System.out.println("Port not available");
-			return false;
-		}
-		
-		System.out.println("Port initialized!");
+		if (!port.isOpen()) return false;
 		
 		port.addDataListener(generateDataListener());
 		

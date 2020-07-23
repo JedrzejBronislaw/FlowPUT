@@ -40,24 +40,25 @@ public class AutoConnection {
 		attempt.setSuccess(this::singleSuccess);
 		attempt.setFail(this::singleFail);
 
-		System.out.println("__najpierw sprobojemy z " + params.PORT_NAME);
 		attempt.start();
 	}
 
 	private void singleFail(ConncetionResult reason) {
+		System.out.println(attempt.getParams().PORT_NAME + ": " + reason);
+
 		if (reason == ConncetionResult.BUSY)
 			relaunch(WAITING_FOR_RELAUNCH); else
 			tryNextPort();
 	}
 
 	private void singleSuccess() {
-		System.out.println("__sukces");
+		System.out.println(attempt.getParams().PORT_NAME + ": connected");
+
 		Injection.run(ifSuccess, attempt.getParams().PORT_NAME);
 	}
 
 	private void tryNextPort() {
 		String port = getNextPort();
-		System.out.println("__niepowodzenie czesciowe sprobujmy " + port);
 		
 		if(port == null)
 			Injection.run(ifFail); else
@@ -66,16 +67,11 @@ public class AutoConnection {
 
 	private void relaunch(String port) {
 		attempt.changePort(port);
-		System.out.println("zmieniono port na " + port);
-	
 		attempt.start();
 	}
 	
 	private void relaunch(int sleep) {
-		System.out.println("ponowna próba port " + attempt.getParams().PORT_NAME);
-	
 		sleep(sleep);
-		
 		attempt.start();
 	}
 
