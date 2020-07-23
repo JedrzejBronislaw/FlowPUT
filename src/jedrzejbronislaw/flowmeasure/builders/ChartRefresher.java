@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -13,166 +11,122 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
-import jedrzejbronislaw.flowmeasure.FlowConverter;
 import jedrzejbronislaw.flowmeasure.FlowConverters;
-import jedrzejbronislaw.flowmeasure.controllers.ChartPaneController;
-import jedrzejbronislaw.flowmeasure.controllers.ChartPaneController.ValueUnit;
+import jedrzejbronislaw.flowmeasure.builders.chart.ChartDataUpdater;
+import jedrzejbronislaw.flowmeasure.builders.chart.ChartLpSDataUpdater;
+import jedrzejbronislaw.flowmeasure.builders.chart.ChartOptions;
+import jedrzejbronislaw.flowmeasure.builders.chart.ChartPulseDataUpdater;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.tools.ItemSelector;
-import lombok.RequiredArgsConstructor;
+import lombok.NonNull;
 
-@RequiredArgsConstructor
-public class ChartRefresher implements Consumer<LineChart<Number, Number>> {
+public class ChartRefresher {
 	
 	private static final int LAST_SEC_NUMER = 60;
 	private static final String FLOW_SERIES_NAME_PREFIX = "Flow ";
 	private static final String AXIS_LABEL_TIME = "time [s]";
-	private static final String AXIS_LABEL_PULSES = "flow [pulses]";
-	private static final String AXIS_LABEL_L_PER_SEC = "flow [" + FlowConverter.FLOW_UNIT + "]";
 
-	private final Supplier<ProcessRepository> currentProcess;
-	private final FlowConverters flowconverters;
-	private final ChartPaneController controller;
+	@NonNull private final LineChart<Number, Number> chart;
+	
+	private ChartOptions options = ChartOptions.builder().build();
+	private ProcessRepository process;
 	
 	private List<FlowMeasurement> data;
-	private ProcessRepository process;
-
-	private NumberAxis axisX;
-	private NumberAxis axisY;
-	private List<Series<Number, Number>> seriesList;
 	private int numOfFlowMeters;
-	private boolean lastSecOption;
-	private ValueUnit unit;
+	private NumberAxis xAxis;
+	private List<Series<Number, Number>> seriesList;
+	
+	
+
+	private ChartPulseDataUpdater pulseUpdater;
+	private ChartLpSDataUpdater lpsUpdater;
+	
 	
 	private int firstMeasureIndex;
 	private int lastMeasureIndex;
 	
-	@Override
-	public void accept(LineChart<Number, Number> chart) {
-		if (currentProcess.get() == null) return;
+	public ChartRefresher(FlowConverters flowConverters, LineChart<Number, Number> chart) {
+		this.chart = chart;
+		
+		pulseUpdater = new ChartPulseDataUpdater(chart, this::setChartPoint);
+		lpsUpdater   = new ChartLpSDataUpdater  (chart, this::setChartPoint, flowConverters);
+
+		xAxis = (NumberAxis) chart.getXAxis();
+		
+		setChartStaticProperties();
+		setXAxisStaticProperties();
+	}
+	
+	public void refresh(ChartOptions options, ProcessRepository process) {
+		if (process == null) return;
+		
+		this.options = options;
+		this.process = process;
+		data            = process.getAllMeasurement();
+		numOfFlowMeters = process.getNumOfFlowmeters();
+		if(data.size() == 0) return;
+		
+		prepareScopeOfData();
 		
 		Platform.runLater(() -> {
-			updateLocalVars();
-			if(data.size() == 0) return;
+			prepareSeries();
 			
-			prepareSeries(chart);
-			prepareScopeOfData();
-			
-			
-			updateAxisX();
+			updateXAxis();
 			updateValues();
 			
-			
-			chartSettings(chart);
-			addSeries(chart);
+			addSeries();
 		});
 	}
 
-	private void chartSettings(LineChart<Number, Number> chart) {
+	private void setChartStaticProperties() {
 		chart.setCreateSymbols(false);
 		chart.setAnimated(false);
 	}
+	
+	private void setXAxisStaticProperties() {
+		xAxis.setLabel(AXIS_LABEL_TIME);
+		xAxis.setForceZeroInRange(false);
+		xAxis.setAutoRanging(false);
+		xAxis.setTickUnit(1);
+		xAxis.setMinorTickCount(5);
+	}
+
+	private void updateXAxis() {
+		float beginTimeSec = timeSec(data.get(firstMeasureIndex));
+		float endTimeSec   = timeSec(data.get(lastMeasureIndex));
+
+		xAxis.setLowerBound(Math.ceil(beginTimeSec));
+		xAxis.setUpperBound(Math.ceil(endTimeSec));
+	}
+
+	private void updateValues() {
+		chartUpdater().update(firstMeasureIndex, lastMeasureIndex, process);
+	}
+
+	private ChartDataUpdater chartUpdater() {
+		switch (options.getUnit()) {
+			case Pulses:      return pulseUpdater;
+			case LitrePerSec: return lpsUpdater;
+			
+			default: return pulseUpdater;
+		}
+	}
+
+	private void setChartPoint(int flowmeterNumber, Data<Number, Number> chartPoint) {
+		seriesList.get(flowmeterNumber).getData().add(chartPoint);
+	}
 
 	private void prepareScopeOfData() {
-		if(!lastSecOption && data.size() > 1000)
+		if(!options.isLastSecOption() && data.size() > 1000)
 			data = new ItemSelector<FlowMeasurement>().select(data, 1000);
 
 		firstMeasureIndex = getFirst();
 		lastMeasureIndex  = getLast();
 	}
-
-	private void updateLocalVars() {
-		process = currentProcess.get();
-		
-		data            = process.getAllMeasurement();
-		numOfFlowMeters = process.getNumOfFlowmeters();
-
-		lastSecOption = controller.isLastSeconds();
-		unit          = controller.getValueUnit();
-		axisX         = controller.getAxisX();
-		axisY         = controller.getAxisY();
-	}
-
-	private void updateValues() {
-		if (unit == ValueUnit.Pulses)      updateValues_Pulses();
-		if (unit == ValueUnit.LitrePerSec) updateValues_LitrePerSec();
-	}
-
-	private void updateValues_Pulses() {
-		FlowMeasurement measurement;
-		Data<Number, Number> chartPoint;
-		Series<Number, Number> series;
-		float time;
-
-		axisY.setLabel(AXIS_LABEL_PULSES);
-		
-		for (int i=firstMeasureIndex; i<=lastMeasureIndex; i++) {
-			measurement = data.get(i);
-			time = timeSec(measurement);
-		
-			for (int flowmeter=0; flowmeter<numOfFlowMeters; flowmeter++) {
-				chartPoint = createChartPoint(time,  measurement.get(flowmeter));
-				series = seriesList.get(flowmeter);
-				
-				series.getData().add(chartPoint);
-			}
-		}
-	}
-
-	private void updateValues_LitrePerSec() {
-		FlowMeasurement measurement, prevMeasurement;
-		Series<Number, Number> series;
-		Data<Number, Number> chartPoint;
-		float time;
-		float interval;
-		int pulses;
-		float value;
-		
-		axisY.setLabel(AXIS_LABEL_L_PER_SEC);
-
-		for (int i=firstMeasureIndex; i<=lastMeasureIndex; i++) {
-			if(i == 0) continue;
-			prevMeasurement = data.get(i-1);
-			measurement = data.get(i);
-			time = timeSec(measurement);
-
-			for (int flowmeter=0; flowmeter<numOfFlowMeters; flowmeter++) {
-				series = seriesList.get(flowmeter);
-
-				interval = timeSec(prevMeasurement.getTime(), measurement);
-				pulses = measurement.get(flowmeter);
-				value = flowconverter(flowmeter).pulsesToLitrePerSec(pulses, interval);
-				
-				chartPoint = createChartPoint(time,  value);
-				
-				series.getData().add(chartPoint);
-			}
-		}
-	}
-
-	private Data<Number, Number> createChartPoint(float time, float value) {
-		return new Data<Number, Number>(time, value);
-	}
-
-	private void updateAxisX() {
-		float beginTimeSec = timeSec(data.get(firstMeasureIndex));
-		float endTimeSec   = timeSec(data.get(lastMeasureIndex));
-		
-		axisX.setLabel(AXIS_LABEL_TIME);
-		axisX.setAutoRanging(false);
-		axisX.setLowerBound(Math.ceil(beginTimeSec));
-		axisX.setUpperBound(Math.ceil(endTimeSec));
-//		double axisWidth = axisX.getWidth();
-//		axisX.setTickUnit(axisWidth/50);
-//		axisX.setMinorTickLength(5);
-//		axisX.setMinorTickCount((int)(axisWidth/10));
-		axisX.setTickUnit(1);
-		axisX.setMinorTickCount(5);
-	}
 	
 	private int getFirst() {
-		if (!lastSecOption) return 0;
+		if (!options.isLastSecOption()) return 0;
 
 		int lastIndex = getLast();
 		FlowMeasurement lastMeasure = data.get(lastIndex);
@@ -188,28 +142,7 @@ public class ChartRefresher implements Consumer<LineChart<Number, Number>> {
 		return data.size()-1;
 	}
 
-	private void addSeries(LineChart<Number, Number> chart) {
-		chart.getData().forEach(oldSeries -> {
-			if (seriesList.contains(oldSeries))
-				seriesList.remove(oldSeries);
-		});
-		
-		seriesList.forEach(newSeries -> {
-			if (!chart.getData().contains(newSeries))
-				 chart.getData().add(newSeries);
-		});
-	}
-
-	private float timeSec(LocalDateTime startTime, FlowMeasurement measurement) {
-		return ChronoUnit.MILLIS.between(startTime, measurement.getTime()) / 1000f;
-	}
-
-	private float timeSec(FlowMeasurement measurement) {
-		LocalDateTime startTime = process.getMetadata().getStartTime();
-		return timeSec(startTime, measurement);
-	}
-
-	private void prepareSeries(LineChart<Number, Number> chart) {
+	private void prepareSeries() {
 		List<Series<Number, Number>> seriesList = new LinkedList<>();
 		ObservableList<Series<Number, Number>> oldSeries = chart.getData();
 		
@@ -228,9 +161,26 @@ public class ChartRefresher implements Consumer<LineChart<Number, Number>> {
 		
 		this.seriesList = seriesList;
 	}
-	
-	private FlowConverter flowconverter(int flowmeter) {
-		return flowconverters.get(flowmeter);
+
+	private void addSeries() {
+		chart.getData().forEach(oldSeries -> {
+			if (seriesList.contains(oldSeries))
+				seriesList.remove(oldSeries);
+		});
+		
+		seriesList.forEach(newSeries -> {
+			if (!chart.getData().contains(newSeries))
+				 chart.getData().add(newSeries);
+		});
+	}
+
+	public static float timeSec(LocalDateTime startTime, FlowMeasurement measurement) {
+		return ChronoUnit.MILLIS.between(startTime, measurement.getTime()) / 1000f;
+	}
+
+	private float timeSec(FlowMeasurement measurement) {
+		LocalDateTime startTime = process.getMetadata().getStartTime();
+		return timeSec(startTime, measurement);
 	}
 
 	private String flowSeriesName(int i) {
