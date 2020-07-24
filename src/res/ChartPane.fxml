@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.controllers.ChartPaneController">
    <bottom>
       <HBox alignment="TOP_CENTER" spacing="5.0" BorderPane.alignment="CENTER">
@@ -30,7 +29,6 @@
                               <ToggleGroup fx:id="unit" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="litresRadio" mnemonicParsing="false" text="litres" toggleGroup="$unit" />
                         <RadioButton fx:id="litresPerSecRadio" mnemonicParsing="false" selected="true" text="litres per second" toggleGroup="$unit" />
                      </children>
                   </VBox>

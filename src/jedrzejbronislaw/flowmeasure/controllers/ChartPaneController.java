@@ -25,13 +25,13 @@ public class ChartPaneController implements Initializable {
 	private static final int REFRESHING_TIME = 1000;
 	
 	public enum ValueUnit{
-		Pulses, Litre, LitrePerSec
+		Pulses, LitrePerSec
 	}
 	
 	@FXML private Button refreshButton, saveButton;
 	@FXML private BorderPane mainPane;
 	@FXML private CheckBox lastSecsBox, liveBox;
-	@FXML private RadioButton pulsesRadio, litresRadio, litresPerSecRadio;
+	@FXML private RadioButton pulsesRadio, litresPerSecRadio;
 	
 	
 	@Getter private LineChart<Number, Number> chart = newChart();
@@ -77,7 +77,6 @@ public class ChartPaneController implements Initializable {
 
 	private ValueUnit getValueUnit(){
 		if(pulsesRadio.isSelected())       return ValueUnit.Pulses;
-		if(litresRadio.isSelected())       return ValueUnit.Litre;
 		if(litresPerSecRadio.isSelected()) return ValueUnit.LitrePerSec;
 		return null;
 	}
