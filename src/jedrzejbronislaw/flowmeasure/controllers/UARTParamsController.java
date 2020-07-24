@@ -3,6 +3,7 @@ package jedrzejbronislaw.flowmeasure.controllers;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Supplier;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,8 +25,6 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 	@FXML
 	private Button disconnectButton;
 	@FXML
-	private Button refreshPortsButton;
-	@FXML
 	private Button autoConnectButton;
 
 	@Setter
@@ -33,9 +32,10 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 	@Setter
 	private Runnable disconnectButtonAction;
 	@Setter
-	private Runnable refreshPortsButtonAction;
-	@Setter
 	private Runnable autoConnectButtonAction;
+	
+	@Setter
+	private Supplier<List<String>> portsSupplier;
 	
 	public UARTParams getParams() {
 		UARTParams params = new UARTParams();
@@ -55,6 +55,8 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 	}
 	
 	public void setPortsNames(List<String> portsNames) {
+		if (portsNames == null) return;
+		
 		ports.getItems().clear();
 		ports.getItems().addAll(portsNames);
 	}
@@ -65,8 +67,9 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 
 		connectButton.setOnAction(e      -> Injection.run(connectButtonAction));
 		disconnectButton.setOnAction(e   -> Injection.run(disconnectButtonAction));
-		refreshPortsButton.setOnAction(e -> Injection.run(refreshPortsButtonAction));
 		autoConnectButton.setOnAction(e  -> Injection.run(autoConnectButtonAction));
+		
+		ports.setOnShowing(e -> setPortsNames(Injection.get(portsSupplier, null)));
 	}
 
 	@Override

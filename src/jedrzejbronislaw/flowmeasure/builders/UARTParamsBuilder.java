@@ -15,7 +15,7 @@ public class UARTParamsBuilder extends Builder<UARTParamsController> {
 	
 	public void afterBuild() {
 		controller.setPortsNames(UART.getPortList());
-		controller.setRefreshPortsButtonAction(() -> controller.setPortsNames(UART.getPortList()));
+		controller.setPortsSupplier(UART::getPortList);
 
 		controller.setConnectButtonAction(    actions::connectFlowDevice);
 		controller.setDisconnectButtonAction( actions::disconnectFlowDevice);
