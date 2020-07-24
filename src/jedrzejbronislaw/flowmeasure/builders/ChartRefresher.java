@@ -24,6 +24,7 @@ public class ChartRefresher {
 	
 	private static final int DATA_SIZE_LIMIT = 1000;
 	private static final String AXIS_LABEL_TIME = "time [s]";
+	private static final int TICK_UNIT_PX = 100;
 
 	@NonNull private final LineChart<Number, Number> chart;
 	
@@ -87,8 +88,7 @@ public class ChartRefresher {
 		xAxis.setLabel(AXIS_LABEL_TIME);
 		xAxis.setForceZeroInRange(false);
 		xAxis.setAutoRanging(false);
-		xAxis.setTickUnit(1);
-		xAxis.setMinorTickCount(5);
+		xAxis.setMinorTickCount(4);
 	}
 
 	private void updateXAxis() {
@@ -97,6 +97,15 @@ public class ChartRefresher {
 
 		xAxis.setLowerBound(Math.ceil(beginTimeSec));
 		xAxis.setUpperBound(Math.ceil(endTimeSec));
+		
+		xAxis.setTickUnit(tickUnit(beginTimeSec, endTimeSec));
+	}
+
+	private int tickUnit(float beginValue, float endValue) {
+		double axisWidth = xAxis.getWidth();
+		float size = endValue - beginValue + 1;
+		
+		return (int)(TICK_UNIT_PX * size / axisWidth);
 	}
 	
 	private void reduceDataIfNecessary() {
