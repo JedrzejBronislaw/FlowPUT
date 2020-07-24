@@ -16,8 +16,10 @@ public class ItemSelector<T> {
 		
 		newList.add(list.get(0));
 		int index;
+		float factor = (float)(oriListSize-1)/(numOfItems-1);
+		
 		for(int i=1; i<=numOfItems-1; i++) {
-			index = Math.round((oriListSize-1)/(numOfItems-1)*i);
+			index = Math.round(factor*i);
 			newList.add(list.get(index));
 		}
 		

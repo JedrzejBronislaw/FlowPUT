@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -120,4 +122,15 @@ public class ItemSelectorTest {
 		}
 	}
 
+	@Test
+	public void test_11Elements_to_4Element() {
+		List<Integer> list = IntStream.range(0, 11).boxed().collect(Collectors.toList());
+		List<Integer> newList = selector.select(list, 4);
+
+		assertEquals(4, newList.size());
+		assertEquals(0, newList.get(0).intValue());
+		assertEquals(3, newList.get(1).intValue());
+		assertEquals(7, newList.get(2).intValue());
+		assertEquals(10, newList.get(3).intValue());
+	}
 }
