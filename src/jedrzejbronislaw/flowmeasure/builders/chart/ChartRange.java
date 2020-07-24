@@ -4,7 +4,6 @@ import java.util.List;
 
 import jedrzejbronislaw.flowmeasure.builders.ChartRefresher;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
-import jedrzejbronislaw.flowmeasure.tools.ItemSelector;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
@@ -12,7 +11,6 @@ import lombok.NonNull;
 public class ChartRange {
 
 	private static final int LAST_SEC_NUMER = 60;
-	private static final int DATA_SIZE_LIMIT = 1000;
 	
 	@Getter
 	@AllArgsConstructor
@@ -30,15 +28,7 @@ public class ChartRange {
 		this.data = data;
 		this.options = options;
 		
-		reduceDataIfNecessary();
-		
 		return new Range(getFirst(), getLast());
-	}
-	
-
-	private void reduceDataIfNecessary() {
-		if(!options.isLastSecOption() && data.size() > DATA_SIZE_LIMIT)
-			data = new ItemSelector<FlowMeasurement>().select(data, DATA_SIZE_LIMIT);
 	}
 	
 	private int getFirst() {

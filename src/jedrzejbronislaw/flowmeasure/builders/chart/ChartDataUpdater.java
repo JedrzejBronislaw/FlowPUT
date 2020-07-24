@@ -27,13 +27,13 @@ public abstract class ChartDataUpdater {
 	private List<FlowMeasurement> data;
 	private ProcessRepository process;
 	
-	public void update(int firstIndex, int lastIndex, ProcessRepository process) {
+	public void update(int firstIndex, int lastIndex, ProcessRepository process, List<FlowMeasurement> data) {
 		Data<Number, Number> chartPoint;
 		Float time;
 		float value;
 
 		this.process = process;
-		this.data = process.getAllMeasurement();
+		this.data = data;
 		
 		chart.getYAxis().setLabel(getAxisLabel());
 		

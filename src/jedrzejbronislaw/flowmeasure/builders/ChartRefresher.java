@@ -17,10 +17,12 @@ import jedrzejbronislaw.flowmeasure.builders.chart.ChartRange.Range;
 import jedrzejbronislaw.flowmeasure.builders.chart.SeriesManager;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
+import jedrzejbronislaw.flowmeasure.tools.ItemSelector;
 import lombok.NonNull;
 
 public class ChartRefresher {
 	
+	private static final int DATA_SIZE_LIMIT = 1000;
 	private static final String AXIS_LABEL_TIME = "time [s]";
 
 	@NonNull private final LineChart<Number, Number> chart;
@@ -38,6 +40,7 @@ public class ChartRefresher {
 	private ChartRange chartRange = new ChartRange();
 	private Range range;
 	
+	private ItemSelector<FlowMeasurement> itemSelector = new ItemSelector<>();
 	
 	
 	public ChartRefresher(FlowConverters flowConverters, LineChart<Number, Number> chart) {
@@ -62,6 +65,7 @@ public class ChartRefresher {
 		data         = process.getAllMeasurement();
 		if(data.size() == 0) return;
 		
+		reduceDataIfNecessary();
 		range = chartRange.get(data, options);
 		
 		Platform.runLater(() -> {
@@ -94,9 +98,14 @@ public class ChartRefresher {
 		xAxis.setLowerBound(Math.ceil(beginTimeSec));
 		xAxis.setUpperBound(Math.ceil(endTimeSec));
 	}
+	
+	private void reduceDataIfNecessary() {
+		if(!options.isLastSecOption() && data.size() > DATA_SIZE_LIMIT)
+			data = itemSelector.select(data, DATA_SIZE_LIMIT);
+	}
 
 	private void updateValues() {
-		chartUpdater().update(range.getFirst(), range.getLast(), process);
+		chartUpdater().update(range.getFirst(), range.getLast(), process, data);
 	}
 
 	private ChartDataUpdater chartUpdater() {
