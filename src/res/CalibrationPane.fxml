@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="mainVbox" alignment="TOP_CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.controllers.CalibrationPaneController">
+<VBox fx:id="mainVbox" alignment="TOP_CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneController">
    <children>
       <ComboBox fx:id="flowmeterField" prefWidth="150.0" />
       <HBox alignment="TOP_CENTER" spacing="5.0">

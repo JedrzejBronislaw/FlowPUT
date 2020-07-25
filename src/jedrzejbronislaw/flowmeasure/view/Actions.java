@@ -13,7 +13,6 @@ import jedrzejbronislaw.flowmeasure.FlowManager;
 import jedrzejbronislaw.flowmeasure.FlowManager.FlowConsumerType;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.application.Components;
-import jedrzejbronislaw.flowmeasure.builders.SaveWindowBuilder;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.flowDevice.FlowDevice;
@@ -28,6 +27,7 @@ import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.RatioProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
+import jedrzejbronislaw.flowmeasure.view.saveWindow.SaveWindowBuilder;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 
 
-<HBox alignment="CENTER_RIGHT" spacing="10.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.controllers.PulseRatioSettingsPaneController">
+<HBox alignment="CENTER_RIGHT" spacing="10.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.view.settings.pulseRatio.PulseRatioSettingsPaneController">
    <children>
       <Label fx:id="nameLabel" />
       <TextField fx:id="valueField" />
