@@ -26,7 +26,7 @@ public class AutoConnection {
 	private ConnectionAttempt attempt;
 	
 	private String getNextPort() {
-		return (i < portList.size()) ? portList.get(i++) : null;
+		return (i < portList.size()) ? portList.get(portList.size()-1-(i++)) : null;
 	}
 	
 	public void start() {
