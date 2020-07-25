@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
+
 public class FlowDeviceTest_correctFormatLine {
 
 	private int[] flows;

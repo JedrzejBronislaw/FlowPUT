@@ -1,6 +1,6 @@
 package jedrzejbronislaw.flowmeasure.view.connection;
 
-import jedrzejbronislaw.flowmeasure.flowDevice.UART;
+import jedrzejbronislaw.flowmeasure.tools.uart.UART;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.Builder;
 import lombok.Getter;

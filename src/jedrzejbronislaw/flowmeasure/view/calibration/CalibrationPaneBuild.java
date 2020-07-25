@@ -1,10 +1,10 @@
 package jedrzejbronislaw.flowmeasure.view.calibration;
 
-import jedrzejbronislaw.flowmeasure.FlowManager;
-import jedrzejbronislaw.flowmeasure.FlowManager.FlowConsumerType;
+import jedrzejbronislaw.flowmeasure.components.calibration.Calibration;
+import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
+import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager.FlowConsumerType;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
-import jedrzejbronislaw.flowmeasure.services.Calibration;
 import jedrzejbronislaw.flowmeasure.settings.RatioProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.view.Builder;

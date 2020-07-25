@@ -5,7 +5,7 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import jedrzejbronislaw.flowmeasure.ResourcesRepository;
+import jedrzejbronislaw.flowmeasure.tools.resourcesRepository.ResourcesRepository;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

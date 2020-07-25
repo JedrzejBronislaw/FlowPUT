@@ -1,6 +1,6 @@
 package jedrzejbronislaw.flowmeasure.view.flowPreview;
 
-import jedrzejbronislaw.flowmeasure.FlowConverter;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
 import jedrzejbronislaw.flowmeasure.view.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

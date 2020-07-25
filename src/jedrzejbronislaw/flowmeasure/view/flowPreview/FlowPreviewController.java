@@ -8,7 +8,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import jedrzejbronislaw.flowmeasure.FlowConverter;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
 import lombok.Getter;
 import lombok.Setter;
 

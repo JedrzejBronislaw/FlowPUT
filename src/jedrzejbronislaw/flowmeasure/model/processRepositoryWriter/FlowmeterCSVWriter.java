@@ -3,8 +3,8 @@ package jedrzejbronislaw.flowmeasure.model.processRepositoryWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import jedrzejbronislaw.flowmeasure.FlowConverter;
-import jedrzejbronislaw.flowmeasure.FlowConverter1;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter1;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
 import jedrzejbronislaw.flowmeasure.tools.NumberTools;

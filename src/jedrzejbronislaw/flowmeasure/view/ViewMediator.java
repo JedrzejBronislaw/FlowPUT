@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import jedrzejbronislaw.flowmeasure.flowDevice.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
+import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import lombok.Setter;
 
 public class ViewMediator {

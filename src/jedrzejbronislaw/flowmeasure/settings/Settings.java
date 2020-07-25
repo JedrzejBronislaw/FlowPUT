@@ -1,7 +1,7 @@
 package jedrzejbronislaw.flowmeasure.settings;
 
-import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.tools.SimpleListenerManager;
+import jedrzejbronislaw.flowmeasure.tools.resourcesRepository.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.tools.settings.PropertyAccess;
 import jedrzejbronislaw.flowmeasure.tools.settings.PropertyFile;
 import jedrzejbronislaw.flowmeasure.tools.settings.poperties.Properties;

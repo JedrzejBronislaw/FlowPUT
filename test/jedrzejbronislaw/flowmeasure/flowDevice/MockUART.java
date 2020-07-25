@@ -3,6 +3,7 @@ package jedrzejbronislaw.flowmeasure.flowDevice;
 import java.util.function.Consumer;
 
 import jedrzejbronislaw.flowmeasure.tools.Injection;
+import jedrzejbronislaw.flowmeasure.tools.uart.IUART;
 import lombok.Setter;
 
 public class MockUART implements IUART {

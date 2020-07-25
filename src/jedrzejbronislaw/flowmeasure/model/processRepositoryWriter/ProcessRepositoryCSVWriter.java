@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import jedrzejbronislaw.flowmeasure.FlowConverter;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;

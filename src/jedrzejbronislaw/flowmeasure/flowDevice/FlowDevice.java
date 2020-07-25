@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import jedrzejbronislaw.flowmeasure.tools.Injection;
+import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import lombok.Setter;
 
 public class FlowDevice extends UARTDevice {

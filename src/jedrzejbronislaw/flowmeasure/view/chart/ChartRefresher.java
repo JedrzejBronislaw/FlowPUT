@@ -7,7 +7,7 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import jedrzejbronislaw.flowmeasure.FlowConverters;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.tools.ItemSelector;

@@ -9,10 +9,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import jedrzejbronislaw.flowmeasure.flowDevice.UARTParams;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
+import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import lombok.Setter;
 
 public class UARTParamsController implements Initializable, StateListener<ConnectionState> {

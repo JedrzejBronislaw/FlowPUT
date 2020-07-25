@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import jedrzejbronislaw.flowmeasure.FlowMeasurementModel;
+import jedrzejbronislaw.flowmeasure.components.flowManager.FlowMeasurementModel;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,8 +1,8 @@
 package jedrzejbronislaw.flowmeasure.view.chart.components;
 
 import javafx.scene.chart.LineChart;
-import jedrzejbronislaw.flowmeasure.FlowConverter;
-import jedrzejbronislaw.flowmeasure.FlowConverters;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import lombok.Getter;
 

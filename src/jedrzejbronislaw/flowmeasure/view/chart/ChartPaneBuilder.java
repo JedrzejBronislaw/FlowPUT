@@ -2,7 +2,7 @@ package jedrzejbronislaw.flowmeasure.view.chart;
 
 import java.util.function.Supplier;
 
-import jedrzejbronislaw.flowmeasure.FlowConverters;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.view.Builder;
 import lombok.Getter;
