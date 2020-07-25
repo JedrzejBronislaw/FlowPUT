@@ -9,7 +9,7 @@ import lombok.Setter;
 
 public class DialogManager implements EventListener {
 
-	static private final int milisecPerLetter = 40;
+	static private final int milisecPerLetter = 60;
 	
 	public interface MessageEvent {
 		void show(String title, String content, int closeDelay);
