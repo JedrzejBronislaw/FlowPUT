@@ -1,5 +1,6 @@
 package jedrzejbronislaw.flowmeasure.settings;
 
+import jedrzejbronislaw.flowmeasure.ResourcesRepository;
 import jedrzejbronislaw.flowmeasure.tools.SimpleListenerManager;
 import jedrzejbronislaw.flowmeasure.tools.settings.PropertyAccess;
 import jedrzejbronislaw.flowmeasure.tools.settings.PropertyFile;
@@ -26,7 +27,7 @@ public class Settings implements PropertyAccess {
 		properties.setChangeAction(listenerManager::action);
 		
 		propertyFile = new PropertyFile(
-				settingsFileName,
+				ResourcesRepository.JAR_DIR + settingsFileName,
 				propertyDesc,
 				properties::setProperty,
 				properties::getPropertyValue);

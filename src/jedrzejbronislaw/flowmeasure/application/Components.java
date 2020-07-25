@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.FlowConverters;
 import jedrzejbronislaw.flowmeasure.FlowManager;
+import jedrzejbronislaw.flowmeasure.InternalResourcesRepository;
 import jedrzejbronislaw.flowmeasure.ResourcesRepository;
-import jedrzejbronislaw.flowmeasure.SideDirResourcesRepository;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventPolicy;
 import jedrzejbronislaw.flowmeasure.events.EventType;
@@ -50,7 +50,7 @@ public class Components {
 	public Components(Stage stage) {
 		primaryStage = stage;
 		
-		resources = new SideDirResourcesRepository("res");
+		resources = new InternalResourcesRepository().build();
 		
 		settings = new Settings();
 		viewMediator = new ViewMediator();

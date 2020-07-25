@@ -1,6 +1,5 @@
 package jedrzejbronislaw.flowmeasure;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -9,23 +8,20 @@ import lombok.Setter;
 
 public abstract class ResourcesRepository {
 
+	protected final static String DEFAULT_DIR_NAME = "res";
+	public    final static String JAR_DIR = ClassLoader.getSystemClassLoader().getResource("").getPath();
+
 	@Setter(value=AccessLevel.PROTECTED)
 	private String MAIN_DIR;
 
-//	abstract String getMainResourceLocation();
-	
 	
 	public ResourcesRepository(String mainDir) {
 		MAIN_DIR = mainDir;
-
 	}
-//	URL getResourceURL(String resource);
-//	String getResourcePath(String resource);
-	
 	
 	
 	public String path(String resource) {
-		return MAIN_DIR + File.separator + resource;
+		return MAIN_DIR + "/" + resource;
 	}
 	
 	public URL getResourceURL(String resource) {
