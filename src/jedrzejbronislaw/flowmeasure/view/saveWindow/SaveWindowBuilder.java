@@ -15,7 +15,7 @@ import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.SaveAction;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
-import jedrzejbronislaw.flowmeasure.tools.resourcesRepository.ResourcesRepository;
+import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.view.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -34,7 +34,7 @@ public class SaveWindowBuilder extends Builder<SaveWindowController> {
 
 
 	@NonNull
-	private ResourcesRepository resources;
+	private ResourceAccess resources;
 	@NonNull
 	private ProcessRepository process;
 

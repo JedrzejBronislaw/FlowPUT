@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.tools.resourcesRepository;
+package jedrzejbronislaw.flowmeasure.tools.resourceAccess;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -6,7 +6,7 @@ import java.net.URL;
 import lombok.AccessLevel;
 import lombok.Setter;
 
-public abstract class ResourcesRepository {
+public abstract class ResourceAccess {
 
 	protected final static String DEFAULT_DIR_NAME = "res";
 	public    final static String JAR_DIR = ClassLoader.getSystemClassLoader().getResource("").getPath();
@@ -15,7 +15,7 @@ public abstract class ResourcesRepository {
 	private String MAIN_DIR;
 
 	
-	public ResourcesRepository(String mainDir) {
+	public ResourceAccess(String mainDir) {
 		MAIN_DIR = mainDir;
 	}
 	

@@ -5,7 +5,7 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import jedrzejbronislaw.flowmeasure.tools.resourcesRepository.ResourcesRepository;
+import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.Setter;
 public class MyFXMLLoader<T extends Initializable>{
 
 	@Setter
-	static private ResourcesRepository resources;
+	static private ResourceAccess resources;
 
 	@RequiredArgsConstructor
 	public static class NodeAndController<T>{

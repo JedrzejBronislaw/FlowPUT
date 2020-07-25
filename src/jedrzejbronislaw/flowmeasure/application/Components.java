@@ -21,8 +21,8 @@ import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
-import jedrzejbronislaw.flowmeasure.tools.resourcesRepository.InternalResourcesRepository;
-import jedrzejbronislaw.flowmeasure.tools.resourcesRepository.ResourcesRepository;
+import jedrzejbronislaw.flowmeasure.tools.resourceAccess.InternalResourceAccess;
+import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.view.Actions;
 import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
 import jedrzejbronislaw.flowmeasure.view.ViewMediator;
@@ -33,7 +33,7 @@ public class Components {
 	
 	private Stage primaryStage;
 
-	private ResourcesRepository resources;
+	private ResourceAccess resources;
 	private FlowDevice device;
 	private FlowManager flowManager;
 	private Settings settings;
@@ -50,7 +50,7 @@ public class Components {
 	public Components(Stage stage) {
 		primaryStage = stage;
 		
-		resources = new InternalResourcesRepository().build();
+		resources = new InternalResourceAccess().build();
 		
 		settings = new Settings();
 		viewMediator = new ViewMediator();

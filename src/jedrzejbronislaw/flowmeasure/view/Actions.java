@@ -22,7 +22,7 @@ import jedrzejbronislaw.flowmeasure.settings.RatioProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.tools.fileNamer.FileNamer;
 import jedrzejbronislaw.flowmeasure.tools.fileNamer.FileNamer1;
-import jedrzejbronislaw.flowmeasure.tools.resourcesRepository.ResourcesRepository;
+import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.tools.uart.UART;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.AutoConnection;
@@ -184,7 +184,7 @@ public class Actions implements ActionContainer {
 		return components.getViewMediator();
 	}
 	
-	private ResourcesRepository resources() {
+	private ResourceAccess resources() {
 		return components.getResources();
 	}
 	

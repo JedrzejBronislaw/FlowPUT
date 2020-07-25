@@ -17,7 +17,7 @@ import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
-import jedrzejbronislaw.flowmeasure.tools.resourcesRepository.ResourcesRepository;
+import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneBuild;
 import jedrzejbronislaw.flowmeasure.view.chart.ChartPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.connection.UARTParamsBuilder;
@@ -183,7 +183,7 @@ public class ViewBuilder {
 	}
 
 	
-	private ResourcesRepository resources() {
+	private ResourceAccess resources() {
 		return components.getResources();
 	}
 	
