@@ -3,6 +3,7 @@ package jedrzejbronislaw.flowmeasure.view;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.FlowConverter;
@@ -36,6 +37,7 @@ public class ViewBuilder {
 	private static final int WINDOW_WIDTH = 900;
 	private static final String WINDOW_TITLE = "FlowmeterPP";
 	private static final String CSS_FILENAME = "application.css";
+	private static final String LOGO_FILE_NAME = "logo.png";
 
 	@NonNull
 	private Components components;
@@ -66,6 +68,7 @@ public class ViewBuilder {
 			Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 			scene.getStylesheets().add(resources().getResourcePath(CSS_FILENAME));
 			
+			primaryStage().getIcons().add(loadLogo());
 			primaryStage().setScene(scene);
 			primaryStage().setTitle(WINDOW_TITLE);
 			primaryStage().setOnCloseRequest(e -> {
@@ -77,6 +80,10 @@ public class ViewBuilder {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private Image loadLogo() {
+		return new Image(resources().path(LOGO_FILE_NAME));
 	}
 	
 	private Node uart() {
