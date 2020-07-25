@@ -2,9 +2,9 @@ package jedrzejbronislaw.flowmeasure.application;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
-import jedrzejbronislaw.flowmeasure.FakeProcessGenerator1;
+import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
-import jedrzejbronislaw.flowmeasure.settings.Consts;
+import jedrzejbronislaw.flowmeasure.states.StateManager;
 
 
 public class Main extends Application {
@@ -16,22 +16,20 @@ public class Main extends Application {
 		
 		components = new Components(stage);
 		
-		//-----
-		
-		components.getStateManager().getAppState().addStateListiner(state -> System.out.println(" -> New appState: " + state.toString()));
-		components.getStateManager().getConnState().addStateListiner(state -> System.out.println(" -> New connState: " + state.toString()));
-		components.getStateManager().getProcessState().addStateListiner(state -> System.out.println(" -> New processState: " + state.toString()));
-		components.getEventManager().addListener(state -> {if(state != EventType.ReceivedData) System.out.println(" -> Event: " + state.toString());});
-		
-//		generateFakeData();
+		createStateAndEventListeners();
 	}
-	
-	private void generateFakeData() {
-		FakeProcessGenerator1 generator = new FakeProcessGenerator1();
-		generator.setInterval(1000);
-		generator.setNumOfFlowmeters(Consts.FLOWMETERS_NUMBER);
+
+	private void createStateAndEventListeners() {
+		StateManager stateManager = components.getStateManager();
+		EventManager eventManager = components.getEventManager();
 		
-		generator.generate(components.getRepository().getCurrentProcessRepository(), 10*60*60);
+		stateManager.getAppState()    .addStateListiner(state -> System.out.println(" -> New appState: "     + state.toString()));
+		stateManager.getConnState()   .addStateListiner(state -> System.out.println(" -> New connState: "    + state.toString()));
+		stateManager.getProcessState().addStateListiner(state -> System.out.println(" -> New processState: " + state.toString()));
+		
+		eventManager.addListener(event -> {
+			if(event != EventType.ReceivedData) System.out.println(" -> Event: " + event.toString());
+		});
 	}
 	
 	public static void main(String[] args) {
