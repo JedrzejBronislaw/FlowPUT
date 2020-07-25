@@ -27,6 +27,6 @@ public class ViewMediator {
 	}
 	
 	public UARTParams getUARTParams() {
-		return Injection.get(uartParamsGetter, null);
+		return Injection.get(uartParamsGetter);
 	}
 }

@@ -21,6 +21,10 @@ public class Injection {
 			action.accept(arg1, arg2);
 	}
 
+	public static <ArgType> ArgType get(Supplier<ArgType> supplier) {
+		return (supplier == null) ? null : supplier.get();
+	}
+
 	public static <ArgType> ArgType get(Supplier<ArgType> supplier, ArgType defaultValue) {
 		if(supplier != null)
 			return  supplier.get();

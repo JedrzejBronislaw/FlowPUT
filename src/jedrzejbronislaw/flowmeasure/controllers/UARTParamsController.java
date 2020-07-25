@@ -69,7 +69,7 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 		disconnectButton.setOnAction(e   -> Injection.run(disconnectButtonAction));
 		autoConnectButton.setOnAction(e  -> Injection.run(autoConnectButtonAction));
 		
-		ports.setOnShowing(e -> setPortsNames(Injection.get(portsSupplier, null)));
+		ports.setOnShowing(e -> setPortsNames(Injection.get(portsSupplier)));
 	}
 
 	@Override
