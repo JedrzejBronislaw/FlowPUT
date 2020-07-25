@@ -13,20 +13,11 @@ import lombok.Getter;
 
 public class MainWindowController implements Initializable {
 
-
-	
-	@FXML
-	private VBox mainVbox;
-	
-	@FXML
-	private VBox flowBox;
-	
-	@FXML
 	@Getter
-	private BorderPane borderPane;
-	
-	@FXML
-	private ScrollPane tablePane, chartPane, optionsPane, calibrationPane;
+	@FXML private BorderPane borderPane;
+	@FXML private VBox mainVbox;
+	@FXML private VBox flowBox;
+	@FXML private ScrollPane tablePane, chartPane, optionsPane, calibrationPane;
 
 	
 	public void addFlowPreview(Node node) {
@@ -49,15 +40,6 @@ public class MainWindowController implements Initializable {
 		calibrationPane.setContent(options);
 	}
 	
-	
-	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	
-	
+	public void initialize(URL arg0, ResourceBundle arg1) {}
 }

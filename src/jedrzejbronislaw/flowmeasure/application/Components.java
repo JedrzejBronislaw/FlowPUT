@@ -106,9 +106,6 @@ public class Components {
 	
 	private ConnectionMonitor buildConnectionMonitor() {
 		ConnectionMonitor1 monitor = new ConnectionMonitor1(3, 1000, () -> {
-			System.out.println("TIMEOUT");
-//			session.setProcessState(ProcessState.LostConnection);
-//			view.disconnected();
 			device.disconnect();
 			eventManager.submitEvent(EventType.LostConnection);
 		});

@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RatioProperty implements PropertyDesc {
 
-	private final int number;
-	private final String name = "pulseRatio";
+	        private final int number;
+	        private final String name = "pulseRatio";
 	@Getter private final PropertyType type = PropertyType.FLOAT;
 	@Getter private final String defaultValue = "450";
 	

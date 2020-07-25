@@ -9,26 +9,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
-import lombok.Getter;
 import lombok.Setter;
 
-public class FlowPreviewController implements Initializable{
+public class FlowPreviewController implements Initializable {
 
-	@FXML
-	private Label label, pulsesLabel, secPulsesLabel;
+	private static final DecimalFormat precisionFormat = new DecimalFormat("#.###");
+	
+	@FXML private Label label, pulsesLabel, secPulsesLabel;
 
-	@Getter
-	private int number = 0;
+	@Setter private FlowConverter flowconverter;
+	
 	private int pulses = 0;
 	
-	@Setter
-	private FlowConverter flowconverter;
-	
-	private DecimalFormat precisionFormat = new DecimalFormat("#.###");
 	
 	public void setNumber(int number) {
-		this.number = number;
-		label.setText("Flow " + (number+1));//TODO internationalization
+		label.setText("Flow " + (number+1));
 	}
 	
 	public void addPulses(int value) {
@@ -48,9 +43,8 @@ public class FlowPreviewController implements Initializable{
 	private String computeFlow(int value) {
 		Float litrePerSec = flowconverter.pulsesToLitrePerSec(value);
 		if(litrePerSec != null)
-			return precisionFormat.format(litrePerSec) + " " + FlowConverter.FLOW_UNIT;
-		else
-			return "";//computeVolume(value);
+			return precisionFormat.format(litrePerSec) + " " + FlowConverter.FLOW_UNIT; else
+			return "";
 	}
 
 	private String computeVolume(int value) {
@@ -63,12 +57,6 @@ public class FlowPreviewController implements Initializable{
 		return val;
 	}
 	
-	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
+	public void initialize(URL arg0, ResourceBundle arg1) {}
 }

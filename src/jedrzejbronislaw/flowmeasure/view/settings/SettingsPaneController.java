@@ -18,25 +18,18 @@ import lombok.Setter;
 
 public class SettingsPaneController implements Initializable, StateListener<ProcessState> {
 	
-	@FXML
-	private VBox mainBox;
+	@FXML private VBox mainBox;
+	@FXML private TextField bufferSizeField;
+	@FXML private Button saveButton;
+	@FXML private CheckBox bufferCheckbox;
 	
-	@FXML
-	private TextField bufferSizeField;
-	
-	@FXML
-	private Button saveButton;
-	
-	@FXML
-	private CheckBox bufferCheckbox;
-	
-	@Setter
-	private Runnable savingAction;
+	@Setter private Runnable savingAction;
 
 
 	public int getBufferSize() {
 		return Integer.parseInt(bufferSizeField.getText());
 	}
+
 	public boolean isSelectedBuffer() {
 		return bufferCheckbox.isSelected();
 	}
@@ -58,5 +51,4 @@ public class SettingsPaneController implements Initializable, StateListener<Proc
 	public void onChangeState(ProcessState state) {
 		mainBox.setDisable(state != ProcessState.Before);
 	}
-
 }

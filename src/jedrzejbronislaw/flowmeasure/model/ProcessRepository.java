@@ -9,18 +9,13 @@ import jedrzejbronislaw.flowmeasure.components.flowManager.FlowMeasurementModel;
 import lombok.Getter;
 import lombok.Setter;
 
-public class ProcessRepository implements FlowMeasurementModel{
+public class ProcessRepository implements FlowMeasurementModel {
 	
-	@Getter
-	private ProcessMetadata metadata = new ProcessMetadata();
+	@Getter private ProcessMetadata metadata = new ProcessMetadata();
+	@Getter private int numOfFlowmeters = 0;
+	@Setter private boolean startWithNextValueFlag = false;
 	
 	private List<FlowMeasurement> measurement = new LinkedList<>();
-	
-	@Getter
-	private int numOfFlowmeters = 0;
-	@Setter
-	private boolean startWithNextValueFlag = false;
-	
 	
 	
 	public ProcessRepository(int size, String name) {

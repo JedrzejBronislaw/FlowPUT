@@ -9,11 +9,13 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class CSVWriter {
+	
 	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	public static final String SEPARATOR = ";";
 	public static final String NEW_LINE_SEPARATOR = "\n";
 	
 	private final Writer writer;
+	
 	
 	public void write(String text) throws IOException {
 		writer.write(text);

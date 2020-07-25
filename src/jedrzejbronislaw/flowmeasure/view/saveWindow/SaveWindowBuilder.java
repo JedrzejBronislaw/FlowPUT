@@ -33,23 +33,16 @@ public class SaveWindowBuilder extends Builder<SaveWindowController> {
 	@Getter private String fxmlFilePath = "SaveMeasurementWindow.fxml";
 
 
-	@NonNull
-	private ResourceAccess resources;
-	@NonNull
-	private ProcessRepository process;
+	@NonNull private ResourceAccess resources;
+	@NonNull private ProcessRepository process;
 
-	private File initialDirectory = null;
-	
-	@Setter
-	private SaveAction saveAction;
-	
-	@Setter
-	private Consumer<File> onFileChoose;
-	
-	@Setter
-	private Supplier<String> fileNamer;
+	@Setter private SaveAction saveAction;
+	@Setter private Consumer<File> onFileChoose;
+	@Setter private Supplier<String> fileNamer;
 	
 	private Stage stage;
+	private File initialDirectory = null;
+	
 	
 	public boolean setInitialDirectory(String initialDirectory) {
 		

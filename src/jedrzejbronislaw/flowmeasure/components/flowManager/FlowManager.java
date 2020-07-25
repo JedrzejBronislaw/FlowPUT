@@ -11,7 +11,7 @@ import lombok.Setter;
 
 public class FlowManager {
 
-	public enum FlowConsumerType{
+	public enum FlowConsumerType {
 		None,
 		Plain,
 		Buffered,

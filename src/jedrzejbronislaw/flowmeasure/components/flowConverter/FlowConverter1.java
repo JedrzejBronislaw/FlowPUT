@@ -9,7 +9,7 @@ import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.tools.settings.poperties.PropertyDesc;
 import lombok.NonNull;
 
-public class FlowConverter1 implements FlowConverter{
+public class FlowConverter1 implements FlowConverter {
 
 	@NonNull
 	private final Settings settings;

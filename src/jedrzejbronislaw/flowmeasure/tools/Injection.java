@@ -22,13 +22,10 @@ public class Injection {
 	}
 
 	public static <ArgType> ArgType get(Supplier<ArgType> supplier) {
-		return (supplier == null) ? null : supplier.get();
+		return get(supplier, null);
 	}
 
 	public static <ArgType> ArgType get(Supplier<ArgType> supplier, ArgType defaultValue) {
-		if(supplier != null)
-			return  supplier.get();
-		else
-			return defaultValue;
+		return (supplier == null) ? defaultValue : supplier.get();
 	}
 }

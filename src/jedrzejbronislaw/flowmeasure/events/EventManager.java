@@ -12,6 +12,7 @@ public class EventManager {
 
 	private List<EventListener> listeners = new LinkedList<>();
 	
+	
 	public void addListener(EventListener newListener) {
 		listeners.add(newListener);
 	}

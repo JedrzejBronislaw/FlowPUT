@@ -6,7 +6,6 @@ import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 
-
 public class Main extends Application {
 	
 	private Components components;

@@ -33,7 +33,6 @@ public class ChartPaneController implements Initializable {
 	@FXML private CheckBox lastSecsBox, liveBox;
 	@FXML private RadioButton pulsesRadio, litresPerSecRadio;
 	
-	
 	@Getter private LineChart<Number, Number> chart = newChart();
 	@Setter private Consumer<ChartOptions> refreshButtonAction;
 	

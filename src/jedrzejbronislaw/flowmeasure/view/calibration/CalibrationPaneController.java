@@ -28,33 +28,17 @@ public class CalibrationPaneController implements Initializable, EventListener {
 	
 	public static final String DEF_FLOWMETER_NAME = "Flowmeter";
 
-	@FXML
-	private VBox mainVbox;
+	@FXML private VBox mainVbox;
+	@FXML private Button startButton, resetButton, stopButton, setButton;
+	@FXML private Button newMeasureButton;
+	@FXML private ComboBox<Integer> flowmeterField;
+	@FXML private Label flowLabel;
+	@FXML private Label aveFlowLabel;
 	
-	@FXML
-	private Button startButton, resetButton, stopButton, setButton;
-	
-	@FXML
-	private Button newMeasureButton;
-
-	@FXML
-	private ComboBox<Integer> flowmeterField;
-	
-	@FXML
-	private Label flowLabel;
-	
-	@FXML
-	private Label aveFlowLabel;
-	
-
-	@Setter
-	private Consumer<Integer> start;
-	@Setter
-	private Runnable stop, reset, set;
-	@Setter
-	private Runnable newMeasure;
-	@Setter
-	private Consumer<Integer> onChangeFlowmeter;
+	@Setter private Consumer<Integer> start;
+	@Setter private Runnable stop, reset, set;
+	@Setter private Runnable newMeasure;
+	@Setter private Consumer<Integer> onChangeFlowmeter;
 	
 
 	public void setCurrentValues(List<Integer> values) {

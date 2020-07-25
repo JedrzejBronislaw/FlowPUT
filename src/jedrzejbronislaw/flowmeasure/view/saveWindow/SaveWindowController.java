@@ -23,33 +23,17 @@ import lombok.Setter;
 
 public class SaveWindowController implements Initializable {
 
-	@FXML
-	private CheckBox unixTime, fullTime, processTime;
+	@FXML private CheckBox    unixTime, fullTime, processTime;
+	@FXML private CheckBox    unit_pulses, unit_flow;
+	@FXML private RadioButton pulses_first, flow_first;
+	@FXML private RadioButton together, separately;
+	@FXML private RadioButton comma_separator, dot_separator;
 
-	@FXML
-	private CheckBox unit_pulses, unit_flow;
-	
-	@FXML
-	private RadioButton pulses_first, flow_first;
+	@FXML private CheckBox openBox;
+	@FXML private Button saveButton;
 
-	@FXML
-	private RadioButton together, separately;
-	
-	@FXML
-	private RadioButton comma_separator, dot_separator;
-	
-	@FXML
-	private CheckBox openBox;
-	
-	@FXML
-	private Button saveButton;
-
-
-	@Setter
-	private BiConsumer<ProcessRepositoryWriterOptions, Boolean> saveAction;
-
-	@Setter
-	private Runnable exitAction;
+	@Setter private BiConsumer<ProcessRepositoryWriterOptions, Boolean> saveAction;
+	@Setter private Runnable exitAction;
 
 	
 	private ProcessRepositoryWriterOptions getOptions() {
@@ -77,7 +61,6 @@ public class SaveWindowController implements Initializable {
 		
 		return options;
 	}
-
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -96,7 +79,6 @@ public class SaveWindowController implements Initializable {
 		unit_pulses.setOnAction(unitAction);
 	}
 
-
 	private EventHandler<ActionEvent> oneMustBeSelected(CheckBox... boxes) {
 		return event -> {
 			CheckBox sourceBox = (CheckBox) event.getSource();
@@ -105,7 +87,6 @@ public class SaveWindowController implements Initializable {
 				sourceBox.setSelected(true);
 		};
 	}
-
 
 	private boolean openAfterSaving() {
 		return openBox.isSelected();

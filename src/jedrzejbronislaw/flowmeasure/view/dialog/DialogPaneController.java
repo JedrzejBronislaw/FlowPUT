@@ -13,16 +13,12 @@ import javafx.scene.layout.StackPane;
 import jedrzejbronislaw.flowmeasure.tools.Delay;
 import lombok.Setter;
 
-public class DialogPaneController implements Initializable{
+public class DialogPaneController implements Initializable {
 
-	@Setter
-	private Node node;
+	@FXML private Label title, content;
 	
-	@Setter
-	private Pane root;
-	
-	@FXML
-	private Label title, content;
+	@Setter private Node node;
+	@Setter private Pane root;
 	
 	public void show(String title, String content, int closeDelay) {
 		setMessage(title, content);

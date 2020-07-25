@@ -13,8 +13,7 @@ public class FileNamer1 implements FileNamer {
 
 	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH_mm_ss");
 	
-	@NonNull
-	private ProcessRepository process;
+	@NonNull private ProcessRepository process;
 	
 	
 	@Override
@@ -30,5 +29,4 @@ public class FileNamer1 implements FileNamer {
 
 		return initFileName;
 	}
-
 }

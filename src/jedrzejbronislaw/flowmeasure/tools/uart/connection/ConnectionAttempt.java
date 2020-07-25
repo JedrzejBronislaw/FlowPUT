@@ -22,18 +22,14 @@ public class ConnectionAttempt {
 	private static final int PROOF_REQUEST_DELAY   = 2000;
 	private static final int PROOF_MESSAGE_WAITING = 2000;
 
-	@NonNull
-	private UARTDevice device;
-	@NonNull
-	@Getter
-	private UARTParams params;
+	@NonNull         private UARTDevice device;
+	@NonNull @Getter private UARTParams params;
 	
-	@Setter
-	private Runnable success;
-	@Setter
-	private Consumer<ConncetionResult> fail;
+	@Setter private Runnable success;
+	@Setter private Consumer<ConncetionResult> fail;
 	
 	private ConncetionResult conncetionResult = null;
+	
 	
 	void changePort(String port) {
 		params.PORT_NAME = port;

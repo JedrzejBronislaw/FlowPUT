@@ -80,8 +80,8 @@ public abstract class UARTDevice {
 	}
 
 	private MessageTag handleLine(String message) {
-		if(isProofMessage(message))     return MessageTag.CORRECT;
-		if(!correctDevice)              return MessageTag.IGNORED;
+		if(isProofMessage(message)) return MessageTag.CORRECT;
+		if(!correctDevice)          return MessageTag.IGNORED;
 		
 		return handleMessageLine(message);
 	}

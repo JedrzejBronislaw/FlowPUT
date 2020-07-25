@@ -35,9 +35,8 @@ public class DialogManager implements EventListener {
 	}
 
 	
-	private Map<EventType, String> messages;
-	@Setter
-	private MessageEvent showMessage;
+	        private Map<EventType, String> messages;
+	@Setter private MessageEvent showMessage;
 
 	
 	private DialogManager(Map<EventType, String> messages, MessageEvent messageEvent) {

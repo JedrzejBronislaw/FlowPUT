@@ -11,8 +11,7 @@ public class Properties implements PropertyAccess {
 
 	private Map<String, Property> properties = new HashMap<>();
 	
-	@Setter
-	private Runnable changeAction;
+	@Setter private Runnable changeAction;
 
 
 	public void add(PropertyDesc[] values) {
@@ -33,7 +32,6 @@ public class Properties implements PropertyAccess {
 			default:     return new StringProperty(propery.getDefaultValue());
 		}
 	}
-
 
 	@Override
 	public void set(PropertyDesc propertyDesc, String value) {

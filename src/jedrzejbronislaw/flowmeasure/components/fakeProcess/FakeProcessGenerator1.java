@@ -35,10 +35,8 @@ public class FakeProcessGenerator1 implements FakeProcessGenerator {
 		for(int i=0; i<size; i++) {
 			model.addFlowMeasurement(time, pulses);
 			time = time.plus(interval, ChronoUnit.MILLIS);
-		}	
+		}
 		time = time.minus(interval, ChronoUnit.MILLIS);
 		model.getMetadata().setEndTime(time);
-		
 	}
-
 }

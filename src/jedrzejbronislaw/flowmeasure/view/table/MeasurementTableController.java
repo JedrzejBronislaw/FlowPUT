@@ -12,7 +12,7 @@ import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Getter;
 import lombok.Setter;
 
-public class MeasurementTableController implements Initializable{
+public class MeasurementTableController implements Initializable {
 
 	@Getter @FXML private TableView<FlowMeasurement> table;
 	        @FXML private Button refreshButton;

@@ -13,7 +13,6 @@ public interface PropertyAccess {
 	void set(PropertyDesc propertyDesc, String value);
 	Property get(PropertyDesc propertyDesc);
 
-
 	
 	default String getPropertyValue(PropertyDesc name) {
 		Property property = get(name);

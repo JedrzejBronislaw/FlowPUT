@@ -11,26 +11,16 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-public class MyFXMLLoader<T extends Initializable>{
-
-	@Setter
-	static private ResourceAccess resources;
+public class MyFXMLLoader<T extends Initializable> {
 
 	@RequiredArgsConstructor
 	public static class NodeAndController<T>{
-
-		@NonNull
-		@Getter
-		private Node node;
-
-		@NonNull
-		@Getter
-		private T controller;
+		@NonNull @Getter private Node node;
+		@NonNull @Getter private T controller;
 	}
-
-//	private static final String langResourceLocation = "jedrzejbronislaw.flowmeasure.lang.Labels";
-//	private static final String mainDir = "/jedrzejbronislaw/flowmeasure/";
 	
+	@Setter static private ResourceAccess resources;
+
 	
 	public NodeAndController<T> create(String fxmlFilePath) {
 		FXMLLoader fxmlLoader = new FXMLLoader();
@@ -45,8 +35,6 @@ public class MyFXMLLoader<T extends Initializable>{
 			return null;
 		}
     	
-		
 		return new NodeAndController<T>(node, fxmlLoader.getController());
 	}
-
 }

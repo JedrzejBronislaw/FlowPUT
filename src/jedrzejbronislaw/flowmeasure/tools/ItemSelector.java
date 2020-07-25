@@ -25,5 +25,4 @@ public class ItemSelector<T> {
 		
 		return newList;
 	}
-	
 }

@@ -13,8 +13,7 @@ public class MeasurementTableBuilder extends Builder<MeasurementTableController>
 
 	@Getter private String fxmlFilePath = "MeasurementTable.fxml";
 	
-	@NonNull
-	private final Supplier<ProcessRepository> currentProcess;
+	@NonNull private final Supplier<ProcessRepository> currentProcess;
 
 	@Override
 	protected void afterBuild() {

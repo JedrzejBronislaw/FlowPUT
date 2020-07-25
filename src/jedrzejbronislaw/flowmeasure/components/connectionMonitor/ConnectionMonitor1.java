@@ -10,19 +10,15 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ConnectionMonitor1 implements ConnectionMonitor{
+public class ConnectionMonitor1 implements ConnectionMonitor {
 
-	final int timeout;
-	final int interval;
-
-	@NonNull
-	private Runnable timeoutEvent; 
+	         private final int timeout;
+	         private final int interval;
+	@NonNull private Runnable timeoutEvent;
 	
-	@Getter
-	private boolean alert = false;
+	@Getter private boolean alert = false;
 	
 	private LocalDateTime lastTime;
-	
 	private LoopThread monitor;
 
 	

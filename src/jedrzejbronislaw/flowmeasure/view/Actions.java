@@ -42,8 +42,7 @@ public class Actions implements ActionContainer {
 			repository().createNewProcessRepository("untitled").setStartWithNextValueFlag();
 			
 			if(isBufferedData())
-				flowManager().setFlowConsumerType(FlowConsumerType.Buffered);
-			else
+				flowManager().setFlowConsumerType(FlowConsumerType.Buffered); else
 				flowManager().setFlowConsumerType(FlowConsumerType.Plain);
 		}
 	}
@@ -161,11 +160,9 @@ public class Actions implements ActionContainer {
 	}
 	
 
-
 	private boolean isBufferedData() {
 		return settings().getBool(AppProperties.BUFFERED_DATA);
 	}
-	
 	
 	
 	private EventManager eventManager() {

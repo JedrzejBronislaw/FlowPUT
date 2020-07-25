@@ -9,17 +9,13 @@ import lombok.NonNull;
 
 public class DataBuffer1 implements DataBuffer {
 
-	@NonNull
-	private ProcessRepository repository;
+	@NonNull private ProcessRepository repository;
 	
-	@Getter
-	private int interval;
+	@Getter private int interval;
+	@Getter private int size;
+	@Getter private int[] buffer;
+	        private LocalDateTime lastTime = null;
 	
-	@Getter
-	private int size;
-	@Getter
-	private int[] buffer;
-	private LocalDateTime lastTime = null;
 	
 	public DataBuffer1(ProcessRepository repository, int interval) {
 		this.repository = repository;

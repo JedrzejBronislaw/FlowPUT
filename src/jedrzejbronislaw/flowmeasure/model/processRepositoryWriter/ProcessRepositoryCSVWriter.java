@@ -24,7 +24,7 @@ import lombok.Setter;
 public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	private static final ZoneOffset timeZoneOffset = OffsetDateTime.now().getOffset();
 	
-	public static final String TITLE = "Flow measurement";//"Pomiar przep³ywu";//TODO internationalization
+	public static final String TITLE = "Flow measurement";
 	
 	public static final String METADATA_HEAD = "Metadata";
 	public static final String DATA_HEAD     = "Measurement";

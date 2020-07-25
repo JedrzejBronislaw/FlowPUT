@@ -34,17 +34,13 @@ import lombok.RequiredArgsConstructor;
 public class ViewBuilder {
 	
 	private static final int WINDOW_HEIGHT = 400;
-	private static final int WINDOW_WIDTH = 900;
-	private static final String WINDOW_TITLE = "FlowmeterPP";
-	private static final String CSS_FILENAME = "application.css";
+	private static final int WINDOW_WIDTH  = 900;
+	private static final String WINDOW_TITLE   = "FlowmeterPP";
+	private static final String CSS_FILENAME   = "application.css";
 	private static final String LOGO_FILE_NAME = "logo.png";
 
-	@NonNull
-	private Components components;
-	
-	@NonNull
-	private ActionContainer actions;
-	
+	@NonNull private Components components;
+	@NonNull private ActionContainer actions;
 	
 	private Pane root;
 	
@@ -96,14 +92,12 @@ public class ViewBuilder {
 		return builder.getNode();
 	}
 	
-	
 	private Node chart() {
 		ChartPaneBuilder builder = new ChartPaneBuilder(this::getCurrentProcessRepo, flowconverters());
 		builder.build();
 		
 		return builder.getNode();
 	}
-	
 
 	private Node table() {
 		MeasurementTableBuilder builder = new MeasurementTableBuilder(this::getCurrentProcessRepo);
@@ -163,12 +157,15 @@ public class ViewBuilder {
 
 		return builder.getNode();
 	}
+
 	
+	private FlowConverter flowconverter(int flowmeter) {
+		return flowconverters().get(flowmeter);
+	}
 	
 	private ProcessRepository getCurrentProcessRepo() {
 		return components.getRepository().getCurrentProcessRepository();
 	}
-
 	
 	private Stage primaryStage() {
 		return components.getPrimaryStage();
@@ -181,7 +178,6 @@ public class ViewBuilder {
 	private Settings settings() {
 		return components.getSettings();
 	}
-
 	
 	private ResourceAccess resources() {
 		return components.getResources();
@@ -205,10 +201,6 @@ public class ViewBuilder {
 	
 	private FlowConverters flowconverters() {
 		return components.getFlowConverters();
-	}
-	
-	private FlowConverter flowconverter(int flowmeter) {
-		return flowconverters().get(flowmeter);
 	}
 	
 	private ViewMediator viewMediator() {

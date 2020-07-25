@@ -9,7 +9,7 @@ import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Calibration1 implements Calibration{
+public class Calibration1 implements Calibration {
 
 	@Setter private int flowmeter;
 	@Getter private float aveValue = 0;

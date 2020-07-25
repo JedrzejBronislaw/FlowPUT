@@ -20,6 +20,7 @@ public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
 	private final FlowManager flowManager;
 	private final Settings settings;
 	private final Calibration calibration;
+	
 	private int flowmeterNumber;
 	
 	@Override

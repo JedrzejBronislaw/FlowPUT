@@ -7,12 +7,9 @@ import lombok.Getter;
 
 public class StateManager implements EventListener {
 	
-	@Getter
-	private ObservableState1<ApplicationState> appState = new ObservableState1<>(ApplicationState.Idle);
-	@Getter
-	private ObservableState1<ConnectionState> connState = new ObservableState1<>(ConnectionState.Disconnected);
-	@Getter
-	private ObservableState1<ProcessState> processState = new ObservableState1<>(ProcessState.Before);
+	@Getter private ObservableState1<ApplicationState> appState = new ObservableState1<>(ApplicationState.Idle);
+	@Getter private ObservableState1<ConnectionState> connState = new ObservableState1<>(ConnectionState.Disconnected);
+	@Getter private ObservableState1<ProcessState> processState = new ObservableState1<>(ProcessState.Before);
 	
 	
 	@Override

@@ -25,10 +25,10 @@ public class TimeCalc {
 		if (days > 0)    output.append(days    + " days"    + separator);
 		if (hours > 0)   output.append(hours   + " hours"   + separator);
 		if (minutes > 0) output.append(minutes + " minutes" + separator);
-		if (seconds > 0) output.append(seconds + " seconds" + separator); //TODO internationalization
+		if (seconds > 0) output.append(seconds + " seconds" + separator);
 		
 		int startDel = output.length() - separator.length();
-		if(startDel >= 0)
+		if (startDel >= 0)
 			output.delete(startDel, output.length());
 		
 		return output.toString();

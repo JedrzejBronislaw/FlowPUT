@@ -22,38 +22,27 @@ import jedrzejbronislaw.flowmeasure.tools.Delay;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
-import lombok.Getter;
 import lombok.Setter;
 
-public class SidePaneController implements Initializable, EventListener, StateListener<ProcessState>{
+public class SidePaneController implements Initializable, EventListener, StateListener<ProcessState> {
 	
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 	private static final int blikDiodeDuration = 100;
 	
-	private static final Color colorDiodeOn = Color.GREENYELLOW;
+	private static final Color colorDiodeOn  = Color.GREENYELLOW;
 	private static final Color colorDiodeOff = Color.gray(0.7);
 	private static final RadialGradient gradientDiodeOn  = createGradient(colorDiodeOn);
 	private static final RadialGradient gradientDiodeOff = createGradient(colorDiodeOff);
 	
-	@FXML
-	private Button saveButton, closeButton, startButton, endButton;
 	
-	@FXML
-	@Getter
-	private Label processStateLabel, startLabel, endLabel, durationLabel;
+	@FXML private Label processStateLabel, startLabel, endLabel, durationLabel;
+	@FXML private Button saveButton, closeButton, startButton, endButton;
+	@FXML private Circle receiverDiode;
 	
-	@FXML
-	private Circle receiverDiode;
-	
-	
-	@Setter
-	private Runnable saveButtonAction;
-	@Setter
-	private Runnable closeButtonAction;
-	@Setter
-	private Runnable startButtonAction;
-	@Setter
-	private Runnable endButtonAction;
+	@Setter private Runnable saveButtonAction;
+	@Setter private Runnable closeButtonAction;
+	@Setter private Runnable startButtonAction;
+	@Setter private Runnable endButtonAction;
 
 	private ProcessState processState;
 	private LocalDateTime startTime = null;
@@ -72,6 +61,7 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 				new Stop(1, Color.WHITE));
 	}
 	
+	
 	public void diodeBlink() {
 		diodeON();
 		Delay.action(blikDiodeDuration, () -> diodeOFF());
@@ -88,7 +78,6 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-
 		receiverDiode.setFill(gradientDiodeOff);
 		
 		saveButton.setOnAction(e  -> Injection.run(saveButtonAction));

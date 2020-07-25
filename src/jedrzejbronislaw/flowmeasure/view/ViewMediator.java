@@ -13,8 +13,7 @@ public class ViewMediator {
 
 	private Map<Integer, Consumer<Integer>> flowViews = new HashMap<>();
 
-	@Setter
-	private Supplier<UARTParams> uartParamsGetter;
+	@Setter private Supplier<UARTParams> uartParamsGetter;
 	
 	public void setFlowPreviewer(int nr, Consumer<Integer> flowConsumer) {
 		flowViews.put(nr, flowConsumer);

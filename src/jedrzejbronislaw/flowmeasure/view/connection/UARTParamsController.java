@@ -17,31 +17,22 @@ import lombok.Setter;
 
 public class UARTParamsController implements Initializable, StateListener<ConnectionState> {
 
-	@FXML
-	private ComboBox<String> ports;
+	@FXML private ComboBox<String> ports;
 
-	@FXML
-	private Button connectButton;
-	@FXML
-	private Button disconnectButton;
-	@FXML
-	private Button autoConnectButton;
+	@FXML private Button connectButton;
+	@FXML private Button disconnectButton;
+	@FXML private Button autoConnectButton;
 
-	@Setter
-	private Runnable connectButtonAction;
-	@Setter
-	private Runnable disconnectButtonAction;
-	@Setter
-	private Runnable autoConnectButtonAction;
+	@Setter private Runnable connectButtonAction;
+	@Setter private Runnable disconnectButtonAction;
+	@Setter private Runnable autoConnectButtonAction;
 	
-	@Setter
-	private Supplier<List<String>> portsSupplier;
+	@Setter private Supplier<List<String>> portsSupplier;
 	
 	public UARTParams getParams() {
 		UARTParams params = new UARTParams();
 		
 		params.PORT_NAME = ports.getSelectionModel().getSelectedItem();
-//		params.DATA_RATE = Integer.parseInt(rates.getSelectionModel().getSelectedItem());
 		
 		return params;
 	}
@@ -49,8 +40,8 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 	public void setDisableFields(boolean disable) {
 		ports.setDisable(disable);
 
-		connectButton.setDisable(disable);
-		disconnectButton.setDisable(disable);
+		connectButton    .setDisable(disable);
+		disconnectButton .setDisable(disable);
 		autoConnectButton.setDisable(disable);
 	}
 	

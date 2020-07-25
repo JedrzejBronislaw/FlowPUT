@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import jedrzejbronislaw.flowmeasure.events.EventListener;
 
-public interface FlowConverter extends EventListener{
+public interface FlowConverter extends EventListener {
 	String FLOW_UNIT = "l/s";
 	String VOLUME_UNIT = "l";
 	
@@ -14,5 +14,4 @@ public interface FlowConverter extends EventListener{
 	void newDataEvent();
 	void newDataEvent(LocalDateTime time);
 	float pulsesToLitrePerSec(int pulses, float interval);
-
 }
