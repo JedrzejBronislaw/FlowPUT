@@ -57,72 +57,24 @@ public class Actions implements ActionContainer {
 
 	@Override
 	public void saveProcess() {
-		if(eventManager().submitEvent(EventType.Saving_Process)) {
-			ProcessRepositoryWriter writer = new ProcessRepositoryCSVWriter();
-			ProcessRepository process = repository().getCurrentProcessRepository();
-			SaveWindowBuilder builder = new SaveWindowBuilder(resources(), process);
-				
-			System.out.println(flowManager().getFlowConsumerType());
-			if(isBufferedData())
-				writer.setBufferInterval(settings().getInt(AppProperties.BUFFER_INTERVAL));
-			writer.setPulsePerLitre(getPulseRatios());
-			
-			FileNamer filenamer = new FileNamer1(process);
-			builder.setOwner(components.getPrimaryStage());
-			builder.setFileNamer(filenamer::createName);
-			builder.setInitialDirectory(settings().getString(AppProperties.SAVE_PATH));
-			builder.setSaveAction(writer::save);
-			builder.setOnFileChoose(file -> {
-				settings().setProperty(AppProperties.SAVE_PATH, file.getParent());
-				settings().saveToFile();
-			});
-				
-			builder.build();
-			builder.showWindow();
-		}
-	}
-
-	private float[] getPulseRatios() {
-		RatioProperty[] ratioProperties = RatioProperty.generate(Consts.FLOWMETERS_NUMBER);
-		float[] outcome = new float[Consts.FLOWMETERS_NUMBER];
-		
-		for (int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
-			outcome[i] = settings().getFloat(ratioProperties[i]);
-		
-		return outcome;
+		if(eventManager().submitEvent(EventType.Saving_Process))
+			showSaveWindow(prepareWriter());
 	}
 	
 	@Override
 	public void closeProcess() {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Close the process");
-		alert.setHeaderText("Are you sure you want to close the process?");
-		alert.setContentText("The measurement will be lost.");
-		
-		Optional<ButtonType> result = alert.showAndWait();
-		
-		if (result.get() == ButtonType.OK)
+		if (confirmWithAlert())
 			eventManager().submitEvent(EventType.Close_Process);
 	}
 
 	@Override
 	public void connectFlowDevice() {
 		UARTParams params = viewMediator().getUARTParams();
+		if (!valideteParams(params)) return;
 		
-		if (params == null) return;
-		if (params.PORT_NAME == null || params.PORT_NAME.isEmpty()) return;
-
-		
-		ConnectionAttempt attempt = new ConnectionAttempt(device(), params);
-		attempt.setSuccess(() -> {
-			eventManager().submitEvent(EventType.ConnectionSuccessful);
-			connectionMonitor().start();
-		});
-		attempt.setFail(reason -> {
-			eventManager().submitEvent(EventType.ConnectionFailed);
-		});
-
+		ConnectionAttempt attempt = createConnectionAttempt(params);
 		eventManager().submitEvent(EventType.Connecting_Start);
+		
 		attempt.start();
 	}
 
@@ -138,19 +90,10 @@ public class Actions implements ActionContainer {
 	public void autoconnectFlowDevice() {
 		System.out.println("\nStart autoconnect");
 		
-		AutoConnection attempts = new AutoConnection(device(), UART.getPortList(), 9600);
-		attempts.setIfFail(() -> {
-			System.out.println("¯aden port nie pasuje");
-			eventManager().submitEvent(EventType.ConnectionFailed);
-		});
-		attempts.setIfSuccess(port -> {
-			System.out.println("Uda³o po³¹czyæ siê z portem: " + port);
-			eventManager().submitEvent(EventType.ConnectionSuccessful);
-			connectionMonitor().start();
-		});
+		AutoConnection autoConnection = createAutoConnection();
 
 		eventManager().submitEvent(EventType.Connecting_Start);
-		attempts.start();
+		autoConnection.start();
 	}
 
 	@Override
@@ -158,6 +101,94 @@ public class Actions implements ActionContainer {
 		eventManager().submitEvent(EventType.Exiting);
 		connectionMonitor().stop();
 		device().disconnect();
+	}
+	
+	private ProcessRepositoryWriter prepareWriter() {
+		ProcessRepositoryWriter writer = new ProcessRepositoryCSVWriter();
+		
+		if(isBufferedData())
+			writer.setBufferInterval(settings().getInt(AppProperties.BUFFER_INTERVAL));
+		writer.setPulsePerLitre(getPulseRatios());
+		
+		return writer;
+	}
+
+	private void showSaveWindow(ProcessRepositoryWriter writer) {
+		ProcessRepository process = repository().getCurrentProcessRepository();
+		SaveWindowBuilder builder = new SaveWindowBuilder(resources(), process);
+
+		FileNamer filenamer = new FileNamer1(process);
+		builder.setOwner(components.getPrimaryStage());
+		builder.setFileNamer(filenamer::createName);
+		builder.setInitialDirectory(settings().getString(AppProperties.SAVE_PATH));
+		builder.setSaveAction(writer::save);
+		builder.setOnFileChoose(file -> {
+			settings().setProperty(AppProperties.SAVE_PATH, file.getParent());
+			settings().saveToFile();
+		});
+			
+		builder.build();
+		builder.showWindow();
+	}
+
+	private float[] getPulseRatios() {
+		RatioProperty[] ratioProperties = RatioProperty.generate(Consts.FLOWMETERS_NUMBER);
+		float[] outcome = new float[Consts.FLOWMETERS_NUMBER];
+		
+		for (int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
+			outcome[i] = settings().getFloat(ratioProperties[i]);
+		
+		return outcome;
+	}
+
+	private boolean confirmWithAlert() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Close the process");
+		alert.setHeaderText("Are you sure you want to close the process?");
+		alert.setContentText("The measurement will be lost.");
+		
+		Optional<ButtonType> result = alert.showAndWait();
+		
+		return result.get() == ButtonType.OK;
+	}
+
+	private boolean valideteParams(UARTParams params) {
+		if (params == null) return false;
+		if (params.PORT_NAME == null || params.PORT_NAME.isEmpty()) return false;
+		
+		return true;
+	}
+
+	private ConnectionAttempt createConnectionAttempt(UARTParams params) {
+		ConnectionAttempt attempt = new ConnectionAttempt(device(), params);
+		
+		attempt.setSuccess(() -> {
+			eventManager().submitEvent(EventType.ConnectionSuccessful);
+			connectionMonitor().start();
+		});
+		
+		attempt.setFail(reason ->
+			eventManager().submitEvent(EventType.ConnectionFailed)
+		);
+		
+		return attempt;
+	}
+
+	private AutoConnection createAutoConnection() {
+		AutoConnection autoConn = new AutoConnection(device(), UART.getPortList(), 9600);
+		
+		autoConn.setIfFail(() -> {
+			System.out.println("¯aden port nie pasuje");
+			eventManager().submitEvent(EventType.ConnectionFailed);
+		});
+		
+		autoConn.setIfSuccess(port -> {
+			System.out.println("Uda³o po³¹czyæ siê z portem: " + port);
+			eventManager().submitEvent(EventType.ConnectionSuccessful);
+			connectionMonitor().start();
+		});
+		
+		return autoConn;
 	}
 	
 
