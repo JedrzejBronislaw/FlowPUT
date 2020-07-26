@@ -68,6 +68,7 @@ public class Actions implements ActionContainer {
 			writer.setPulsePerLitre(getPulseRatios());
 			
 			FileNamer filenamer = new FileNamer1(process);
+			builder.setOwner(components.getPrimaryStage());
 			builder.setFileNamer(filenamer::createName);
 			builder.setInitialDirectory(settings().getString(AppProperties.SAVE_PATH));
 			builder.setSaveAction(writer::save);

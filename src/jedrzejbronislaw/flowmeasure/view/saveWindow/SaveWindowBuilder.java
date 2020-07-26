@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.SaveAction;
@@ -36,6 +37,7 @@ public class SaveWindowBuilder extends Builder<SaveWindowController> {
 	@NonNull private ResourceAccess resources;
 	@NonNull private ProcessRepository process;
 
+	@Setter private Window owner;
 	@Setter private SaveAction saveAction;
 	@Setter private Consumer<File> onFileChoose;
 	@Setter private Supplier<String> fileNamer;
@@ -43,6 +45,32 @@ public class SaveWindowBuilder extends Builder<SaveWindowController> {
 	private Stage stage;
 	private File initialDirectory = null;
 	
+
+	@Override
+	protected void afterBuild() {
+		buildStage();
+
+		controller.setExitAction(stage::close);
+		controller.setSaveAction(this::save);
+	}
+
+	private void buildStage() {
+		Scene scene = new Scene((Parent)node);
+		scene.getStylesheets().add(resources.getResourcePath(CSS_FILE_NAME));
+		
+		stage = new Stage();
+		stage.initOwner(owner);
+		stage.setScene(scene);
+		stage.setTitle(WINDOW_TITLE);
+	}
+
+	private void save(ProcessRepositoryWriterOptions options, boolean openFile) {
+		File file = choosingFileAction();
+		if(file == null) return;
+		
+		saveAction.save(process, file, options);
+		if (openFile) tryOpenFileInDefaultApplication(file);
+	}
 	
 	public boolean setInitialDirectory(String initialDirectory) {
 		
@@ -67,27 +95,11 @@ public class SaveWindowBuilder extends Builder<SaveWindowController> {
 		if(initialDirectory != null)
 			fileChooser.setInitialDirectory(initialDirectory);
 		
-		file = fileChooser.showSaveDialog(null);
+		file = fileChooser.showSaveDialog(stage);
 		
 		if(file != null) Injection.run(onFileChoose, file);
 
 		return file;
-	}
-
-	@Override
-	protected void afterBuild() {
-		buildStage();
-
-		controller.setExitAction(stage::close);
-		controller.setSaveAction(this::save);
-	}
-
-	private void save(ProcessRepositoryWriterOptions options, boolean openFile) {
-		File file = choosingFileAction();
-		if(file == null) return;
-		
-		saveAction.save(process, file, options);
-		if (openFile) tryOpenFileInDefaultApplication(file);
 	}
 
 	private void tryOpenFileInDefaultApplication(File f) {
@@ -98,15 +110,6 @@ public class SaveWindowBuilder extends Builder<SaveWindowController> {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	private void buildStage() {
-		Scene scene = new Scene((Parent)node);
-		scene.getStylesheets().add(resources.getResourcePath(CSS_FILE_NAME));
-		
-		stage = new Stage();
-		stage.setScene(scene);
-		stage.setTitle(WINDOW_TITLE);
 	}
 	
 	public void showWindow() {
