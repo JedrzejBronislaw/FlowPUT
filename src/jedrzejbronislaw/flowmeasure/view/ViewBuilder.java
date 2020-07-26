@@ -12,11 +12,15 @@ import jedrzejbronislaw.flowmeasure.components.dialogManager.DialogManager;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
+import jedrzejbronislaw.flowmeasure.events.EventListener;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
+import jedrzejbronislaw.flowmeasure.states.ConnectionState;
+import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
+import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneBuild;
 import jedrzejbronislaw.flowmeasure.view.chart.ChartPaneBuilder;
@@ -87,7 +91,7 @@ public class ViewBuilder {
 		builder.build();
 		
 		viewMediator().setUartParamsGetter(builder.getController()::getParams);
-		stateManager().getConnState().addStateListiner(builder.getController());
+		addConnListener(builder.getController());
 		
 		return builder.getNode();
 	}
@@ -110,8 +114,8 @@ public class ViewBuilder {
 		SidePaneBuilder builder = new SidePaneBuilder(actions);
 		builder.build();
 		
-		stateManager().getProcessState().addStateListiner(builder.getController());
-		eventManager().addListener(builder.getController());
+		addProcessListener(builder.getController());
+		addEventListener(builder.getController());
 		
 		return builder.getNode();
 	}
@@ -120,7 +124,7 @@ public class ViewBuilder {
 		SettingsPaneBuilder builder = new SettingsPaneBuilder(settings());
 		builder.build();
 		
-		stateManager().getProcessState().addStateListiner(builder.getController());
+		addProcessListener(builder.getController());
 		
 		return builder.getNode();
 	}
@@ -128,6 +132,8 @@ public class ViewBuilder {
 	private Node calibrationPane() {
 		CalibrationPaneBuild builder = new CalibrationPaneBuild(eventManager(), flowManager(), settings(), calibration());
 		builder.build();
+		
+		addEventListener(builder.getController());
 		
 		return builder.getNode();
 	}
@@ -158,6 +164,18 @@ public class ViewBuilder {
 		return builder.getNode();
 	}
 
+
+	private void addEventListener(EventListener listener) {
+		eventManager().addListener(listener);
+	}
+	
+	private void addProcessListener(StateListener<ProcessState> listener) {
+		stateManager().getProcessState().addStateListiner(listener);
+	}
+	
+	private void addConnListener(StateListener<ConnectionState> listener) {
+		stateManager().getConnState().addStateListiner(listener);
+	}
 	
 	private FlowConverter flowconverter(int flowmeter) {
 		return flowconverters().get(flowmeter);

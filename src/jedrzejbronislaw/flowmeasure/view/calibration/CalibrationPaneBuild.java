@@ -45,7 +45,6 @@ public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
 		
 		calibration.setAveValueListener(value -> controller.setCurrentAveValue(value));
 		calibration.setValuesListener  (value -> controller.setCurrentValues(value));
-		eventManager.addListener(controller);
 	}
 
 	private boolean event(EventType event) {
