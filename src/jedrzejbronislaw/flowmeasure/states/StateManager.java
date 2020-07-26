@@ -27,7 +27,8 @@ public class StateManager implements EventListener {
 		} else
 		
 		
-		if(event == EventType.LostConnection) {
+		if(event == EventType.LostConnection ||
+		   event == EventType.Disconnection) {
 			processState.setState(ProcessState.Finished);
 			appState.setState(ApplicationState.Idle);
 			connState.setState(ConnectionState.Disconnected);
@@ -48,10 +49,6 @@ public class StateManager implements EventListener {
 		
 		if(event == EventType.Connecting_Start) {
 			connState.setState(ConnectionState.Connecting);
-		} else
-		
-		if(event == EventType.Disconnection) {
-			connState.setState(ConnectionState.Disconnected);
 		} else
 		
 		//---
