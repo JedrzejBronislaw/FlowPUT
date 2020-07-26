@@ -111,8 +111,6 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 			diodeBlink();
 			if(processState == ProcessState.Ongoing)
 				setDurationTimeLabel(startTime, LocalDateTime.now());
-			else if (endTime != null)
-				setDurationTimeLabel(startTime, endTime);
 		}
 
 		if(event == EventType.Process_Starts) {
@@ -125,6 +123,7 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 		if(event == EventType.Process_Ends) {
 			endTime = LocalDateTime.now();
 			setEndTimeLabel(endTime.format(formatter));
+			setDurationTimeLabel(startTime, endTime);
 		}
 	}
 	
