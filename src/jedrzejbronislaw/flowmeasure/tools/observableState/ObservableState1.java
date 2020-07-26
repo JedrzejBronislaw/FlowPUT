@@ -18,11 +18,11 @@ public class ObservableState1<T extends Enum<?>> implements ObservableState<T>, 
 	@Override
 	public void setState(T state) {
 		this.state = state;
-		stateListeners.forEach(listiner -> listiner.onChangeState(state));
+		stateListeners.forEach(listener -> listener.onChangeState(state));
 	}
 	
 	@Override
-	public void addStateListiner(StateListener<T> listener) {
+	public void addStateListener(StateListener<T> listener) {
 		stateListeners.add(listener);
 		listener.onChangeState(state);
 	}

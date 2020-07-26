@@ -28,7 +28,7 @@ public class Calibration1 implements Calibration {
 	public void addFlowMeasurement(int[] pulses) {
 		addToCurrentMeasure(selectFlow(pulses));
 		computeAverage();
-		listinerAction();
+		listenerAction();
 	}
 
 	private int selectFlow(int[] pulses) {
@@ -44,7 +44,7 @@ public class Calibration1 implements Calibration {
 		values.clear();
 		newMeasure();
 		computeAverage();
-		listinerAction();
+		listenerAction();
 	}
 
 	private void addToCurrentMeasure(int pulse) {
@@ -63,7 +63,7 @@ public class Calibration1 implements Calibration {
 		values.add(0);
 	}
 	
-	private void listinerAction() {
+	private void listenerAction() {
 		Injection.run(aveValueListener, aveValue);
 		Injection.run(valuesListener,   Collections.unmodifiableList(values));
 	}

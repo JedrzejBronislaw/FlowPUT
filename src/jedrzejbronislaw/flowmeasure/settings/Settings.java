@@ -54,7 +54,7 @@ public class Settings implements PropertyAccess {
 	}
 	
 	
-	public void addChangeListiner(Runnable listener) {
+	public void addChangeListener(Runnable listener) {
 		listenerManager.add(listener);
 	}
 }

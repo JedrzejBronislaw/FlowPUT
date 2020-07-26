@@ -22,9 +22,9 @@ public class Main extends Application {
 		StateManager stateManager = components.getStateManager();
 		EventManager eventManager = components.getEventManager();
 		
-		stateManager.getAppState()    .addStateListiner(state -> System.out.println(" -> New appState: "     + state.toString()));
-		stateManager.getConnState()   .addStateListiner(state -> System.out.println(" -> New connState: "    + state.toString()));
-		stateManager.getProcessState().addStateListiner(state -> System.out.println(" -> New processState: " + state.toString()));
+		stateManager.getAppState()    .addStateListener(state -> System.out.println(" -> New appState: "     + state.toString()));
+		stateManager.getConnState()   .addStateListener(state -> System.out.println(" -> New connState: "    + state.toString()));
+		stateManager.getProcessState().addStateListener(state -> System.out.println(" -> New processState: " + state.toString()));
 		
 		eventManager.addListener(event -> {
 			if(event != EventType.ReceivedData) System.out.println(" -> Event: " + event.toString());

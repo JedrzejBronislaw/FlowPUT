@@ -170,11 +170,11 @@ public class ViewBuilder {
 	}
 	
 	private void addProcessListener(StateListener<ProcessState> listener) {
-		stateManager().getProcessState().addStateListiner(listener);
+		stateManager().getProcessState().addStateListener(listener);
 	}
 	
 	private void addConnListener(StateListener<ConnectionState> listener) {
-		stateManager().getConnState().addStateListiner(listener);
+		stateManager().getConnState().addStateListener(listener);
 	}
 	
 	private FlowConverter flowconverter(int flowmeter) {

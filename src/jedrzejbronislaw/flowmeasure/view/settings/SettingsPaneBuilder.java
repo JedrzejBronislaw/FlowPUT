@@ -41,7 +41,7 @@ public class SettingsPaneBuilder extends Builder<SettingsPaneController> {
 			settings.saveToFile();
 		});
 		
-		settings.addChangeListiner(() -> {
+		settings.addChangeListener(() -> {
 			if (!activeUpdating ) return;
 
 			controller.setSettings(settings);

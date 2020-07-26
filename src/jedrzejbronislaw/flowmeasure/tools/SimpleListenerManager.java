@@ -8,7 +8,7 @@ public class SimpleListenerManager {
 	private List<Runnable> listeners = new ArrayList<>();
 	
 	public void action() {
-		listeners.forEach(listiner -> listiner.run());
+		listeners.forEach(listener -> listener.run());
 	}
 	
 	public void add(Runnable listener) {
