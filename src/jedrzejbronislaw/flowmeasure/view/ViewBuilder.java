@@ -1,11 +1,17 @@
 package jedrzejbronislaw.flowmeasure.view;
 
+import java.util.Optional;
+
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.calibration.Calibration;
 import jedrzejbronislaw.flowmeasure.components.dialogManager.DialogManager;
@@ -71,10 +77,7 @@ public class ViewBuilder {
 			primaryStage().getIcons().add(loadLogo());
 			primaryStage().setScene(scene);
 			primaryStage().setTitle(WINDOW_TITLE);
-			primaryStage().setOnCloseRequest(e -> {
-				actions.exit();
-				Platform.exit();
-			});
+			primaryStage().setOnCloseRequest(this::closeApplication);
 			primaryStage().show();
 			
 		} catch (Exception e) {
@@ -82,10 +85,36 @@ public class ViewBuilder {
 		}
 	}
 
+	private void closeApplication(WindowEvent e) {
+		if (processState() != ProcessState.Before &&
+			!confirmCloseWithAlert()) {
+			
+			e.consume();
+			return;
+		}
+
+		actions.exit();
+		Platform.exit();
+	}
+
 	private Image loadLogo() {
 		return new Image(resources().path(LOGO_FILE_NAME));
 	}
-	
+
+	private boolean confirmCloseWithAlert() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Close");
+		alert.setHeaderText("Are you sure you want to close the application?");
+		if (processState() == ProcessState.Ongoing)
+			alert.setContentText("The measurement is in progress.");
+		if (processState() == ProcessState.Finished)
+			alert.setContentText("The measurement is not closed.");
+		
+		Optional<ButtonType> result = alert.showAndWait();
+		
+		return result.get() == ButtonType.OK;
+	}
+
 	private Node uart() {
 		UARTParamsBuilder builder = new UARTParamsBuilder(actions);
 		builder.build();
@@ -175,6 +204,10 @@ public class ViewBuilder {
 	
 	private void addConnListener(StateListener<ConnectionState> listener) {
 		stateManager().getConnState().addStateListener(listener);
+	}
+
+	private ProcessState processState() {
+		return stateManager().getProcessState().getState();
 	}
 	
 	private FlowConverter flowconverter(int flowmeter) {
