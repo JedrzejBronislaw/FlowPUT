@@ -83,7 +83,7 @@ public class Actions implements ActionContainer {
 		connectionMonitor().stop();
 		device().disconnect();
 
-		eventManager().submitEvent(EventType.Diconnection);
+		eventManager().submitEvent(EventType.Disconnection);
 	}
 
 	@Override

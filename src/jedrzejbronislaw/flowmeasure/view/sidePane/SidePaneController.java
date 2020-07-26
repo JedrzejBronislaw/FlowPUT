@@ -132,7 +132,7 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 		if(event == EventType.ConnectionSuccessful)
 			controlBox.setDisable(false);
 		
-		if(event == EventType.Diconnection ||
+		if(event == EventType.Disconnection ||
 		   event == EventType.LostConnection)
 			controlBox.setDisable(true);
 	}

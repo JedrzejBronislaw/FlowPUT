@@ -19,7 +19,7 @@ public class EventPolicy {
 			(event == EventType.ConnectionSuccessful && connState() == ConnectionState.Connecting) ||
 			(event == EventType.ConnectionFailed     && connState() == ConnectionState.Connecting) ||
 			(event == EventType.Connecting_Start     && connState() == ConnectionState.Disconnected) ||
-			(event == EventType.Diconnection         && connState() == ConnectionState.Connected) ||
+			(event == EventType.Disconnection        && connState() == ConnectionState.Connected) ||
 			(event == EventType.Close_Process        && procState() == ProcessState.Finished) ||
 			(event == EventType.Calibration_Starts   && appState()  == ApplicationState.Idle && connState() == ConnectionState.Connected) ||
 			(event == EventType.Calibration_Ends     && appState()  == ApplicationState.Calibration)

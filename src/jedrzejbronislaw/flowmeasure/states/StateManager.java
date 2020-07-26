@@ -50,7 +50,7 @@ public class StateManager implements EventListener {
 			connState.setState(ConnectionState.Connecting);
 		} else
 		
-		if(event == EventType.Diconnection) {
+		if(event == EventType.Disconnection) {
 			connState.setState(ConnectionState.Disconnected);
 		} else
 		
