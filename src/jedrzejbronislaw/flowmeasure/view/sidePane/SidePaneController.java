@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
@@ -35,6 +36,7 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 	private static final RadialGradient gradientDiodeOff = createGradient(colorDiodeOff);
 	
 	
+	@FXML private VBox controlBox;
 	@FXML private Label processStateLabel, startLabel, endLabel, durationLabel;
 	@FXML private Button saveButton, closeButton, startButton, endButton;
 	@FXML private Circle receiverDiode;
@@ -78,6 +80,7 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		controlBox.setDisable(true);
 		receiverDiode.setFill(gradientDiodeOff);
 		
 		saveButton.setOnAction(e  -> Injection.run(saveButtonAction));
@@ -125,6 +128,13 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 			setEndTimeLabel(endTime.format(formatter));
 			setDurationTimeLabel(startTime, endTime);
 		}
+		
+		if(event == EventType.ConnectionSuccessful)
+			controlBox.setDisable(false);
+		
+		if(event == EventType.Diconnection ||
+		   event == EventType.LostConnection)
+			controlBox.setDisable(true);
 	}
 	
 	@Override
