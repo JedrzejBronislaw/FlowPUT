@@ -23,6 +23,8 @@ import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
+import jedrzejbronislaw.flowmeasure.states.AllStates;
+import jedrzejbronislaw.flowmeasure.states.AllStatesListener;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
@@ -143,7 +145,7 @@ public class ViewBuilder {
 		SidePaneBuilder builder = new SidePaneBuilder(actions);
 		builder.build();
 		
-		addProcessListener(builder.getController());
+		addAllStatesListener(builder.getController());
 		addEventListener(builder.getController());
 		
 		return builder.getNode();
@@ -196,6 +198,10 @@ public class ViewBuilder {
 
 	private void addEventListener(EventListener listener) {
 		eventManager().addListener(listener);
+	}
+	
+	private void addAllStatesListener(AllStatesListener listener) {
+		new AllStates(components.getStateManager(), listener);
 	}
 	
 	private void addProcessListener(StateListener<ProcessState> listener) {

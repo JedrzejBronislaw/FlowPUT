@@ -18,14 +18,16 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
 import jedrzejbronislaw.flowmeasure.events.EventListener;
 import jedrzejbronislaw.flowmeasure.events.EventType;
+import jedrzejbronislaw.flowmeasure.states.AllStates;
+import jedrzejbronislaw.flowmeasure.states.AllStatesListener;
+import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.Delay;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
-import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import lombok.Setter;
 
-public class SidePaneController implements Initializable, EventListener, StateListener<ProcessState> {
+public class SidePaneController implements Initializable, EventListener, AllStatesListener {
 	
 	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 	private static final int blikDiodeDuration = 100;
@@ -49,7 +51,7 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 	private ProcessState processState;
 	private LocalDateTime startTime = null;
 	private LocalDateTime endTime = null;
-	
+
 	private static RadialGradient createGradient(Color color) {
 		return new RadialGradient(
 				0,
@@ -128,25 +130,20 @@ public class SidePaneController implements Initializable, EventListener, StateLi
 			setEndTimeLabel(endTime.format(formatter));
 			setDurationTimeLabel(startTime, endTime);
 		}
-		
-		if(event == EventType.ConnectionSuccessful)
-			onOffBox.setDisable(false);
-		
-		if(event == EventType.Disconnection ||
-		   event == EventType.LostConnection)
-			onOffBox.setDisable(true);
 	}
 	
 	@Override
-	public void onChangeState(ProcessState state) {
-		processState = state;
+	public void onChangeState(AllStates state) {
+		processState = state.getProcState();
 		Platform.runLater(() ->
-			processStateLabel.setText(state.toString()));
+			processStateLabel.setText(state.getProcState().toString()));
 		
-		setEnable(startButton, state == ProcessState.Before);
-		setEnable(endButton,   state == ProcessState.Ongoing);
+		setEnable(startButton, state.is(ProcessState.Before));
+		setEnable(endButton,   state.is(ProcessState.Ongoing));
 		
-		setEnable(saveButton,  state != ProcessState.Before);
-		setEnable(closeButton, state == ProcessState.Finished);
+		setEnable(saveButton, !state.is(ProcessState.Before));
+		setEnable(closeButton, state.is(ProcessState.Finished));
+		
+		onOffBox.setDisable(  !state.is(ConnectionState.Connected));
 	}
 }
