@@ -29,7 +29,7 @@ public class StateManager implements EventListener {
 		
 		if(event == EventType.LostConnection ||
 		   event == EventType.Disconnection) {
-			processState.setState(ProcessState.Finished);
+			if(processState.is(ProcessState.Ongoing)) processState.setState(ProcessState.Finished);
 			appState.setState(ApplicationState.Idle);
 			connState.setState(ConnectionState.Disconnected);
 		} else

@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -20,6 +21,7 @@ import jedrzejbronislaw.flowmeasure.events.EventListener;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.states.AllStates;
 import jedrzejbronislaw.flowmeasure.states.AllStatesListener;
+import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.Delay;
@@ -90,9 +92,9 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 		startButton.setOnAction(e -> Injection.run(startButtonAction));
 		endButton.setOnAction(e   -> Injection.run(endButtonAction));
 	}
-	
-	private void setEnable(Button button, boolean enable) {
-		button.setDisable(!enable);
+
+	private void setEnable(Node node, boolean enable) {
+		node.setDisable(!enable);
 	}
 	
 	private void setDurationTimeLabel(LocalDateTime start, LocalDateTime end) {
@@ -144,6 +146,6 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 		setEnable(saveButton, !state.is(ProcessState.Before));
 		setEnable(closeButton, state.is(ProcessState.Finished));
 		
-		onOffBox.setDisable(  !state.is(ConnectionState.Connected));
+		setEnable(onOffBox,    state.is(ConnectionState.Connected) && state.is(ApplicationState.Idle, ApplicationState.Process));
 	}
 }
