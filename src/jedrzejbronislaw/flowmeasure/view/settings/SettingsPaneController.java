@@ -11,12 +11,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
-import jedrzejbronislaw.flowmeasure.states.ProcessState;
+import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import lombok.Setter;
 
-public class SettingsPaneController implements Initializable, StateListener<ProcessState> {
+public class SettingsPaneController implements Initializable, StateListener<ApplicationState> {
 	
 	@FXML private VBox mainBox;
 	@FXML private TextField bufferSizeField;
@@ -48,7 +48,7 @@ public class SettingsPaneController implements Initializable, StateListener<Proc
 	}
 	
 	@Override
-	public void onChangeState(ProcessState state) {
-		mainBox.setDisable(state != ProcessState.Before);
+	public void onChangeState(ApplicationState state) {
+		mainBox.setDisable(state == ApplicationState.Process);
 	}
 }

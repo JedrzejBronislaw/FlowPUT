@@ -17,7 +17,6 @@ public class StateManager implements EventListener {
 
 		if(event == EventType.Process_Ends) {
 			processState.setState(ProcessState.Finished);
-			appState.setState(ApplicationState.Idle);
 		} else
 		
 		
@@ -37,6 +36,7 @@ public class StateManager implements EventListener {
 			
 		if(event == EventType.Close_Process) {
 			processState.setState(ProcessState.Before);
+			appState.setState(ApplicationState.Idle);
 		} else
 		
 		if(event == EventType.ConnectionSuccessful) {

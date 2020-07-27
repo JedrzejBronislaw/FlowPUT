@@ -25,6 +25,7 @@ import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.states.AllStates;
 import jedrzejbronislaw.flowmeasure.states.AllStatesListener;
+import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
@@ -88,7 +89,7 @@ public class ViewBuilder {
 	}
 
 	private void closeApplication(WindowEvent e) {
-		if (processState() != ProcessState.Before &&
+		if (appState() == ApplicationState.Process &&
 			!confirmCloseWithAlert()) {
 			
 			e.consume();
@@ -155,7 +156,7 @@ public class ViewBuilder {
 		SettingsPaneBuilder builder = new SettingsPaneBuilder(settings());
 		builder.build();
 		
-		addProcessListener(builder.getController());
+		addAppListener(builder.getController());
 		
 		return builder.getNode();
 	}
@@ -204,12 +205,16 @@ public class ViewBuilder {
 		new AllStates(components.getStateManager(), listener);
 	}
 	
-	private void addProcessListener(StateListener<ProcessState> listener) {
-		stateManager().getProcessState().addStateListener(listener);
+	private void addAppListener(StateListener<ApplicationState> listener) {
+		stateManager().getAppState().addStateListener(listener);
 	}
 	
 	private void addConnListener(StateListener<ConnectionState> listener) {
 		stateManager().getConnState().addStateListener(listener);
+	}
+
+	private ApplicationState appState() {
+		return stateManager().getAppState().getState();
 	}
 
 	private ProcessState processState() {

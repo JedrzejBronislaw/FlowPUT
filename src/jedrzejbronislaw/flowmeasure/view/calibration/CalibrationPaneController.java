@@ -19,7 +19,6 @@ import jedrzejbronislaw.flowmeasure.states.AllStates;
 import jedrzejbronislaw.flowmeasure.states.AllStatesListener;
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
-import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Setter;
 
@@ -88,7 +87,6 @@ public class CalibrationPaneController implements Initializable, AllStatesListen
 	public void onChangeState(AllStates state) {
 		if (!state.is(ConnectionState.Connected))    setComponens(InternalState.unavailable); else
 		if ( state.is(ApplicationState.Process))     setComponens(InternalState.unavailable); else
-		if (!state.is(ProcessState.Before))          setComponens(InternalState.unavailable); else
 		if ( state.is(ApplicationState.Idle))        setComponens(InternalState.available);   else
 		if ( state.is(ApplicationState.Calibration)) setComponens(InternalState.ongoing);
 	}
