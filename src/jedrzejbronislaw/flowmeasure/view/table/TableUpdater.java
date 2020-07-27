@@ -22,7 +22,7 @@ public class TableUpdater {
 	
 	public void refreshTable(ProcessRepository currentProcess) {
 		Platform.runLater(() -> {
-			if (currentProcess == null) return;
+			if (currentProcess == null) {clear(); return;}
 			
 			creatingColumns(currentProcess);
 			table.getItems().addAll(currentProcess.getAllMeasurement());
@@ -34,11 +34,15 @@ public class TableUpdater {
 		if (currentProcess == null) return;
 		int numOfFlowmeters = currentProcess.getNumOfFlowmeters();
 
-		table.getItems().clear();
-		table.getColumns().clear();
+		clear();
 		
 		addColumn(createTimeColumn());
 		for(int i=0; i<numOfFlowmeters; i++) addColumn(createFlowColumn(i));
+	}
+
+	private void clear() {
+		table.getItems().clear();
+		table.getColumns().clear();
 	}
 
 	private TableColumn<FlowMeasurement, String> createTimeColumn() {

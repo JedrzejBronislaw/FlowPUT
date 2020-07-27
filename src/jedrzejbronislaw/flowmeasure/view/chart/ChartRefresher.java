@@ -59,7 +59,7 @@ public class ChartRefresher {
 	}
 	
 	public void refresh(ChartOptions options, ProcessRepository process) {
-		if (process == null) return;
+		if (process == null) {clear(); return;}
 		
 		this.options = options;
 		this.process = process;
@@ -77,6 +77,12 @@ public class ChartRefresher {
 			
 			seriesManager.updateSeries();
 		});
+	}
+
+	private void clear() {
+		chart.getData().clear();
+		xAxis.setLowerBound(0);
+		xAxis.setUpperBound(100);
 	}
 
 	private void setChartStaticProperties() {
