@@ -15,6 +15,10 @@ public class ObservableState1<T extends Enum<?>> implements ObservableState<T>, 
 		state = initState;
 	}
 	
+	public boolean is(T state) {
+		return this.state == state;
+	}
+	
 	@Override
 	public void setState(T state) {
 		this.state = state;
