@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
@@ -36,14 +37,6 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 		
 		return params;
 	}
-
-	public void setDisableFields(boolean disable) {
-		ports.setDisable(disable);
-
-		connectButton    .setDisable(disable);
-		disconnectButton .setDisable(disable);
-		autoConnectButton.setDisable(disable);
-	}
 	
 	public void setPortsNames(List<String> portsNames) {
 		if (portsNames == null) return;
@@ -54,8 +47,6 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		setDisableFields(false);
-
 		connectButton.setOnAction(e      -> Injection.run(connectButtonAction));
 		disconnectButton.setOnAction(e   -> Injection.run(disconnectButtonAction));
 		autoConnectButton.setOnAction(e  -> Injection.run(autoConnectButtonAction));
@@ -63,16 +54,16 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 		ports.setOnShowing(e -> setPortsNames(Injection.get(portsSupplier)));
 	}
 
+	private void setEnable(Node node, boolean enable) {
+		node.setDisable(!enable);
+	}
+
 	@Override
 	public void onChangeState(ConnectionState state) {
-		if (state == ConnectionState.Connecting)
-			setDisableFields(true);
-		else if (state == ConnectionState.Connected) {
-			setDisableFields(true);
-			disconnectButton.setDisable(false);
-		} else if (state == ConnectionState.Disconnected) {
-			setDisableFields(false);
-			disconnectButton.setDisable(true);
-		}
+		setEnable(ports,             state == ConnectionState.Disconnected);
+		
+		setEnable(connectButton,     state == ConnectionState.Disconnected);
+		setEnable(disconnectButton,  state == ConnectionState.   Connected);
+		setEnable(autoConnectButton, state == ConnectionState.Disconnected);
 	}
 }
