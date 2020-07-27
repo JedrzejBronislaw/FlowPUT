@@ -164,7 +164,7 @@ public class ViewBuilder {
 		CalibrationPaneBuild builder = new CalibrationPaneBuild(eventManager(), flowManager(), settings(), calibration());
 		builder.build();
 		
-		addEventListener(builder.getController());
+		addAllStatesListener(builder.getController());
 		
 		return builder.getNode();
 	}

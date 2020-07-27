@@ -14,15 +14,18 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
-import jedrzejbronislaw.flowmeasure.events.EventListener;
-import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
+import jedrzejbronislaw.flowmeasure.states.AllStates;
+import jedrzejbronislaw.flowmeasure.states.AllStatesListener;
+import jedrzejbronislaw.flowmeasure.states.ApplicationState;
+import jedrzejbronislaw.flowmeasure.states.ConnectionState;
+import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Setter;
 
-public class CalibrationPaneController implements Initializable, EventListener {
+public class CalibrationPaneController implements Initializable, AllStatesListener {
 
-	enum State {
+	enum InternalState {
 		unavailable, available, ongoing
 	}
 	
@@ -63,33 +66,31 @@ public class CalibrationPaneController implements Initializable, EventListener {
 		newMeasureButton.setOnAction(e -> Injection.run(newMeasure));
 	}
 
-	private void setEnableComponens(State state) {
-		mainVbox.setDisable(state == State.unavailable);
+	private void setComponens(InternalState state) {
+		mainVbox.setDisable(state == InternalState.unavailable);
 		
-		boolean ongoing = (state == State.ongoing);
+		boolean ongoing = (state == InternalState.ongoing);
 
 		startButton     .setDisable( ongoing);
 		stopButton      .setDisable(!ongoing);
+		setButton       .setDisable(!ongoing);
+		resetButton     .setDisable(!ongoing);
 		flowmeterField  .setDisable( ongoing);
 		newMeasureButton.setDisable(!ongoing);
+		
+		if (!ongoing) {
+			flowLabel.setText("");
+			aveFlowLabel.setText("");
+		}
 	}
-
+	
 	@Override
-	public void event(EventType event) {
-
-		if (event.isOneOf(
-				EventType.Close_Process,
-				EventType.ConnectionSuccessful,
-				EventType.Calibration_Ends))
-			setEnableComponens(State.available);
-		else if (event.isOneOf(
-				EventType.Process_Starts,
-				EventType.Process_Ends,
-				EventType.ConnectionFailed,
-				EventType.LostConnection))
-			setEnableComponens(State.unavailable);
-		else if (event == EventType.Calibration_Starts)
-			setEnableComponens(State.ongoing);
+	public void onChangeState(AllStates state) {
+		if (!state.is(ConnectionState.Connected))    setComponens(InternalState.unavailable); else
+		if ( state.is(ApplicationState.Process))     setComponens(InternalState.unavailable); else
+		if (!state.is(ProcessState.Before))          setComponens(InternalState.unavailable); else
+		if ( state.is(ApplicationState.Idle))        setComponens(InternalState.available);   else
+		if ( state.is(ApplicationState.Calibration)) setComponens(InternalState.ongoing);
 	}
 	
 	private String formatValues(List<Integer> value) {
