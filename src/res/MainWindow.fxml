@@ -33,7 +33,7 @@
                         </ScrollPane>
                      </content>
                   </Tab>
-                  <Tab closable="false" text="Tabel">
+                  <Tab closable="false" text="Table">
                      <content>
                         <ScrollPane fx:id="tablePane" fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" />
                      </content>
