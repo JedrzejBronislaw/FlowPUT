@@ -17,7 +17,7 @@
 
 <HBox xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.view.sidePane.SidePaneController">
    <children>
-      <VBox>
+      <VBox fx:id="controlBox" minWidth="250.0" spacing="5.0">
          <children>
             <StackPane>
                <children>
@@ -28,40 +28,40 @@
                   </ImageView>
                </children>
             </StackPane>
-            <VBox fx:id="controlBox" minWidth="250.0" spacing="5.0">
+            <VBox fx:id="onOffBox" spacing="5.0">
                <children>
                   <Button fx:id="startButton" mnemonicParsing="false" text="Start" />
                   <Button fx:id="endButton" mnemonicParsing="false" text="End" />
-                  <GridPane>
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="80.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Label text="State:" />
-                        <Label text="Start:" GridPane.rowIndex="1" />
-                        <Label text="End:" GridPane.rowIndex="2" />
-                        <Label text="Duration:" GridPane.rowIndex="3" />
-                        <Label fx:id="processStateLabel" text="Label" GridPane.columnIndex="1" />
-                        <Label fx:id="startLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label fx:id="endLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label fx:id="durationLabel" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                     </children>
-                  </GridPane>
-                  <Button fx:id="saveButton" mnemonicParsing="false" text="Save measurement" />
-                  <Button fx:id="closeButton" mnemonicParsing="false" text="Close measurement" />
                </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
             </VBox>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="80.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="State:" />
+                  <Label text="Start:" GridPane.rowIndex="1" />
+                  <Label text="End:" GridPane.rowIndex="2" />
+                  <Label text="Duration:" GridPane.rowIndex="3" />
+                  <Label fx:id="processStateLabel" text="Label" GridPane.columnIndex="1" />
+                  <Label fx:id="startLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="endLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="durationLabel" text="Label" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               </children>
+            </GridPane>
+            <Button fx:id="saveButton" mnemonicParsing="false" text="Save measurement" />
+            <Button fx:id="closeButton" mnemonicParsing="false" text="Close measurement" />
          </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
       </VBox>
       <Circle fx:id="receiverDiode" radius="5.0" stroke="BLACK" strokeWidth="0.3">
          <HBox.margin>
