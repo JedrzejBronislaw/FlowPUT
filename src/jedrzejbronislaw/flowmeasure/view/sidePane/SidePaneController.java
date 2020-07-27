@@ -31,13 +31,13 @@ import lombok.Setter;
 
 public class SidePaneController implements Initializable, EventListener, AllStatesListener {
 	
-	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-	private static final int blikDiodeDuration = 100;
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+	private static final int BLINK_DIODE_DURATION = 100;
 	
-	private static final Color colorDiodeOn  = Color.GREENYELLOW;
-	private static final Color colorDiodeOff = Color.gray(0.7);
-	private static final RadialGradient gradientDiodeOn  = createGradient(colorDiodeOn);
-	private static final RadialGradient gradientDiodeOff = createGradient(colorDiodeOff);
+	private static final Color COLOR_DIODE_ON  = Color.GREENYELLOW;
+	private static final Color COLOR_DIODE_OFF = Color.gray(0.7);
+	private static final RadialGradient GRADIENT_DIODE_ON  = createGradient(COLOR_DIODE_ON);
+	private static final RadialGradient GRADIENT_DIODE_OFF = createGradient(COLOR_DIODE_OFF);
 	
 	
 	@FXML private VBox controlBox, onOffBox;
@@ -70,22 +70,22 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 	
 	public void diodeBlink() {
 		diodeON();
-		Delay.action(blikDiodeDuration, () -> diodeOFF());
+		Delay.action(BLINK_DIODE_DURATION, () -> diodeOFF());
 	}
 	
 	private void diodeON() {
 		Platform.runLater(() ->
-			receiverDiode.setFill(gradientDiodeOn));
+			receiverDiode.setFill(GRADIENT_DIODE_ON));
 	}
 	private void diodeOFF() {
 		Platform.runLater(() ->
-			receiverDiode.setFill(gradientDiodeOff));
+			receiverDiode.setFill(GRADIENT_DIODE_OFF));
 	}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		onOffBox.setDisable(true);
-		receiverDiode.setFill(gradientDiodeOff);
+		receiverDiode.setFill(GRADIENT_DIODE_OFF);
 		
 		saveButton.setOnAction(e  -> Injection.run(saveButtonAction));
 		closeButton.setOnAction(e -> Injection.run(closeButtonAction));
@@ -114,22 +114,22 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 	
 	@Override
 	public void event(EventType event) {
-		if(event == EventType.ReceivedData) {
+		if(event == EventType.RECEIVED_DATA) {
 			diodeBlink();
-			if(processState == ProcessState.Ongoing)
+			if(processState == ProcessState.ONGOING)
 				setDurationTimeLabel(startTime, LocalDateTime.now());
 		}
 
-		if(event == EventType.Process_Starts) {
+		if(event == EventType.PROCESS_STARTS) {
 			startTime = LocalDateTime.now();
 			endTime = null;
-			setStartTimeLabel(startTime.format(formatter));
+			setStartTimeLabel(startTime.format(FORMATTER));
 			setEndTimeLabel("");
 		}
 		
-		if(event == EventType.Process_Ends) {
+		if(event == EventType.PROCESS_ENDS) {
 			endTime = LocalDateTime.now();
-			setEndTimeLabel(endTime.format(formatter));
+			setEndTimeLabel(endTime.format(FORMATTER));
 			setDurationTimeLabel(startTime, endTime);
 		}
 	}
@@ -140,12 +140,12 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 		Platform.runLater(() ->
 			processStateLabel.setText(state.getProcState().toString()));
 		
-		setEnable(startButton, state.is(ProcessState.Before));
-		setEnable(endButton,   state.is(ProcessState.Ongoing));
+		setEnable(startButton, state.is(ProcessState.BEFORE));
+		setEnable(endButton,   state.is(ProcessState.ONGOING));
 		
-		setEnable(saveButton, !state.is(ProcessState.Before));
-		setEnable(closeButton, state.is(ProcessState.Finished));
+		setEnable(saveButton, !state.is(ProcessState.BEFORE));
+		setEnable(closeButton, state.is(ProcessState.FINISHED));
 		
-		setEnable(onOffBox,    state.is(ConnectionState.Connected) && state.is(ApplicationState.Idle, ApplicationState.Process));
+		setEnable(onOffBox,    state.is(ConnectionState.CONNECTED) && state.is(ApplicationState.IDLE, ApplicationState.PROCESS));
 	}
 }

@@ -27,11 +27,11 @@ public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
 	protected void afterBuild() {
 		controller.setStart(flowmeter -> {
 			setFlowmeter(flowmeter);
-			if(event(EventType.Calibration_Starts)) switchFlow(FlowConsumerType.Calibration);
+			if(event(EventType.CALIBRATION_STARTS)) switchFlow(FlowConsumerType.CALIBRATION);
 		});
 		
 		controller.setStop(() -> {
-			if(event(EventType.Calibration_Ends))   switchFlow(FlowConsumerType.None);
+			if(event(EventType.CALIBRATION_ENDS))   switchFlow(FlowConsumerType.NONE);
 		});
 		
 		controller.setSet(() -> {

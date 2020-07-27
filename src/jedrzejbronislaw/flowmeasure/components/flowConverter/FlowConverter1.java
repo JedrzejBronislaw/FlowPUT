@@ -67,6 +67,6 @@ public class FlowConverter1 implements FlowConverter {
 	
 	@Override
 	public void event(EventType event) {
-		if (event == EventType.ReceivedData) newDataEvent();
+		if (event == EventType.RECEIVED_DATA) newDataEvent();
 	}
 }

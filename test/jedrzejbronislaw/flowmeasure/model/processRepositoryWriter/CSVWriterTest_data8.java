@@ -34,12 +34,12 @@ public class CSVWriterTest_data8 {
 		ProcessRepositoryWriterOptions options = new ProcessRepositoryWriterOptions();
 		
 		options.setFlowmeterValuesTogether(true);
-		options.setDecimalSeparator(DecimalSeparator.Comma);
+		options.setDecimalSeparator(DecimalSeparator.COMMA);
 		
-		options.getUnits().add(Unit.Flow);
+		options.getUnits().add(Unit.FLOW);
 		
-		options.getTimeFormats().add(TimeFormat.Full);
-		options.getTimeFormats().add(TimeFormat.Unix);
+		options.getTimeFormats().add(TimeFormat.FULL);
+		options.getTimeFormats().add(TimeFormat.UNIX);
 		
 		return options;
 	}

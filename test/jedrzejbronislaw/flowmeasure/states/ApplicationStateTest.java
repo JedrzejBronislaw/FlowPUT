@@ -9,11 +9,11 @@ public class ApplicationStateTest {
 	@Test
 	public void test_isOneOf_true() {
 		boolean out;
-		ApplicationState state = ApplicationState.Process;
+		ApplicationState state = ApplicationState.PROCESS;
 		
 		out = state.isOneOf(
-				ApplicationState.Calibration,
-				ApplicationState.Process);
+				ApplicationState.CALIBRATION,
+				ApplicationState.PROCESS);
 		
 		assertTrue(out);
 	}
@@ -21,11 +21,11 @@ public class ApplicationStateTest {
 	@Test
 	public void test_isOneOf_false() {
 		boolean out;
-		ApplicationState state = ApplicationState.Process;
+		ApplicationState state = ApplicationState.PROCESS;
 		
 		out = state.isOneOf(
-				ApplicationState.Calibration,
-				ApplicationState.Idle);
+				ApplicationState.CALIBRATION,
+				ApplicationState.IDLE);
 		
 		assertFalse(out);
 	}
@@ -33,12 +33,12 @@ public class ApplicationStateTest {
 	@Test
 	public void test_isOneOf_otherStateTypes_false() {
 		boolean out;
-		ApplicationState state = ApplicationState.Idle;
+		ApplicationState state = ApplicationState.IDLE;
 		
 		out = state.isOneOf(
-				ConnectionState.Disconnected,
-				ApplicationState.Calibration,
-				ProcessState.Before);
+				ConnectionState.DISCONNECTED,
+				ApplicationState.CALIBRATION,
+				ProcessState.BEFORE);
 		
 		assertFalse(out);
 	}
@@ -46,12 +46,12 @@ public class ApplicationStateTest {
 	@Test
 	public void test_isOneOf_otherStateTypes_true() {
 		boolean out;
-		ApplicationState state = ApplicationState.Idle;
+		ApplicationState state = ApplicationState.IDLE;
 		
 		out = state.isOneOf(
-				ConnectionState.Disconnected,
-				ApplicationState.Idle,
-				ProcessState.Before);
+				ConnectionState.DISCONNECTED,
+				ApplicationState.IDLE,
+				ProcessState.BEFORE);
 		
 		assertTrue(out);
 	}

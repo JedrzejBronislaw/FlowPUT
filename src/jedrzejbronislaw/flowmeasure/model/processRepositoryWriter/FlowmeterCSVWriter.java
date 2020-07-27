@@ -24,13 +24,13 @@ public class FlowmeterCSVWriter {
 	}
 	
 	public void writeMeasurement(Unit unit, int pulses) throws IOException {
-		if (unit == Unit.Pulses) writePulses(pulses);
-		if (unit == Unit.Flow)   writeFlow(pulses);
+		if (unit == Unit.PULSES) writePulses(pulses);
+		if (unit == Unit.FLOW)   writeFlow(pulses);
 	}
 	
 	public void writeMeasurement(Unit unit, FlowMeasurement measurement) throws IOException {
-		if (unit == Unit.Pulses) writePulses(measurement.get(flowmeter));
-		if (unit == Unit.Flow)   writeFlow(measurement.get(flowmeter));
+		if (unit == Unit.PULSES) writePulses(measurement.get(flowmeter));
+		if (unit == Unit.FLOW)   writeFlow(measurement.get(flowmeter));
 	}
 	
 	private void writePulses(int pulses) throws IOException {

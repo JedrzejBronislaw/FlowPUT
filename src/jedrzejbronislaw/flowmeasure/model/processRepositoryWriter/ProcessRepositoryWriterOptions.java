@@ -10,9 +10,9 @@ import lombok.Setter;
 
 public class ProcessRepositoryWriterOptions {
 
-	public enum TimeFormat{Unix, Full, ProcessTime}
-	public enum Unit{Pulses, Flow}
-	public enum DecimalSeparator{Point("."), Comma(",");
+	public enum TimeFormat{UNIX, FULL, PROCESS_TIME}
+	public enum Unit{PULSES, FLOW}
+	public enum DecimalSeparator{POINT("."), COMMA(",");
 
 		private String separator;
 		
@@ -29,5 +29,5 @@ public class ProcessRepositoryWriterOptions {
 	@Getter         private Set<TimeFormat> timeFormats = new HashSet<>();
 	@Getter         private List<Unit> units = new ArrayList<>();
 	@Getter @Setter private boolean flowmeterValuesTogether;
-	@Getter @Setter private DecimalSeparator decimalSeparator = DecimalSeparator.Point;
+	@Getter @Setter private DecimalSeparator decimalSeparator = DecimalSeparator.POINT;
 }

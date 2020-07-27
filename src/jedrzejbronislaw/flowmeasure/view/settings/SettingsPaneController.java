@@ -49,6 +49,6 @@ public class SettingsPaneController implements Initializable, StateListener<Appl
 	
 	@Override
 	public void onChangeState(ApplicationState state) {
-		mainBox.setDisable(state == ApplicationState.Process);
+		mainBox.setDisable(state == ApplicationState.PROCESS);
 	}
 }

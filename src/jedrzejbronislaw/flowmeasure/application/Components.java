@@ -94,7 +94,7 @@ public class Components {
 		device.setNewSingleFlowReceive(viewMediator::showCurrentFlow);
 		
 		device.setNewFlowsReceive(flows -> {
-			eventManager.submitEvent(EventType.ReceivedData);
+			eventManager.submitEvent(EventType.RECEIVED_DATA);
 			flowManager.addFlowMeasurement(flows);
 		});
 
@@ -107,7 +107,7 @@ public class Components {
 	private ConnectionMonitor buildConnectionMonitor() {
 		ConnectionMonitor1 monitor = new ConnectionMonitor1(3, 1000, () -> {
 			device.disconnect();
-			eventManager.submitEvent(EventType.LostConnection);
+			eventManager.submitEvent(EventType.LOST_CONNECTION);
 		});
 		
 		return monitor;
@@ -115,9 +115,9 @@ public class Components {
 
 	private DialogManager buildDialogManager() {
 		return new DialogManager.builder().
-				addMessages(EventType.ConnectionSuccessful, "Nawi¹zano po³¹czenie z urz¹dzeniem FlowPP").
-				addMessages(EventType.LostConnection, "Utracono po³¹czenie z urz¹dzeniem FlowPP").
-				addMessages(EventType.ConnectionFailed, "Nie uda³o siê nawi¹zaæ po³¹czenia z urz¹dzeniem FLowPP").
+				addMessages(EventType.CONNECTION_SUCCESSFUL, "Nawi¹zano po³¹czenie z urz¹dzeniem FlowPP").
+				addMessages(EventType.LOST_CONNECTION, "Utracono po³¹czenie z urz¹dzeniem FlowPP").
+				addMessages(EventType.CONNECTION_FAILED, "Nie uda³o siê nawi¹zaæ po³¹czenia z urz¹dzeniem FLowPP").
 				build();
 	}
 

@@ -27,7 +27,7 @@ public class Main extends Application {
 		stateManager.getProcessState().addStateListener(state -> System.out.println(" -> New processState: " + state.toString()));
 		
 		eventManager.addListener(event -> {
-			if(event != EventType.ReceivedData) System.out.println(" -> Event: " + event.toString());
+			if(event != EventType.RECEIVED_DATA) System.out.println(" -> Event: " + event.toString());
 		});
 	}
 	

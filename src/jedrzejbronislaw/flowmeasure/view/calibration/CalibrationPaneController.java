@@ -25,7 +25,7 @@ import lombok.Setter;
 public class CalibrationPaneController implements Initializable, AllStatesListener {
 
 	enum InternalState {
-		unavailable, available, ongoing
+		UNAVAILABLE, AVAILABLE, ONGOING
 	}
 	
 	public static final String DEF_FLOWMETER_NAME = "Flowmeter";
@@ -66,9 +66,9 @@ public class CalibrationPaneController implements Initializable, AllStatesListen
 	}
 
 	private void setComponens(InternalState state) {
-		mainVbox.setDisable(state == InternalState.unavailable);
+		mainVbox.setDisable(state == InternalState.UNAVAILABLE);
 		
-		boolean ongoing = (state == InternalState.ongoing);
+		boolean ongoing = (state == InternalState.ONGOING);
 
 		startButton     .setDisable( ongoing);
 		stopButton      .setDisable(!ongoing);
@@ -85,10 +85,10 @@ public class CalibrationPaneController implements Initializable, AllStatesListen
 	
 	@Override
 	public void onChangeState(AllStates state) {
-		if (!state.is(ConnectionState.Connected))    setComponens(InternalState.unavailable); else
-		if ( state.is(ApplicationState.Process))     setComponens(InternalState.unavailable); else
-		if ( state.is(ApplicationState.Idle))        setComponens(InternalState.available);   else
-		if ( state.is(ApplicationState.Calibration)) setComponens(InternalState.ongoing);
+		if (!state.is(ConnectionState.CONNECTED))    setComponens(InternalState.UNAVAILABLE); else
+		if ( state.is(ApplicationState.PROCESS))     setComponens(InternalState.UNAVAILABLE); else
+		if ( state.is(ApplicationState.IDLE))        setComponens(InternalState.AVAILABLE);   else
+		if ( state.is(ApplicationState.CALIBRATION)) setComponens(InternalState.ONGOING);
 	}
 	
 	private String formatValues(List<Integer> value) {

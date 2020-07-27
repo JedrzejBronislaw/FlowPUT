@@ -13,7 +13,7 @@ import lombok.Setter;
 
 public class FlowPreviewController implements Initializable {
 
-	private static final DecimalFormat precisionFormat = new DecimalFormat("#.###");
+	private static final DecimalFormat PRECISION_FORMAT = new DecimalFormat("#.###");
 	
 	@FXML private Label label, pulsesLabel, secPulsesLabel;
 
@@ -43,12 +43,12 @@ public class FlowPreviewController implements Initializable {
 	private String computeFlow(int value) {
 		Float litrePerSec = flowconverter.pulsesToLitrePerSec(value);
 		if(litrePerSec != null)
-			return precisionFormat.format(litrePerSec) + " " + FlowConverter.FLOW_UNIT; else
+			return PRECISION_FORMAT.format(litrePerSec) + " " + FlowConverter.FLOW_UNIT; else
 			return "";
 	}
 
 	private String computeVolume(int value) {
-		return precisionFormat.format(flowconverter.pulsesToLitre(value)) + " " + FlowConverter.VOLUME_UNIT;
+		return PRECISION_FORMAT.format(flowconverter.pulsesToLitre(value)) + " " + FlowConverter.VOLUME_UNIT;
 	}
 	
 	public int resetSecPulse() {

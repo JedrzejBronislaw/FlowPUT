@@ -7,58 +7,58 @@ import lombok.Getter;
 
 public class StateManager implements EventListener {
 	
-	@Getter private ObservableState1<ApplicationState> appState = new ObservableState1<>(ApplicationState.Idle);
-	@Getter private ObservableState1<ConnectionState> connState = new ObservableState1<>(ConnectionState.Disconnected);
-	@Getter private ObservableState1<ProcessState> processState = new ObservableState1<>(ProcessState.Before);
+	@Getter private ObservableState1<ApplicationState> appState = new ObservableState1<>(ApplicationState.IDLE);
+	@Getter private ObservableState1<ConnectionState> connState = new ObservableState1<>(ConnectionState.DISCONNECTED);
+	@Getter private ObservableState1<ProcessState> processState = new ObservableState1<>(ProcessState.BEFORE);
 	
 	
 	@Override
 	public void event(EventType event) {
 
-		if(event == EventType.Process_Ends) {
-			processState.setState(ProcessState.Finished);
+		if(event == EventType.PROCESS_ENDS) {
+			processState.setState(ProcessState.FINISHED);
 		} else
 		
 		
-		if(event == EventType.Process_Starts) {
-			processState.setState(ProcessState.Ongoing);
-			appState.setState(ApplicationState.Process);
+		if(event == EventType.PROCESS_STARTS) {
+			processState.setState(ProcessState.ONGOING);
+			appState.setState(ApplicationState.PROCESS);
 		} else
 		
 		
-		if(event == EventType.LostConnection ||
-		   event == EventType.Disconnection) {
-			if(processState.is(ProcessState.Ongoing)) processState.setState(ProcessState.Finished);
-			appState.setState(ApplicationState.Idle);
-			connState.setState(ConnectionState.Disconnected);
+		if(event == EventType.LOST_CONNECTION ||
+		   event == EventType.DISCONNECTION) {
+			if(processState.is(ProcessState.ONGOING)) processState.setState(ProcessState.FINISHED);
+			appState.setState(ApplicationState.IDLE);
+			connState.setState(ConnectionState.DISCONNECTED);
 		} else
 			
 			
-		if(event == EventType.Close_Process) {
-			processState.setState(ProcessState.Before);
-			appState.setState(ApplicationState.Idle);
+		if(event == EventType.CLOSE_PROCESS) {
+			processState.setState(ProcessState.BEFORE);
+			appState.setState(ApplicationState.IDLE);
 		} else
 		
-		if(event == EventType.ConnectionSuccessful) {
-			connState.setState(ConnectionState.Connected);
+		if(event == EventType.CONNECTION_SUCCESSFUL) {
+			connState.setState(ConnectionState.CONNECTED);
 		} else
 		
-		if(event == EventType.ConnectionFailed) {
-			connState.setState(ConnectionState.Disconnected);
+		if(event == EventType.CONNECTION_FAILED) {
+			connState.setState(ConnectionState.DISCONNECTED);
 		} else
 		
-		if(event == EventType.Connecting_Start) {
-			connState.setState(ConnectionState.Connecting);
+		if(event == EventType.CONNECTING_START) {
+			connState.setState(ConnectionState.CONNECTING);
 		} else
 		
 		//---
 		
-		if(event == EventType.Calibration_Starts) {
-			appState.setState(ApplicationState.Calibration);
+		if(event == EventType.CALIBRATION_STARTS) {
+			appState.setState(ApplicationState.CALIBRATION);
 		} else
 		
-		if(event == EventType.Calibration_Ends) {
-			appState.setState(ApplicationState.Idle);
+		if(event == EventType.CALIBRATION_ENDS) {
+			appState.setState(ApplicationState.IDLE);
 		}
 	}
 }

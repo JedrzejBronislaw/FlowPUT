@@ -33,7 +33,7 @@ public class CSVWriterTest_allMetadata {
 	private static ProcessRepositoryWriterOptions createOptions() {
 		ProcessRepositoryWriterOptions options = new ProcessRepositoryWriterOptions();
 		
-		options.getUnits().add(Unit.Pulses);
+		options.getUnits().add(Unit.PULSES);
 		
 		return options;
 	}

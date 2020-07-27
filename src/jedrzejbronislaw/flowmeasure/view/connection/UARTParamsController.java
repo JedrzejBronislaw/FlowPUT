@@ -60,10 +60,10 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 
 	@Override
 	public void onChangeState(ConnectionState state) {
-		setEnable(ports,             state == ConnectionState.Disconnected);
+		setEnable(ports,             state == ConnectionState.DISCONNECTED);
 		
-		setEnable(connectButton,     state == ConnectionState.Disconnected);
-		setEnable(disconnectButton,  state == ConnectionState.   Connected);
-		setEnable(autoConnectButton, state == ConnectionState.Disconnected);
+		setEnable(connectButton,     state == ConnectionState.DISCONNECTED);
+		setEnable(disconnectButton,  state == ConnectionState.CONNECTED);
+		setEnable(autoConnectButton, state == ConnectionState.DISCONNECTED);
 	}
 }

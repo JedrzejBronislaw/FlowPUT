@@ -60,6 +60,6 @@ public class ConnectionMonitor1 implements ConnectionMonitor {
 	
 	@Override
 	public void event(EventType event) {
-		if (event == EventType.ReceivedData) newMessage();
+		if (event == EventType.RECEIVED_DATA) newMessage();
 	}
 }

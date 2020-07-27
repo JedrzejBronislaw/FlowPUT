@@ -38,32 +38,32 @@ public class Actions implements ActionContainer {
 
 	@Override
 	public void startProcess() {
-		if(eventManager().submitEvent(EventType.Process_Starts)) {
+		if(eventManager().submitEvent(EventType.PROCESS_STARTS)) {
 			repository().createNewProcessRepository("untitled").setStartWithNextValueFlag();
 			
 			if(isBufferedData())
-				flowManager().setFlowConsumerType(FlowConsumerType.Buffered); else
-				flowManager().setFlowConsumerType(FlowConsumerType.Plain);
+				flowManager().setFlowConsumerType(FlowConsumerType.BUFFERED); else
+				flowManager().setFlowConsumerType(FlowConsumerType.PLAIN);
 		}
 	}
 
 	@Override
 	public void endProcess() {
-		if(eventManager().submitEvent(EventType.Process_Ends)) {
+		if(eventManager().submitEvent(EventType.PROCESS_ENDS)) {
 			repository().getCurrentProcessRepository().setProcessEndTimeNow();
-			flowManager().setFlowConsumerType(FlowConsumerType.None);
+			flowManager().setFlowConsumerType(FlowConsumerType.NONE);
 		}
 	}
 
 	@Override
 	public void saveProcess() {
-		if(eventManager().submitEvent(EventType.Saving_Process))
+		if(eventManager().submitEvent(EventType.SAVING_PROCESS))
 			showSaveWindow(prepareWriter());
 	}
 	
 	@Override
 	public void closeProcess() {
-		if (eventManager().submitEvent(EventType.Close_Process) && confirmWithAlert())
+		if (eventManager().submitEvent(EventType.CLOSE_PROCESS) && confirmWithAlert())
 			repository().closeCurrentProcessRepository();
 	}
 
@@ -73,7 +73,7 @@ public class Actions implements ActionContainer {
 		if (!valideteParams(params)) return;
 		
 		ConnectionAttempt attempt = createConnectionAttempt(params);
-		eventManager().submitEvent(EventType.Connecting_Start);
+		eventManager().submitEvent(EventType.CONNECTING_START);
 		
 		attempt.start();
 	}
@@ -83,7 +83,7 @@ public class Actions implements ActionContainer {
 		connectionMonitor().stop();
 		device().disconnect();
 
-		eventManager().submitEvent(EventType.Disconnection);
+		eventManager().submitEvent(EventType.DISCONNECTION);
 	}
 
 	@Override
@@ -92,13 +92,13 @@ public class Actions implements ActionContainer {
 		
 		AutoConnection autoConnection = createAutoConnection();
 
-		eventManager().submitEvent(EventType.Connecting_Start);
+		eventManager().submitEvent(EventType.CONNECTING_START);
 		autoConnection.start();
 	}
 
 	@Override
 	public void exit() {
-		eventManager().submitEvent(EventType.Exiting);
+		eventManager().submitEvent(EventType.EXITING);
 		connectionMonitor().stop();
 		device().disconnect();
 	}
@@ -163,12 +163,12 @@ public class Actions implements ActionContainer {
 		ConnectionAttempt attempt = new ConnectionAttempt(device(), params);
 		
 		attempt.setSuccess(() -> {
-			eventManager().submitEvent(EventType.ConnectionSuccessful);
+			eventManager().submitEvent(EventType.CONNECTION_SUCCESSFUL);
 			connectionMonitor().start();
 		});
 		
 		attempt.setFail(reason ->
-			eventManager().submitEvent(EventType.ConnectionFailed)
+			eventManager().submitEvent(EventType.CONNECTION_FAILED)
 		);
 		
 		return attempt;
@@ -179,12 +179,12 @@ public class Actions implements ActionContainer {
 		
 		autoConn.setIfFail(() -> {
 			System.out.println("¯aden port nie pasuje");
-			eventManager().submitEvent(EventType.ConnectionFailed);
+			eventManager().submitEvent(EventType.CONNECTION_FAILED);
 		});
 		
 		autoConn.setIfSuccess(port -> {
 			System.out.println("Uda³o po³¹czyæ siê z portem: " + port);
-			eventManager().submitEvent(EventType.ConnectionSuccessful);
+			eventManager().submitEvent(EventType.CONNECTION_SUCCESSFUL);
 			connectionMonitor().start();
 		});
 		

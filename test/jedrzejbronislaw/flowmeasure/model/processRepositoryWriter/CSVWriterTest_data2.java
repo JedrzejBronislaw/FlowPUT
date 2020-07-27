@@ -32,8 +32,8 @@ public class CSVWriterTest_data2 {
 		ProcessRepositoryWriterOptions options = new ProcessRepositoryWriterOptions();
 
 		options.setFlowmeterValuesTogether(false);
-		options.getUnits().add(Unit.Pulses);
-		options.getTimeFormats().add(TimeFormat.Full);
+		options.getUnits().add(Unit.PULSES);
+		options.getTimeFormats().add(TimeFormat.FULL);
 		
 		return options;
 	}

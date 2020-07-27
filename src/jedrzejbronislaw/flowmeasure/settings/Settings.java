@@ -10,7 +10,7 @@ import jedrzejbronislaw.flowmeasure.tools.settings.poperties.PropertyDesc;
 
 public class Settings implements PropertyAccess {
 	
-	private static final String settingsFileName = "properties.xml";
+	private static final String SETTINGS_FILE_NAME = "properties.xml";
 	private final PropertyFile propertyFile;
 	private final Properties properties = new Properties();
 	private final SimpleListenerManager listenerManager = new SimpleListenerManager();
@@ -27,7 +27,7 @@ public class Settings implements PropertyAccess {
 		properties.setChangeAction(listenerManager::action);
 		
 		propertyFile = new PropertyFile(
-				ResourceAccess.JAR_DIR + settingsFileName,
+				ResourceAccess.JAR_DIR + SETTINGS_FILE_NAME,
 				propertyDesc,
 				properties::setProperty,
 				properties::getPropertyValue);

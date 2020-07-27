@@ -22,7 +22,7 @@ import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import lombok.Setter;
 
 public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
-	private static final ZoneOffset timeZoneOffset = OffsetDateTime.now().getOffset();
+	private static final ZoneOffset TIME_ZONE_OFFSET = OffsetDateTime.now().getOffset();
 	
 	public static final String TITLE = "Flow measurement";
 	
@@ -100,7 +100,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	}
 
 	public static String unixTime(LocalDateTime time) {
-		return Long.toString(time.toEpochSecond(timeZoneOffset));
+		return Long.toString(time.toEpochSecond(TIME_ZONE_OFFSET));
 	}
 	
 	@Override
@@ -226,9 +226,9 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	}
 
 	private void writeTimeHeadres() throws IOException {
-		if(isSelected(TimeFormat.Unix))        csvWriter.writeWithSeparator(UNIX_TIME_HEAD);
-		if(isSelected(TimeFormat.Full))        csvWriter.writeWithSeparator(FULL_TIME_HEAD);
-		if(isSelected(TimeFormat.ProcessTime)) csvWriter.writeWithSeparator(PROCESS_TIME_HEAD);
+		if(isSelected(TimeFormat.UNIX))         csvWriter.writeWithSeparator(UNIX_TIME_HEAD);
+		if(isSelected(TimeFormat.FULL))         csvWriter.writeWithSeparator(FULL_TIME_HEAD);
+		if(isSelected(TimeFormat.PROCESS_TIME)) csvWriter.writeWithSeparator(PROCESS_TIME_HEAD);
 	}
 
 	private void writeMeasurementLine(FlowMeasurement measurement) throws IOException {
@@ -236,9 +236,9 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		LocalDateTime time = measurement.getTime();
 		Stream.of(flowmeterWriters).forEach(flowWriter -> flowWriter.newDataEvent(time));
 
-		if(isSelected(TimeFormat.Unix))        csvWriter.writeWithSeparator(unixTime(time));
-		if(isSelected(TimeFormat.Full))        csvWriter.writeWithSeparator(fullTime(time));
-		if(isSelected(TimeFormat.ProcessTime)) csvWriter.writeWithSeparator(processTime(time, startTime));
+		if(isSelected(TimeFormat.UNIX))         csvWriter.writeWithSeparator(unixTime(time));
+		if(isSelected(TimeFormat.FULL))         csvWriter.writeWithSeparator(fullTime(time));
+		if(isSelected(TimeFormat.PROCESS_TIME)) csvWriter.writeWithSeparator(processTime(time, startTime));
 
 
 		if(flowmeterValuesTogether())
@@ -295,8 +295,8 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	}
 	
 	private String unitName(Unit unit) {
-		if (unit == Unit.Pulses) return PULSE_COLUMNNAME;
-		if (unit == Unit.Flow)   return FLOW_COLUMNNAME;
+		if (unit == Unit.PULSES) return PULSE_COLUMNNAME;
+		if (unit == Unit.FLOW)   return FLOW_COLUMNNAME;
 		return "";
 	}
 }

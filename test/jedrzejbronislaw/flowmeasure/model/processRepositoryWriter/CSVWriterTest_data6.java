@@ -35,11 +35,11 @@ public class CSVWriterTest_data6 {
 		
 		options.setFlowmeterValuesTogether(true);
 		
-		options.getUnits().add(Unit.Flow);
-		options.getUnits().add(Unit.Pulses);
+		options.getUnits().add(Unit.FLOW);
+		options.getUnits().add(Unit.PULSES);
 		
-		options.getTimeFormats().add(TimeFormat.Full);
-		options.getTimeFormats().add(TimeFormat.ProcessTime);
+		options.getTimeFormats().add(TimeFormat.FULL);
+		options.getTimeFormats().add(TimeFormat.PROCESS_TIME);
 		
 		return options;
 	}

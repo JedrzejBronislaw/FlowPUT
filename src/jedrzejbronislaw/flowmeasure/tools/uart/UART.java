@@ -14,7 +14,7 @@ import lombok.Setter;
 
 public class UART implements IUART {
 
-	public static final String rates[] = {"300", "1200", "2400", "4800", "9600", "19200"};
+	public static final String RATES[] = {"300", "1200", "2400", "4800", "9600", "19200"};
 
 	private SerialPort port;
 	
@@ -80,7 +80,7 @@ public class UART implements IUART {
 
 
 	public static List<String> getRateList() {
-		return Stream.of(rates).collect(Collectors.toList());
+		return Stream.of(RATES).collect(Collectors.toList());
 	}
 
 	public static List<String> getPortList() {

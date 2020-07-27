@@ -13,16 +13,16 @@ public class EventPolicy {
 	
 	public boolean checkPermmision(EventType event) {
 		return (
-			(event == EventType.Process_Ends         && appState()  == ApplicationState.Process) ||
-			(event == EventType.Process_Starts       && appState()  == ApplicationState.Idle && connState() == ConnectionState.Connected) ||
-			(event == EventType.LostConnection       && connState() == ConnectionState.Connected) ||
-			(event == EventType.ConnectionSuccessful && connState() == ConnectionState.Connecting) ||
-			(event == EventType.ConnectionFailed     && connState() == ConnectionState.Connecting) ||
-			(event == EventType.Connecting_Start     && connState() == ConnectionState.Disconnected) ||
-			(event == EventType.Disconnection        && connState() == ConnectionState.Connected) ||
-			(event == EventType.Close_Process        && procState() == ProcessState.Finished) ||
-			(event == EventType.Calibration_Starts   && appState()  == ApplicationState.Idle && connState() == ConnectionState.Connected) ||
-			(event == EventType.Calibration_Ends     && appState()  == ApplicationState.Calibration)
+			(event == EventType.PROCESS_ENDS          && appState()  == ApplicationState.PROCESS) ||
+			(event == EventType.PROCESS_STARTS        && appState()  == ApplicationState.IDLE && connState() == ConnectionState.CONNECTED) ||
+			(event == EventType.LOST_CONNECTION       && connState() == ConnectionState.CONNECTED) ||
+			(event == EventType.CONNECTION_SUCCESSFUL && connState() == ConnectionState.CONNECTING) ||
+			(event == EventType.CONNECTION_FAILED     && connState() == ConnectionState.CONNECTING) ||
+			(event == EventType.CONNECTING_START      && connState() == ConnectionState.DISCONNECTED) ||
+			(event == EventType.DISCONNECTION         && connState() == ConnectionState.CONNECTED) ||
+			(event == EventType.CLOSE_PROCESS         && procState() == ProcessState.FINISHED) ||
+			(event == EventType.CALIBRATION_STARTS    && appState()  == ApplicationState.IDLE && connState() == ConnectionState.CONNECTED) ||
+			(event == EventType.CALIBRATION_ENDS      && appState()  == ApplicationState.CALIBRATION)
 		);
 	}
 	

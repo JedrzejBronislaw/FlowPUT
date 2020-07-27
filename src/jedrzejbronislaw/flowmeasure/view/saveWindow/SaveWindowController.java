@@ -41,23 +41,23 @@ public class SaveWindowController implements Initializable {
 		Set<TimeFormat> timeFormats = options.getTimeFormats();
 		List<Unit> units = options.getUnits();
 
-		if(unixTime.isSelected())    timeFormats.add(TimeFormat.Unix);
-		if(fullTime.isSelected())    timeFormats.add(TimeFormat.Full);
-		if(processTime.isSelected()) timeFormats.add(TimeFormat.ProcessTime);
+		if(unixTime.isSelected())    timeFormats.add(TimeFormat.UNIX);
+		if(fullTime.isSelected())    timeFormats.add(TimeFormat.FULL);
+		if(processTime.isSelected()) timeFormats.add(TimeFormat.PROCESS_TIME);
 		
 		if(unit_pulses.isSelected() && unit_flow.isSelected())
 			if(flow_first.isSelected()) {
-				units.add(Unit.Flow);
-				units.add(Unit.Pulses);
+				units.add(Unit.FLOW);
+				units.add(Unit.PULSES);
 			} else {
-				units.add(Unit.Pulses);
-				units.add(Unit.Flow);
+				units.add(Unit.PULSES);
+				units.add(Unit.FLOW);
 			}
-		else if (unit_pulses.isSelected()) units.add(Unit.Pulses);
-		else if (unit_flow.isSelected())   units.add(Unit.Flow);
+		else if (unit_pulses.isSelected()) units.add(Unit.PULSES);
+		else if (unit_flow.isSelected())   units.add(Unit.FLOW);
 		
 		options.setFlowmeterValuesTogether(together.isSelected());
-		options.setDecimalSeparator(comma_separator.isSelected() ? DecimalSeparator.Comma : DecimalSeparator.Point);
+		options.setDecimalSeparator(comma_separator.isSelected() ? DecimalSeparator.COMMA : DecimalSeparator.POINT);
 		
 		return options;
 	}

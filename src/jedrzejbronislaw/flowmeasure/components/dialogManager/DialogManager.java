@@ -9,7 +9,7 @@ import lombok.Setter;
 
 public class DialogManager implements EventListener {
 
-	static private final int milisecPerLetter = 60;
+	static private final int MILISEC_PER_CHAR = 60;
 	
 	public interface MessageEvent {
 		void show(String title, String content, int closeDelay);
@@ -54,6 +54,6 @@ public class DialogManager implements EventListener {
 	}
 
 	private int time(String message) {
-		return Math.max(1000, milisecPerLetter * message.length());
+		return Math.max(1000, MILISEC_PER_CHAR * message.length());
 	}
 }

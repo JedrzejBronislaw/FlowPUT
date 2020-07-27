@@ -125,8 +125,8 @@ public class ChartRefresher {
 
 	private ChartDataUpdater chartUpdater() {
 		switch (options.getUnit()) {
-			case Pulses:      return pulseUpdater;
-			case LitrePerSec: return lpsUpdater;
+			case PULSES:        return pulseUpdater;
+			case LITRE_PER_SEC: return lpsUpdater;
 			
 			default: return pulseUpdater;
 		}

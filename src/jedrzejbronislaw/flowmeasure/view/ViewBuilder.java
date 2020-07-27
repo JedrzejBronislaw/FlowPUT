@@ -89,7 +89,7 @@ public class ViewBuilder {
 	}
 
 	private void closeApplication(WindowEvent e) {
-		if (appState() == ApplicationState.Process &&
+		if (appState() == ApplicationState.PROCESS &&
 			!confirmCloseWithAlert()) {
 			
 			e.consume();
@@ -108,9 +108,9 @@ public class ViewBuilder {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Close");
 		alert.setHeaderText("Are you sure you want to close the application?");
-		if (processState() == ProcessState.Ongoing)
+		if (processState() == ProcessState.ONGOING)
 			alert.setContentText("The measurement is in progress.");
-		if (processState() == ProcessState.Finished)
+		if (processState() == ProcessState.FINISHED)
 			alert.setContentText("The measurement is not closed.");
 		
 		Optional<ButtonType> result = alert.showAndWait();

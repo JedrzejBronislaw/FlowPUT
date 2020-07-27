@@ -12,10 +12,10 @@ import lombok.Setter;
 public class FlowManager {
 
 	public enum FlowConsumerType {
-		None,
-		Plain,
-		Buffered,
-		Calibration
+		NONE,
+		PLAIN,
+		BUFFERED,
+		CALIBRATION
 	}
 
 	
@@ -31,7 +31,7 @@ public class FlowManager {
 	
 	public FlowManager(Repository repository) {
 		this.repository = repository;
-		setFlowConsumerType(FlowConsumerType.None);
+		setFlowConsumerType(FlowConsumerType.NONE);
 	}
 	
 	public void addFlowMeasurement(int[] pulses) {
@@ -42,10 +42,10 @@ public class FlowManager {
 		this.flowConsumerType = flowConsumerType;
 		
 		switch (flowConsumerType) {
-			case None:        flowConsumer = noneFlowConsumer; break;
-			case Plain:       flowConsumer = processRepository(); break;
-			case Buffered:    flowConsumer = Injection.get(bufferCreator, noneFlowConsumer); break;
-			case Calibration: flowConsumer = calibration(); break;
+			case NONE:        flowConsumer = noneFlowConsumer; break;
+			case PLAIN:       flowConsumer = processRepository(); break;
+			case BUFFERED:    flowConsumer = Injection.get(bufferCreator, noneFlowConsumer); break;
+			case CALIBRATION: flowConsumer = calibration(); break;
 	
 			default:          flowConsumer = noneFlowConsumer; break;
 		}
