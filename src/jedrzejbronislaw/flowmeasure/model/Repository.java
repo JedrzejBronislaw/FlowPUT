@@ -22,4 +22,8 @@ public class Repository {
 		
 		return processRepository;
 	}
+	
+	public void closeCurrentProcessRepository() {
+		currentProcessRepository = null;
+	}
 }
