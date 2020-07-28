@@ -44,7 +44,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ViewBuilder {
 	
-	private static final int WINDOW_HEIGHT = 400;
+	private static final int WINDOW_HEIGHT = 500;
 	private static final int WINDOW_WIDTH  = 900;
 	private static final String WINDOW_TITLE   = "FlowmeterPP";
 	private static final String CSS_FILENAME   = "application.css";
