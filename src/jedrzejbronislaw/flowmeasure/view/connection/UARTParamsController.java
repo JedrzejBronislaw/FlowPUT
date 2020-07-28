@@ -5,13 +5,16 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Supplier;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
+import jedrzejbronislaw.flowmeasure.tools.TextTools;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import lombok.Setter;
@@ -23,6 +26,7 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 	@FXML private Button connectButton;
 	@FXML private Button disconnectButton;
 	@FXML private Button autoConnectButton;
+	@FXML private Label statusLabel;
 
 	@Setter private Runnable connectButtonAction;
 	@Setter private Runnable disconnectButtonAction;
@@ -60,6 +64,9 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 
 	@Override
 	public void onChangeState(ConnectionState state) {
+		Platform.runLater(() ->
+			statusLabel.setText(TextTools.firstCharUpper(state.toString())));
+		
 		setEnable(ports,             state == ConnectionState.DISCONNECTED);
 		
 		setEnable(connectButton,     state == ConnectionState.DISCONNECTED);
