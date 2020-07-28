@@ -46,7 +46,7 @@
                   <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="State:" />
+                  <Label text="Status:" />
                   <Label text="Start:" GridPane.rowIndex="1" />
                   <Label text="End:" GridPane.rowIndex="2" />
                   <Label text="Duration:" GridPane.rowIndex="3" />

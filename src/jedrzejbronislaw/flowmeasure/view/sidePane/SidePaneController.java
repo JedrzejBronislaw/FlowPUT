@@ -26,6 +26,7 @@ import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.Delay;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
+import jedrzejbronislaw.flowmeasure.tools.TextTools;
 import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import lombok.Setter;
 
@@ -138,7 +139,7 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 	public void onChangeState(AllStates state) {
 		processState = state.getProcState();
 		Platform.runLater(() ->
-			processStateLabel.setText(state.getProcState().toString()));
+			processStateLabel.setText(TextTools.firstCharUpper(state.getProcState().toString())));
 		
 		setEnable(startButton, state.is(ProcessState.BEFORE));
 		setEnable(endButton,   state.is(ProcessState.ONGOING));
