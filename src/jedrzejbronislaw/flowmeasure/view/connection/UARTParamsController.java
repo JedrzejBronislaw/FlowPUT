@@ -6,12 +6,16 @@ import java.util.ResourceBundle;
 import java.util.function.Supplier;
 
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Shape;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.TextTools;
@@ -26,13 +30,18 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 	@FXML private Button connectButton;
 	@FXML private Button disconnectButton;
 	@FXML private Button autoConnectButton;
-	@FXML private Label statusLabel;
+	@FXML private Label statusLabel, verticalStatusLabel;
+	@FXML private Shape hideShape;
+	@FXML private VBox controlPane;
 
 	@Setter private Runnable connectButtonAction;
 	@Setter private Runnable disconnectButtonAction;
 	@Setter private Runnable autoConnectButtonAction;
 	
 	@Setter private Supplier<List<String>> portsSupplier;
+	
+	private BooleanProperty hidden = new SimpleBooleanProperty(false);
+	
 	
 	public UARTParams getParams() {
 		UARTParams params = new UARTParams();
@@ -56,6 +65,21 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 		autoConnectButton.setOnAction(e  -> Injection.run(autoConnectButtonAction));
 		
 		ports.setOnShowing(e -> setPortsNames(Injection.get(portsSupplier)));
+		
+		hideShape          .setOnMouseClicked(e -> hideShow());
+		verticalStatusLabel.setOnMouseClicked(e -> hideShow());
+		
+		verticalStatusLabel.textProperty().bind(statusLabel.textProperty());
+		controlPane.managedProperty().bind(hidden.not());
+		controlPane.visibleProperty().bind(hidden.not());
+		verticalStatusLabel.managedProperty().bind(hidden);
+		verticalStatusLabel.visibleProperty().bind(hidden);
+	}
+
+	
+	private void hideShow() {
+		hidden.set(!hidden.get());
+		hideShape.setRotate(hidden.get() ? 180 : 0);
 	}
 
 	private void setEnable(Node node, boolean enable) {
