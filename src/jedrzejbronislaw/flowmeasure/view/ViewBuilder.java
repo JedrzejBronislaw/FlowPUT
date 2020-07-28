@@ -187,6 +187,8 @@ public class ViewBuilder {
 		builder.getController().setSettingsPane(settingsPane());
 		builder.getController().setCalibrationPane(calibrationPane());
 
+		addAppListener(builder.controller);
+		
 		return builder.getNode();
 	}
 

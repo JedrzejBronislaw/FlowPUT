@@ -3,20 +3,26 @@ package jedrzejbronislaw.flowmeasure.view.mainWindow;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import jedrzejbronislaw.flowmeasure.states.ApplicationState;
+import jedrzejbronislaw.flowmeasure.tools.TextTools;
+import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import lombok.Getter;
 
-public class MainWindowController implements Initializable {
+public class MainWindowController implements Initializable, StateListener<ApplicationState> {
 
 	@Getter
 	@FXML private BorderPane borderPane;
 	@FXML private VBox mainVbox;
 	@FXML private ScrollPane livePane, tablePane, chartPane, optionsPane, calibrationPane;
+	@FXML private Label stateLabel;
 
 	
 	public void setLivePane(Node live) {
@@ -41,4 +47,10 @@ public class MainWindowController implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {}
+
+	@Override
+	public void onChangeState(ApplicationState state) {
+		Platform.runLater(() ->
+			stateLabel.setText(TextTools.firstCharUpper(state.toString())));
+	}
 }
