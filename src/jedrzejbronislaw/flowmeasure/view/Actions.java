@@ -63,7 +63,7 @@ public class Actions implements ActionContainer {
 	
 	@Override
 	public void closeProcess() {
-		if (eventManager().submitEvent(EventType.CLOSE_PROCESS) && confirmWithAlert())
+		if (confirmWithAlert() && eventManager().submitEvent(EventType.CLOSE_PROCESS))
 			repository().closeCurrentProcessRepository();
 	}
 
