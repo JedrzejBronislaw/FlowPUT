@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -41,7 +42,8 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 	private static final RadialGradient GRADIENT_DIODE_OFF = createGradient(COLOR_DIODE_OFF);
 	
 	
-	@FXML private VBox controlBox, onOffBox;
+	@FXML private VBox controlBox;
+	@FXML private HBox onOffBox;
 	@FXML private Label processStateLabel, startLabel, endLabel, durationLabel;
 	@FXML private Button saveButton, closeButton, startButton, endButton;
 	@FXML private Circle receiverDiode;
@@ -132,6 +134,14 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 			endTime = LocalDateTime.now();
 			setEndTimeLabel(endTime.format(FORMATTER));
 			setDurationTimeLabel(startTime, endTime);
+		}
+		
+		if(event == EventType.CLOSE_PROCESS) {
+			Platform.runLater(() -> {
+				startLabel   .setText("");
+				endLabel     .setText("");
+				durationLabel.setText("");
+			});
 		}
 	}
 	
