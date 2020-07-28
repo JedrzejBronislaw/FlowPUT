@@ -15,13 +15,11 @@ import javafx.stage.WindowEvent;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.calibration.Calibration;
 import jedrzejbronislaw.flowmeasure.components.dialogManager.DialogManager;
-import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
 import jedrzejbronislaw.flowmeasure.events.EventListener;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
-import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.states.AllStates;
 import jedrzejbronislaw.flowmeasure.states.AllStatesListener;
@@ -35,7 +33,7 @@ import jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneBuild;
 import jedrzejbronislaw.flowmeasure.view.chart.ChartPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.connection.UARTParamsBuilder;
 import jedrzejbronislaw.flowmeasure.view.dialog.DialogPaneBuilder;
-import jedrzejbronislaw.flowmeasure.view.flowPreview.FlowPreviewBuilder;
+import jedrzejbronislaw.flowmeasure.view.live.LivePaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindowBuilder;
 import jedrzejbronislaw.flowmeasure.view.settings.SettingsPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.sidePane.SidePaneBuilder;
@@ -170,11 +168,9 @@ public class ViewBuilder {
 		return builder.getNode();
 	}
 
-	private Node flowPreview(int number) {
-		FlowPreviewBuilder builder = new FlowPreviewBuilder(number, flowconverter(number));
+	private Node livePane() {
+		LivePaneBuilder builder = new LivePaneBuilder(viewMediator(), flowconverters());
 		builder.build();
-		
-		viewMediator().setFlowPreviewer(number, builder.getController()::addPulses);
 		
 		return builder.getNode();
 	}
@@ -183,11 +179,9 @@ public class ViewBuilder {
 		MainWindowBuilder builder = new MainWindowBuilder();
 		builder.build();
 		
-		for(int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
-			builder.getController().addFlowPreview(flowPreview(i));
-
 		builder.getController().getBorderPane().setLeft(sidePane());
 		builder.getController().getBorderPane().setRight(uart());
+		builder.getController().setLivePane(livePane());
 		builder.getController().setTablePane(table());
 		builder.getController().setChartPane(chart());
 		builder.getController().setSettingsPane(settingsPane());
@@ -219,10 +213,6 @@ public class ViewBuilder {
 
 	private ProcessState processState() {
 		return stateManager().getProcessState().getState();
-	}
-	
-	private FlowConverter flowconverter(int flowmeter) {
-		return flowconverters().get(flowmeter);
 	}
 	
 	private ProcessRepository getCurrentProcessRepo() {

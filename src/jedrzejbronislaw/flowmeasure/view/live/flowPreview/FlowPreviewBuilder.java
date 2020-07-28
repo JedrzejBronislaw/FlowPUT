@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view.flowPreview;
+package jedrzejbronislaw.flowmeasure.view.live.flowPreview;
 
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
 import jedrzejbronislaw.flowmeasure.view.Builder;

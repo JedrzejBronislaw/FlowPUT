@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view.flowPreview;
+package jedrzejbronislaw.flowmeasure.view.live.flowPreview;
 
 import java.net.URL;
 import java.text.DecimalFormat;

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox alignment="TOP_CENTER" fillWidth="false" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="jedrzejbronislaw.flowmeasure.view.live.LivePaneController">
+   <children>
+      <VBox fx:id="flowBox" />
+   </children>
+</VBox>

@@ -16,12 +16,11 @@ public class MainWindowController implements Initializable {
 	@Getter
 	@FXML private BorderPane borderPane;
 	@FXML private VBox mainVbox;
-	@FXML private VBox flowBox;
-	@FXML private ScrollPane tablePane, chartPane, optionsPane, calibrationPane;
+	@FXML private ScrollPane livePane, tablePane, chartPane, optionsPane, calibrationPane;
 
 	
-	public void addFlowPreview(Node node) {
-		flowBox.getChildren().add(node);
+	public void setLivePane(Node live) {
+		livePane.setContent(live);
 	}
 	
 	public void setTablePane(Node table) {
