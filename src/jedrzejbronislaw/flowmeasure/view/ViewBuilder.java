@@ -29,7 +29,7 @@ import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
-import jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneBuild;
+import jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.chart.ChartPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.connection.UARTParamsBuilder;
 import jedrzejbronislaw.flowmeasure.view.dialog.DialogPaneBuilder;
@@ -160,7 +160,7 @@ public class ViewBuilder {
 	}
 
 	private Node calibrationPane() {
-		CalibrationPaneBuild builder = new CalibrationPaneBuild(eventManager(), flowManager(), settings(), calibration());
+		CalibrationPaneBuilder builder = new CalibrationPaneBuilder(eventManager(), flowManager(), settings(), calibration());
 		builder.build();
 		
 		addAllStatesListener(builder.getController());

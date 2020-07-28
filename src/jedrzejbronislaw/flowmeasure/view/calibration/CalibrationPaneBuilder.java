@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class CalibrationPaneBuild extends Builder<CalibrationPaneController> {
+public class CalibrationPaneBuilder extends Builder<CalibrationPaneController> {
 
 	@Getter private String fxmlFilePath = "CalibrationPane.fxml";
 
