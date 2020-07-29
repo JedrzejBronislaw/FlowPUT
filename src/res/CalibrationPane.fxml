@@ -10,34 +10,44 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="mainVbox" alignment="TOP_CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneController">
+<VBox fx:id="mainVbox" alignment="TOP_CENTER" prefWidth="270.0" spacing="40.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneController">
    <children>
-      <ComboBox fx:id="flowmeterField" prefWidth="150.0" />
-      <HBox alignment="TOP_CENTER" spacing="5.0">
+      <VBox alignment="TOP_CENTER" spacing="5.0">
          <children>
-            <Button fx:id="startButton" mnemonicParsing="false" text="Start" />
-            <Button fx:id="resetButton" mnemonicParsing="false" text="Reset" />
-            <Button fx:id="stopButton" mnemonicParsing="false" text="Stop" />
+            <ComboBox fx:id="flowmeterField" prefWidth="250.0" />
+            <HBox alignment="TOP_CENTER" spacing="10.0">
+               <children>
+                  <Button fx:id="startButton" mnemonicParsing="false" prefWidth="120.0" text="Start" />
+                  <Button fx:id="stopButton" mnemonicParsing="false" prefWidth="120.0" text="Stop" />
+               </children>
+            </HBox>
          </children>
-      </HBox>
-      <GridPane hgap="10.0">
-        <columnConstraints>
-          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
-          <ColumnConstraints hgrow="SOMETIMES" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+      </VBox>
+      <VBox alignment="TOP_CENTER" spacing="5.0">
          <children>
-            <Label fx:id="flowLabel" text="0" GridPane.columnIndex="1" />
-            <Label fx:id="aveFlowLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button fx:id="newMeasureButton" mnemonicParsing="false" text="New measurement" />
+            <Label prefWidth="250.0" text="Run 1 liter of fluid through the flow meter to check the flow meter ratio.&#10;You can repeat this to count the average." textAlignment="JUSTIFY" wrapText="true" />
+            <GridPane hgap="10.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" valignment="BASELINE" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label fx:id="flowLabel" text="0" GridPane.columnIndex="1" />
+                  <Label fx:id="aveFlowLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button fx:id="newMeasureButton" mnemonicParsing="false" prefWidth="190.0" text="New measurement" wrapText="true" />
+                  <Label text="Average:" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <Button fx:id="setButton" mnemonicParsing="false" prefWidth="150.0" text="Save" />
          </children>
-      </GridPane>
-      <Button fx:id="setButton" mnemonicParsing="false" text="Set" />
+      </VBox>
+      <Button fx:id="resetButton" mnemonicParsing="false" prefWidth="150.0" text="Reset" />
    </children>
    <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
 </VBox>

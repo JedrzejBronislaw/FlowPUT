@@ -1,6 +1,7 @@
 package jedrzejbronislaw.flowmeasure.view.calibration;
 
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
@@ -29,6 +30,7 @@ public class CalibrationPaneController implements Initializable, AllStatesListen
 	}
 	
 	public static final String DEF_FLOWMETER_NAME = "Flowmeter";
+	private static final DecimalFormat PRECISION_FORMAT = new DecimalFormat("#.###");
 
 	@FXML private VBox mainVbox;
 	@FXML private Button startButton, resetButton, stopButton, setButton;
@@ -48,7 +50,7 @@ public class CalibrationPaneController implements Initializable, AllStatesListen
 	}
 	
 	public void setCurrentAveValue(float value) {
-		Platform.runLater(() -> aveFlowLabel.setText(Float.toString(value)));
+		Platform.runLater(() -> aveFlowLabel.setText(PRECISION_FORMAT.format(value)));
 	}
 
 	@Override
