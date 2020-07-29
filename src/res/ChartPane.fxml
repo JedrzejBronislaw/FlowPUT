@@ -10,30 +10,30 @@
 
 <BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.view.chart.ChartPaneController">
    <bottom>
-      <HBox alignment="TOP_CENTER" spacing="5.0" BorderPane.alignment="CENTER">
+      <HBox alignment="TOP_CENTER" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
             <VBox spacing="5.0">
                <children>
-                  <Button fx:id="refreshButton" mnemonicParsing="false" text="Refresh" />
-                  <Button fx:id="saveButton" mnemonicParsing="false" text="Save chart" />
+                  <CheckBox fx:id="liveBox" mnemonicParsing="false" text="Live" />
+                  <Button fx:id="refreshButton" mnemonicParsing="false" prefWidth="120.0" text="Refresh" />
                </children>
             </VBox>
-            <VBox spacing="5.0">
+            <VBox alignment="CENTER" spacing="5.0">
                <children>
-                  <CheckBox fx:id="lastSecsBox" mnemonicParsing="false" text="Last 60 sek" />
-                  <CheckBox fx:id="liveBox" mnemonicParsing="false" text="live" />
-                  <VBox>
-                     <children>
-                        <RadioButton fx:id="pulsesRadio" mnemonicParsing="false" text="pulses">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="unit" />
-                           </toggleGroup>
-                        </RadioButton>
-                        <RadioButton fx:id="litresPerSecRadio" mnemonicParsing="false" selected="true" text="litres per second" toggleGroup="$unit" />
-                     </children>
-                  </VBox>
+                  <CheckBox fx:id="lastSecsBox" mnemonicParsing="false" text="Show only&#10;last 60 sec" wrapText="true" />
                </children>
             </VBox>
+            <VBox alignment="CENTER_LEFT" spacing="5.0">
+               <children>
+                  <RadioButton fx:id="pulsesRadio" mnemonicParsing="false" text="Pulses">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="unit" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="litresPerSecRadio" mnemonicParsing="false" selected="true" text="Litres/second" toggleGroup="$unit" />
+               </children>
+            </VBox>
+            <Button fx:id="saveButton" mnemonicParsing="false" prefWidth="120.0" text="Save chart" />
          </children>
       </HBox>
    </bottom>

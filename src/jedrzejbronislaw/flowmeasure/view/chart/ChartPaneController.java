@@ -49,7 +49,10 @@ public class ChartPaneController implements Initializable {
 		
 		refreshButton.disableProperty().bind(liveBox.selectedProperty());
 		
-		refreshButton.setOnAction(this::refresh);
+		refreshButton    .setOnAction(this::refresh);
+		pulsesRadio      .setOnAction(this::refresh);
+		litresPerSecRadio.setOnAction(this::refresh);
+		
 		saveButton.setOnAction(e -> SnapshotSaver.withFileChooser(chart));
 		liveBox.setOnAction(e -> {
 			if(liveBox.isSelected())
