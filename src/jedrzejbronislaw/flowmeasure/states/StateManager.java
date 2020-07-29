@@ -28,8 +28,9 @@ public class StateManager implements EventListener {
 		
 		if(event == EventType.LOST_CONNECTION ||
 		   event == EventType.DISCONNECTION) {
-			if(processState.is(ProcessState.ONGOING)) processState.setState(ProcessState.FINISHED);
-			appState.setState(ApplicationState.IDLE);
+			if(processState.is(ProcessState.ONGOING))
+				processState.setState(ProcessState.FINISHED); else
+				appState.setState(ApplicationState.IDLE);
 			connState.setState(ConnectionState.DISCONNECTED);
 		} else
 			

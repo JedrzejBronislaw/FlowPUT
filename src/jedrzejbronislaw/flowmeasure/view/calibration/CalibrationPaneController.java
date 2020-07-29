@@ -79,10 +79,11 @@ public class CalibrationPaneController implements Initializable, AllStatesListen
 		flowmeterField  .setDisable( ongoing);
 		newMeasureButton.setDisable(!ongoing);
 		
-		if (!ongoing) {
-			flowLabel.setText("");
-			aveFlowLabel.setText("");
-		}
+		if (!ongoing)
+			Platform.runLater(() -> {
+				flowLabel.setText("");
+				aveFlowLabel.setText("");
+			});
 	}
 	
 	@Override
