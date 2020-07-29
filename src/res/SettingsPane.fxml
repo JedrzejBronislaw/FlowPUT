@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <VBox fx:id="mainBox" alignment="CENTER" fillWidth="false" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.view.settings.SettingsPaneController">
    <children>
       <VBox alignment="TOP_RIGHT" fillWidth="false" spacing="20.0">
@@ -18,14 +17,14 @@
                <children>
                   <Pane>
                      <children>
-                        <Label text="Pulses per litre:" />
+                        <Label styleClass="subtitle" text="Pulses per litre:" />
                      </children>
                   </Pane>
                </children>
             </VBox>
             <HBox alignment="CENTER_RIGHT" spacing="10.0">
                <children>
-                  <Label text="Buffer:" />
+                  <Label styleClass="key" text="Buffer:" />
                   <HBox alignment="CENTER_RIGHT" prefWidth="150.0" spacing="5.0">
                      <children>
                         <CheckBox fx:id="bufferCheckbox" mnemonicParsing="false" />

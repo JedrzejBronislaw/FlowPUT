@@ -15,7 +15,7 @@
          <children>
             <VBox spacing="5.0">
                <children>
-                  <Label text="Time format:" />
+                  <Label styleClass="key" text="Time format:" />
                   <CheckBox fx:id="unixTime" mnemonicParsing="false" selected="true" text="Unix time" />
                   <CheckBox fx:id="fullTime" mnemonicParsing="false" selected="true" text="Full time" />
                   <CheckBox fx:id="processTime" mnemonicParsing="false" selected="true" text="Process time" />
@@ -23,14 +23,14 @@
             </VBox>
             <VBox spacing="5.0">
                <children>
-                  <Label text="Units:" />
+                  <Label styleClass="key" text="Units:" />
                   <CheckBox fx:id="unit_pulses" mnemonicParsing="false" selected="true" text="Pulses" />
                   <CheckBox fx:id="unit_flow" mnemonicParsing="false" selected="true" text="Flow" />
                </children>
             </VBox>
             <VBox fx:id="orderBox" spacing="5.0">
                <children>
-                  <Label text="Units order:" />
+                  <Label styleClass="key" text="Units order:" />
                   <RadioButton fx:id="pulses_first" mnemonicParsing="false" selected="true" text="Pulses first">
                      <toggleGroup>
                         <ToggleGroup fx:id="columnsOrder" />
@@ -40,7 +40,7 @@
             </VBox>
             <VBox fx:id="togetherBox" spacing="5.0">
                <children>
-                  <Label text="Values of  the flowmeter:" />
+                  <Label styleClass="key" text="Values of  the flowmeter:" />
                   <RadioButton fx:id="together" mnemonicParsing="false" selected="true" text="Together">
                      <toggleGroup>
                         <ToggleGroup fx:id="valuesTogether" />
@@ -50,7 +50,7 @@
             </VBox>
             <VBox spacing="5.0">
                <children>
-                  <Label text="Decimal separator:" />
+                  <Label styleClass="key" text="Decimal separator:" />
                   <RadioButton fx:id="comma_separator" mnemonicParsing="false" text="Comma (,)">
                      <toggleGroup>
                         <ToggleGroup fx:id="decimalSeparator" />

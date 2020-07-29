@@ -47,7 +47,7 @@
                   <HBox spacing="10.0">
                      <children>
                         <Label text="Application status:" />
-                        <Label fx:id="stateLabel" text="Label" />
+                        <Label fx:id="stateLabel" styleClass="status" text="Label" />
                      </children>
                   </HBox>
                </children>

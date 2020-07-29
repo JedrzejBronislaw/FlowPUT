@@ -1,6 +1,31 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-Label {
-    -fx-text-fill: #218ee4;
-    -fx-font-weight: bold;
+Label, CheckBox, RadioButton {
     -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #888;
+}
+
+.subtitle {
+	-fx-font-size: 17px;
+    -fx-text-fill: #218ee4;
+}
+
+.status {
+    -fx-text-fill: #16a;
+}
+
+.key {
+    -fx-text-fill: #444;
+}
+
+.value {
+    -fx-text-fill: #16a;
+}
+
+.dialog_title {
+	-fx-font-size: 17px;
+    -fx-text-fill: #444;
+}
+
+.dialog_content {
+	
 }

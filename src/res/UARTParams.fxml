@@ -23,7 +23,7 @@
             </Pane>
             <Pane>
                <children>
-                  <Label fx:id="verticalStatusLabel" layoutX="-40.0" layoutY="40.0" minWidth="100.0" rotate="270.0" text="Label" />
+                  <Label fx:id="verticalStatusLabel" layoutX="-40.0" layoutY="40.0" minWidth="100.0" rotate="270.0" styleClass="status" text="Label" />
                </children>
             </Pane>
          </children>
@@ -33,21 +33,21 @@
             <HBox spacing="10.0">
                <children>
                   <Label text="Status:" />
-                  <Label fx:id="statusLabel" text="Label" />
+                  <Label fx:id="statusLabel" styleClass="status" text="Label" />
                </children>
             </HBox>
             <VBox alignment="CENTER" spacing="5.0">
                <children>
-                  <Label text="Auto connecting:" />
+                  <Label styleClass="subtitle" text="Auto connecting:" />
                   <Button fx:id="autoConnectButton" mnemonicParsing="false" prefWidth="150.0" text="Auto Connect" />
                </children>
             </VBox>
             <VBox alignment="CENTER" fillWidth="false" spacing="5.0">
                <children>
-                  <Label text="Manual connecting:" />
+                  <Label styleClass="subtitle" text="Manual connecting:" />
                   <HBox alignment="CENTER_LEFT" spacing="10.0">
                      <children>
-                        <Label minWidth="-Infinity" text="PORT:" />
+                        <Label minWidth="-Infinity" styleClass="key" text="PORT:" />
                         <ComboBox fx:id="ports" prefWidth="100.0" />
                      </children>
                   </HBox>

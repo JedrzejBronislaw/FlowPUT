@@ -37,9 +37,9 @@
               </rowConstraints>
                <children>
                   <Label fx:id="flowLabel" text="0" GridPane.columnIndex="1" />
-                  <Label fx:id="aveFlowLabel" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="aveFlowLabel" styleClass="value" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Button fx:id="newMeasureButton" mnemonicParsing="false" prefWidth="190.0" text="New measurement" wrapText="true" />
-                  <Label text="Average:" GridPane.rowIndex="1" />
+                  <Label styleClass="key" text="Average:" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <Button fx:id="saveButton" mnemonicParsing="false" prefWidth="150.0" text="Save" />

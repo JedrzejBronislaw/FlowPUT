@@ -7,7 +7,7 @@
 
 <VBox alignment="TOP_CENTER" fillWidth="false" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.view.live.LivePaneController">
    <children>
-      <Label text="Live flow preview" />
+      <Label styleClass="subtitle" text="Live flow preview" />
       <VBox fx:id="flowBox" />
       <Button fx:id="resetButton" mnemonicParsing="false" prefWidth="150.0" text="Reset" />
    </children>
