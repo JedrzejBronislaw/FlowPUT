@@ -8,4 +8,8 @@ public class TextTools {
 		
 		return firstChar + rest;
 	}
+
+	public static String removeUnderscores(String text) {
+		return text.replace('_', ' ');
+	}
 }

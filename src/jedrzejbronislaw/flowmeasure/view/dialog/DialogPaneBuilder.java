@@ -20,7 +20,7 @@ public class DialogPaneBuilder extends Builder<DialogPaneController> {
 
 	@Override
 	protected void afterBuild() {
-		((Pane)node).setBackground(new Background(new BackgroundFill(Color.ALICEBLUE,CornerRadii.EMPTY, Insets.EMPTY)));
+		((Pane)node).setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY,CornerRadii.EMPTY, Insets.EMPTY)));
 		controller.setNode(node);
 		controller.setRoot(root);
 	}

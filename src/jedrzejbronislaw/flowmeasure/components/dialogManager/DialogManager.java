@@ -5,6 +5,7 @@ import java.util.Map;
 
 import jedrzejbronislaw.flowmeasure.events.EventListener;
 import jedrzejbronislaw.flowmeasure.events.EventType;
+import jedrzejbronislaw.flowmeasure.tools.TextTools;
 import lombok.Setter;
 
 public class DialogManager implements EventListener {
@@ -50,7 +51,10 @@ public class DialogManager implements EventListener {
 		
 		String message = messages.get(event);
 		if(message != null) 
-			showMessage.show(event.toString(), message, time(message));
+			showMessage.show(
+				TextTools.firstCharUpper(TextTools.removeUnderscores(event.toString())),
+				message,
+				time(message));
 	}
 
 	private int time(String message) {

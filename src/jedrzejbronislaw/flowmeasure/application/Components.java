@@ -115,9 +115,9 @@ public class Components {
 
 	private DialogManager buildDialogManager() {
 		return new DialogManager.builder().
-				addMessages(EventType.CONNECTION_SUCCESSFUL, "Nawi¹zano po³¹czenie z urz¹dzeniem FlowPP").
-				addMessages(EventType.LOST_CONNECTION, "Utracono po³¹czenie z urz¹dzeniem FlowPP").
-				addMessages(EventType.CONNECTION_FAILED, "Nie uda³o siê nawi¹zaæ po³¹czenia z urz¹dzeniem FLowPP").
+				addMessages(EventType.CONNECTION_SUCCESSFUL, "Connection to FlowPUT device established").
+				addMessages(EventType.LOST_CONNECTION, "FlowPUT device has been disconnected").
+				addMessages(EventType.CONNECTION_FAILED, "Connection to FlowPUT device failed").
 				build();
 	}
 
