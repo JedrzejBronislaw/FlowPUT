@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -19,6 +20,7 @@ import lombok.Setter;
 public class SettingsPaneController implements Initializable, StateListener<ApplicationState> {
 	
 	@FXML private VBox mainBox;
+	@FXML private VBox ratioBox;
 	@FXML private TextField bufferSizeField;
 	@FXML private Button saveButton;
 	@FXML private CheckBox bufferCheckbox;
@@ -26,6 +28,10 @@ public class SettingsPaneController implements Initializable, StateListener<Appl
 	@Setter private Runnable savingAction;
 
 
+	public void addRatioPane(Node pane) {
+		ratioBox.getChildren().add(pane);
+	}
+	
 	public int getBufferSize() {
 		return Integer.parseInt(bufferSizeField.getText());
 	}

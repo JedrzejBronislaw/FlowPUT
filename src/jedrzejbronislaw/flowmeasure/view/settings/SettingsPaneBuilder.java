@@ -3,7 +3,6 @@ package jedrzejbronislaw.flowmeasure.view.settings;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.layout.Pane;
 import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.RatioProperty;
@@ -17,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SettingsPaneBuilder extends Builder<SettingsPaneController> {
 
-	private static final String PULSES_PER_LITRE_LABEL = "Pulses per litre ";
+	private static final String PULSES_PER_LITRE_LABEL = "Ratio ";
 	
 	@Getter private String fxmlFilePath = "SettingsPane.fxml";
 
@@ -29,7 +28,7 @@ public class SettingsPaneBuilder extends Builder<SettingsPaneController> {
 	@Override
 	protected void afterBuild() {
 		
-		addRatioPanes(Consts.FLOWMETERS_NUMBER, 0);
+		addRatioPanes(Consts.FLOWMETERS_NUMBER);
 		
 		controller.setSettings(settings);
 		
@@ -50,15 +49,13 @@ public class SettingsPaneBuilder extends Builder<SettingsPaneController> {
 		});
 	}
 	
-	private void addRatioPanes(int number, int position) {
-		Pane pane = (Pane) node;
-		
+	private void addRatioPanes(int number) {
 		for(int i=0; i<number; i++) {
 			PulseRatioSettingsPaneBuilder ratioPaneBuilder = new PulseRatioSettingsPaneBuilder(PULSES_PER_LITRE_LABEL + (i+1) + ":");
 			ratioPaneBuilder.build();
 			ratios.add(ratioPaneBuilder.getController());
 			
-			pane.getChildren().add(i + position, ratioPaneBuilder.getNode());
+			controller.addRatioPane(ratioPaneBuilder.getNode());
 		}
 	}
 
