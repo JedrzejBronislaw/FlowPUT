@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx" fx:controller="jedrzejbronislaw.flowmeasure.view.table.MeasurementTableController">
-   <center>
-      <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" />
-   </center>
-   <bottom>
-      <Button fx:id="refreshButton" mnemonicParsing="false" text="Refresh" BorderPane.alignment="CENTER" />
-   </bottom>
-</BorderPane>
+<VBox alignment="CENTER" spacing="10.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.view.table.MeasurementTableController">
+   <children>
+      <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS" />
+      <Button fx:id="refreshButton" mnemonicParsing="false" prefWidth="150.0" text="Refresh" />
+   </children>
+   <padding>
+      <Insets top="5.0" />
+   </padding>
+</VBox>
