@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.layout.VBox;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.DecimalSeparator;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
@@ -28,6 +29,9 @@ public class SaveWindowController implements Initializable {
 	@FXML private RadioButton pulses_first, flow_first;
 	@FXML private RadioButton together, separately;
 	@FXML private RadioButton comma_separator, dot_separator;
+	
+	@FXML private VBox orderBox;
+	@FXML private VBox togetherBox;
 
 	@FXML private CheckBox openBox;
 	@FXML private Button saveButton;
@@ -77,6 +81,9 @@ public class SaveWindowController implements Initializable {
 		EventHandler<ActionEvent> unitAction = oneMustBeSelected(unit_flow, unit_pulses);
 		unit_flow.setOnAction(unitAction);
 		unit_pulses.setOnAction(unitAction);
+		
+		orderBox   .disableProperty().bind(unit_flow.selectedProperty().and(unit_pulses.selectedProperty()).not());
+		togetherBox.disableProperty().bind(unit_flow.selectedProperty().and(unit_pulses.selectedProperty()).not());
 	}
 
 	private EventHandler<ActionEvent> oneMustBeSelected(CheckBox... boxes) {

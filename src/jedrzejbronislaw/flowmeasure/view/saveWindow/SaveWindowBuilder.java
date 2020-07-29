@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -30,6 +31,7 @@ public class SaveWindowBuilder extends Builder<SaveWindowController> {
 	private final static String FILE_CHOOSER_TITLE = "Saving process data...";
 	private final static String CSS_FILE_NAME = "application.css";
 	
+	private static final String LOGO_FILE_NAME = "logo.png";
 	
 	@Getter private String fxmlFilePath = "SaveMeasurementWindow.fxml";
 
@@ -59,9 +61,14 @@ public class SaveWindowBuilder extends Builder<SaveWindowController> {
 		scene.getStylesheets().add(resources.getResourcePath(CSS_FILE_NAME));
 		
 		stage = new Stage();
+		stage.getIcons().add(loadLogo());
 		stage.initOwner(owner);
 		stage.setScene(scene);
 		stage.setTitle(WINDOW_TITLE);
+	}
+
+	private Image loadLogo() {
+		return new Image(resources.path(LOGO_FILE_NAME));
 	}
 
 	private void save(ProcessRepositoryWriterOptions options, boolean openFile) {
