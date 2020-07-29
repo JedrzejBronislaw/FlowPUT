@@ -80,9 +80,11 @@ public class ChartRefresher {
 	}
 
 	private void clear() {
-		chart.getData().clear();
-		xAxis.setLowerBound(0);
-		xAxis.setUpperBound(100);
+		Platform.runLater(() -> {
+			chart.getData().clear();
+			xAxis.setLowerBound(0);
+			xAxis.setUpperBound(100);
+		});
 	}
 
 	private void setChartStaticProperties() {

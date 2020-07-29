@@ -45,12 +45,12 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 	@FXML private VBox controlBox;
 	@FXML private HBox onOffBox;
 	@FXML private Label processStateLabel, startLabel, endLabel, durationLabel;
-	@FXML private Button saveButton, closeButton, startButton, endButton;
+	@FXML private Button saveButton, closeButton, beginButton, endButton;
 	@FXML private Circle receiverDiode;
 	
 	@Setter private Runnable saveButtonAction;
 	@Setter private Runnable closeButtonAction;
-	@Setter private Runnable startButtonAction;
+	@Setter private Runnable beginButtonAction;
 	@Setter private Runnable endButtonAction;
 
 	private ProcessState processState;
@@ -92,7 +92,7 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 		
 		saveButton.setOnAction(e  -> Injection.run(saveButtonAction));
 		closeButton.setOnAction(e -> Injection.run(closeButtonAction));
-		startButton.setOnAction(e -> Injection.run(startButtonAction));
+		beginButton.setOnAction(e -> Injection.run(beginButtonAction));
 		endButton.setOnAction(e   -> Injection.run(endButtonAction));
 	}
 
@@ -151,7 +151,7 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 		Platform.runLater(() ->
 			processStateLabel.setText(TextTools.firstCharUpper(state.getProcState().toString())));
 		
-		setEnable(startButton, state.is(ProcessState.BEFORE));
+		setEnable(beginButton, state.is(ProcessState.BEFORE));
 		setEnable(endButton,   state.is(ProcessState.ONGOING));
 		
 		setEnable(saveButton, !state.is(ProcessState.BEFORE));

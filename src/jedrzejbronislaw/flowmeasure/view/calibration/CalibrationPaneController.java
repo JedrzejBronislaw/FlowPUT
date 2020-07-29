@@ -33,14 +33,14 @@ public class CalibrationPaneController implements Initializable, AllStatesListen
 	private static final DecimalFormat PRECISION_FORMAT = new DecimalFormat("#.###");
 
 	@FXML private VBox mainVbox;
-	@FXML private Button startButton, resetButton, stopButton, setButton;
+	@FXML private Button startButton, resetButton, stopButton, saveButton;
 	@FXML private Button newMeasureButton;
 	@FXML private ComboBox<Integer> flowmeterField;
 	@FXML private Label flowLabel;
 	@FXML private Label aveFlowLabel;
 	
 	@Setter private Consumer<Integer> start;
-	@Setter private Runnable stop, reset, set;
+	@Setter private Runnable stop, reset, save;
 	@Setter private Runnable newMeasure;
 	@Setter private Consumer<Integer> onChangeFlowmeter;
 	
@@ -63,7 +63,7 @@ public class CalibrationPaneController implements Initializable, AllStatesListen
 		startButton     .setOnAction(e -> Injection.run(start, flowmeterField.getValue()));
 		resetButton     .setOnAction(e -> Injection.run(reset));
 		stopButton      .setOnAction(e -> Injection.run(stop));
-		setButton       .setOnAction(e -> Injection.run(set));
+		saveButton      .setOnAction(e -> Injection.run(save));
 		newMeasureButton.setOnAction(e -> Injection.run(newMeasure));
 	}
 
@@ -74,7 +74,7 @@ public class CalibrationPaneController implements Initializable, AllStatesListen
 
 		startButton     .setDisable( ongoing);
 		stopButton      .setDisable(!ongoing);
-		setButton       .setDisable(!ongoing);
+		saveButton      .setDisable(!ongoing);
 		resetButton     .setDisable(!ongoing);
 		flowmeterField  .setDisable( ongoing);
 		newMeasureButton.setDisable(!ongoing);

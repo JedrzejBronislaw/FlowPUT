@@ -46,7 +46,7 @@ public class ViewBuilder {
 	
 	private static final int WINDOW_HEIGHT = 500;
 	private static final int WINDOW_WIDTH  = 900;
-	private static final String WINDOW_TITLE   = "FlowmeterPP";
+	private static final String WINDOW_TITLE   = "FlowmeterPUT";
 	private static final String CSS_FILENAME   = "application.css";
 	private static final String LOGO_FILE_NAME = "logo.png";
 

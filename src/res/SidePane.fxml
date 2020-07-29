@@ -15,7 +15,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Circle?>
 
-<HBox xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.view.sidePane.SidePaneController">
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.view.sidePane.SidePaneController">
    <children>
       <VBox fx:id="controlBox" minWidth="230.0" spacing="5.0">
          <children>
@@ -34,7 +34,7 @@
             <Label text="Process:" />
             <HBox fx:id="onOffBox" spacing="10.0">
                <children>
-                  <Button fx:id="startButton" mnemonicParsing="false" prefWidth="90.0" text="Begin" />
+                  <Button fx:id="beginButton" mnemonicParsing="false" prefWidth="90.0" text="Begin" />
                   <Button fx:id="endButton" mnemonicParsing="false" prefWidth="90.0" text="End" />
                </children>
             </HBox>

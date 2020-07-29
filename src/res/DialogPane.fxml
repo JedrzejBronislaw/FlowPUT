@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.view.dialog.DialogPaneController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.view.dialog.DialogPaneController">
    <children>
       <Label fx:id="title" text="Label">
          <font>

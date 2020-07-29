@@ -34,7 +34,7 @@ public class CalibrationPaneBuilder extends Builder<CalibrationPaneController> {
 			if(event(EventType.CALIBRATION_ENDS))   switchFlow(FlowConsumerType.NONE);
 		});
 		
-		controller.setSet(() -> {
+		controller.setSave(() -> {
 			settings.setProperty(new RatioProperty(flowmeterNumber-1), calibration.getAveValue());
 			settings.saveToFile();
 		});

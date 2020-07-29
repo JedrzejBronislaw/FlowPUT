@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox alignment="CENTER_RIGHT" spacing="10.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.view.settings.pulseRatio.PulseRatioSettingsPaneController">
+<HBox alignment="CENTER_RIGHT" spacing="10.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.view.settings.pulseRatio.PulseRatioSettingsPaneController">
    <children>
       <Label fx:id="nameLabel" />
       <TextField fx:id="valueField" prefWidth="150.0" />
