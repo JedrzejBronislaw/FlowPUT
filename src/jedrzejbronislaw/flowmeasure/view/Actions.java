@@ -39,7 +39,7 @@ public class Actions implements ActionContainer {
 	@Override
 	public void startProcess() {
 		if(eventManager().submitEvent(EventType.PROCESS_STARTS)) {
-			repository().createNewProcessRepository("untitled").setStartWithNextValueFlag();
+			repository().createNewProcessRepository("").setStartWithNextValueFlag();
 			
 			if(isBufferedData())
 				flowManager().setFlowConsumerType(FlowConsumerType.BUFFERED); else

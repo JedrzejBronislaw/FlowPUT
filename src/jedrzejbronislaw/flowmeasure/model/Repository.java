@@ -15,7 +15,7 @@ public class Repository {
 	
 	public ProcessRepository createNewProcessRepository(String name) {
 		ProcessRepository processRepository = new ProcessRepository(Consts.FLOWMETERS_NUMBER, name);
-		processRepository.getMetadata().setAuthor("unknown");
+		processRepository.getMetadata().setAuthor("");
 		
 		processRepositories.add(processRepository);
 		currentProcessRepository = processRepository;
