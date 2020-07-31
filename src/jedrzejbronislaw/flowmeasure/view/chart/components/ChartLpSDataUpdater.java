@@ -8,7 +8,7 @@ import lombok.Getter;
 
 public class ChartLpSDataUpdater extends ChartDataUpdater {
 
-	@Getter private final String axisLabel = "flow [" + FlowConverter.FLOW_UNIT + "]";
+	@Getter private final String axisLabel = "flow [" + FlowConverter.LITRE_PER_SECOND_UNIT + "]";
 
 	private FlowConverters flowconverters;
 	private FlowMeasurement measurement, prevMeasurement;

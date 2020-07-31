@@ -43,7 +43,7 @@ public class FlowPreviewController implements Initializable {
 	private String computeFlow(int value) {
 		Float litrePerSec = flowconverter.pulsesToLitrePerSec(value);
 		if(litrePerSec != null)
-			return PRECISION_FORMAT.format(litrePerSec) + " " + FlowConverter.FLOW_UNIT; else
+			return PRECISION_FORMAT.format(litrePerSec) + " " + FlowConverter.LITRE_PER_SECOND_UNIT; else
 			return "";
 	}
 

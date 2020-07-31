@@ -45,8 +45,18 @@ public class FlowConverter1 implements FlowConverter {
 	}
 
 	@Override
+	public Float pulsesToLitrePerHour(int pulses) {
+		return pulsesToLitrePerSec(pulses) * 60 * 60;
+	}
+
+	@Override
 	public float pulsesToLitrePerSec(int pulses, float interval) {
 		return pulses/factor()/interval;
+	}
+
+	@Override
+	public float pulsesToLitrePerHour(int pulses, float interval) {
+		return pulsesToLitrePerSec(pulses, interval) * 60 *60 ;
 	}
 
 	@Override

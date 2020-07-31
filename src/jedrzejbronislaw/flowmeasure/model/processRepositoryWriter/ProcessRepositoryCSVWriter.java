@@ -45,7 +45,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	public static final String DEF_FLOWMETER_NAME = "flowmeter";
 	
 	public static final String PULSE_COLUMNNAME = "pulse";
-	public static final String  FLOW_COLUMNNAME = "flow [" + FlowConverter.FLOW_UNIT + "]";
+	public static final String  FLOW_COLUMNNAME = "flow [" + FlowConverter.LITRE_PER_SECOND_UNIT + "]";
 
 	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	
