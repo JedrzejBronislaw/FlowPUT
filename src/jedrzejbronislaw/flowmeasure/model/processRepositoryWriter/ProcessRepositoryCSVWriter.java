@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowUnit;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
@@ -45,7 +45,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	public static final String DEF_FLOWMETER_NAME = "flowmeter";
 	
 	public static final String PULSE_COLUMNNAME = "pulse";
-	public static final String  FLOW_COLUMNNAME = "flow [" + FlowConverter.LITRE_PER_SECOND_UNIT + "]";
+	public static final String  FLOW_COLUMNNAME = "flow [" + FlowUnit.LITRE_PER_SECOND + "]";
 
 	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	

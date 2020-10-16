@@ -46,7 +46,8 @@ public class FlowConverter1 implements FlowConverter {
 
 	@Override
 	public Float pulsesToLitrePerHour(int pulses) {
-		return pulsesToLitrePerSec(pulses) * 60 * 60;
+		float litrePerSec = pulsesToLitrePerSec(pulses);
+		return FlowUnit.LITRE_PER_HOUR.getValue(litrePerSec);
 	}
 
 	@Override
@@ -56,7 +57,8 @@ public class FlowConverter1 implements FlowConverter {
 
 	@Override
 	public float pulsesToLitrePerHour(int pulses, float interval) {
-		return pulsesToLitrePerSec(pulses, interval) * 60 *60 ;
+		float litrePerSec = pulsesToLitrePerSec(pulses, interval);
+		return FlowUnit.LITRE_PER_HOUR.getValue(litrePerSec);
 	}
 
 	@Override

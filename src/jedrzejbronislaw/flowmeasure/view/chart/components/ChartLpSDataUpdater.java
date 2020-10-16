@@ -3,12 +3,13 @@ package jedrzejbronislaw.flowmeasure.view.chart.components;
 import javafx.scene.chart.LineChart;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowUnit;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import lombok.Getter;
 
 public class ChartLpSDataUpdater extends ChartDataUpdater {
 
-	@Getter private final String axisLabel = "flow [" + FlowConverter.LITRE_PER_SECOND_UNIT + "]";
+	@Getter private final String axisLabel = "flow [" + FlowUnit.LITRE_PER_SECOND + "]";
 
 	private FlowConverters flowconverters;
 	private FlowMeasurement measurement, prevMeasurement;

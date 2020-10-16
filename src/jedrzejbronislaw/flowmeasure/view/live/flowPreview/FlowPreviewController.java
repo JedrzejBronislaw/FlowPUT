@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowUnit;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.VolumeUnit;
 import lombok.Setter;
 
 public class FlowPreviewController implements Initializable {
@@ -43,12 +45,12 @@ public class FlowPreviewController implements Initializable {
 	private String computeFlow(int value) {
 		Float litrePerSec = flowconverter.pulsesToLitrePerSec(value);
 		if(litrePerSec != null)
-			return PRECISION_FORMAT.format(litrePerSec) + " " + FlowConverter.LITRE_PER_SECOND_UNIT; else
+			return PRECISION_FORMAT.format(litrePerSec) + " " + FlowUnit.LITRE_PER_SECOND; else
 			return "";
 	}
 
 	private String computeVolume(int value) {
-		return PRECISION_FORMAT.format(flowconverter.pulsesToLitre(value)) + " " + FlowConverter.VOLUME_UNIT;
+		return PRECISION_FORMAT.format(flowconverter.pulsesToLitre(value)) + " " + VolumeUnit.LITRE;
 	}
 	
 	public int resetSecPulse() {
