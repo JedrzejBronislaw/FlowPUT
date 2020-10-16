@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum FlowUnit {
 
-	LITRE_PER_SECOND("l/s", 1),
-	LITRE_PER_HOUR(  "l/h", 60*60);
+	LITER_PER_SECOND("l/s", 1),
+	LITER_PER_HOUR(  "l/h", 60*60);
 	
 	
 	private final String name;

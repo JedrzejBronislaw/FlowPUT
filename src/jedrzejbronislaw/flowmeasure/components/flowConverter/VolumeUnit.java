@@ -7,8 +7,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum VolumeUnit {
-	
-	LITRE("l", 1);
+
+	LITER(      "l", 1),
+	MILLILITER("ml", 1000);
 	
 	private final String name;
 	private final float ratio;

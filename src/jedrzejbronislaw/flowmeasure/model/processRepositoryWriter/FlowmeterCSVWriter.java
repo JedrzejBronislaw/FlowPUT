@@ -38,7 +38,7 @@ public class FlowmeterCSVWriter {
 	}
 	
 	private void writeFlow(int pulses) throws IOException {
-		Float flow = flowConverter.pulsesToLitrePerSec(pulses);
+		Float flow = flowConverter.toFlow(pulses, options.getFlowUnit());
 		writer.writeWithSeparator(setDecimalSeparator(flow));
 	}
 

@@ -12,7 +12,7 @@ import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.tools.ItemSelector;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ChartDataUpdater;
-import jedrzejbronislaw.flowmeasure.view.chart.components.ChartLpSDataUpdater;
+import jedrzejbronislaw.flowmeasure.view.chart.components.ChartFlowDataUpdater;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ChartOptions;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ChartPulseDataUpdater;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ChartRange;
@@ -35,7 +35,7 @@ public class ChartRefresher {
 	private NumberAxis xAxis;
 
 	private ChartPulseDataUpdater pulseUpdater;
-	private ChartLpSDataUpdater lpsUpdater;
+	private ChartFlowDataUpdater  flowUpdater;
 	
 	private SeriesManager seriesManager;
 	private ChartRange chartRange = new ChartRange();
@@ -50,7 +50,7 @@ public class ChartRefresher {
 		seriesManager = new SeriesManager(chart);
 		
 		pulseUpdater = new ChartPulseDataUpdater(chart, seriesManager::setChartPoint);
-		lpsUpdater   = new ChartLpSDataUpdater  (chart, seriesManager::setChartPoint, flowConverters);
+		flowUpdater  = new ChartFlowDataUpdater (chart, seriesManager::setChartPoint, flowConverters);
 
 		xAxis = (NumberAxis) chart.getXAxis();
 		
@@ -127,8 +127,8 @@ public class ChartRefresher {
 
 	private ChartDataUpdater chartUpdater() {
 		switch (options.getUnit()) {
-			case PULSES:        return pulseUpdater;
-			case LITRE_PER_SEC: return lpsUpdater;
+			case PULSES:    return pulseUpdater;
+			case FLOW_UNIT: return flowUpdater;
 			
 			default: return pulseUpdater;
 		}

@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowUnit;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
@@ -45,10 +44,11 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	public static final String DEF_FLOWMETER_NAME = "flowmeter";
 	
 	public static final String PULSE_COLUMNNAME = "pulse";
-	public static final String  FLOW_COLUMNNAME = "flow [" + FlowUnit.LITRE_PER_SECOND + "]";
+	public static final String  FLOW_COLUMNNAME = "flow";
 
 	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	
+
+
 	@Setter
 	private float pulsePerLitre[];
 	private FlowmeterCSVWriter[] flowmeterWriters;
@@ -72,6 +72,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		}
 	};
 
+	
 	private void createFlowmeterWriters() {
 		if (pulsePerLitre == null) return;
 		
@@ -296,7 +297,11 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	
 	private String unitName(Unit unit) {
 		if (unit == Unit.PULSES) return PULSE_COLUMNNAME;
-		if (unit == Unit.FLOW)   return FLOW_COLUMNNAME;
+		if (unit == Unit.FLOW)   return flowColumnNameWithUnit();
 		return "";
+	}
+
+	private String flowColumnNameWithUnit() {
+		return FLOW_COLUMNNAME + " [" + options.getFlowUnit() + "]";
 	}
 }

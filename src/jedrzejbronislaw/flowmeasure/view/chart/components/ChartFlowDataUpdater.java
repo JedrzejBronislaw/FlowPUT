@@ -5,17 +5,24 @@ import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowUnit;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
-import lombok.Getter;
+import lombok.Setter;
 
-public class ChartLpSDataUpdater extends ChartDataUpdater {
+public class ChartFlowDataUpdater extends ChartDataUpdater {
 
-	@Getter private final String axisLabel = "flow [" + FlowUnit.LITRE_PER_SECOND + "]";
+	private final static String AXIS_LABEL = "flow";
 
 	private FlowConverters flowconverters;
 	private FlowMeasurement measurement, prevMeasurement;
-	
 
-	public ChartLpSDataUpdater(LineChart<Number, Number> chart, ChartPointSetter chartPointSetter, FlowConverters flowconverters) {
+	@Setter private FlowUnit flowUnit = FlowUnit.LITER_PER_HOUR;
+	
+	
+	@Override
+	protected String getAxisLabel() {
+		return AXIS_LABEL + " [" + flowUnit + "]";
+	}
+
+	public ChartFlowDataUpdater(LineChart<Number, Number> chart, ChartPointSetter chartPointSetter, FlowConverters flowconverters) {
 		super(chart, chartPointSetter);
 		this.flowconverters = flowconverters;
 	}
@@ -35,10 +42,11 @@ public class ChartLpSDataUpdater extends ChartDataUpdater {
 		float interval = timeSec(prevMeasurement, measurement);
 		int pulses = measurement.get(flowmeter);
 		
-		return flowconverter(flowmeter).pulsesToLitrePerSec(pulses, interval);
+		return flowconverter(flowmeter).toFlow(pulses, interval, flowUnit);
 	}
 	
 	private FlowConverter flowconverter(int flowmeter) {
 		return flowconverters.get(flowmeter);
 	}
+
 }

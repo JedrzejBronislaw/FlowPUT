@@ -25,7 +25,7 @@ public class ChartPaneController implements Initializable {
 	private static final int REFRESHING_TIME = 1000;
 	
 	public enum ValueUnit{
-		PULSES, LITRE_PER_SEC
+		PULSES, FLOW_UNIT
 	}
 	
 	@FXML private Button refreshButton, saveButton;
@@ -79,7 +79,7 @@ public class ChartPaneController implements Initializable {
 
 	private ValueUnit getValueUnit(){
 		if(pulsesRadio.isSelected())       return ValueUnit.PULSES;
-		if(litresPerSecRadio.isSelected()) return ValueUnit.LITRE_PER_SEC;
+		if(litresPerSecRadio.isSelected()) return ValueUnit.FLOW_UNIT;
 		return null;
 	}
 }

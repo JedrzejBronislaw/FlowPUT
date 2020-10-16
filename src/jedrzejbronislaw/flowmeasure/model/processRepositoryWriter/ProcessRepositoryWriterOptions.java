@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowUnit;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,4 +31,5 @@ public class ProcessRepositoryWriterOptions {
 	@Getter         private List<Unit> units = new ArrayList<>();
 	@Getter @Setter private boolean flowmeterValuesTogether;
 	@Getter @Setter private DecimalSeparator decimalSeparator = DecimalSeparator.POINT;
+	@Getter @Setter private FlowUnit flowUnit = FlowUnit.LITER_PER_HOUR;
 }
