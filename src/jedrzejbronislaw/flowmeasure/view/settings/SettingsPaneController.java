@@ -21,6 +21,7 @@ public class SettingsPaneController implements Initializable, StateListener<Appl
 	
 	@FXML private VBox mainBox;
 	@FXML private VBox ratioBox;
+	@FXML private VBox namesBox;
 	@FXML private TextField bufferSizeField;
 	@FXML private Button saveButton;
 	@FXML private CheckBox bufferCheckbox;
@@ -30,6 +31,10 @@ public class SettingsPaneController implements Initializable, StateListener<Appl
 
 	public void addRatioPane(Node pane) {
 		ratioBox.getChildren().add(pane);
+	}
+	
+	public void addNamePane(Node pane) {
+		namesBox.getChildren().add(pane);
 	}
 	
 	public int getBufferSize() {

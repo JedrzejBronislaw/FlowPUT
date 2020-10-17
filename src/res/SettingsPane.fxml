@@ -33,6 +33,15 @@
                   </HBox>
                </children>
             </HBox>
+            <VBox fx:id="namesBox" alignment="TOP_RIGHT" spacing="5.0">
+               <children>
+                  <Pane>
+                     <children>
+                        <Label styleClass="subtitle" text="Flowmeter names:" />
+                     </children>
+                  </Pane>
+               </children>
+            </VBox>
          </children>
       </VBox>
       <Button fx:id="saveButton" mnemonicParsing="false" prefWidth="150.0" text="Save" />
