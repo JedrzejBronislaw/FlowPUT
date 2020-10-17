@@ -29,6 +29,7 @@ public class SaveWindowController implements Initializable {
 	@FXML private RadioButton pulses_first, flow_first;
 	@FXML private RadioButton together, separately;
 	@FXML private RadioButton comma_separator, dot_separator;
+	@FXML private CheckBox    metadata, headers;
 	
 	@FXML private VBox orderBox;
 	@FXML private VBox togetherBox;
@@ -62,6 +63,9 @@ public class SaveWindowController implements Initializable {
 		
 		options.setFlowmeterValuesTogether(together.isSelected());
 		options.setDecimalSeparator(comma_separator.isSelected() ? DecimalSeparator.COMMA : DecimalSeparator.POINT);
+
+		options.setSaveMetadata(metadata.isSelected());
+		options.setSaveHeaders(headers.isSelected());
 		
 		return options;
 	}

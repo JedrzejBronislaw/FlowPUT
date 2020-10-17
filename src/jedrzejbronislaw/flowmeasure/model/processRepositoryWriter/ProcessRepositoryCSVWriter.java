@@ -131,18 +131,23 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	}
 
 	private void writeFile() throws IOException {
-		csvWriter.line(TITLE);
-		csvWriter.newLine();
-
-		writeMetadata();
-		csvWriter.newLine();
+		if (options.isSaveMetadata()) writeTitleAndMetadata();
 		writeData();
 	}
 
-	private void writeData() throws IOException {
-		csvWriter.line(DATA_HEAD);
+	private void writeTitleAndMetadata() throws IOException {
+		csvWriter.line(TITLE);
+		csvWriter.newLine();
+		
+		writeMetadata();
+		csvWriter.newLine();
+	}
 
-		writeDataHeader();
+	private void writeData() throws IOException {
+		if (options.isSaveHeaders()) {
+			csvWriter.line(DATA_HEAD);
+			writeDataHeader();
+		}
 		for (FlowMeasurement m : measurements) writeMeasurementLine(m);
 	}
 

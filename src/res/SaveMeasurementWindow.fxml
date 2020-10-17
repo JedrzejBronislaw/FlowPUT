@@ -61,6 +61,17 @@
             </VBox>
          </children>
       </HBox>
+      <HBox>
+         <children>
+            <VBox spacing="5.0">
+               <children>
+                  <Label text="Metadata:" />
+                  <CheckBox fx:id="metadata" mnemonicParsing="false" selected="true" text="Save metadata" />
+                  <CheckBox fx:id="headers" mnemonicParsing="false" selected="true" text="Save column headers" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
       <CheckBox fx:id="openBox" mnemonicParsing="false" selected="true" text="Open file after saving" />
       <Button fx:id="saveButton" mnemonicParsing="false" prefWidth="150.0" text="Save" />
    </children>

@@ -32,4 +32,7 @@ public class ProcessRepositoryWriterOptions {
 	@Getter @Setter private boolean flowmeterValuesTogether;
 	@Getter @Setter private DecimalSeparator decimalSeparator = DecimalSeparator.POINT;
 	@Getter @Setter private FlowUnit flowUnit = FlowUnit.LITER_PER_HOUR;
+
+	@Getter @Setter private boolean saveMetadata = true;
+	@Getter @Setter private boolean saveHeaders  = true;
 }
