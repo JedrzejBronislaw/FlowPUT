@@ -180,7 +180,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		
 		if (pulsePerLitre != null)
 			for(int i=0; i<pulsePerLitre.length; i++)
-				csvWriter.property(PROP_PULSE + (i+1), pulsePerLitre[i]);
+				csvWriter.property(PROP_PULSE + (i+1), toString(pulsePerLitre[i]));
 			
 		
 		csvWriter.newLine();
@@ -320,5 +320,9 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 
 	private String flowColumnNameWithUnit() {
 		return FLOW_COLUMNNAME + " [" + options.getFlowUnit() + "]";
+	}
+
+	private String toString(float value) {
+		return NumberTools.floatToString(value, options.getDecimalSeparator().toString());
 	}
 }
