@@ -8,23 +8,34 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class SeriesManager {
 
 	private static final String FLOW_SERIES_NAME_PREFIX = "Flow ";
 	
 	@NonNull private final LineChart<Number, Number> chart;
 	         private List<Series<Number, Number>> seriesList;
-	
+	         
+	         private final SeriesVisibilityManager seriesVisibilityManager;
+	         private boolean isNewSeries = false;
+
+	public SeriesManager(LineChart<Number, Number> chart) {
+		this.chart = chart;
+		seriesVisibilityManager = new SeriesVisibilityManager(chart);
+	}
+	         
 	public void setChartPoint(int flowmeterNumber, Data<Number, Number> chartPoint) {
-		seriesList.get(flowmeterNumber).getData().add(chartPoint);
+		Series<Number, Number> series = seriesList.get(flowmeterNumber);
+
+		if (!seriesVisibilityManager.isVisible(series)) return;
+		
+		series.getData().add(chartPoint);
 	}
 
 	public void prepareSeries(int seriesNumber) {
 		List<Series<Number, Number>> seriesList = new LinkedList<>();
 		ObservableList<Series<Number, Number>> oldSeries = chart.getData();
+		isNewSeries = false;
 		
 		for(int i=0; i<seriesNumber; i++) {
 			if(i < oldSeries.size()) {
@@ -36,6 +47,8 @@ public class SeriesManager {
 				Series<Number, Number> series = new Series<>();
 				series.setName(flowSeriesName(i));
 				seriesList.add(series);
+				
+				isNewSeries = true;
 			}
 		}
 		
@@ -52,6 +65,8 @@ public class SeriesManager {
 			if (!chart.getData().contains(newSeries))
 				 chart.getData().add(newSeries);
 		});
+		
+		if (isNewSeries) seriesVisibilityManager.update();
 	}
 
 	private String flowSeriesName(int i) {
