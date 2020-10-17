@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowUnit;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.DecimalSeparator;
@@ -41,6 +42,8 @@ public class CSVWriterTest_data8 {
 		options.getTimeFormats().add(TimeFormat.FULL);
 		options.getTimeFormats().add(TimeFormat.UNIX);
 		
+		options.setFlowUnit(FlowUnit.LITER_PER_SECOND);
+		
 		return options;
 	}
 
@@ -71,7 +74,7 @@ public class CSVWriterTest_data8 {
 		
 		assertEquals("", firstLine[0]);
 		assertEquals("", firstLine[1]);
-		assertEquals(ProcessRepositoryCSVWriter.FLOW_COLUMNNAME, firstLine[2]);
+		assertTrue(firstLine[2].startsWith(ProcessRepositoryCSVWriter.FLOW_COLUMNNAME));
 	}
 	
 	@Test

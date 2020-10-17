@@ -1,12 +1,14 @@
 package jedrzejbronislaw.flowmeasure.model.processRepositoryWriter;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowUnit;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
@@ -39,6 +41,8 @@ public class CSVWriterTest_data {
 		options.getTimeFormats().add(TimeFormat.FULL);
 		options.getTimeFormats().add(TimeFormat.UNIX);
 		options.getTimeFormats().add(TimeFormat.PROCESS_TIME);
+		
+		options.setFlowUnit(FlowUnit.LITER_PER_SECOND);
 		
 		return options;
 	}
@@ -73,7 +77,7 @@ public class CSVWriterTest_data {
 		assertEquals("", firstLine[2]);
 		assertEquals(ProcessRepositoryCSVWriter.PULSE_COLUMNNAME, firstLine[3]);
 		assertEquals("", firstLine[4]);
-		assertEquals(ProcessRepositoryCSVWriter.FLOW_COLUMNNAME,  firstLine[5]);
+		assertTrue(firstLine[5].startsWith(ProcessRepositoryCSVWriter.FLOW_COLUMNNAME));
 	}
 	
 	@Test
