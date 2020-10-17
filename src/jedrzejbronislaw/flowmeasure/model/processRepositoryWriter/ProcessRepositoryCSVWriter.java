@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -17,11 +18,13 @@ import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
+import jedrzejbronislaw.flowmeasure.tools.NumberTools;
 import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import lombok.Setter;
 
 public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	private static final ZoneOffset TIME_ZONE_OFFSET = OffsetDateTime.now().getOffset();
+	private static final DecimalFormat PROCESS_TIME_PRECISION = new DecimalFormat("#.#");
 	
 	public static final String TITLE = "Flow measurement";
 	
@@ -93,7 +96,15 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	}
 	
 	public static String processTime(LocalDateTime time, LocalDateTime startTime) {
-		return Long.toString(ChronoUnit.SECONDS.between(startTime, time));
+		return processTime(time, startTime, ".");
+	}
+	
+	private static String processTime(LocalDateTime time, LocalDateTime startTime, String decimalSeparator) {
+		return NumberTools.floatToString(
+				ChronoUnit.MILLIS.between(startTime, time) / 1000f,
+				decimalSeparator,
+				PROCESS_TIME_PRECISION
+				);
 	}
 
 	public static String fullTime(LocalDateTime time) {
@@ -240,11 +251,12 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	private void writeMeasurementLine(FlowMeasurement measurement) throws IOException {
 		List<Unit> units = options.getUnits();
 		LocalDateTime time = measurement.getTime();
+		String decimalSeparator = options.getDecimalSeparator().toString();
 		Stream.of(flowmeterWriters).forEach(flowWriter -> flowWriter.newDataEvent(time));
 
 		if(isSelected(TimeFormat.UNIX))         csvWriter.writeWithSeparator(unixTime(time));
 		if(isSelected(TimeFormat.FULL))         csvWriter.writeWithSeparator(fullTime(time));
-		if(isSelected(TimeFormat.PROCESS_TIME)) csvWriter.writeWithSeparator(processTime(time, startTime));
+		if(isSelected(TimeFormat.PROCESS_TIME)) csvWriter.writeWithSeparator(processTime(time, startTime, decimalSeparator));
 
 
 		if(flowmeterValuesTogether())
