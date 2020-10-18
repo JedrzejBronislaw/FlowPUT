@@ -20,10 +20,10 @@ public class FlowPreviewController implements Initializable {
 	@Setter private FlowConverter flowconverter;
 	
 	private int pulses = 0;
+
 	
-	
-	public void setNumber(int number) {
-		label.setText("Flow " + (number+1));
+	public void setName(String name) {
+		label.setText(name + ":");
 	}
 	
 	public void addPulses(int value) {

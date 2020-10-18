@@ -169,7 +169,7 @@ public class ViewBuilder {
 	}
 
 	private Node livePane() {
-		LivePaneBuilder builder = new LivePaneBuilder(viewMediator(), flowconverters());
+		LivePaneBuilder builder = new LivePaneBuilder(viewMediator(), flowconverters(), settings());
 		builder.build();
 		
 		return builder.getNode();

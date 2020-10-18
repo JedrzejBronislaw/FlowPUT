@@ -10,12 +10,11 @@ public class FlowPreviewBuilder extends Builder<FlowPreviewController> {
 
 	@Getter private String fxmlFilePath = "FlowPreview.fxml";
 
-	private final int number;
 	private final FlowConverter flowconverter;
 	
 	@Override
 	protected void afterBuild() {
-		controller.setNumber(number);
+		controller.setName("");
 		controller.setFlowconverter(flowconverter);
 	}
 }
