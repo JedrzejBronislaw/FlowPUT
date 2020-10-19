@@ -1,10 +1,15 @@
 package jedrzejbronislaw.flowmeasure.view.calibration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jedrzejbronislaw.flowmeasure.components.calibration.Calibration;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager.FlowConsumerType;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
+import jedrzejbronislaw.flowmeasure.settings.Consts;
+import jedrzejbronislaw.flowmeasure.settings.FlowmeterNameProperty;
 import jedrzejbronislaw.flowmeasure.settings.RatioProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.view.Builder;
@@ -45,6 +50,14 @@ public class CalibrationPaneBuilder extends Builder<CalibrationPaneController> {
 		
 		calibration.setAveValueListener(value -> controller.setCurrentAveValue(value));
 		calibration.setValuesListener  (value -> controller.setCurrentValues(value));
+		
+		settings.addChangeListener(() -> {
+			List<String> names = new ArrayList<>(Consts.FLOWMETERS_NUMBER);
+			for (int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
+				names.add(settings.getString(new FlowmeterNameProperty(i)));
+			
+			controller.setFlowmeterNames(names);
+		});
 	}
 
 	private boolean event(EventType event) {

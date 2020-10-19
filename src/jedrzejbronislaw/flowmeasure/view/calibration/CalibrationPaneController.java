@@ -5,7 +5,6 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-import java.util.stream.IntStream;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -14,8 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.util.StringConverter;
-import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.states.AllStates;
 import jedrzejbronislaw.flowmeasure.states.AllStatesListener;
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
@@ -29,13 +26,12 @@ public class CalibrationPaneController implements Initializable, AllStatesListen
 		UNAVAILABLE, AVAILABLE, ONGOING
 	}
 	
-	public static final String DEF_FLOWMETER_NAME = "Flowmeter";
 	private static final DecimalFormat PRECISION_FORMAT = new DecimalFormat("#.###");
 
 	@FXML private VBox mainVbox;
 	@FXML private Button startButton, resetButton, stopButton, saveButton;
 	@FXML private Button newMeasureButton;
-	@FXML private ComboBox<Integer> flowmeterField;
+	@FXML private ComboBox<String> flowmeterField;
 	@FXML private Label flowLabel;
 	@FXML private Label aveFlowLabel;
 	
@@ -52,15 +48,19 @@ public class CalibrationPaneController implements Initializable, AllStatesListen
 	public void setCurrentAveValue(float value) {
 		Platform.runLater(() -> aveFlowLabel.setText(PRECISION_FORMAT.format(value)));
 	}
+	
+	public void setFlowmeterNames(List<String> names) {
+		flowmeterField.getItems().clear();
+		flowmeterField.getItems().addAll(names);
+		flowmeterField.getSelectionModel().select(0);
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		IntStream.range(0, Consts.FLOWMETERS_NUMBER).map(x -> x+1).forEach(flowmeterField.getItems()::add);
-		flowmeterField.setConverter(createFlowmeterNameConverter());
 		flowmeterField.getSelectionModel().select(0);
-		flowmeterField.setOnAction(e -> Injection.run(onChangeFlowmeter, flowmeterField.getValue()));
+		flowmeterField.setOnAction(e -> Injection.run(onChangeFlowmeter, selectedFlowmeter()));
 		
-		startButton     .setOnAction(e -> Injection.run(start, flowmeterField.getValue()));
+		startButton     .setOnAction(e -> Injection.run(start, selectedFlowmeter()));
 		resetButton     .setOnAction(e -> Injection.run(reset));
 		stopButton      .setOnAction(e -> Injection.run(stop));
 		saveButton      .setOnAction(e -> Injection.run(save));
@@ -106,17 +106,8 @@ public class CalibrationPaneController implements Initializable, AllStatesListen
 		String strValues = sb.toString();
 		return strValues;
 	}
-	
-	private StringConverter<Integer> createFlowmeterNameConverter() {
-		return new StringConverter<Integer>() {
-			
-			@Override
-			public String toString(Integer flowmeterNumber) {
-				return DEF_FLOWMETER_NAME + " " + flowmeterNumber;
-			}
-			
-			@Override
-			public Integer fromString(String string) {return null;}
-		};
+
+	private int selectedFlowmeter() {
+		return flowmeterField.getSelectionModel().getSelectedIndex() + 1;
 	}
 }
