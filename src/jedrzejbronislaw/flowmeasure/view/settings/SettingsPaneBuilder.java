@@ -47,13 +47,16 @@ public class SettingsPaneBuilder extends Builder<SettingsPaneController> {
 		});
 		
 		settings.addChangeListener(() -> {
+			for (int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
+				ratios.get(i).setName(settings.getString(new FlowmeterNameProperty(i)));
+			
 			if (!activeUpdating ) return;
 
 			controller.setSettings(settings);
-			for (int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
+			for (int i=0; i<Consts.FLOWMETERS_NUMBER; i++) {
 				ratios.get(i).setValue(settings.getFloat(new RatioProperty(i)));
-			for (int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
 				names.get(i).setName(settings.getString(new FlowmeterNameProperty(i)));
+			}
 		});
 	}
 	

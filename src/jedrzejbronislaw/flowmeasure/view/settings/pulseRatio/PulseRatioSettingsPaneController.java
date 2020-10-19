@@ -15,7 +15,7 @@ public class PulseRatioSettingsPaneController implements Initializable {
 	
 
 	public void setName(String name) {
-		nameLabel.setText(name);
+		nameLabel.setText(name + ":");
 	}
 	
 	public void setValue(float value) {
