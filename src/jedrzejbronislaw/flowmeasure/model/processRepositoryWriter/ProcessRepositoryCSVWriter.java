@@ -36,24 +36,26 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	public static final String PROP_END        = "end";
 	public static final String PROP_DURATION   = "duration";
 	public static final String PROP_BUFFER     = "buffer [ms]";
-	public static final String PROP_PULSE      = "pulse per litre ";
 	public static final String PROP_FLOWMETERS = "num of flowmeters";
 	public static final String PROP_SIZE       = "size";
+	
+	public static final String PROP_FLOWMETER  = "Flowmeter";
+	public static final String PROP_FLOW_NAME  = "Name";
+	public static final String PROP_PULSE      = "Pulses per litre";
 	
 	public static final String UNIX_TIME_HEAD    = "unix time";
 	public static final String FULL_TIME_HEAD    = "full time";
 	public static final String PROCESS_TIME_HEAD = "process time [s]";
 	
-	public static final String DEF_FLOWMETER_NAME = "flowmeter";
+	public static final String DEF_FLOWMETER_NAME = "Flowmeter";
 	
 	public static final String PULSE_COLUMNNAME = "pulse";
 	public static final String  FLOW_COLUMNNAME = "flow";
 
 	public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-
-	@Setter
-	private float pulsePerLitre[];
+	private String[] flowmeterNames = new String[0];
+	private float[]  pulsePerLitre  = new float [0];
 	private FlowmeterCSVWriter[] flowmeterWriters;
 	private int bufferInterval  = 0;
 	
@@ -75,6 +77,17 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		}
 	};
 
+	
+	@Override
+	public void setFlowmeterNames(String[] names) {
+		flowmeterNames = (names != null) ? names : new String[0];
+	}
+	
+	@Override
+	public void setPulsePerLitre(float[] ratios) {
+		pulsePerLitre = (ratios != null) ? ratios : new float[0];
+	}
+	
 	
 	private void createFlowmeterWriters() {
 		if (pulsePerLitre == null) return;
@@ -178,15 +191,28 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		if (bufferInterval>0)
 			csvWriter.property(PROP_BUFFER, bufferInterval);
 		
-		if (pulsePerLitre != null)
-			for(int i=0; i<pulsePerLitre.length; i++)
-				csvWriter.property(PROP_PULSE + (i+1), toString(pulsePerLitre[i]));
-			
+		writeFlowmetersInfo();
 		
 		csvWriter.newLine();
 
 		csvWriter.property(PROP_FLOWMETERS, numOfFlowmeters());
 		csvWriter.property(PROP_SIZE, repository.getSize());
+	}
+	
+	private void writeFlowmetersInfo() throws IOException {
+		int size = Math.max(pulsePerLitre.length, flowmeterNames.length);
+		
+		csvWriter.writeWithSeparator(PROP_FLOWMETER);
+		csvWriter.writeWithSeparator(PROP_FLOW_NAME);
+		csvWriter.writeWithSeparator(PROP_PULSE);
+		csvWriter.newLine();
+		
+		for (int i=0; i<size; i++) {
+			csvWriter.writeWithSeparator(defaultFlowmeterName(i));
+			csvWriter.writeWithSeparator((flowmeterNames.length > i) ? flowmeterNames[i] : "" );
+			csvWriter.writeWithSeparator((pulsePerLitre. length > i) ? toString(pulsePerLitre[i]) : "");
+			csvWriter.newLine();
+		}
 	}
 
 	private void writeDataHeader() throws IOException {
@@ -303,9 +329,13 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	private boolean isSelected(TimeFormat timeformat) {
 		return options.getTimeFormats().contains(timeformat);
 	}
+	
+	private String defaultFlowmeterName(int index) {
+		return DEF_FLOWMETER_NAME + " " + Integer.toString(index+1);
+	}
 
 	private String flowmeterName(int index) {
-		return DEF_FLOWMETER_NAME + Integer.toString(index+1);
+		return (flowmeterNames.length > index) ? flowmeterNames[index] : defaultFlowmeterName(index);
 	}
 	
 	private String unitName(int index) {
