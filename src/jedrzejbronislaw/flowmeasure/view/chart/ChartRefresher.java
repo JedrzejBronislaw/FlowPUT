@@ -10,14 +10,16 @@ import javafx.scene.chart.NumberAxis;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
+import jedrzejbronislaw.flowmeasure.settings.FlowmeterNameProperty;
+import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.tools.ItemSelector;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ChartDataUpdater;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ChartFlowDataUpdater;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ChartOptions;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ChartPulseDataUpdater;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ChartRange;
-import jedrzejbronislaw.flowmeasure.view.chart.components.SeriesManager;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ChartRange.Range;
+import jedrzejbronislaw.flowmeasure.view.chart.components.SeriesManager;
 import lombok.NonNull;
 
 public class ChartRefresher {
@@ -44,10 +46,12 @@ public class ChartRefresher {
 	private ItemSelector<FlowMeasurement> itemSelector = new ItemSelector<>();
 	
 	
-	public ChartRefresher(FlowConverters flowConverters, LineChart<Number, Number> chart) {
+	public ChartRefresher(FlowConverters flowConverters, LineChart<Number, Number> chart, Settings settings) {
 		this.chart = chart;
 		
 		seriesManager = new SeriesManager(chart);
+		seriesManager.setSeriesNameSupplier(number -> settings.getString(new FlowmeterNameProperty(number)));
+		seriesManager.refreshSeriesNames();
 		
 		pulseUpdater = new ChartPulseDataUpdater(chart, seriesManager::setChartPoint);
 		flowUpdater  = new ChartFlowDataUpdater (chart, seriesManager::setChartPoint, flowConverters);
@@ -56,6 +60,8 @@ public class ChartRefresher {
 		
 		setChartStaticProperties();
 		setXAxisStaticProperties();
+		
+		settings.addChangeListener(seriesManager::refreshSeriesNames);
 	}
 	
 	public void refresh(ChartOptions options, ProcessRepository process) {

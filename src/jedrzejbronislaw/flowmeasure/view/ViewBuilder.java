@@ -127,7 +127,7 @@ public class ViewBuilder {
 	}
 	
 	private Node chart() {
-		ChartPaneBuilder builder = new ChartPaneBuilder(this::getCurrentProcessRepo, flowconverters());
+		ChartPaneBuilder builder = new ChartPaneBuilder(this::getCurrentProcessRepo, flowconverters(), settings());
 		builder.build();
 		
 		return builder.getNode();

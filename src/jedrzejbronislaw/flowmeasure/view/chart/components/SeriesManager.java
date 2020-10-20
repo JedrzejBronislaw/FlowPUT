@@ -2,12 +2,15 @@ package jedrzejbronislaw.flowmeasure.view.chart.components;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 
 import javafx.collections.ObservableList;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
+import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.NonNull;
+import lombok.Setter;
 
 public class SeriesManager {
 
@@ -18,12 +21,22 @@ public class SeriesManager {
 	         
 	         private final SeriesVisibilityManager seriesVisibilityManager;
 	         private boolean isNewSeries = false;
+	         
+	@Setter private Function<Integer, String> seriesNameSupplier;
+
 
 	public SeriesManager(LineChart<Number, Number> chart) {
 		this.chart = chart;
 		seriesVisibilityManager = new SeriesVisibilityManager(chart);
 	}
 	         
+	public void refreshSeriesNames() {
+		if (seriesList == null) return;
+		
+		for(int i=0; i<seriesList.size(); i++)
+			seriesList.get(i).setName(flowSeriesName(i));
+	}
+	
 	public void setChartPoint(int flowmeterNumber, Data<Number, Number> chartPoint) {
 		Series<Number, Number> series = seriesList.get(flowmeterNumber);
 
@@ -70,6 +83,7 @@ public class SeriesManager {
 	}
 
 	private String flowSeriesName(int i) {
-		return FLOW_SERIES_NAME_PREFIX + (i+1);
+		String defaultName = FLOW_SERIES_NAME_PREFIX + (i+1);
+		return Injection.get(seriesNameSupplier, i, defaultName);
 	}
 }
