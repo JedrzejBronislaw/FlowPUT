@@ -2,6 +2,7 @@ package jedrzejbronislaw.flowmeasure.tools;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class Injection {
@@ -27,5 +28,13 @@ public class Injection {
 
 	public static <ArgType> ArgType get(Supplier<ArgType> supplier, ArgType defaultValue) {
 		return (supplier == null) ? defaultValue : supplier.get();
+	}
+
+	public static <ArgType, RetrunType> RetrunType get(Function<ArgType, RetrunType> function, ArgType arg) {
+		return get(function, arg, null);
+	}
+
+	public static <ArgType, RetrunType> RetrunType get(Function<ArgType, RetrunType> function, ArgType arg, RetrunType defaultValue) {
+		return (function == null) ? defaultValue : function.apply(arg);
 	}
 }
