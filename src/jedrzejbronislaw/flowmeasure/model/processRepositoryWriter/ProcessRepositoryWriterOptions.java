@@ -35,4 +35,6 @@ public class ProcessRepositoryWriterOptions {
 
 	@Getter @Setter private boolean saveMetadata = true;
 	@Getter @Setter private boolean saveHeaders  = true;
+	
+	@Getter @Setter private boolean[] flowmeters = new boolean[] {true, true, true, true, true, true};
 }

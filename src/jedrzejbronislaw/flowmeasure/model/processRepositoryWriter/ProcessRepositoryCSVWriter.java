@@ -231,7 +231,8 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 
 		writeTimeHeadres();
 		for(int i=0; i<numOfFlowmeters(); i++)
-			csvWriter.writeWithSeparator(flowmeterName(i));
+			if (saveFlowmeter(i))
+				csvWriter.writeWithSeparator(flowmeterName(i));
 
 		csvWriter.newLine();
 	}
@@ -239,31 +240,35 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	private void writeHeader_ManyUnits_UnitTogether() throws IOException {
 		csvWriter.writeSeparators(numOfTimeFormats());
 		csvWriter.write(unitName(0));
-		csvWriter.writeSeparators(numOfFlowmeters());
+		for(int j=0; j<numOfFlowmeters(); j++) if (saveFlowmeter(j)) csvWriter.writeSeparator();
 		csvWriter.write(unitName(1));
 		csvWriter.newLine();
 
 		writeTimeHeadres();
 		for(int i=0; i<numOfUnits(); i++)
 			for(int j=0; j<numOfFlowmeters(); j++)
-				csvWriter.writeWithSeparator(flowmeterName(j));
+				if (saveFlowmeter(j))
+					csvWriter.writeWithSeparator(flowmeterName(j));
 
 		csvWriter.newLine();
 	}
 
 	private void writeHeader_ManyUnits_FlowmeterTogether() throws IOException {
 		csvWriter.writeSeparators(numOfTimeFormats());
-		for(int i=0; i<numOfFlowmeters(); i++) {
-			csvWriter.write(flowmeterName(i));
-			csvWriter.writeSeparators(numOfUnits());
-		}
+		for(int i=0; i<numOfFlowmeters(); i++)
+			if (saveFlowmeter(i)) {
+				csvWriter.write(flowmeterName(i));
+				csvWriter.writeSeparators(numOfUnits());
+			}
+		
 		csvWriter.newLine();
 		
 		writeTimeHeadres();
-		for(int i=0; i<numOfFlowmeters(); i++) {
-			csvWriter.writeWithSeparator(unitName(0));
-			csvWriter.writeWithSeparator(unitName(1));
-		}
+		for(int i=0; i<numOfFlowmeters(); i++)
+			if (saveFlowmeter(i)) {
+				csvWriter.writeWithSeparator(unitName(0));
+				csvWriter.writeWithSeparator(unitName(1));
+			}
 
 		csvWriter.newLine();
 	}
@@ -296,14 +301,22 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 
 		for (Unit unit : units)
 			for(int i=0; i<numOfFlowmeters(); i++)
-				flowmeterWriters[i].writeMeasurement(unit, measurement);
+				if (saveFlowmeter(i))
+					flowmeterWriters[i].writeMeasurement(unit, measurement);
 	}
 
 	private void writeMeasurementFlowmeterTogether(FlowMeasurement measurement, List<Unit> units) throws IOException {
 
 		for(int i=0; i<numOfFlowmeters(); i++)
 			for (Unit unit : units)
-				flowmeterWriters[i].writeMeasurement(unit, measurement);
+				if (saveFlowmeter(i))
+					flowmeterWriters[i].writeMeasurement(unit, measurement);
+	}
+
+	private boolean saveFlowmeter(int i) {
+		boolean[] flowmeters = options.getFlowmeters();
+		
+		return (flowmeters.length > i) ? flowmeters[i] : false;
 	}
 
 	private int numOfTimeFormats() {

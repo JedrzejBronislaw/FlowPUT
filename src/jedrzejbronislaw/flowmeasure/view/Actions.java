@@ -117,7 +117,7 @@ public class Actions implements ActionContainer {
 
 	private void showSaveWindow(ProcessRepositoryWriter writer) {
 		ProcessRepository process = repository().getCurrentProcessRepository();
-		SaveWindowBuilder builder = new SaveWindowBuilder(resources(), process);
+		SaveWindowBuilder builder = new SaveWindowBuilder(resources(), process, settings());
 
 		FileNamer filenamer = new FileNamer1(process);
 		builder.setOwner(components.getPrimaryStage());

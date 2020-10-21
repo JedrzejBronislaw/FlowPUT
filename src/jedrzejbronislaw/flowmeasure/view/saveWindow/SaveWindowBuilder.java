@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -16,6 +17,9 @@ import javafx.stage.Window;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.SaveAction;
+import jedrzejbronislaw.flowmeasure.settings.Consts;
+import jedrzejbronislaw.flowmeasure.settings.FlowmeterNameProperty;
+import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.view.Builder;
@@ -38,33 +42,47 @@ public class SaveWindowBuilder extends Builder<SaveWindowController> {
 
 	@NonNull private ResourceAccess resources;
 	@NonNull private ProcessRepository process;
+	@NonNull private Settings settings;
 
 	@Setter private Window owner;
 	@Setter private SaveAction saveAction;
 	@Setter private Consumer<File> onFileChoose;
 	@Setter private Supplier<String> fileNamer;
 	
-	private Stage stage;
+	private Stage stage = new Stage();
 	private File initialDirectory = null;
 	
 
 	@Override
 	protected void afterBuild() {
-		buildStage();
-
+		controller.setFlowmeterNames(getFlowmeterNames());
 		controller.setExitAction(stage::close);
 		controller.setSaveAction(this::save);
+		
+		buildStage();
+	}
+
+	private String[] getFlowmeterNames() {
+		int size = Consts.FLOWMETERS_NUMBER;
+
+		String[] names = new String[size];
+		
+		for(int i=0; i<size; i++)
+			names[i] = settings.getString(new FlowmeterNameProperty(i));
+
+		return names;
 	}
 
 	private void buildStage() {
 		Scene scene = new Scene((Parent)node);
 		scene.getStylesheets().add(resources.getResourcePath(CSS_FILE_NAME));
 		
-		stage = new Stage();
 		stage.getIcons().add(loadLogo());
 		stage.initOwner(owner);
 		stage.setScene(scene);
 		stage.setTitle(WINDOW_TITLE);
+
+		Platform.runLater(() -> stage.sizeToScene());
 	}
 
 	private Image loadLogo() {

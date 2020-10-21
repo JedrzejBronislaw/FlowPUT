@@ -1,12 +1,14 @@
 package jedrzejbronislaw.flowmeasure.view.saveWindow;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -33,13 +35,31 @@ public class SaveWindowController implements Initializable {
 	
 	@FXML private VBox orderBox;
 	@FXML private VBox togetherBox;
+	@FXML private VBox flowmetersBox;
 
 	@FXML private CheckBox openBox;
 	@FXML private Button saveButton;
 
 	@Setter private BiConsumer<ProcessRepositoryWriterOptions, Boolean> saveAction;
 	@Setter private Runnable exitAction;
+	
+	        private List<CheckBox> saveFlowmeters = new ArrayList<>();
 
+	
+	public void setFlowmeterNames(String[] names) {
+		Platform.runLater(() -> {
+			flowmetersBox.getChildren().clear();
+			saveFlowmeters.clear();
+			
+			for (String name : names) {
+				CheckBox checkBox = new CheckBox(name);
+				checkBox.setSelected(true);
+				
+				flowmetersBox.getChildren().add(checkBox);
+				saveFlowmeters.add(checkBox);
+			}
+		});
+	}
 	
 	private ProcessRepositoryWriterOptions getOptions() {
 		ProcessRepositoryWriterOptions options = new ProcessRepositoryWriterOptions();
@@ -67,6 +87,7 @@ public class SaveWindowController implements Initializable {
 		options.setSaveMetadata(metadata.isSelected());
 		options.setSaveHeaders(headers.isSelected());
 		
+		options.setFlowmeters(flowmetersTab());
 		return options;
 	}
 	
@@ -97,6 +118,16 @@ public class SaveWindowController implements Initializable {
 			if (Stream.of(boxes).allMatch(box -> !box.isSelected()))
 				sourceBox.setSelected(true);
 		};
+	}
+	
+	private boolean[] flowmetersTab() {
+		int size = saveFlowmeters.size();
+		boolean[] flowmeters = new boolean[size];
+		
+		for (int i=0; i<size; i++)
+			flowmeters[i] = saveFlowmeters.get(i).isSelected();
+		
+		return flowmeters;
 	}
 
 	private boolean openAfterSaving() {
