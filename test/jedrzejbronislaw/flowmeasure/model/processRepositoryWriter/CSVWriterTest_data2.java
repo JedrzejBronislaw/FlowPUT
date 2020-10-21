@@ -74,8 +74,8 @@ public class CSVWriterTest_data2 {
 		assertEquals(3, secondLine.length);
 		
 		assertEquals(ProcessRepositoryCSVWriter.FULL_TIME_HEAD, secondLine[0]);
-		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + "1", secondLine[1]);
-		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + "2", secondLine[2]);
+		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + " 1", secondLine[1]);
+		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + " 2", secondLine[2]);
 	}
 	
 	@Test

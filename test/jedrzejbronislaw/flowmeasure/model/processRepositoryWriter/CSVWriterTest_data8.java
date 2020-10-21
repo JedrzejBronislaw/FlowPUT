@@ -85,8 +85,8 @@ public class CSVWriterTest_data8 {
 		
 		assertEquals(ProcessRepositoryCSVWriter.UNIX_TIME_HEAD,    secondLine[0]);
 		assertEquals(ProcessRepositoryCSVWriter.FULL_TIME_HEAD,    secondLine[1]);
-		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + "1", secondLine[2]);
-		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + "2", secondLine[3]);
+		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + " 1", secondLine[2]);
+		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + " 2", secondLine[3]);
 	}
 	
 	@Test

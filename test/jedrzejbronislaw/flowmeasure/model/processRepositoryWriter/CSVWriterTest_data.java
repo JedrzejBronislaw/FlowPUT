@@ -89,10 +89,10 @@ public class CSVWriterTest_data {
 		assertEquals(ProcessRepositoryCSVWriter.UNIX_TIME_HEAD,    secondLine[0]);
 		assertEquals(ProcessRepositoryCSVWriter.FULL_TIME_HEAD,    secondLine[1]);
 		assertEquals(ProcessRepositoryCSVWriter.PROCESS_TIME_HEAD, secondLine[2]);
-		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + "1", secondLine[3]);
-		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + "2", secondLine[4]);
-		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + "1", secondLine[5]);
-		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + "2", secondLine[6]);
+		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + " 1", secondLine[3]);
+		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + " 2", secondLine[4]);
+		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + " 1", secondLine[5]);
+		assertEquals(ProcessRepositoryCSVWriter.DEF_FLOWMETER_NAME + " 2", secondLine[6]);
 	}
 	
 	@Test

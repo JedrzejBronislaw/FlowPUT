@@ -53,11 +53,15 @@ public class CSVWriterTest_allMetadata {
 	}
 
 	private void checkProperty(String name, String value) {
+		checkProperty(name, 1, value);
+	}
+
+	private void checkProperty(String name, int i, String value) {
 		assertTrue(parser.propertyExists(name));
 		
 		if(value != null) {
-			assertEquals(2, parser.getProperty(name).length);
-			assertEquals(value, parser.getProperty(name)[1]);
+			assertTrue(parser.getProperty(name).length >= (i+1));
+			assertEquals(value, parser.getProperty(name)[i]);
 		} else
 			assertEquals(1, parser.getProperty(name).length);
 	}
@@ -97,8 +101,8 @@ public class CSVWriterTest_allMetadata {
 	
 	@Test
 	public void property_pulse() {
-		checkProperty(ProcessRepositoryCSVWriter.PROP_PULSE + 1, "350.0");
-		checkProperty(ProcessRepositoryCSVWriter.PROP_PULSE + 2, "350.0");
+		checkProperty(ProcessRepositoryCSVWriter.PROP_FLOWMETER + " 1", 2, "350.0");
+		checkProperty(ProcessRepositoryCSVWriter.PROP_FLOWMETER + " 2", 2, "350.0");
 	}
 	
 	@Test
