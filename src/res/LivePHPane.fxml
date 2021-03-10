@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
@@ -25,8 +26,18 @@
             <Label styleClass="key" text="conductivity:" GridPane.rowIndex="1" />
             <Label styleClass="key" text="current:" GridPane.rowIndex="2" />
             <Label fx:id="pHLabel" styleClass="value" text="0" GridPane.columnIndex="1" />
-            <Label fx:id="conductivityLabel" styleClass="value" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="currentLabel" styleClass="value" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <HBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <Label fx:id="conductivityLabel" styleClass="value" text="0" />
+                  <Label text="mS/cm" />
+               </children>
+            </HBox>
+            <HBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Label fx:id="currentLabel" styleClass="value" text="0" />
+                  <Label text="A" />
+               </children>
+            </HBox>
          </children>
       </GridPane>
    </children>

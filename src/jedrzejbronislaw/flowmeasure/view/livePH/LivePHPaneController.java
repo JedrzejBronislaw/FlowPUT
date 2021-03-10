@@ -23,7 +23,8 @@ public class LivePHPaneController implements Initializable {
 	}
 	
 	private void refreshValue(Integer value, Label label) {
-		Platform.runLater(() -> label.setText(value.toString()));
+		Float fvalue = (float) (value/100.0);
+		Platform.runLater(() -> label.setText(fvalue.toString()));
 	}
 	
 	@Override
