@@ -16,6 +16,7 @@ import jedrzejbronislaw.flowmeasure.events.EventPolicy;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.flowDevice.FlowDevice;
 import jedrzejbronislaw.flowmeasure.model.Repository;
+import jedrzejbronislaw.flowmeasure.pHDevice.PHDevice;
 import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
@@ -23,6 +24,7 @@ import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.InternalResourceAccess;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
+import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import jedrzejbronislaw.flowmeasure.view.Actions;
 import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
 import jedrzejbronislaw.flowmeasure.view.ViewMediator;
@@ -34,7 +36,7 @@ public class Components {
 	private Stage primaryStage;
 
 	private ResourceAccess resources;
-	private FlowDevice device;
+	private UARTDevice device;
 	private FlowManager flowManager;
 	private Settings settings;
 	private ConnectionMonitor connectionMonitor;
@@ -54,7 +56,8 @@ public class Components {
 		
 		settings = new Settings();
 		viewMediator = new ViewMediator();
-		device = buildFlowDevice();
+//		device = buildFlowDevice();
+		device = buildPHDevice();
 		connectionMonitor = buildConnectionMonitor();
 		flowConverters = new FlowConverters(settings, Consts.FLOWMETERS_NUMBER);
 		eventManager = new EventManager();
@@ -88,8 +91,16 @@ public class Components {
 		createViewBuilder().build();
 	}
 	
+	private UARTDevice buildDevice(UARTDevice device) {
+		device.setIncorrectMessageReceive(m -> System.out.println("(" + LocalDateTime.now().toString() + ") Incorrect Message: " + m));
+		device.setDeviceConfirmation(() -> System.out.println("Device confirmation"));
+			
+		return device;
+	}
+	
 	private FlowDevice buildFlowDevice() {
 		FlowDevice device = new FlowDevice();
+		buildDevice(device);
 
 		device.setNewSingleFlowReceive(viewMediator::showCurrentFlow);
 		
@@ -98,9 +109,20 @@ public class Components {
 			flowManager.addFlowMeasurement(flows);
 		});
 
-		device.setIncorrectMessageReceive(m -> System.out.println("(" + LocalDateTime.now().toString() + ") Incorrect Message: " + m));
-		device.setDeviceConfirmation(() -> System.out.println("Device confirmation"));
-			
+		return device;
+	}
+	
+	private PHDevice buildPHDevice() {
+		PHDevice device = new PHDevice();
+		buildDevice(device);
+
+		device.setNewSingleFlowReceive(viewMediator::showCurrentFlow);
+		
+		device.setNewFlowsReceive(flows -> {
+			eventManager.submitEvent(EventType.RECEIVED_DATA);
+			flowManager.addFlowMeasurement(flows);
+		});
+
 		return device;
 	}
 	

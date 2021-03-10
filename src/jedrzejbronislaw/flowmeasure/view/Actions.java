@@ -11,7 +11,6 @@ import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager.FlowConsumerType;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
-import jedrzejbronislaw.flowmeasure.flowDevice.FlowDevice;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.Repository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryCSVWriter;
@@ -25,6 +24,7 @@ import jedrzejbronislaw.flowmeasure.tools.fileNamer.FileNamer;
 import jedrzejbronislaw.flowmeasure.tools.fileNamer.FileNamer1;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.tools.uart.UART;
+import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.AutoConnection;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionAttempt;
@@ -217,7 +217,7 @@ public class Actions implements ActionContainer {
 		return components.getConnectionMonitor();
 	}
 	
-	private FlowDevice device() {
+	private UARTDevice device() {
 		return components.getDevice();
 	}
 	
