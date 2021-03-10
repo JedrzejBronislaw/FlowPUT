@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" fillWidth="false" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.view.livePH.LivePHPaneController">
+   <children>
+      <Label styleClass="subtitle" text="Live pH preview" />
+      <GridPane vgap="10.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label styleClass="key" text="pH:" />
+            <Label styleClass="key" text="conductivity:" GridPane.rowIndex="1" />
+            <Label styleClass="key" text="current:" GridPane.rowIndex="2" />
+            <Label fx:id="pHLabel" styleClass="value" text="0" GridPane.columnIndex="1" />
+            <Label fx:id="conductivityLabel" styleClass="value" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="currentLabel" styleClass="value" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+   </children>
+   <padding>
+      <Insets top="10.0" />
+   </padding>
+</VBox>

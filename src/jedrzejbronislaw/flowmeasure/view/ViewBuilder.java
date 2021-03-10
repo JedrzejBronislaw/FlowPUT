@@ -34,6 +34,7 @@ import jedrzejbronislaw.flowmeasure.view.chart.ChartPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.connection.UARTParamsBuilder;
 import jedrzejbronislaw.flowmeasure.view.dialog.DialogPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.live.LivePaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.livePH.LivePHPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindowBuilder;
 import jedrzejbronislaw.flowmeasure.view.settings.SettingsPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.sidePane.SidePaneBuilder;
@@ -174,6 +175,13 @@ public class ViewBuilder {
 		
 		return builder.getNode();
 	}
+
+	private Node livePHPane() {
+		LivePHPaneBuilder builder = new LivePHPaneBuilder(viewMediator(), flowconverters(), settings());
+		builder.build();
+		
+		return builder.getNode();
+	}
 	
 	private Node mainWindow() {
 		MainWindowBuilder builder = new MainWindowBuilder();
@@ -181,7 +189,8 @@ public class ViewBuilder {
 		
 		builder.getController().getBorderPane().setLeft(sidePane());
 		builder.getController().getBorderPane().setRight(uart());
-		builder.getController().setLivePane(livePane());
+//		builder.getController().setLivePane(livePane());
+		builder.getController().setLivePane(livePHPane());
 		builder.getController().setTablePane(table());
 		builder.getController().setChartPane(chart());
 		builder.getController().setSettingsPane(settingsPane());
