@@ -2,7 +2,6 @@ package jedrzejbronislaw.flowmeasure.flowDevice;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import jedrzejbronislaw.flowmeasure.tools.Injection;
@@ -29,13 +28,13 @@ public class FlowDevice extends UARTDevice {
 
 	@Override
 	protected MessageTag handleMessageLine(String message) {
-		if(!correctLineFormat(message)) return MessageTag.INCORRECT;
+		if (!isLineFormatCorrect(message)) return MessageTag.INCORRECT;
 
 		String content = extraxtContent(message);
 		int numbers[]  = extractNumbers(content);
 		
-		if(numbers == null)             return MessageTag.INCORRECT;
-		if(correctSize(numbers))        return MessageTag.INCORRECT;
+		if (numbers == null)         return MessageTag.INCORRECT;
+		if (!isSizeCorrect(numbers)) return MessageTag.INCORRECT;
 		
 		int[] flow = extractFlow(numbers);
 
@@ -48,7 +47,7 @@ public class FlowDevice extends UARTDevice {
 		Injection.run(newFlowsReceive, flow);
 		
 		if (newSingleFlowReceive != null)
-			for(int i=0; i<flow.length; i++) newSingleFlowReceive.accept(flow[i], i);
+			for (int i=0; i<flow.length; i++) newSingleFlowReceive.accept(flow[i], i);
 	}
 
 	private int[] extractNumbers(String message) {
@@ -66,14 +65,20 @@ public class FlowDevice extends UARTDevice {
 	}
 	
 	private int[] extractFlow(int[] numbers) {
-		return IntStream.rangeClosed(1, numbers[0]).map(i -> numbers[i]).toArray();
+		int n = numbers[0];
+		int flows[] = new int[n];
+		
+		for (int i=0; i<n; i++)
+			flows[i] = numbers[i+1];
+		
+		return flows;
 	}
 	
-	private boolean correctSize(int[] numbers) {
-		return numbers[0]+1 > numbers.length;
+	private boolean isSizeCorrect(int[] numbers) {
+		return numbers[0] <= numbers.length - 1;
 	}
 
-	private boolean correctLineFormat(String message) {
+	private boolean isLineFormatCorrect(String message) {
 		int length = message.length();
 		
 		return length >= 4
