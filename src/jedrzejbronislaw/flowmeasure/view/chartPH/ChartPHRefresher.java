@@ -21,6 +21,7 @@ import jedrzejbronislaw.flowmeasure.view.chart.components.ChartRange;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ChartRange.Range;
 import jedrzejbronislaw.flowmeasure.view.chart.components.SeriesManager;
 import lombok.NonNull;
+import lombok.Setter;
 
 public class ChartPHRefresher {
 	
@@ -44,6 +45,8 @@ public class ChartPHRefresher {
 	private Range range;
 	
 	private ItemSelector<FlowMeasurement> itemSelector = new ItemSelector<>();
+	
+	@Setter private List<Integer> seriesFilter;
 	
 	
 	public ChartPHRefresher(FlowConverters flowConverters, LineChart<Number, Number> chart, Settings settings) {
@@ -128,7 +131,7 @@ public class ChartPHRefresher {
 	}
 
 	private void updateValues() {
-		chartUpdater().update(range.getFirst(), range.getLast(), process, data);
+		chartUpdater().setFilter(seriesFilter).update(range.getFirst(), range.getLast(), process, data);
 	}
 
 	private ChartDataUpdater chartUpdater() {

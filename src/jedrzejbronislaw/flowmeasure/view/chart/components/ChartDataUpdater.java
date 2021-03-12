@@ -27,10 +27,11 @@ public abstract class ChartDataUpdater {
 	private List<FlowMeasurement> data;
 	private ProcessRepository process;
 	
+	private List<Integer> filter;
+	
+	
 	public void update(int firstIndex, int lastIndex, ProcessRepository process, List<FlowMeasurement> data) {
-		Data<Number, Number> chartPoint;
 		Float time;
-		float value;
 
 		this.process = process;
 		this.data = data;
@@ -42,12 +43,22 @@ public abstract class ChartDataUpdater {
 			time = measurementCalculation(i);
 			if (time == null) continue;
 		
-			for (int flowmeter=0; flowmeter<process.getNumOfFlowmeters(); flowmeter++) {
-				value = getFlowmeterValue(flowmeter);
-				chartPoint = new Data<Number, Number>(time, value);
-				chartPointSetter.setPoint(flowmeter, chartPoint);
-			}
+			
+			if (filter != null)
+				for (Integer flowmeter : filter)
+					setPoint(time, flowmeter);
+			else
+				for (int flowmeter=0; flowmeter<process.getNumOfFlowmeters(); flowmeter++)
+					setPoint(time, flowmeter);
 		}
+	}
+	private void setPoint(Float time, int flowmeter) {
+		Data<Number, Number> chartPoint;
+		float value;
+		
+		value = getFlowmeterValue(flowmeter);
+		chartPoint = new Data<Number, Number>(time, value);
+		chartPointSetter.setPoint(flowmeter, chartPoint);
 	}
 	
 	protected FlowMeasurement getMeasurement(int number) {
@@ -61,5 +72,10 @@ public abstract class ChartDataUpdater {
 	
 	protected float timeSec(FlowMeasurement startMeasurement, FlowMeasurement measurement) {
 		return ChartRefresher.timeSec(startMeasurement.getTime(), measurement);
+	}
+	
+	public ChartDataUpdater setFilter(List<Integer> filter) {
+		this.filter = filter;
+		return this;
 	}
 }

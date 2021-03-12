@@ -1,5 +1,6 @@
 package jedrzejbronislaw.flowmeasure.view.chartPH;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
@@ -25,6 +26,10 @@ public class ChartPHPaneBuilder extends Builder<ChartPHPaneController> {
 		ChartPHRefresher chartPHRefresher = new ChartPHRefresher(flowconverters, controller.getChartPH(), settings);
 		ChartPHRefresher chartECRefresher = new ChartPHRefresher(flowconverters, controller.getChartEC(), settings);
 		ChartPHRefresher chartAMRefresher = new ChartPHRefresher(flowconverters, controller.getChartAM(), settings);
+		
+		chartPHRefresher.setSeriesFilter(Arrays.asList(0));
+		chartECRefresher.setSeriesFilter(Arrays.asList(1));
+		chartAMRefresher.setSeriesFilter(Arrays.asList(2));
 		
 		controller.setRefreshButtonAction(options -> {
 			chartPHRefresher.refresh(options, currentProcess.get());
