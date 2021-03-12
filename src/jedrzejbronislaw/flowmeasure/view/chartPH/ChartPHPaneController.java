@@ -11,7 +11,6 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.RadioButton;
 import javafx.scene.layout.BorderPane;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.SnapshotSaver;
@@ -28,8 +27,7 @@ public class ChartPHPaneController implements Initializable {
 	@FXML private Button refreshButton, saveButton;
 	@FXML private BorderPane mainPane;
 	@FXML private CheckBox lastSecsBox, liveBox;
-	@FXML private RadioButton pulsesRadio, litresPerSecRadio;
-	
+
 	@Getter private LineChart<Number, Number> chart = newChart();
 	@Setter private Consumer<ChartOptions> refreshButtonAction;
 	
@@ -47,8 +45,6 @@ public class ChartPHPaneController implements Initializable {
 		refreshButton.disableProperty().bind(liveBox.selectedProperty());
 		
 		refreshButton    .setOnAction(this::refresh);
-		pulsesRadio      .setOnAction(this::refresh);
-		litresPerSecRadio.setOnAction(this::refresh);
 		
 		saveButton.setOnAction(e -> SnapshotSaver.withFileChooser(chart));
 		liveBox.setOnAction(e -> {
@@ -66,17 +62,11 @@ public class ChartPHPaneController implements Initializable {
 	private ChartOptions getChartOptions() {
 		return ChartOptions.builder()
 				.lastSecOption(isLastSeconds())
-				.unit(getValueUnit())
+				.unit(ValueUnit.PULSES)
 				.build();
 	}
 	
 	private boolean isLastSeconds() {
 		return lastSecsBox.isSelected();
-	}
-
-	private ValueUnit getValueUnit(){
-		if(pulsesRadio.isSelected())       return ValueUnit.PULSES;
-		if(litresPerSecRadio.isSelected()) return ValueUnit.FLOW_UNIT;
-		return null;
 	}
 }

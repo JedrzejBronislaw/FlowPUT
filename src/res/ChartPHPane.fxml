@@ -2,8 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -21,16 +19,6 @@
             <VBox alignment="CENTER" spacing="5.0">
                <children>
                   <CheckBox fx:id="lastSecsBox" mnemonicParsing="false" text="Show only&#10;last 60 sec" wrapText="true" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER_LEFT" spacing="5.0">
-               <children>
-                  <RadioButton fx:id="pulsesRadio" mnemonicParsing="false" text="Pulses">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="unit" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton fx:id="litresPerSecRadio" mnemonicParsing="false" selected="true" text="Liters/hour" toggleGroup="$unit" />
                </children>
             </VBox>
             <Button fx:id="saveButton" mnemonicParsing="false" prefWidth="120.0" text="Save chart" />
