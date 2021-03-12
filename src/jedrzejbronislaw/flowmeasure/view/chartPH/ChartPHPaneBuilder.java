@@ -22,7 +22,14 @@ public class ChartPHPaneBuilder extends Builder<ChartPHPaneController> {
 
 	@Override
 	protected void afterBuild() {
-		ChartPHRefresher chartRefresher = new ChartPHRefresher(flowconverters, controller.getChart(), settings);
-		controller.setRefreshButtonAction(options -> chartRefresher.refresh(options, currentProcess.get()));
+		ChartPHRefresher chartPHRefresher = new ChartPHRefresher(flowconverters, controller.getChartPH(), settings);
+		ChartPHRefresher chartECRefresher = new ChartPHRefresher(flowconverters, controller.getChartEC(), settings);
+		ChartPHRefresher chartAMRefresher = new ChartPHRefresher(flowconverters, controller.getChartAM(), settings);
+		
+		controller.setRefreshButtonAction(options -> {
+			chartPHRefresher.refresh(options, currentProcess.get());
+			chartECRefresher.refresh(options, currentProcess.get());
+			chartAMRefresher.refresh(options, currentProcess.get());
+		});
 	}
 }

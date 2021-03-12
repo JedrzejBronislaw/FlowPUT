@@ -25,4 +25,7 @@
          </children>
       </HBox>
    </bottom>
+   <center>
+      <VBox fx:id="chartPane" alignment="TOP_CENTER" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>
