@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.view.chartPH.ChartPHPaneController">
+   <bottom>
+      <HBox alignment="TOP_CENTER" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox spacing="5.0">
+               <children>
+                  <CheckBox fx:id="liveBox" mnemonicParsing="false" text="Live" />
+                  <Button fx:id="refreshButton" mnemonicParsing="false" prefWidth="120.0" text="Refresh" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" spacing="5.0">
+               <children>
+                  <CheckBox fx:id="lastSecsBox" mnemonicParsing="false" text="Show only&#10;last 60 sec" wrapText="true" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" spacing="5.0">
+               <children>
+                  <RadioButton fx:id="pulsesRadio" mnemonicParsing="false" text="Pulses">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="unit" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="litresPerSecRadio" mnemonicParsing="false" selected="true" text="Liters/hour" toggleGroup="$unit" />
+               </children>
+            </VBox>
+            <Button fx:id="saveButton" mnemonicParsing="false" prefWidth="120.0" text="Save chart" />
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>

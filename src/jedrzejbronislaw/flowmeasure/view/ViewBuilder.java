@@ -31,6 +31,7 @@ import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.chart.ChartPaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.chartPH.ChartPHPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.connection.UARTParamsBuilder;
 import jedrzejbronislaw.flowmeasure.view.dialog.DialogPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.live.LivePaneBuilder;
@@ -133,6 +134,13 @@ public class ViewBuilder {
 		
 		return builder.getNode();
 	}
+	
+	private Node chartPH() {
+		ChartPHPaneBuilder builder = new ChartPHPaneBuilder(this::getCurrentProcessRepo, flowconverters(), settings());
+		builder.build();
+		
+		return builder.getNode();
+	}
 
 	private Node table() {
 		MeasurementTableBuilder builder = new MeasurementTableBuilder(this::getCurrentProcessRepo);
@@ -192,7 +200,8 @@ public class ViewBuilder {
 //		builder.getController().setLivePane(livePane());
 		builder.getController().setLivePane(livePHPane());
 		builder.getController().setTablePane(table());
-		builder.getController().setChartPane(chart());
+//		builder.getController().setChartPane(chart());
+		builder.getController().setChartPane(chartPH());
 		builder.getController().setSettingsPane(settingsPane());
 		builder.getController().setCalibrationPane(calibrationPane());
 
