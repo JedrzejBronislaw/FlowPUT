@@ -1,6 +1,5 @@
 package jedrzejbronislaw.flowmeasure.view.chart.components;
 
-import jedrzejbronislaw.flowmeasure.view.chart.ChartPaneController.ValueUnit;
 import lombok.Builder;
 import lombok.Getter;
 

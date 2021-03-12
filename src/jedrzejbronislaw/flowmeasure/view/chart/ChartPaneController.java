@@ -17,16 +17,13 @@ import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.SnapshotSaver;
 import jedrzejbronislaw.flowmeasure.tools.loop.Refresher;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ChartOptions;
+import jedrzejbronislaw.flowmeasure.view.chart.components.ValueUnit;
 import lombok.Getter;
 import lombok.Setter;
 
 public class ChartPaneController implements Initializable {
 
 	private static final int REFRESHING_TIME = 1000;
-	
-	public enum ValueUnit{
-		PULSES, FLOW_UNIT
-	}
 	
 	@FXML private Button refreshButton, saveButton;
 	@FXML private BorderPane mainPane;
