@@ -1,10 +1,12 @@
 package jedrzejbronislaw.flowmeasure.pHDevice;
 
+import java.util.Arrays;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import jedrzejbronislaw.flowmeasure.components.ValueConverter;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import lombok.Setter;
@@ -45,10 +47,24 @@ public class PHDevice extends UARTDevice {
 	}
 	
 	private void deliverFlow(int[] flow) {
-		Injection.run(newFlowsReceive, flow);
+		Injection.run(newFlowsReceive, convertValues(flow));
 		
 		if (newSingleFlowReceive != null)
 			for(int i=0; i<flow.length; i++) newSingleFlowReceive.accept(flow[i], i);
+	}
+
+	private int[] convertValues(int[] values) {
+		int[] tab = Arrays.copyOf(values, values.length);
+		
+		float ph      = ValueConverter.valueToPH(     tab[0]/10f);
+		float ec      = ValueConverter.valueToVoltage(tab[1]/10f);
+		float ampere  = ValueConverter.valueToAmpere( tab[2]/10f);
+		
+		tab[0] = (int) (ph     * 100);
+		tab[1] = (int) (ec     * 1000);
+		tab[2] = (int) (ampere * 1000);
+		
+		return tab;
 	}
 
 	private int[] extractNumbers(String message) {
