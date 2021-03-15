@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.pHDevice;
+package jedrzejbronislaw.flowmeasure.edDevice;
 
 import java.util.Arrays;
 import java.util.function.BiConsumer;
@@ -11,21 +11,21 @@ import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import lombok.Setter;
 
-public class PHDevice extends UARTDevice {
+public class EDDevice extends UARTDevice {
 
 	private static final String VALUE_SEPARATOR = ";";
 	private static final char LINE_FIRST_CHAR   = '^';
 	private static final char LINE_LAST_CHAR    = '$';
 	
-	private static final String PROOF_REQUEST = "PHDevice";
-	private static final String PROOF_MESSAGE = "pHD present!";
+	private static final String PROOF_REQUEST = "EDDevice";
+	private static final String PROOF_MESSAGE = "EDD present!";
 
 
 	@Setter private BiConsumer<Integer, Integer> newSingleFlowReceive;
 	@Setter private Consumer<int[]> newFlowsReceive;
 	
 
-	public PHDevice() {
+	public EDDevice() {
 		super(PROOF_REQUEST, PROOF_MESSAGE);
 	}
 

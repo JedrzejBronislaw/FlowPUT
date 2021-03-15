@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view.chartPH;
+package jedrzejbronislaw.flowmeasure.view.chartED;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -23,7 +23,7 @@ import jedrzejbronislaw.flowmeasure.view.chart.components.SeriesManager;
 import lombok.NonNull;
 import lombok.Setter;
 
-public class ChartPHRefresher {
+public class ChartEDRefresher {
 	
 	private static final int DATA_SIZE_LIMIT = 1000;
 	private static final String AXIS_LABEL_TIME = "time [s]";
@@ -49,7 +49,7 @@ public class ChartPHRefresher {
 	@Setter private List<Integer> seriesFilter;
 	
 	
-	public ChartPHRefresher(FlowConverters flowConverters, LineChart<Number, Number> chart, Settings settings) {
+	public ChartEDRefresher(FlowConverters flowConverters, LineChart<Number, Number> chart, Settings settings) {
 		this.chart = chart;
 		
 		seriesManager = new SeriesManager(chart);

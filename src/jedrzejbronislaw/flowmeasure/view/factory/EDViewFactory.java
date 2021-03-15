@@ -4,16 +4,16 @@ import javafx.scene.Node;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneBuilder;
-import jedrzejbronislaw.flowmeasure.view.chartPH.ChartPHPaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.chartED.ChartEDPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.connection.UARTParamsBuilder;
-import jedrzejbronislaw.flowmeasure.view.livePH.LivePHPaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.liveED.LiveEDPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.settings.SettingsPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.sidePane.SidePaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.table.MeasurementTableBuilder;
 
-public class PHViewFactory extends ViewFactory {
+public class EDViewFactory extends ViewFactory {
 	
-	public PHViewFactory(Components components, ActionContainer actions) {
+	public EDViewFactory(Components components, ActionContainer actions) {
 		super(components, actions);
 	}
 
@@ -31,7 +31,7 @@ public class PHViewFactory extends ViewFactory {
 	
 	@Override
 	public Node chart() {
-		ChartPHPaneBuilder builder = new ChartPHPaneBuilder(this::getCurrentProcessRepo, flowconverters(), settings());
+		ChartEDPaneBuilder builder = new ChartEDPaneBuilder(this::getCurrentProcessRepo, flowconverters(), settings());
 		builder.build();
 		
 		return builder.getNode();
@@ -78,7 +78,7 @@ public class PHViewFactory extends ViewFactory {
 
 	@Override
 	public Node livePane() {
-		LivePHPaneBuilder builder = new LivePHPaneBuilder(viewMediator(), flowconverters(), settings());
+		LiveEDPaneBuilder builder = new LiveEDPaneBuilder(viewMediator(), flowconverters(), settings());
 		builder.build();
 		
 		return builder.getNode();

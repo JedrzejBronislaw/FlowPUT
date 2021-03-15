@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view.livePH;
+package jedrzejbronislaw.flowmeasure.view.liveED;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 import jedrzejbronislaw.flowmeasure.components.ValueConverter;
 import jedrzejbronislaw.flowmeasure.view.ViewMediator;
 
-public class LivePHPaneController implements Initializable {
+public class LiveEDPaneController implements Initializable {
 
 	@FXML private Label pHLabel;
 	@FXML private Label conductivityLabel;

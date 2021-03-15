@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view.chartPH;
+package jedrzejbronislaw.flowmeasure.view.chartED;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,7 +20,7 @@ import jedrzejbronislaw.flowmeasure.view.chart.components.ValueUnit;
 import lombok.Getter;
 import lombok.Setter;
 
-public class ChartPHPaneController implements Initializable {
+public class ChartEDPaneController implements Initializable {
 
 	private static final int REFRESHING_TIME = 1000;
 	

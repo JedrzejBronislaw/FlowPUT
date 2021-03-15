@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view.livePH;
+package jedrzejbronislaw.flowmeasure.view.liveED;
 
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
@@ -9,9 +9,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class LivePHPaneBuilder extends Builder<LivePHPaneController> {
+public class LiveEDPaneBuilder extends Builder<LiveEDPaneController> {
 
-	@Getter private String fxmlFilePath = "LivePHPane.fxml";
+	@Getter private String fxmlFilePath = "LiveEDPane.fxml";
 
 	@NonNull private final ViewMediator viewMediator;
 	@NonNull private final FlowConverters flowConverters;

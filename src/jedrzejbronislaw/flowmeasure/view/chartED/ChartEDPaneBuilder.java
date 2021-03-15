@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view.chartPH;
+package jedrzejbronislaw.flowmeasure.view.chartED;
 
 import java.util.Arrays;
 import java.util.function.Supplier;
@@ -12,9 +12,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ChartPHPaneBuilder extends Builder<ChartPHPaneController> {
+public class ChartEDPaneBuilder extends Builder<ChartEDPaneController> {
 
-	@Getter private String fxmlFilePath = "ChartPHPane.fxml";
+	@Getter private String fxmlFilePath = "ChartEDPane.fxml";
 	
 	@NonNull private final Supplier<ProcessRepository> currentProcess;
 	@NonNull private final FlowConverters flowconverters;
@@ -23,9 +23,9 @@ public class ChartPHPaneBuilder extends Builder<ChartPHPaneController> {
 
 	@Override
 	protected void afterBuild() {
-		ChartPHRefresher chartPHRefresher = new ChartPHRefresher(flowconverters, controller.getChartPH(), settings);
-		ChartPHRefresher chartECRefresher = new ChartPHRefresher(flowconverters, controller.getChartEC(), settings);
-		ChartPHRefresher chartAMRefresher = new ChartPHRefresher(flowconverters, controller.getChartAM(), settings);
+		ChartEDRefresher chartPHRefresher = new ChartEDRefresher(flowconverters, controller.getChartPH(), settings);
+		ChartEDRefresher chartECRefresher = new ChartEDRefresher(flowconverters, controller.getChartEC(), settings);
+		ChartEDRefresher chartAMRefresher = new ChartEDRefresher(flowconverters, controller.getChartAM(), settings);
 		
 		chartPHRefresher.setSeriesFilter(Arrays.asList(0));
 		chartECRefresher.setSeriesFilter(Arrays.asList(1));

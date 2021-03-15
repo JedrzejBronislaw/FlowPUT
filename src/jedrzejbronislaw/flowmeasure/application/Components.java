@@ -11,12 +11,12 @@ import jedrzejbronislaw.flowmeasure.components.dataBuffer.DataBuffer1;
 import jedrzejbronislaw.flowmeasure.components.dialogManager.DialogManager;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
+import jedrzejbronislaw.flowmeasure.edDevice.EDDevice;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventPolicy;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.flowDevice.FlowDevice;
 import jedrzejbronislaw.flowmeasure.model.Repository;
-import jedrzejbronislaw.flowmeasure.pHDevice.PHDevice;
 import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
@@ -57,7 +57,7 @@ public class Components {
 		settings = new Settings();
 		viewMediator = new ViewMediator();
 //		device = buildFlowDevice();
-		device = buildPHDevice();
+		device = buildEDDevice();
 		connectionMonitor = buildConnectionMonitor();
 		flowConverters = new FlowConverters(settings, Consts.FLOWMETERS_NUMBER);
 		eventManager = new EventManager();
@@ -112,8 +112,8 @@ public class Components {
 		return device;
 	}
 	
-	private PHDevice buildPHDevice() {
-		PHDevice device = new PHDevice();
+	private EDDevice buildEDDevice() {
+		EDDevice device = new EDDevice();
 		buildDevice(device);
 
 		device.setNewSingleFlowReceive(viewMediator::showCurrentFlow);

@@ -20,7 +20,7 @@ import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.view.dialog.DialogPaneBuilder;
-import jedrzejbronislaw.flowmeasure.view.factory.PHViewFactory;
+import jedrzejbronislaw.flowmeasure.view.factory.EDViewFactory;
 import jedrzejbronislaw.flowmeasure.view.factory.ViewFactory;
 import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindowBuilder;
 import lombok.NonNull;
@@ -105,7 +105,7 @@ public class ViewBuilder {
 		MainWindowBuilder builder = new MainWindowBuilder();
 		builder.build();
 		
-		ViewFactory viewFactory = new PHViewFactory(components, actions);
+		ViewFactory viewFactory = new EDViewFactory(components, actions);
 		
 		builder.getController().getBorderPane().setLeft(viewFactory.sidePane());
 		builder.getController().getBorderPane().setRight(viewFactory.uart());
