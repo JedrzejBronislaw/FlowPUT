@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jedrzejbronislaw.flowmeasure.view.chartED.ChartEDPaneController">
+<fx:root type="BorderPane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <HBox alignment="TOP_CENTER" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
@@ -28,4 +28,4 @@
    <center>
       <VBox fx:id="chartPane" alignment="TOP_CENTER" BorderPane.alignment="CENTER" />
    </center>
-</BorderPane>
+</fx:root>

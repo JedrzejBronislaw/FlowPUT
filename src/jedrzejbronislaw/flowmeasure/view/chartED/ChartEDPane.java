@@ -1,8 +1,9 @@
 package jedrzejbronislaw.flowmeasure.view.chartED;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,16 +12,18 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import jedrzejbronislaw.flowmeasure.tools.Injection;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
+import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
+import jedrzejbronislaw.flowmeasure.settings.Settings;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
 import jedrzejbronislaw.flowmeasure.tools.SnapshotSaver;
 import jedrzejbronislaw.flowmeasure.tools.loop.Refresher;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ChartOptions;
 import jedrzejbronislaw.flowmeasure.view.chart.components.ValueUnit;
-import lombok.Getter;
-import lombok.Setter;
 
-public class ChartEDPaneController implements Initializable {
+public class ChartEDPane extends BorderPane implements Initializable {
 
 	private static final int REFRESHING_TIME = 1000;
 	
@@ -28,14 +31,37 @@ public class ChartEDPaneController implements Initializable {
 	@FXML private Button refreshButton, saveButton;
 	@FXML private CheckBox lastSecsBox, liveBox;
 
-	@Getter private LineChart<Number, Number> chartPH = newChart();
-	@Getter private LineChart<Number, Number> chartEC = newChart();
-	@Getter private LineChart<Number, Number> chartAM = newChart();
-	@Setter private Consumer<ChartOptions> refreshButtonAction;
+	private LineChart<Number, Number> chartPH = newChart();
+	private LineChart<Number, Number> chartEC = newChart();
+	private LineChart<Number, Number> chartAM = newChart();
+	
+	private ChartEDRefresher chartPHRefresher;
+	private ChartEDRefresher chartECRefresher;
+	private ChartEDRefresher chartAMRefresher;
+	
+	private final Supplier<ProcessRepository> currentProcess;
 	
 	private Refresher liveChartRefresher = new Refresher(REFRESHING_TIME, this::refresh);
 
-	        
+	
+	public ChartEDPane(FlowConverters flowconverters, Settings settings, Supplier<ProcessRepository> currentProcess) {
+		MyFXMLLoader2.create("ChartEDPane.fxml", this);
+		
+		this.currentProcess = currentProcess;
+		
+		createChartRefreshers(flowconverters, settings);
+	}
+
+	private void createChartRefreshers(FlowConverters flowconverters, Settings settings) {
+		chartPHRefresher = new ChartEDRefresher(flowconverters, chartPH, settings);
+		chartECRefresher = new ChartEDRefresher(flowconverters, chartEC, settings);
+		chartAMRefresher = new ChartEDRefresher(flowconverters, chartAM, settings);
+		
+		chartPHRefresher.setSeriesFilter(Arrays.asList(0));
+		chartECRefresher.setSeriesFilter(Arrays.asList(1));
+		chartAMRefresher.setSeriesFilter(Arrays.asList(2));
+	}
+	
 	public LineChart<Number, Number> newChart() {
 		return new LineChart<Number, Number>(new NumberAxis(), new NumberAxis());
 	}
@@ -58,7 +84,11 @@ public class ChartEDPaneController implements Initializable {
 
 	private void refresh(ActionEvent x) {refresh();}
 	private void refresh() {
-		Injection.run(refreshButtonAction, getChartOptions());
+		ChartOptions options = getChartOptions();
+		
+		chartPHRefresher.refresh(options, currentProcess.get());
+		chartECRefresher.refresh(options, currentProcess.get());
+		chartAMRefresher.refresh(options, currentProcess.get());
 	}
 
 	private ChartOptions getChartOptions() {

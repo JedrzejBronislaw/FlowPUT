@@ -4,9 +4,9 @@ import javafx.scene.Node;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneBuilder;
-import jedrzejbronislaw.flowmeasure.view.chartED.ChartEDPaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.chartED.ChartEDPane;
 import jedrzejbronislaw.flowmeasure.view.connection.UARTParamsBuilder;
-import jedrzejbronislaw.flowmeasure.view.liveED.LiveEDPaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.liveED.LiveEDPane;
 import jedrzejbronislaw.flowmeasure.view.settings.SettingsPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.sidePane.SidePaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.table.MeasurementTableBuilder;
@@ -31,10 +31,7 @@ public class EDViewFactory extends ViewFactory {
 	
 	@Override
 	public Node chart() {
-		ChartEDPaneBuilder builder = new ChartEDPaneBuilder(this::getCurrentProcessRepo, flowconverters(), settings());
-		builder.build();
-		
-		return builder.getNode();
+		return new ChartEDPane(flowconverters(), settings(), this::getCurrentProcessRepo);
 	}
 
 	@Override
@@ -78,9 +75,9 @@ public class EDViewFactory extends ViewFactory {
 
 	@Override
 	public Node livePane() {
-		LiveEDPaneBuilder builder = new LiveEDPaneBuilder(viewMediator(), flowconverters(), settings());
-		builder.build();
+		LiveEDPane livePane = new LiveEDPane();
+		livePane.setViewMediator(viewMediator());
 		
-		return builder.getNode();
+		return livePane;
 	}
 }

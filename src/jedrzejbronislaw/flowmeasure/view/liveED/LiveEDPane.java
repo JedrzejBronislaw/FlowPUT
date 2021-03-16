@@ -7,15 +7,21 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import jedrzejbronislaw.flowmeasure.components.ValueConverter;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
 import jedrzejbronislaw.flowmeasure.view.ViewMediator;
 
-public class LiveEDPaneController implements Initializable {
+public class LiveEDPane extends VBox implements Initializable {
 
 	@FXML private Label pHLabel;
 	@FXML private Label conductivityLabel;
 	@FXML private Label currentLabel;
 
+	
+	public LiveEDPane() {
+		MyFXMLLoader2.create("LiveEDPane.fxml", this);
+	}
 	
 	public void setViewMediator(ViewMediator viewMediator) {
 		viewMediator.setFlowPreviewer(0, this::refreshPH);
