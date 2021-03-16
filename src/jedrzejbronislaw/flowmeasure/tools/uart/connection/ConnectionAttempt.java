@@ -28,7 +28,7 @@ public class ConnectionAttempt {
 	@Setter private Runnable success;
 	@Setter private Consumer<ConncetionResult> fail;
 	
-	private ConncetionResult conncetionResult = null;
+	private ConncetionResult connectionResult = null;
 	
 	
 	void changePort(String port) {
@@ -36,7 +36,7 @@ public class ConnectionAttempt {
 	}
 	
 	public void start() {
-		conncetionResult = null;
+		connectionResult = null;
 		createCheckingThread().start();
 	}
 
@@ -45,11 +45,11 @@ public class ConnectionAttempt {
 			
 			connect(CONNECTING_TIMEOUT);
 			
-			if(conncetionResult == CONNECTED) {
+			if(connectionResult == CONNECTED) {
 				sleep(PROOF_MESSAGE_WAITING);
 				checkDevice();
 			} else
-				Injection.run(fail, conncetionResult);
+				Injection.run(fail, connectionResult);
 		});
 	}
 
@@ -64,9 +64,9 @@ public class ConnectionAttempt {
 	}
 	
 	private void connect(int timeout) {
-		Thread thread = new Thread(() -> conncetionResult = connect());
+		Thread thread = new Thread(() -> connectionResult = connect());
 		
-		conncetionResult = DURING;
+		connectionResult = DURING;
 		thread.setDaemon(true);
 		thread.start();
 		
@@ -76,7 +76,7 @@ public class ConnectionAttempt {
 			e.printStackTrace();
 		}
 		
-		if (conncetionResult == DURING) conncetionResult = NO_RESPONSE;
+		if (connectionResult == DURING) connectionResult = NO_RESPONSE;
 	}
 
 	private ConncetionResult connect() {
