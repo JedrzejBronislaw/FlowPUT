@@ -34,6 +34,7 @@ public abstract class UARTDevice {
 	private boolean connecting = false;
 
 	protected abstract MessageTag handleMessageLine(String message);
+	public abstract String getName();
 	
 	
 	public UARTDevice(String proofRequest, String proofMessage) {

@@ -9,10 +9,13 @@ import java.util.stream.Stream;
 import jedrzejbronislaw.flowmeasure.components.ValueConverter;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
+import lombok.Getter;
 import lombok.Setter;
 
 public class EDDevice extends UARTDevice {
 
+	@Getter private String name = "EDDevice";
+	
 	private static final String VALUE_SEPARATOR = ";";
 	private static final char LINE_FIRST_CHAR   = '^';
 	private static final char LINE_LAST_CHAR    = '$';
