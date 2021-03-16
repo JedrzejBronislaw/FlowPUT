@@ -57,9 +57,9 @@ public abstract class UARTDevice {
 	}
 
 	public void disconnect() {
-		if(uart == null || !uart.isPortOpen()) return;
-		
-		uart.disconnect();
+		if (uart != null && uart.isPortOpen())
+			uart.disconnect();
+
 		connected = false;
 		correctDevice = false;
 	}
