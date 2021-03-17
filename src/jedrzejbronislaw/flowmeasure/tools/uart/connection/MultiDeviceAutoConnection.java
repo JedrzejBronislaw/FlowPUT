@@ -1,6 +1,7 @@
 package jedrzejbronislaw.flowmeasure.tools.uart.connection;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import jedrzejbronislaw.flowmeasure.tools.Injection;
@@ -24,17 +25,17 @@ public class MultiDeviceAutoConnection {
 	
 	
 	public void start() {
-		newAutoConnection().start();
+		newAutoConnection().ifPresent(connection -> connection.start());
 	}
 	
-	private AutoConnection newAutoConnection() {
+	private Optional<AutoConnection> newAutoConnection() {
 		if (deviceI >= devices.size()) {
 			deviceI = 0;
 			Injection.run(ifFail);
-			return null;
+			return Optional.empty();
 		}
 		
-		return createAutoConnection(devices.get(deviceI++));
+		return Optional.of(createAutoConnection(devices.get(deviceI++)));
 	}
 	
 	private AutoConnection createAutoConnection(UARTDevice device) {
