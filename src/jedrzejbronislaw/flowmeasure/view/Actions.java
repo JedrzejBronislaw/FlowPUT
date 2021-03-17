@@ -1,5 +1,6 @@
 package jedrzejbronislaw.flowmeasure.view;
 
+import java.util.List;
 import java.util.Optional;
 
 import javafx.scene.control.Alert;
@@ -28,6 +29,7 @@ import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.AutoConnection;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionAttempt;
+import jedrzejbronislaw.flowmeasure.tools.uart.connection.MultiDeviceAutoConnection;
 import jedrzejbronislaw.flowmeasure.view.saveWindow.SaveWindowBuilder;
 import lombok.RequiredArgsConstructor;
 
@@ -69,7 +71,7 @@ public class Actions implements ActionContainer {
 	}
 
 	@Override
-	public void connectFlowDevice() {
+	public void connectDevice() {
 		UARTParams params = viewMediator().getUARTParams();
 		if (!valideteParams(params)) return;
 		
@@ -80,18 +82,18 @@ public class Actions implements ActionContainer {
 	}
 
 	@Override
-	public void disconnectFlowDevice() {
+	public void disconnectDevices() {
 		connectionMonitor().stop();
-		device().disconnect();
+		devices().forEach(d -> d.disconnect());
 
 		eventManager().submitEvent(EventType.DISCONNECTION);
 	}
 
 	@Override
-	public void autoconnectFlowDevice() {
+	public void autoconnectDevice() {
 		System.out.println("\nStart autoconnect");
 		
-		AutoConnection autoConnection = createAutoConnection();
+		MultiDeviceAutoConnection autoConnection = createMultiDeviceAutoConnection();
 
 		eventManager().submitEvent(EventType.CONNECTING_START);
 		autoConnection.start();
@@ -101,7 +103,7 @@ public class Actions implements ActionContainer {
 	public void exit() {
 		eventManager().submitEvent(EventType.EXITING);
 		connectionMonitor().stop();
-		device().disconnect();
+		devices().forEach(d -> d.disconnect());
 	}
 	
 	private ProcessRepositoryWriter prepareWriter() {
@@ -172,7 +174,7 @@ public class Actions implements ActionContainer {
 	}
 
 	private ConnectionAttempt createConnectionAttempt(UARTParams params) {
-		ConnectionAttempt attempt = new ConnectionAttempt(device(), params);
+		ConnectionAttempt attempt = new ConnectionAttempt(edDevice(), params);
 		
 		attempt.setSuccess(() -> {
 			eventManager().submitEvent(EventType.CONNECTION_SUCCESSFUL);
@@ -187,7 +189,7 @@ public class Actions implements ActionContainer {
 	}
 
 	private AutoConnection createAutoConnection() {
-		AutoConnection autoConn = new AutoConnection(device(), UART.getPortList(), 9600);
+		AutoConnection autoConn = new AutoConnection(edDevice(), UART.getPortList(), 9600);
 		
 		autoConn.setIfFail(() -> {
 			System.out.println("¯aden port nie pasuje");
@@ -202,7 +204,24 @@ public class Actions implements ActionContainer {
 		
 		return autoConn;
 	}
-	
+
+	private MultiDeviceAutoConnection createMultiDeviceAutoConnection() {
+		MultiDeviceAutoConnection autoConn = new MultiDeviceAutoConnection(devices(), UART.getPortList(), 9600);
+		
+		autoConn.setIfFail(() -> {
+			System.out.println("Nie znaleziono ¿adnego urz¹dzenia pod ¿adnym portem");
+			eventManager().submitEvent(EventType.CONNECTION_FAILED);
+		});
+		
+		autoConn.setIfSuccess((device, port) -> {
+			System.out.println("Uda³o po³¹czyæ siê z urz¹dzeniem " + device.getName() + " na porcie: " + port);
+			eventManager().submitEvent(EventType.CONNECTION_SUCCESSFUL);
+			connectionMonitor().start();
+		});
+		
+		return autoConn;
+	}
+
 
 	private boolean isBufferedData() {
 		return settings().getBool(AppProperties.BUFFERED_DATA);
@@ -217,8 +236,16 @@ public class Actions implements ActionContainer {
 		return components.getConnectionMonitor();
 	}
 	
-	private UARTDevice device() {
-		return components.getDevice();
+	private UARTDevice edDevice() {
+		return components.getEdDevice();
+	}
+	
+	private UARTDevice flowDevice() {
+		return components.getFlowDevice();
+	}
+	
+	private List<UARTDevice> devices() {
+		return components.getDevices();
 	}
 	
 	private ViewMediator viewMediator() {

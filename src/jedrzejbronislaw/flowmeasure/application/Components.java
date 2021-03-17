@@ -1,6 +1,8 @@
 package jedrzejbronislaw.flowmeasure.application;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.components.calibration.Calibration;
@@ -36,7 +38,8 @@ public class Components {
 	private Stage primaryStage;
 
 	private ResourceAccess resources;
-	private UARTDevice device;
+	private UARTDevice flowDevice;
+	private UARTDevice edDevice;
 	private FlowManager flowManager;
 	private Settings settings;
 	private ConnectionMonitor connectionMonitor;
@@ -56,8 +59,8 @@ public class Components {
 		
 		settings = new Settings();
 		viewMediator = new ViewMediator();
-//		device = buildFlowDevice();
-		device = buildEDDevice();
+		flowDevice = buildFlowDevice();
+		edDevice = buildEDDevice();
 		connectionMonitor = buildConnectionMonitor();
 		flowConverters = new FlowConverters(settings, Consts.FLOWMETERS_NUMBER);
 		eventManager = new EventManager();
@@ -128,7 +131,7 @@ public class Components {
 	
 	private ConnectionMonitor buildConnectionMonitor() {
 		ConnectionMonitor1 monitor = new ConnectionMonitor1(3, 1000, () -> {
-			device.disconnect();
+			getDevices().forEach(device -> device.disconnect());
 			eventManager.submitEvent(EventType.LOST_CONNECTION);
 		});
 		
@@ -151,6 +154,10 @@ public class Components {
 		return calibration;
 	}
 
+	public List<UARTDevice> getDevices() {
+		return Arrays.asList(edDevice, flowDevice);
+	}
+	
 	private ViewBuilder createViewBuilder(){
 		return new ViewBuilder(this, new Actions(this));
 	}

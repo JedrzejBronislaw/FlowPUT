@@ -6,9 +6,9 @@ public interface ActionContainer {
 	void saveProcess();
 	void closeProcess();
 
-	void connectFlowDevice();
-	void disconnectFlowDevice();
-	void autoconnectFlowDevice();
+	void connectDevice();
+	void disconnectDevices();
+	void autoconnectDevice();
 	
 	void exit();
 }
