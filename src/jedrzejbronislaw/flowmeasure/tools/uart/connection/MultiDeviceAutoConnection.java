@@ -35,10 +35,18 @@ public class MultiDeviceAutoConnection {
 			return Optional.empty();
 		}
 		
-		return Optional.of(createAutoConnection(devices.get(deviceI++)));
+		AutoConnection autoConnection = createAutoConnection(devices.get(deviceI++));
+		if (autoConnection == null) {
+			Injection.run(ifFail);
+			return Optional.empty();
+		}
+		
+		return Optional.of(autoConnection);
 	}
 	
 	private AutoConnection createAutoConnection(UARTDevice device) {
+		if (device == null || portList == null || portList.isEmpty()) return null;
+		
 		AutoConnection autoConn = new AutoConnection(device, portList, rate);
 		System.out.println(UART.getPortList());
 		

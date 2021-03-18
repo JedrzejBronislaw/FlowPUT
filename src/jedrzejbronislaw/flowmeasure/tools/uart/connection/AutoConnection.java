@@ -32,8 +32,9 @@ public class AutoConnection {
 	}
 	
 	public void start() {
-		UARTParams params = new UARTParams();
+		if (portList.isEmpty()) {Injection.run(ifFail); return;}
 		
+		UARTParams params = new UARTParams();
 		params.DATA_RATE = rate;
 		params.PORT_NAME = getNextPort();
 		
