@@ -14,6 +14,7 @@ import lombok.Setter;
 public class AutoConnection {
 
 	private static final int WAITING_FOR_RELAUNCH = 500;
+	private static final int MAX_BUSY_RESULTS = 10;
 	
 	@NonNull private UARTDevice device;
 	@NonNull private List<String> portList;
@@ -23,6 +24,7 @@ public class AutoConnection {
 	@Setter private Runnable ifFail;
 	
 	private int i = 0;
+	private int busyResultCounter = 0;
 	private ConnectionAttempt attempt;
 	
 	private String getNextPort() {
@@ -46,9 +48,17 @@ public class AutoConnection {
 	private void singleFail(ConncetionResult reason) {
 		System.out.println(attempt.getParams().PORT_NAME + ": " + reason);
 
-		if (reason == ConncetionResult.BUSY)
-			relaunch(WAITING_FOR_RELAUNCH); else
+		if (isBusy(reason)) {
+			busyResultCounter++;
+			relaunch(WAITING_FOR_RELAUNCH);
+		} else {
+			busyResultCounter = 0;
 			tryNextPort();
+		}
+	}
+
+	private boolean isBusy(ConncetionResult reason) {
+		return reason == ConncetionResult.BUSY && busyResultCounter+1 <= MAX_BUSY_RESULTS;
 	}
 
 	private void singleSuccess() {
