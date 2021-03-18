@@ -41,7 +41,7 @@ public class ConnectionAttempt {
 	}
 
 	private Thread createCheckingThread() {
-		return new Thread(() -> {
+		Thread thread = new Thread(() -> {
 			
 			connect(CONNECTING_TIMEOUT);
 			
@@ -51,6 +51,9 @@ public class ConnectionAttempt {
 			} else
 				Injection.run(fail, connectionResult);
 		});
+		thread.setDaemon(true);
+		
+		return thread;
 	}
 
 	private void checkDevice() {
