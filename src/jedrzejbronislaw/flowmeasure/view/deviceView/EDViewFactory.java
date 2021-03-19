@@ -1,12 +1,11 @@
 package jedrzejbronislaw.flowmeasure.view.deviceView;
 
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.ed.chart.ChartEDPane;
 import jedrzejbronislaw.flowmeasure.view.ed.live.LiveEDPane;
-import jedrzejbronislaw.flowmeasure.view.flow.calibration.CalibrationPaneBuilder;
-import jedrzejbronislaw.flowmeasure.view.flow.settings.SettingsPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.flow.table.MeasurementTableBuilder;
 
 public class EDViewFactory extends ViewFactory {
@@ -31,22 +30,12 @@ public class EDViewFactory extends ViewFactory {
 	
 	@Override
 	public Node createSettingsPane(){
-		SettingsPaneBuilder builder = new SettingsPaneBuilder(settings());
-		builder.build();
-		
-		addAppListener(builder.getController());
-		
-		return builder.getNode();
+		return new Pane();
 	}
 
 	@Override
 	public Node createCalibrationPane() {
-		CalibrationPaneBuilder builder = new CalibrationPaneBuilder(eventManager(), flowManager(), settings(), calibration());
-		builder.build();
-		
-		addAllStatesListener(builder.getController());
-		
-		return builder.getNode();
+		return new Pane();
 	}
 
 	@Override
