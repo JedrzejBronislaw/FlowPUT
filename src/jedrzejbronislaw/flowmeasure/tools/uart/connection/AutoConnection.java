@@ -46,7 +46,7 @@ public class AutoConnection {
 		attempt.start();
 	}
 
-	private void singleFail(ConncetionResult reason) {
+	private void singleFail(ConnectionResult reason) {
 		System.out.println(attempt.getParams().PORT_NAME + ": " + reason);
 
 		if (isBusy(reason)) {
@@ -58,8 +58,8 @@ public class AutoConnection {
 		}
 	}
 
-	private boolean isBusy(ConncetionResult reason) {
-		return reason == ConncetionResult.BUSY && busyResultCounter+1 <= MAX_BUSY_RESULTS;
+	private boolean isBusy(ConnectionResult reason) {
+		return reason == ConnectionResult.BUSY && busyResultCounter+1 <= MAX_BUSY_RESULTS;
 	}
 
 	private void singleSuccess() {

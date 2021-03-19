@@ -1,13 +1,13 @@
 package jedrzejbronislaw.flowmeasure.tools.uart;
 
-import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConncetionResult.*;
+import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionResult.*;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import jedrzejbronislaw.flowmeasure.tools.Injection;
-import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConncetionResult;
+import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionResult;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,7 +43,7 @@ public abstract class UARTDevice {
 	}
 
 
-	public ConncetionResult connect(UARTParams params) {
+	public ConnectionResult connect(UARTParams params) {
 		if(connecting) return BUSY;
 		connecting = true;
 		

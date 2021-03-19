@@ -1,9 +1,9 @@
 package jedrzejbronislaw.flowmeasure.tools.uart.connection;
 
-import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConncetionResult.CONNECTED;
-import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConncetionResult.DURING;
-import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConncetionResult.NO_RESPONSE;
-import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConncetionResult.WRONG_DEVICE;
+import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionResult.CONNECTED;
+import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionResult.DURING;
+import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionResult.NO_RESPONSE;
+import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionResult.WRONG_DEVICE;
 
 import java.util.function.Consumer;
 
@@ -26,9 +26,9 @@ public class ConnectionAttempt {
 	@NonNull @Getter private UARTParams params;
 	
 	@Setter private Runnable success;
-	@Setter private Consumer<ConncetionResult> fail;
+	@Setter private Consumer<ConnectionResult> fail;
 	
-	private ConncetionResult connectionResult = null;
+	private ConnectionResult connectionResult = null;
 	
 	
 	void changePort(String port) {
@@ -82,8 +82,8 @@ public class ConnectionAttempt {
 		if (connectionResult == DURING) connectionResult = NO_RESPONSE;
 	}
 
-	private ConncetionResult connect() {
-		ConncetionResult result = device.connect(params);
+	private ConnectionResult connect() {
+		ConnectionResult result = device.connect(params);
 		
 		if(result == CONNECTED) {
 			sleep(PROOF_REQUEST_DELAY);
