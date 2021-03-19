@@ -1,29 +1,26 @@
-package jedrzejbronislaw.flowmeasure.view.factory;
+package jedrzejbronislaw.flowmeasure.view.deviceView;
 
 import javafx.scene.Node;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneBuilder;
-import jedrzejbronislaw.flowmeasure.view.chart.ChartPaneBuilder;
-import jedrzejbronislaw.flowmeasure.view.live.LivePaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.chartED.ChartEDPane;
+import jedrzejbronislaw.flowmeasure.view.liveED.LiveEDPane;
 import jedrzejbronislaw.flowmeasure.view.settings.SettingsPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.table.MeasurementTableBuilder;
 
-public class FlowViewFactory extends ViewFactory {
-
-	public FlowViewFactory(Components components, ActionContainer actions) {
+public class EDViewFactory extends ViewFactory {
+	
+	public EDViewFactory(Components components, ActionContainer actions) {
 		super(components, actions);
 	}
 
-	
+
 	@Override
 	public Node createChartPane() {
-		ChartPaneBuilder builder = new ChartPaneBuilder(this::getCurrentProcessRepo, flowconverters(), settings());
-		builder.build();
-		
-		return builder.getNode();
+		return new ChartEDPane(flowconverters(), settings(), this::getCurrentProcessRepo);
 	}
-	
+
 	@Override
 	public Node createTablePane() {
 		MeasurementTableBuilder builder = new MeasurementTableBuilder(this::getCurrentProcessRepo);
@@ -54,9 +51,9 @@ public class FlowViewFactory extends ViewFactory {
 
 	@Override
 	public Node createLivePane() {
-		LivePaneBuilder builder = new LivePaneBuilder(viewMediator(), flowconverters(), settings());
-		builder.build();
+		LiveEDPane livePane = new LiveEDPane();
+		livePane.setViewMediator(viewMediator());
 		
-		return builder.getNode();
+		return livePane;
 	}
 }

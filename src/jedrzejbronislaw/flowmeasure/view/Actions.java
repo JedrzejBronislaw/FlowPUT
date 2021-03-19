@@ -10,6 +10,7 @@ import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.connectionMonitor.ConnectionMonitor;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager.FlowConsumerType;
+import jedrzejbronislaw.flowmeasure.devices.DeviceType;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
@@ -30,7 +31,6 @@ import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.AutoConnection;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionAttempt;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.MultiDeviceAutoConnection;
-import jedrzejbronislaw.flowmeasure.view.factory.DeviceType;
 import jedrzejbronislaw.flowmeasure.view.saveWindow.SaveWindowBuilder;
 import lombok.RequiredArgsConstructor;
 

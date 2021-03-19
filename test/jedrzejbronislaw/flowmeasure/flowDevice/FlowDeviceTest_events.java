@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import jedrzejbronislaw.flowmeasure.devices.flowDevice.FlowDevice;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import lombok.AllArgsConstructor;
 

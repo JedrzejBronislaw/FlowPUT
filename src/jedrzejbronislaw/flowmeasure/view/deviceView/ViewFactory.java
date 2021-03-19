@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view.factory;
+package jedrzejbronislaw.flowmeasure.view.deviceView;
 
 import javafx.scene.Node;
 import jedrzejbronislaw.flowmeasure.application.Components;

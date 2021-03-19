@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import jedrzejbronislaw.flowmeasure.devices.flowDevice.FlowDevice;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 
 public class FlowDeviceTest_formatCorrectness {

@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.flowDevice;
+package jedrzejbronislaw.flowmeasure.devices.flowDevice;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
