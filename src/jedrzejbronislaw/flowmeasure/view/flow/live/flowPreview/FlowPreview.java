@@ -8,18 +8,27 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
-import lombok.Setter;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
 
-public class FlowPreviewController implements Initializable {
+public class FlowPreview extends HBox implements Initializable {
 
 	private static final DecimalFormat PRECISION_FORMAT = new DecimalFormat("#.###");
 	
 	@FXML private Label label, pulsesLabel, secPulsesLabel;
 
-	@Setter private FlowConverter flowconverter;
+	private final FlowConverter flowconverter;
 	
 	private int pulses = 0;
+
+	
+	public FlowPreview(FlowConverter flowconverter) {
+		MyFXMLLoader2.create("FlowPreview.fxml", this);
+		
+		setName("");
+		this.flowconverter = flowconverter;
+	}
 
 	
 	public void setName(String name) {

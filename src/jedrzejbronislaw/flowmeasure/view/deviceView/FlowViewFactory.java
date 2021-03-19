@@ -5,7 +5,7 @@ import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.flow.calibration.CalibrationPane;
 import jedrzejbronislaw.flowmeasure.view.flow.chart.ChartPane;
-import jedrzejbronislaw.flowmeasure.view.flow.live.LivePaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.flow.live.LivePane;
 import jedrzejbronislaw.flowmeasure.view.flow.settings.SettingsPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.flow.table.MeasurementTableBuilder;
 
@@ -49,9 +49,6 @@ public class FlowViewFactory extends ViewFactory {
 
 	@Override
 	public Node createLivePane() {
-		LivePaneBuilder builder = new LivePaneBuilder(viewMediator(), flowconverters(), settings());
-		builder.build();
-		
-		return builder.getNode();
+		return new LivePane(viewMediator(), flowconverters(), settings());
 	}
 }
