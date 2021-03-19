@@ -6,7 +6,7 @@ import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.flow.calibration.CalibrationPane;
 import jedrzejbronislaw.flowmeasure.view.flow.chart.ChartPane;
 import jedrzejbronislaw.flowmeasure.view.flow.live.LivePane;
-import jedrzejbronislaw.flowmeasure.view.flow.settings.SettingsPaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.flow.settings.SettingsPane;
 import jedrzejbronislaw.flowmeasure.view.flow.table.MeasurementTable;
 
 public class FlowViewFactory extends ViewFactory {
@@ -28,12 +28,10 @@ public class FlowViewFactory extends ViewFactory {
 	
 	@Override
 	public Node createSettingsPane(){
-		SettingsPaneBuilder builder = new SettingsPaneBuilder(settings());
-		builder.build();
+		SettingsPane settingsPane = new SettingsPane(settings());
+		addAppListener(settingsPane);
 		
-		addAppListener(builder.getController());
-		
-		return builder.getNode();
+		return settingsPane;
 	}
 
 	@Override

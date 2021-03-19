@@ -7,11 +7,19 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
 
-public class FlowmeterNameSettingsPaneController implements Initializable {
+public class FlowmeterNameSettingsPane extends HBox implements Initializable {
 	
 	@FXML private Label factoryNameLabel;
 	@FXML private TextField nameField;
+
+	
+	public FlowmeterNameSettingsPane(String factoryName) {
+		MyFXMLLoader2.create("FlowmeterNameSettingsPane.fxml", this);
+		setFactoryName(factoryName);
+	}
 	
 
 	public void setFactoryName(String name) {
