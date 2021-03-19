@@ -4,7 +4,7 @@ import javafx.scene.Node;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.flow.calibration.CalibrationPane;
-import jedrzejbronislaw.flowmeasure.view.flow.chart.ChartPaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.flow.chart.ChartPane;
 import jedrzejbronislaw.flowmeasure.view.flow.live.LivePaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.flow.settings.SettingsPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.flow.table.MeasurementTableBuilder;
@@ -18,10 +18,7 @@ public class FlowViewFactory extends ViewFactory {
 	
 	@Override
 	public Node createChartPane() {
-		ChartPaneBuilder builder = new ChartPaneBuilder(this::getCurrentProcessRepo, flowconverters(), settings());
-		builder.build();
-		
-		return builder.getNode();
+		return new ChartPane(flowconverters(), settings(), this::getCurrentProcessRepo);
 	}
 	
 	@Override

@@ -2,7 +2,7 @@ package jedrzejbronislaw.flowmeasure.view.flow.chart;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,36 +13,48 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.BorderPane;
-import jedrzejbronislaw.flowmeasure.tools.Injection;
+import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
+import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
+import jedrzejbronislaw.flowmeasure.settings.Settings;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
 import jedrzejbronislaw.flowmeasure.tools.SnapshotSaver;
 import jedrzejbronislaw.flowmeasure.tools.loop.Refresher;
 import jedrzejbronislaw.flowmeasure.view.flow.chart.components.ChartOptions;
 import jedrzejbronislaw.flowmeasure.view.flow.chart.components.ValueUnit;
 import lombok.Getter;
-import lombok.Setter;
 
-public class ChartPaneController implements Initializable {
+public class ChartPane extends BorderPane implements Initializable {
 
 	private static final int REFRESHING_TIME = 1000;
 	
 	@FXML private Button refreshButton, saveButton;
-	@FXML private BorderPane mainPane;
 	@FXML private CheckBox lastSecsBox, liveBox;
 	@FXML private RadioButton pulsesRadio, litresPerSecRadio;
 	
 	@Getter private LineChart<Number, Number> chart = newChart();
-	@Setter private Consumer<ChartOptions> refreshButtonAction;
+
+	private ChartRefresher chartRefresher;
+	
+	private final Supplier<ProcessRepository> currentProcess;
 	
 	private Refresher liveChartRefresher = new Refresher(REFRESHING_TIME, this::refresh);
 
-	        
+	
+	public ChartPane(FlowConverters flowconverters, Settings settings, Supplier<ProcessRepository> currentProcess) {
+		MyFXMLLoader2.create("ChartPane.fxml", this);
+		
+		this.currentProcess = currentProcess;
+
+		chartRefresher = new ChartRefresher(flowconverters, chart, settings);
+	}
+	
 	public LineChart<Number, Number> newChart() {
 		return new LineChart<Number, Number>(new NumberAxis(), new NumberAxis());
 	}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		mainPane.setCenter(chart);
+		setCenter(chart);
 		
 		refreshButton.disableProperty().bind(liveBox.selectedProperty());
 		
@@ -60,7 +72,7 @@ public class ChartPaneController implements Initializable {
 
 	private void refresh(ActionEvent x) {refresh();}
 	private void refresh() {
-		Injection.run(refreshButtonAction, getChartOptions());
+		chartRefresher.refresh(getChartOptions(), currentProcess.get());
 	}
 
 	private ChartOptions getChartOptions() {
