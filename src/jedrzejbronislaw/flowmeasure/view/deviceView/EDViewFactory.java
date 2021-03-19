@@ -6,7 +6,7 @@ import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.ed.chart.ChartEDPane;
 import jedrzejbronislaw.flowmeasure.view.ed.live.LiveEDPane;
-import jedrzejbronislaw.flowmeasure.view.flow.table.MeasurementTableBuilder;
+import jedrzejbronislaw.flowmeasure.view.flow.table.MeasurementTable;
 
 public class EDViewFactory extends ViewFactory {
 	
@@ -22,10 +22,7 @@ public class EDViewFactory extends ViewFactory {
 
 	@Override
 	public Node createTablePane() {
-		MeasurementTableBuilder builder = new MeasurementTableBuilder(this::getCurrentProcessRepo);
-		builder.build();
-		
-		return builder.getNode();
+		return new MeasurementTable(this::getCurrentProcessRepo);
 	}
 	
 	@Override

@@ -7,7 +7,7 @@ import jedrzejbronislaw.flowmeasure.view.flow.calibration.CalibrationPane;
 import jedrzejbronislaw.flowmeasure.view.flow.chart.ChartPane;
 import jedrzejbronislaw.flowmeasure.view.flow.live.LivePane;
 import jedrzejbronislaw.flowmeasure.view.flow.settings.SettingsPaneBuilder;
-import jedrzejbronislaw.flowmeasure.view.flow.table.MeasurementTableBuilder;
+import jedrzejbronislaw.flowmeasure.view.flow.table.MeasurementTable;
 
 public class FlowViewFactory extends ViewFactory {
 
@@ -23,10 +23,7 @@ public class FlowViewFactory extends ViewFactory {
 	
 	@Override
 	public Node createTablePane() {
-		MeasurementTableBuilder builder = new MeasurementTableBuilder(this::getCurrentProcessRepo);
-		builder.build();
-		
-		return builder.getNode();
+		return new MeasurementTable(this::getCurrentProcessRepo);
 	}
 	
 	@Override
