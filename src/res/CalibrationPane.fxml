@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="mainVbox" alignment="TOP_CENTER" prefWidth="270.0" spacing="40.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneController">
+<VBox fx:id="mainVbox" alignment="TOP_CENTER" prefWidth="270.0" spacing="40.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.view.flow.calibration.CalibrationPaneController">
    <children>
       <VBox alignment="TOP_CENTER" spacing="5.0">
          <children>

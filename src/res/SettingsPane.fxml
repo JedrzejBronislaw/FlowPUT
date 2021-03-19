@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="mainBox" alignment="CENTER" fillWidth="false" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.view.settings.SettingsPaneController">
+<VBox fx:id="mainBox" alignment="CENTER" fillWidth="false" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.view.flow.settings.SettingsPaneController">
    <children>
       <VBox alignment="TOP_RIGHT" fillWidth="false" spacing="20.0">
          <children>

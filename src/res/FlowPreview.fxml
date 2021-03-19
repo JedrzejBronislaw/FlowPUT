@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox spacing="25.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.view.live.flowPreview.FlowPreviewController">
+<HBox spacing="25.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.view.flow.live.flowPreview.FlowPreviewController">
    <children>
       <Label fx:id="label" styleClass="key" text="Flow" />
       <Label fx:id="pulsesLabel" alignment="CENTER_RIGHT" minWidth="90.0" styleClass="value" text="0" />

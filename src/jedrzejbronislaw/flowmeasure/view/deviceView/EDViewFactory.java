@@ -3,11 +3,11 @@ package jedrzejbronislaw.flowmeasure.view.deviceView;
 import javafx.scene.Node;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
-import jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneBuilder;
-import jedrzejbronislaw.flowmeasure.view.chartED.ChartEDPane;
-import jedrzejbronislaw.flowmeasure.view.liveED.LiveEDPane;
-import jedrzejbronislaw.flowmeasure.view.settings.SettingsPaneBuilder;
-import jedrzejbronislaw.flowmeasure.view.table.MeasurementTableBuilder;
+import jedrzejbronislaw.flowmeasure.view.ed.chart.ChartEDPane;
+import jedrzejbronislaw.flowmeasure.view.ed.live.LiveEDPane;
+import jedrzejbronislaw.flowmeasure.view.flow.calibration.CalibrationPaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.flow.settings.SettingsPaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.flow.table.MeasurementTableBuilder;
 
 public class EDViewFactory extends ViewFactory {
 	
