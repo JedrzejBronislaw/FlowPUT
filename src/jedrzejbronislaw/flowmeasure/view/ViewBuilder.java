@@ -159,8 +159,8 @@ public class ViewBuilder {
 		
 		Platform.runLater(() -> {
 			mainWindowController.setLivePane       (view.getLivePane());
-			mainWindowController.setTablePane      (view.getTable());
-			mainWindowController.setChartPane      (view.getChart());
+			mainWindowController.setTablePane      (view.getTablePane());
+			mainWindowController.setChartPane      (view.getChartPane());
 			mainWindowController.setSettingsPane   (view.getSettingsPane());
 			mainWindowController.setCalibrationPane(view.getCalibrationPane());
 		});

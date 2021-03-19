@@ -27,11 +27,11 @@ public abstract class ViewFactory {
 	@NonNull protected ActionContainer actions;
 	
 	
-	abstract public Node livePane();
-	abstract public Node table();
-	abstract public Node chart();
-	abstract public Node settingsPane();
-	abstract public Node calibrationPane();
+	abstract public Node createLivePane();
+	abstract public Node createTablePane();
+	abstract public Node createChartPane();
+	abstract public Node createSettingsPane();
+	abstract public Node createCalibrationPane();
 	
 	
 	protected void addEventListener(EventListener listener) {

@@ -17,12 +17,12 @@ public class EDViewFactory extends ViewFactory {
 
 
 	@Override
-	public Node chart() {
+	public Node createChartPane() {
 		return new ChartEDPane(flowconverters(), settings(), this::getCurrentProcessRepo);
 	}
 
 	@Override
-	public Node table() {
+	public Node createTablePane() {
 		MeasurementTableBuilder builder = new MeasurementTableBuilder(this::getCurrentProcessRepo);
 		builder.build();
 		
@@ -30,7 +30,7 @@ public class EDViewFactory extends ViewFactory {
 	}
 	
 	@Override
-	public Node settingsPane(){
+	public Node createSettingsPane(){
 		SettingsPaneBuilder builder = new SettingsPaneBuilder(settings());
 		builder.build();
 		
@@ -40,7 +40,7 @@ public class EDViewFactory extends ViewFactory {
 	}
 
 	@Override
-	public Node calibrationPane() {
+	public Node createCalibrationPane() {
 		CalibrationPaneBuilder builder = new CalibrationPaneBuilder(eventManager(), flowManager(), settings(), calibration());
 		builder.build();
 		
@@ -50,7 +50,7 @@ public class EDViewFactory extends ViewFactory {
 	}
 
 	@Override
-	public Node livePane() {
+	public Node createLivePane() {
 		LiveEDPane livePane = new LiveEDPane();
 		livePane.setViewMediator(viewMediator());
 		
