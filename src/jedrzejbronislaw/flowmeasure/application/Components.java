@@ -28,6 +28,7 @@ import jedrzejbronislaw.flowmeasure.tools.resourceAccess.InternalResourceAccess;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import jedrzejbronislaw.flowmeasure.view.Actions;
+import jedrzejbronislaw.flowmeasure.view.ConnectionService;
 import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
 import jedrzejbronislaw.flowmeasure.view.ViewMediator;
 import lombok.Getter;
@@ -52,6 +53,7 @@ public class Components {
 	private ViewMediator viewMediator;
 	private Repository repository;
 	private ViewBuilder viewBuilder;
+	private ConnectionService connectionService;
 	
 	public Components(Stage stage) {
 		primaryStage = stage;
@@ -71,6 +73,7 @@ public class Components {
 		calibration = buildCalibration();
 		repository = new Repository();
 		flowManager = new FlowManager(repository);
+		connectionService = new ConnectionService(this);
 		
 		viewBuilder = new ViewBuilder(this, new Actions(this));
 		

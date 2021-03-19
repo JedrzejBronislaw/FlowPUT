@@ -10,7 +10,6 @@ import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.connectionMonitor.ConnectionMonitor;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager.FlowConsumerType;
-import jedrzejbronislaw.flowmeasure.devices.DeviceType;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
@@ -25,10 +24,8 @@ import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.tools.fileNamer.FileNamer;
 import jedrzejbronislaw.flowmeasure.tools.fileNamer.FileNamer1;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
-import jedrzejbronislaw.flowmeasure.tools.uart.UART;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
-import jedrzejbronislaw.flowmeasure.tools.uart.connection.AutoConnection;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionAttempt;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.MultiDeviceAutoConnection;
 import jedrzejbronislaw.flowmeasure.view.saveWindow.SaveWindowBuilder;
@@ -76,7 +73,7 @@ public class Actions implements ActionContainer {
 		UARTParams params = viewMediator().getUARTParams();
 		if (!valideteParams(params)) return;
 		
-		ConnectionAttempt attempt = createConnectionAttempt(params);
+		ConnectionAttempt attempt = connectionService().createConnectionAttempt(edDevice(), params);
 		eventManager().submitEvent(EventType.CONNECTING_START);
 		
 		attempt.start();
@@ -94,7 +91,7 @@ public class Actions implements ActionContainer {
 	public void autoconnectDevice() {
 		System.out.println("\nStart autoconnect");
 		
-		MultiDeviceAutoConnection autoConnection = createMultiDeviceAutoConnection();
+		MultiDeviceAutoConnection autoConnection = connectionService().createMultiDeviceAutoConnection();
 
 		eventManager().submitEvent(EventType.CONNECTING_START);
 		autoConnection.start();
@@ -174,59 +171,6 @@ public class Actions implements ActionContainer {
 		return true;
 	}
 
-	private ConnectionAttempt createConnectionAttempt(UARTParams params) {
-		ConnectionAttempt attempt = new ConnectionAttempt(edDevice(), params);
-		
-		attempt.setSuccess(() -> {
-			eventManager().submitEvent(EventType.CONNECTION_SUCCESSFUL);
-			connectionMonitor().start();
-		});
-		
-		attempt.setFail(reason ->
-			eventManager().submitEvent(EventType.CONNECTION_FAILED)
-		);
-		
-		return attempt;
-	}
-
-	private AutoConnection createAutoConnection() {
-		AutoConnection autoConn = new AutoConnection(edDevice(), UART.getPortList(), 9600);
-		
-		autoConn.setIfFail(() -> {
-			System.out.println("¯aden port nie pasuje");
-			eventManager().submitEvent(EventType.CONNECTION_FAILED);
-		});
-		
-		autoConn.setIfSuccess(port -> {
-			System.out.println("Uda³o po³¹czyæ siê z portem: " + port);
-			eventManager().submitEvent(EventType.CONNECTION_SUCCESSFUL);
-			connectionMonitor().start();
-		});
-		
-		return autoConn;
-	}
-
-	private MultiDeviceAutoConnection createMultiDeviceAutoConnection() {
-		MultiDeviceAutoConnection autoConn = new MultiDeviceAutoConnection(devices(), UART.getPortList(), 9600);
-		
-		autoConn.setIfFail(() -> {
-			System.out.println("Nie znaleziono ¿adnego urz¹dzenia pod ¿adnym portem");
-			eventManager().submitEvent(EventType.CONNECTION_FAILED);
-		});
-		
-		autoConn.setIfSuccess((device, port) -> {
-			System.out.println("Uda³o po³¹czyæ siê z urz¹dzeniem " + device.getName() + " na porcie: " + port);
-			eventManager().submitEvent(EventType.CONNECTION_SUCCESSFUL);
-			connectionMonitor().start();
-			
-			if (device == flowDevice()) components.getViewBuilder().setDeviceView(DeviceType.FlowDevice);
-			if (device ==   edDevice()) components.getViewBuilder().setDeviceView(DeviceType.  EDDevice);
-		});
-		
-		return autoConn;
-	}
-
-
 	private boolean isBufferedData() {
 		return settings().getBool(AppProperties.BUFFERED_DATA);
 	}
@@ -242,10 +186,6 @@ public class Actions implements ActionContainer {
 	
 	private UARTDevice edDevice() {
 		return components.getEdDevice();
-	}
-	
-	private UARTDevice flowDevice() {
-		return components.getFlowDevice();
 	}
 	
 	private List<UARTDevice> devices() {
@@ -270,5 +210,9 @@ public class Actions implements ActionContainer {
 	
 	private Repository repository() {
 		return components.getRepository();
+	}
+	
+	private ConnectionService connectionService() {
+		return components.getConnectionService();
 	}
 }
