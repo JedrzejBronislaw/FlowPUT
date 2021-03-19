@@ -51,6 +51,7 @@ public class Components {
 	private Calibration calibration;
 	private ViewMediator viewMediator;
 	private Repository repository;
+	private ViewBuilder viewBuilder;
 	
 	public Components(Stage stage) {
 		primaryStage = stage;
@@ -70,6 +71,8 @@ public class Components {
 		calibration = buildCalibration();
 		repository = new Repository();
 		flowManager = new FlowManager(repository);
+		
+		viewBuilder = new ViewBuilder(this, new Actions(this));
 		
 		set();
 	}
@@ -91,7 +94,7 @@ public class Components {
 		eventManager.addListener(flowConverters);
 
 		MyFXMLLoader.setResources(resources);
-		createViewBuilder().build();
+		viewBuilder.build();
 	}
 	
 	private UARTDevice buildDevice(UARTDevice device) {
@@ -156,9 +159,5 @@ public class Components {
 
 	public List<UARTDevice> getDevices() {
 		return Arrays.asList(edDevice, flowDevice);
-	}
-	
-	private ViewBuilder createViewBuilder(){
-		return new ViewBuilder(this, new Actions(this));
 	}
 }

@@ -5,10 +5,8 @@ import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.calibration.CalibrationPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.chartED.ChartEDPane;
-import jedrzejbronislaw.flowmeasure.view.connection.UARTParamsBuilder;
 import jedrzejbronislaw.flowmeasure.view.liveED.LiveEDPane;
 import jedrzejbronislaw.flowmeasure.view.settings.SettingsPaneBuilder;
-import jedrzejbronislaw.flowmeasure.view.sidePane.SidePaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.table.MeasurementTableBuilder;
 
 public class EDViewFactory extends ViewFactory {
@@ -19,17 +17,6 @@ public class EDViewFactory extends ViewFactory {
 
 
 	@Override
-	public Node uart() {
-		UARTParamsBuilder builder = new UARTParamsBuilder(actions);
-		builder.build();
-		
-		viewMediator().setUartParamsGetter(builder.getController()::getParams);
-		addConnListener(builder.getController());
-		
-		return builder.getNode();
-	}
-	
-	@Override
 	public Node chart() {
 		return new ChartEDPane(flowconverters(), settings(), this::getCurrentProcessRepo);
 	}
@@ -38,17 +25,6 @@ public class EDViewFactory extends ViewFactory {
 	public Node table() {
 		MeasurementTableBuilder builder = new MeasurementTableBuilder(this::getCurrentProcessRepo);
 		builder.build();
-		
-		return builder.getNode();
-	}
-	
-	@Override
-	public Node sidePane(){
-		SidePaneBuilder builder = new SidePaneBuilder(actions);
-		builder.build();
-		
-		addAllStatesListener(builder.getController());
-		addEventListener(builder.getController());
 		
 		return builder.getNode();
 	}

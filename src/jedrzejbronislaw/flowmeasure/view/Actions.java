@@ -30,6 +30,7 @@ import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.AutoConnection;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionAttempt;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.MultiDeviceAutoConnection;
+import jedrzejbronislaw.flowmeasure.view.factory.DeviceType;
 import jedrzejbronislaw.flowmeasure.view.saveWindow.SaveWindowBuilder;
 import lombok.RequiredArgsConstructor;
 
@@ -217,6 +218,9 @@ public class Actions implements ActionContainer {
 			System.out.println("Uda³o po³¹czyæ siê z urz¹dzeniem " + device.getName() + " na porcie: " + port);
 			eventManager().submitEvent(EventType.CONNECTION_SUCCESSFUL);
 			connectionMonitor().start();
+			
+			if (device == flowDevice()) components.getViewBuilder().setDeviceView(DeviceType.FlowDevice);
+			if (device ==   edDevice()) components.getViewBuilder().setDeviceView(DeviceType.  EDDevice);
 		});
 		
 		return autoConn;

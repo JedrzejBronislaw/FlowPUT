@@ -27,8 +27,6 @@ public abstract class ViewFactory {
 	@NonNull protected ActionContainer actions;
 	
 	
-	abstract public Node sidePane();
-	abstract public Node uart();
 	abstract public Node livePane();
 	abstract public Node table();
 	abstract public Node chart();
