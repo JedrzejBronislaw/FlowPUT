@@ -3,7 +3,7 @@ package jedrzejbronislaw.flowmeasure.view.deviceView;
 import javafx.scene.Node;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
-import jedrzejbronislaw.flowmeasure.view.flow.calibration.CalibrationPaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.flow.calibration.CalibrationPane;
 import jedrzejbronislaw.flowmeasure.view.flow.chart.ChartPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.flow.live.LivePaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.flow.settings.SettingsPaneBuilder;
@@ -44,12 +44,10 @@ public class FlowViewFactory extends ViewFactory {
 
 	@Override
 	public Node createCalibrationPane() {
-		CalibrationPaneBuilder builder = new CalibrationPaneBuilder(eventManager(), flowManager(), settings(), calibration());
-		builder.build();
+		CalibrationPane calibrationPane = new CalibrationPane(eventManager(), flowManager(), settings(), calibration());
+		addAllStatesListener(calibrationPane);
 		
-		addAllStatesListener(builder.getController());
-		
-		return builder.getNode();
+		return calibrationPane;
 	}
 
 	@Override
