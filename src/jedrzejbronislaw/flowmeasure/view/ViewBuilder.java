@@ -31,7 +31,7 @@ import jedrzejbronislaw.flowmeasure.view.connection.ConnectionPane;
 import jedrzejbronislaw.flowmeasure.view.deviceView.DeviceView;
 import jedrzejbronislaw.flowmeasure.view.deviceView.EDViewFactory;
 import jedrzejbronislaw.flowmeasure.view.deviceView.FlowViewFactory;
-import jedrzejbronislaw.flowmeasure.view.dialog.DialogPaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.dialog.DialogPane;
 import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindowBuilder;
 import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindowController;
 import jedrzejbronislaw.flowmeasure.view.sidePane.SidePane;
@@ -63,10 +63,9 @@ public class ViewBuilder {
 	}
 	
 	private void buildDialog() {
-		DialogPaneBuilder builder = new DialogPaneBuilder(root);
-		builder.build();
+		DialogPane dialogPane = new DialogPane(root);
 		
-		dialogManager().setShowMessage(builder.getController()::show);
+		dialogManager().setShowMessage(dialogPane::show);
 	}
 	
 	private void buildWindow(Pane root) {

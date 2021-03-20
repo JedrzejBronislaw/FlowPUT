@@ -6,19 +6,31 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import jedrzejbronislaw.flowmeasure.tools.Delay;
-import lombok.Setter;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
 
-public class DialogPaneController implements Initializable {
+public class DialogPane extends VBox implements Initializable {
 
 	@FXML private Label title, content;
 	
-	@Setter private Node node;
-	@Setter private Pane root;
+	private Pane root;
+
+	
+	public DialogPane(Pane root) {
+		this.root = root;
+		
+		MyFXMLLoader2.create("DialogPane.fxml", this);
+	}
+	
 	
 	public void show(String title, String content, int closeDelay) {
 		setMessage(title, content);
@@ -36,13 +48,15 @@ public class DialogPaneController implements Initializable {
 	}
 
 	public void show() {
-		root.getChildren().add(node);
+		root.getChildren().add(this);
 	}
 
 	public void close() {
-		((StackPane)node.getParent()).getChildren().remove(node);
+		((StackPane)getParent()).getChildren().remove(this);
 	}
 	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {}
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY,CornerRadii.EMPTY, Insets.EMPTY)));
+	}
 }
