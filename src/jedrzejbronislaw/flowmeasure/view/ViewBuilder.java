@@ -32,8 +32,7 @@ import jedrzejbronislaw.flowmeasure.view.deviceView.DeviceView;
 import jedrzejbronislaw.flowmeasure.view.deviceView.EDViewFactory;
 import jedrzejbronislaw.flowmeasure.view.deviceView.FlowViewFactory;
 import jedrzejbronislaw.flowmeasure.view.dialog.DialogPane;
-import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindowBuilder;
-import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindowController;
+import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindow;
 import jedrzejbronislaw.flowmeasure.view.sidePane.SidePane;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -52,18 +51,17 @@ public class ViewBuilder {
 	@NonNull private Components components;
 	@NonNull private ActionContainer actions;
 	
-	private Pane root;
-	private MainWindowController mainWindowController;
+	private MainWindow mainWindow;
 	
 	
 	public void build() {
-		root = (Pane) mainWindow();
-		buildWindow(root);
+		mainWindow = mainWindow();
+		buildWindow(mainWindow);
 		buildDialog();
 	}
 	
 	private void buildDialog() {
-		DialogPane dialogPane = new DialogPane(root);
+		DialogPane dialogPane = new DialogPane(mainWindow);
 		
 		dialogManager().setShowMessage(dialogPane::show);
 	}
@@ -133,21 +131,18 @@ public class ViewBuilder {
 		return sidePane;
 	}
 
-	private Node mainWindow() {
-		MainWindowBuilder builder = new MainWindowBuilder();
-		builder.build();
+	private MainWindow mainWindow() {
+		MainWindow mainWindow = new MainWindow();
 
 		deviceViews.put(DeviceType.FlowDevice, new DeviceView(new FlowViewFactory(components, actions)));
 		deviceViews.put(DeviceType.EDDevice,   new DeviceView(new   EDViewFactory(components, actions)));
 		
-		builder.getController().getBorderPane().setLeft(sidePane());
-		builder.getController().getBorderPane().setRight(connectionPane());
+		mainWindow.getBorderPane().setLeft(sidePane());
+		mainWindow.getBorderPane().setRight(connectionPane());
 
-		addAppListener(builder.controller);
+		addAppListener(mainWindow);
 		
-		mainWindowController = builder.getController();
-		
-		return builder.getNode();
+		return mainWindow;
 	}
 
 	public void setDeviceView(DeviceType device) {
@@ -155,11 +150,11 @@ public class ViewBuilder {
 		if (view == null) return;
 		
 		Platform.runLater(() -> {
-			mainWindowController.setLivePane       (view.getLivePane());
-			mainWindowController.setTablePane      (view.getTablePane());
-			mainWindowController.setChartPane      (view.getChartPane());
-			mainWindowController.setSettingsPane   (view.getSettingsPane());
-			mainWindowController.setCalibrationPane(view.getCalibrationPane());
+			mainWindow.setLivePane       (view.getLivePane());
+			mainWindow.setTablePane      (view.getTablePane());
+			mainWindow.setChartPane      (view.getChartPane());
+			mainWindow.setSettingsPane   (view.getSettingsPane());
+			mainWindow.setCalibrationPane(view.getCalibrationPane());
 		});
 	}
 
