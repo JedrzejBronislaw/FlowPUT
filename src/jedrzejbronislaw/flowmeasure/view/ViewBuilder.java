@@ -27,7 +27,7 @@ import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
-import jedrzejbronislaw.flowmeasure.view.connection.UARTParamsBuilder;
+import jedrzejbronislaw.flowmeasure.view.connection.UARTParamsPane;
 import jedrzejbronislaw.flowmeasure.view.deviceView.DeviceView;
 import jedrzejbronislaw.flowmeasure.view.deviceView.EDViewFactory;
 import jedrzejbronislaw.flowmeasure.view.deviceView.FlowViewFactory;
@@ -117,13 +117,12 @@ public class ViewBuilder {
 	}
 	
 	public Node uart() {
-		UARTParamsBuilder builder = new UARTParamsBuilder(actions);
-		builder.build();
+		UARTParamsPane uartParamsPane = new UARTParamsPane(actions);
+
+		viewMediator().setUartParamsGetter(uartParamsPane::getParams);
+		addConnListener(uartParamsPane);
 		
-		viewMediator().setUartParamsGetter(builder.getController()::getParams);
-		addConnListener(builder.getController());
-		
-		return builder.getNode();
+		return uartParamsPane;
 	}
 	
 	public Node sidePane() {

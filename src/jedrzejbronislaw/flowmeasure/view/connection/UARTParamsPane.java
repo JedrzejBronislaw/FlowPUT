@@ -14,16 +14,18 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Shape;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
-import jedrzejbronislaw.flowmeasure.tools.Injection;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
 import jedrzejbronislaw.flowmeasure.tools.TextTools;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
+import jedrzejbronislaw.flowmeasure.tools.uart.UART;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
-import lombok.Setter;
+import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 
-public class UARTParamsController implements Initializable, StateListener<ConnectionState> {
+public class UARTParamsPane extends HBox implements Initializable, StateListener<ConnectionState> {
 
 	@FXML private ComboBox<String> ports;
 
@@ -34,13 +36,18 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 	@FXML private Shape hideShape;
 	@FXML private VBox controlPane;
 
-	@Setter private Runnable connectButtonAction;
-	@Setter private Runnable disconnectButtonAction;
-	@Setter private Runnable autoConnectButtonAction;
+	private ActionContainer actions;
 	
-	@Setter private Supplier<List<String>> portsSupplier;
+	private Supplier<List<String>> portsSupplier = UART::getPortList;
 	
 	private BooleanProperty hidden = new SimpleBooleanProperty(false);
+
+	
+	public UARTParamsPane(ActionContainer actions) {
+		this.actions = actions;
+		
+		MyFXMLLoader2.create("UARTParams.fxml", this);
+	}
 	
 	
 	public UARTParams getParams() {
@@ -60,11 +67,11 @@ public class UARTParamsController implements Initializable, StateListener<Connec
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		connectButton.setOnAction(e      -> Injection.run(connectButtonAction));
-		disconnectButton.setOnAction(e   -> Injection.run(disconnectButtonAction));
-		autoConnectButton.setOnAction(e  -> Injection.run(autoConnectButtonAction));
+		connectButton.setOnAction(e      -> actions.connectDevice());
+		disconnectButton.setOnAction(e   -> actions.disconnectDevices());
+		autoConnectButton.setOnAction(e  -> actions.autoconnectDevice());
 		
-		ports.setOnShowing(e -> setPortsNames(Injection.get(portsSupplier)));
+		ports.setOnShowing(e -> setPortsNames(portsSupplier.get()));
 		
 		hideShape          .setOnMouseClicked(e -> hideShow());
 		verticalStatusLabel.setOnMouseClicked(e -> hideShow());

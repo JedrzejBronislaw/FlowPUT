@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Polygon?>
 
-<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="jedrzejbronislaw.flowmeasure.view.connection.UARTParamsController">
+<fx:root type="HBox" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox maxWidth="25.0" spacing="40.0">
          <children>
@@ -61,4 +61,4 @@
          </padding>
       </VBox>
    </children>
-</HBox>
+</fx:root>
