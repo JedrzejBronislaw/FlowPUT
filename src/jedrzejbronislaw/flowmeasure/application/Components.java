@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import javafx.stage.Stage;
+import jedrzejbronislaw.flowmeasure.components.SavingService;
+import jedrzejbronislaw.flowmeasure.components.SettingsService;
 import jedrzejbronislaw.flowmeasure.components.calibration.Calibration;
 import jedrzejbronislaw.flowmeasure.components.calibration.Calibration1;
 import jedrzejbronislaw.flowmeasure.components.connectionMonitor.ConnectionMonitor;
@@ -53,7 +55,10 @@ public class Components {
 	private ViewMediator viewMediator;
 	private Repository repository;
 	private ViewBuilder viewBuilder;
+	
 	private ConnectionService connectionService;
+	private SavingService savingService;
+	private SettingsService settingsService;
 	
 	public Components(Stage stage) {
 		primaryStage = stage;
@@ -73,7 +78,10 @@ public class Components {
 		calibration = buildCalibration();
 		repository = new Repository();
 		flowManager = new FlowManager(repository);
+		
 		connectionService = new ConnectionService(this);
+		savingService = new SavingService(this);
+		settingsService = new SettingsService(settings);
 		
 		viewBuilder = new ViewBuilder(this, new Actions(this));
 		

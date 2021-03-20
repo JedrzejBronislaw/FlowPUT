@@ -7,6 +7,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import jedrzejbronislaw.flowmeasure.application.Components;
+import jedrzejbronislaw.flowmeasure.components.SavingService;
+import jedrzejbronislaw.flowmeasure.components.SettingsService;
 import jedrzejbronislaw.flowmeasure.components.connectionMonitor.ConnectionMonitor;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager.FlowConsumerType;
@@ -21,8 +23,6 @@ import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.FlowmeterNameProperty;
 import jedrzejbronislaw.flowmeasure.settings.RatioProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
-import jedrzejbronislaw.flowmeasure.tools.fileNamer.FileNamer;
-import jedrzejbronislaw.flowmeasure.tools.fileNamer.FileNamer1;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
@@ -117,17 +117,10 @@ public class Actions implements ActionContainer {
 
 	private void showSaveWindow(ProcessRepositoryWriter writer) {
 		ProcessRepository process = repository().getCurrentProcessRepository();
-		SaveWindow saveWindow = new SaveWindow(resources(), process, settings());
+		SaveWindow saveWindow = new SaveWindow(resources(), process, settingsService(), savingService());
 
-		FileNamer filenamer = new FileNamer1(process);
 		saveWindow.setOwner(components.getPrimaryStage());
-		saveWindow.setFileNamer(filenamer::createName);
-		saveWindow.setInitialDirectory(settings().getString(AppProperties.SAVE_PATH));
 		saveWindow.setSaveAction(writer::save);
-		saveWindow.setOnFileChoose(file -> {
-			settings().setProperty(AppProperties.SAVE_PATH, file.getParent());
-			settings().saveToFile();
-		});
 			
 		saveWindow.showWindow();
 	}
@@ -205,6 +198,14 @@ public class Actions implements ActionContainer {
 	
 	private Settings settings() {
 		return components.getSettings();
+	}
+	
+	private SettingsService settingsService() {
+		return components.getSettingsService();
+	}
+	
+	private SavingService savingService() {
+		return components.getSavingService();
 	}
 	
 	private Repository repository() {
