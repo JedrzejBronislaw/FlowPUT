@@ -28,7 +28,7 @@ import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionAttempt;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.MultiDeviceAutoConnection;
-import jedrzejbronislaw.flowmeasure.view.saveWindow.SaveWindowBuilder;
+import jedrzejbronislaw.flowmeasure.view.saveWindow.SaveWindow;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -117,20 +117,19 @@ public class Actions implements ActionContainer {
 
 	private void showSaveWindow(ProcessRepositoryWriter writer) {
 		ProcessRepository process = repository().getCurrentProcessRepository();
-		SaveWindowBuilder builder = new SaveWindowBuilder(resources(), process, settings());
+		SaveWindow saveWindow = new SaveWindow(resources(), process, settings());
 
 		FileNamer filenamer = new FileNamer1(process);
-		builder.setOwner(components.getPrimaryStage());
-		builder.setFileNamer(filenamer::createName);
-		builder.setInitialDirectory(settings().getString(AppProperties.SAVE_PATH));
-		builder.setSaveAction(writer::save);
-		builder.setOnFileChoose(file -> {
+		saveWindow.setOwner(components.getPrimaryStage());
+		saveWindow.setFileNamer(filenamer::createName);
+		saveWindow.setInitialDirectory(settings().getString(AppProperties.SAVE_PATH));
+		saveWindow.setSaveAction(writer::save);
+		saveWindow.setOnFileChoose(file -> {
 			settings().setProperty(AppProperties.SAVE_PATH, file.getParent());
 			settings().saveToFile();
 		});
 			
-		builder.build();
-		builder.showWindow();
+		saveWindow.showWindow();
 	}
 
 	private float[] getPulseRatios() {

@@ -22,9 +22,10 @@ import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessReposit
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
 import lombok.Setter;
 
-public class SaveWindowController implements Initializable {
+public class SaveWindowPane extends VBox implements Initializable {
 
 	@FXML private CheckBox    unixTime, fullTime, processTime;
 	@FXML private CheckBox    unit_pulses, unit_flow;
@@ -44,6 +45,11 @@ public class SaveWindowController implements Initializable {
 	@Setter private Runnable exitAction;
 	
 	        private List<CheckBox> saveFlowmeters = new ArrayList<>();
+
+	    	
+	public SaveWindowPane() {
+		MyFXMLLoader2.create("SaveMeasurementWindow.fxml", this);
+	}
 
 	
 	public void setFlowmeterNames(String[] names) {

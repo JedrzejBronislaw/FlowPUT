@@ -7,7 +7,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import javafx.application.Platform;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
@@ -22,14 +21,10 @@ import jedrzejbronislaw.flowmeasure.settings.FlowmeterNameProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
-import jedrzejbronislaw.flowmeasure.view.Builder;
-import lombok.Getter;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@RequiredArgsConstructor
-public class SaveWindowBuilder extends Builder<SaveWindowController> {
+public class SaveWindow {
 
 	private final static String WINDOW_TITLE = "Saving measurement...";
 	private final static String FILE_CHOOSER_TITLE = "Saving process data...";
@@ -37,31 +32,53 @@ public class SaveWindowBuilder extends Builder<SaveWindowController> {
 	
 	private static final String LOGO_FILE_NAME = "logo.png";
 	
-	@Getter private String fxmlFilePath = "SaveMeasurementWindow.fxml";
-
 
 	@NonNull private ResourceAccess resources;
 	@NonNull private ProcessRepository process;
 	@NonNull private Settings settings;
 
-	@Setter private Window owner;
 	@Setter private SaveAction saveAction;
 	@Setter private Consumer<File> onFileChoose;
 	@Setter private Supplier<String> fileNamer;
+	        private File initialDirectory = null;
 	
 	private Stage stage = new Stage();
-	private File initialDirectory = null;
+	private SaveWindowPane saveWindowPane;
 	
-
-	@Override
-	protected void afterBuild() {
-		controller.setFlowmeterNames(getFlowmeterNames());
-		controller.setExitAction(stage::close);
-		controller.setSaveAction(this::save);
+	
+	public void setOwner(Window owner) {
+		stage.initOwner(owner);
+	}
+	
+	public boolean setInitialDirectory(String initialDirectory) {
+		
+		if (initialDirectory != null && !initialDirectory.isEmpty()) {
+			File path = new File(initialDirectory);
+			if(path.isDirectory()) {
+				this.initialDirectory = path;
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	public SaveWindow(ResourceAccess resources, ProcessRepository process, Settings settings) {
+		this.resources = resources;
+		this.process   = process;
+		this.settings  = settings;
+		
+		saveWindowPane = new SaveWindowPane();
+		
+		saveWindowPane.setFlowmeterNames(getFlowmeterNames());
+		saveWindowPane.setExitAction(stage::close);
+		saveWindowPane.setSaveAction(this::save);
 		
 		buildStage();
 	}
-
+	
+	
 	private String[] getFlowmeterNames() {
 		int size = Consts.FLOWMETERS_NUMBER;
 
@@ -74,11 +91,10 @@ public class SaveWindowBuilder extends Builder<SaveWindowController> {
 	}
 
 	private void buildStage() {
-		Scene scene = new Scene((Parent)node);
+		Scene scene = new Scene(saveWindowPane);
 		scene.getStylesheets().add(resources.getResourcePath(CSS_FILE_NAME));
 		
 		stage.getIcons().add(loadLogo());
-		stage.initOwner(owner);
 		stage.setScene(scene);
 		stage.setTitle(WINDOW_TITLE);
 
@@ -95,19 +111,6 @@ public class SaveWindowBuilder extends Builder<SaveWindowController> {
 		
 		saveAction.save(process, file, options);
 		if (openFile) tryOpenFileInDefaultApplication(file);
-	}
-	
-	public boolean setInitialDirectory(String initialDirectory) {
-		
-		if (initialDirectory != null && !initialDirectory.isEmpty()) {
-			File path = new File(initialDirectory);
-			if(path.isDirectory()) {
-				this.initialDirectory = path;
-				return true;
-			}
-		}
-		
-		return false;
 	}
 	
 	private File choosingFileAction(){
