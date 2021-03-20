@@ -34,7 +34,7 @@ import jedrzejbronislaw.flowmeasure.view.deviceView.FlowViewFactory;
 import jedrzejbronislaw.flowmeasure.view.dialog.DialogPaneBuilder;
 import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindowBuilder;
 import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindowController;
-import jedrzejbronislaw.flowmeasure.view.sidePane.SidePaneBuilder;
+import jedrzejbronislaw.flowmeasure.view.sidePane.SidePane;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -126,13 +126,12 @@ public class ViewBuilder {
 	}
 	
 	public Node sidePane() {
-		SidePaneBuilder builder = new SidePaneBuilder(actions);
-		builder.build();
+		SidePane sidePane = new SidePane(actions);
 		
-		addAllStatesListener(builder.getController());
-		addEventListener(builder.getController());
+		addAllStatesListener(sidePane);
+		addEventListener(sidePane);
 		
-		return builder.getNode();
+		return sidePane;
 	}
 
 	private Node mainWindow() {

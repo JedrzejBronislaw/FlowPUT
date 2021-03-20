@@ -26,12 +26,12 @@ import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.Delay;
-import jedrzejbronislaw.flowmeasure.tools.Injection;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
 import jedrzejbronislaw.flowmeasure.tools.TextTools;
 import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
-import lombok.Setter;
+import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 
-public class SidePaneController implements Initializable, EventListener, AllStatesListener {
+public class SidePane extends HBox implements Initializable, EventListener, AllStatesListener {
 	
 	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 	private static final int BLINK_DIODE_DURATION = 100;
@@ -48,10 +48,7 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 	@FXML private Button saveButton, closeButton, beginButton, endButton;
 	@FXML private Circle receiverDiode;
 	
-	@Setter private Runnable saveButtonAction;
-	@Setter private Runnable closeButtonAction;
-	@Setter private Runnable beginButtonAction;
-	@Setter private Runnable endButtonAction;
+	private final ActionContainer actions;
 
 	private ProcessState processState;
 	private LocalDateTime startTime = null;
@@ -68,6 +65,13 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 				CycleMethod.NO_CYCLE,
 				new Stop(0, color),
 				new Stop(1, Color.WHITE));
+	}
+
+	
+	public SidePane(ActionContainer actions) {
+		this.actions = actions;
+		
+		MyFXMLLoader2.create("SidePane.fxml", this);
 	}
 	
 	
@@ -90,10 +94,10 @@ public class SidePaneController implements Initializable, EventListener, AllStat
 		onOffBox.setDisable(true);
 		receiverDiode.setFill(GRADIENT_DIODE_OFF);
 		
-		saveButton.setOnAction(e  -> Injection.run(saveButtonAction));
-		closeButton.setOnAction(e -> Injection.run(closeButtonAction));
-		beginButton.setOnAction(e -> Injection.run(beginButtonAction));
-		endButton.setOnAction(e   -> Injection.run(endButtonAction));
+		saveButton.setOnAction (e -> actions.saveProcess());
+		closeButton.setOnAction(e -> actions.closeProcess());
+		beginButton.setOnAction(e -> actions.startProcess());
+		endButton.setOnAction  (e -> actions.endProcess());
 	}
 
 	private void setEnable(Node node, boolean enable) {
