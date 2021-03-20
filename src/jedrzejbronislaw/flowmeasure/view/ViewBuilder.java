@@ -27,7 +27,7 @@ import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
-import jedrzejbronislaw.flowmeasure.view.connection.UARTParamsPane;
+import jedrzejbronislaw.flowmeasure.view.connection.ConnectionPane;
 import jedrzejbronislaw.flowmeasure.view.deviceView.DeviceView;
 import jedrzejbronislaw.flowmeasure.view.deviceView.EDViewFactory;
 import jedrzejbronislaw.flowmeasure.view.deviceView.FlowViewFactory;
@@ -116,13 +116,13 @@ public class ViewBuilder {
 		return result.get() == ButtonType.OK;
 	}
 	
-	public Node uart() {
-		UARTParamsPane uartParamsPane = new UARTParamsPane(actions);
+	public Node connectionPane() {
+		ConnectionPane connectionPane = new ConnectionPane(actions);
 
-		viewMediator().setUartParamsGetter(uartParamsPane::getParams);
-		addConnListener(uartParamsPane);
+		viewMediator().setUartParamsGetter(connectionPane::getParams);
+		addConnListener(connectionPane);
 		
-		return uartParamsPane;
+		return connectionPane;
 	}
 	
 	public Node sidePane() {
@@ -143,7 +143,7 @@ public class ViewBuilder {
 		deviceViews.put(DeviceType.EDDevice,   new DeviceView(new   EDViewFactory(components, actions)));
 		
 		builder.getController().getBorderPane().setLeft(sidePane());
-		builder.getController().getBorderPane().setRight(uart());
+		builder.getController().getBorderPane().setRight(connectionPane());
 
 		addAppListener(builder.controller);
 		

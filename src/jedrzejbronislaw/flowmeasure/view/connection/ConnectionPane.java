@@ -25,7 +25,7 @@ import jedrzejbronislaw.flowmeasure.tools.uart.UART;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 
-public class UARTParamsPane extends HBox implements Initializable, StateListener<ConnectionState> {
+public class ConnectionPane extends HBox implements Initializable, StateListener<ConnectionState> {
 
 	@FXML private ComboBox<String> ports;
 
@@ -43,10 +43,10 @@ public class UARTParamsPane extends HBox implements Initializable, StateListener
 	private BooleanProperty hidden = new SimpleBooleanProperty(false);
 
 	
-	public UARTParamsPane(ActionContainer actions) {
+	public ConnectionPane(ActionContainer actions) {
 		this.actions = actions;
 		
-		MyFXMLLoader2.create("UARTParams.fxml", this);
+		MyFXMLLoader2.create("ConnectionPane.fxml", this);
 	}
 	
 	
