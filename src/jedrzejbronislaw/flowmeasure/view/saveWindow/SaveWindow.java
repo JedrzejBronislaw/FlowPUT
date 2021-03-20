@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
@@ -95,6 +96,7 @@ public class SaveWindow {
 		scene.getStylesheets().add(resources.getResourcePath(CSS_FILE_NAME));
 		
 		stage.getIcons().add(loadLogo());
+		stage.initModality(Modality.WINDOW_MODAL);
 		stage.setScene(scene);
 		stage.setTitle(WINDOW_TITLE);
 
