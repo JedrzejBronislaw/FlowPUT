@@ -8,19 +8,17 @@ import jedrzejbronislaw.flowmeasure.states.StateManager;
 
 public class Main extends Application {
 	
-	private Components components;
-
 	@Override
 	public void start(Stage stage) {
 		
-		components = new Components(stage);
+		Components.create(stage);
 		
 		createStateAndEventListeners();
 	}
 
 	private void createStateAndEventListeners() {
-		StateManager stateManager = components.getStateManager();
-		EventManager eventManager = components.getEventManager();
+		StateManager stateManager = Components.getStateManager();
+		EventManager eventManager = Components.getEventManager();
 		
 		stateManager.getAppState()    .addStateListener(state -> System.out.println(" -> New appState: "     + state.toString()));
 		stateManager.getConnState()   .addStateListener(state -> System.out.println(" -> New connState: "    + state.toString()));

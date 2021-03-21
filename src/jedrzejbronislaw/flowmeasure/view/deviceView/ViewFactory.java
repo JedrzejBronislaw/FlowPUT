@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public abstract class ViewFactory {
 	
-	@NonNull protected Components components;
 	@NonNull protected ActionContainer actions;
 	
 	
@@ -39,7 +38,7 @@ public abstract class ViewFactory {
 	}
 	
 	protected void addAllStatesListener(AllStatesListener listener) {
-		new AllStates(components.getStateManager(), listener);
+		new AllStates(Components.getStateManager(), listener);
 	}
 	
 	protected void addAppListener(StateListener<ApplicationState> listener) {
@@ -51,34 +50,34 @@ public abstract class ViewFactory {
 	}
 	
 	protected ProcessRepository getCurrentProcessRepo() {
-		return components.getRepository().getCurrentProcessRepository();
+		return Components.getRepository().getCurrentProcessRepository();
 	}
 	
 	protected FlowManager flowManager() {
-		return components.getFlowManager();
+		return Components.getFlowManager();
 	}
 	
 	protected Settings settings() {
-		return components.getSettings();
+		return Components.getSettings();
 	}
 	
 	protected EventManager eventManager() {
-		return components.getEventManager();
+		return Components.getEventManager();
 	}
 	
 	private StateManager stateManager() {
-		return components.getStateManager();
+		return Components.getStateManager();
 	}
 	
 	protected Calibration calibration() {
-		return components.getCalibration();
+		return Components.getCalibration();
 	}
 	
 	protected FlowConverters flowconverters() {
-		return components.getFlowConverters();
+		return Components.getFlowConverters();
 	}
 	
 	protected ViewMediator viewMediator() {
-		return components.getViewMediator();
+		return Components.getViewMediator();
 	}
 }

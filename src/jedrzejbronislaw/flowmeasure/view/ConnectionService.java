@@ -13,15 +13,10 @@ import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.AutoConnection;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionAttempt;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.MultiDeviceAutoConnection;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class ConnectionService {
 	
 	private static final int UART_RATE = 9600;
-	
-	
-	private final Components components;
 	
 	
 	public ConnectionAttempt createConnectionAttempt(UARTDevice device, UARTParams params) {
@@ -69,30 +64,30 @@ public class ConnectionService {
 			eventManager().submitEvent(EventType.CONNECTION_SUCCESSFUL);
 			connectionMonitor().start();
 			
-			if (device == flowDevice()) components.getViewBuilder().setDeviceView(DeviceType.FlowDevice);
-			if (device ==   edDevice()) components.getViewBuilder().setDeviceView(DeviceType.  EDDevice);
+			if (device == flowDevice()) Components.getViewBuilder().setDeviceView(DeviceType.FlowDevice);
+			if (device ==   edDevice()) Components.getViewBuilder().setDeviceView(DeviceType.  EDDevice);
 		});
 		
 		return autoConn;
 	}
 	
 	private EventManager eventManager() {
-		return components.getEventManager();
+		return Components.getEventManager();
 	}
-	
+
 	private ConnectionMonitor connectionMonitor() {
-		return components.getConnectionMonitor();
+		return Components.getConnectionMonitor();
 	}
-	
+
 	private UARTDevice edDevice() {
-		return components.getEdDevice();
+		return Components.getEdDevice();
 	}
-	
+
 	private UARTDevice flowDevice() {
-		return components.getFlowDevice();
+		return Components.getFlowDevice();
 	}
-	
+
 	private List<UARTDevice> devices() {
-		return components.getDevices();
+		return Components.getDevices();
 	}
 }

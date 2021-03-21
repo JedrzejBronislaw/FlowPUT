@@ -48,7 +48,6 @@ public class ViewBuilder {
 
 	private Map<DeviceType, DeviceView> deviceViews = new HashMap<>();
 	
-	@NonNull private Components components;
 	@NonNull private ActionContainer actions;
 	
 	private MainWindow mainWindow;
@@ -134,8 +133,8 @@ public class ViewBuilder {
 	private MainWindow mainWindow() {
 		MainWindow mainWindow = new MainWindow();
 
-		deviceViews.put(DeviceType.FlowDevice, new DeviceView(new FlowViewFactory(components, actions)));
-		deviceViews.put(DeviceType.EDDevice,   new DeviceView(new   EDViewFactory(components, actions)));
+		deviceViews.put(DeviceType.FlowDevice, new DeviceView(new FlowViewFactory(actions)));
+		deviceViews.put(DeviceType.EDDevice,   new DeviceView(new   EDViewFactory(actions)));
 		
 		mainWindow.getBorderPane().setLeft(sidePane());
 		mainWindow.getBorderPane().setRight(connectionPane());
@@ -164,7 +163,7 @@ public class ViewBuilder {
 	}
 	
 	protected void addAllStatesListener(AllStatesListener listener) {
-		new AllStates(components.getStateManager(), listener);
+		new AllStates(Components.getStateManager(), listener);
 	}
 
 	private void addAppListener(StateListener<ApplicationState> listener) {
@@ -184,26 +183,26 @@ public class ViewBuilder {
 	}
 	
 	private Stage primaryStage() {
-		return components.getPrimaryStage();
+		return Components.getPrimaryStage();
 	}
 	
 	private ResourceAccess resources() {
-		return components.getResources();
+		return Components.getResources();
 	}
 	
 	protected EventManager eventManager() {
-		return components.getEventManager();
+		return Components.getEventManager();
 	}
 	
 	private StateManager stateManager() {
-		return components.getStateManager();
+		return Components.getStateManager();
 	}
 	
 	private DialogManager dialogManager() {
-		return components.getDialogManager();
+		return Components.getDialogManager();
 	}
 	
 	protected ViewMediator viewMediator() {
-		return components.getViewMediator();
+		return Components.getViewMediator();
 	}
 }

@@ -35,32 +35,32 @@ import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
 import jedrzejbronislaw.flowmeasure.view.ViewMediator;
 import lombok.Getter;
 
-@Getter
-public class Components {
+public abstract class Components {
 	
-	private Stage primaryStage;
+	@Getter private static Stage primaryStage;
 
-	private ResourceAccess resources;
-	private UARTDevice flowDevice;
-	private UARTDevice edDevice;
-	private FlowManager flowManager;
-	private Settings settings;
-	private ConnectionMonitor connectionMonitor;
-	private EventManager eventManager;
-	private StateManager stateManager;
-	private EventPolicy eventPolicy;
-	private DialogManager dialogManager;
-	private FlowConverters flowConverters;
-	private Calibration calibration;
-	private ViewMediator viewMediator;
-	private Repository repository;
-	private ViewBuilder viewBuilder;
+	@Getter private static ResourceAccess resources;
+	@Getter private static UARTDevice flowDevice;
+	@Getter private static UARTDevice edDevice;
+	@Getter private static FlowManager flowManager;
+	@Getter private static Settings settings;
+	@Getter private static ConnectionMonitor connectionMonitor;
+	@Getter private static EventManager eventManager;
+	@Getter private static StateManager stateManager;
+	@Getter private static EventPolicy eventPolicy;
+	@Getter private static DialogManager dialogManager;
+	@Getter private static FlowConverters flowConverters;
+	@Getter private static Calibration calibration;
+	@Getter private static ViewMediator viewMediator;
+	@Getter private static Repository repository;
+	@Getter private static ViewBuilder viewBuilder;
 	
-	private ConnectionService connectionService;
-	private SavingService savingService;
-	private SettingsService settingsService;
+	@Getter private static ConnectionService connectionService;
+	@Getter private static SavingService savingService;
+	@Getter private static SettingsService settingsService;
 	
-	public Components(Stage stage) {
+	
+	public static void create(Stage stage) {
 		primaryStage = stage;
 		
 		resources = new InternalResourceAccess().build();
@@ -79,16 +79,16 @@ public class Components {
 		repository = new Repository();
 		flowManager = new FlowManager(repository);
 		
-		connectionService = new ConnectionService(this);
-		savingService = new SavingService(this);
-		settingsService = new SettingsService(settings);
+		connectionService = new ConnectionService();
+		savingService = new SavingService();
+		settingsService = new SettingsService();
 		
-		viewBuilder = new ViewBuilder(this, new Actions(this));
+		viewBuilder = new ViewBuilder(new Actions());
 		
 		set();
 	}
 
-	private void set() {
+	private static void set() {
 		settings.loadFromFile();
 		
 		flowManager.setBufferCreator(() ->
@@ -108,14 +108,14 @@ public class Components {
 		viewBuilder.build();
 	}
 	
-	private UARTDevice buildDevice(UARTDevice device) {
+	private static UARTDevice buildDevice(UARTDevice device) {
 		device.setIncorrectMessageReceive(m -> System.out.println("(" + LocalDateTime.now().toString() + ") Incorrect Message: " + m));
 		device.setDeviceConfirmation(() -> System.out.println("Device confirmation"));
 			
 		return device;
 	}
 	
-	private FlowDevice buildFlowDevice() {
+	private static FlowDevice buildFlowDevice() {
 		FlowDevice device = new FlowDevice();
 		buildDevice(device);
 
@@ -129,7 +129,7 @@ public class Components {
 		return device;
 	}
 	
-	private EDDevice buildEDDevice() {
+	private static EDDevice buildEDDevice() {
 		EDDevice device = new EDDevice();
 		buildDevice(device);
 
@@ -143,7 +143,7 @@ public class Components {
 		return device;
 	}
 	
-	private ConnectionMonitor buildConnectionMonitor() {
+	private static ConnectionMonitor buildConnectionMonitor() {
 		ConnectionMonitor1 monitor = new ConnectionMonitor1(3, 1000, () -> {
 			getDevices().forEach(device -> device.disconnect());
 			eventManager.submitEvent(EventType.LOST_CONNECTION);
@@ -152,7 +152,7 @@ public class Components {
 		return monitor;
 	}
 
-	private DialogManager buildDialogManager() {
+	private static DialogManager buildDialogManager() {
 		return new DialogManager.builder().
 				addMessages(EventType.CONNECTION_SUCCESSFUL, "Connection to FlowPUT device established").
 				addMessages(EventType.LOST_CONNECTION, "FlowPUT device has been disconnected").
@@ -160,7 +160,7 @@ public class Components {
 				build();
 	}
 
-	private Calibration buildCalibration() {
+	private static Calibration buildCalibration() {
 		Calibration calibration = new Calibration1();
 		calibration.setVolume(1);
 		calibration.reset();
@@ -168,7 +168,7 @@ public class Components {
 		return calibration;
 	}
 
-	public List<UARTDevice> getDevices() {
+	public static List<UARTDevice> getDevices() {
 		return Arrays.asList(edDevice, flowDevice);
 	}
 }

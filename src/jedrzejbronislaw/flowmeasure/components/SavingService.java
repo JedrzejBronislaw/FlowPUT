@@ -10,16 +10,10 @@ import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.tools.fileNamer.FileNamer;
 import jedrzejbronislaw.flowmeasure.tools.fileNamer.FileNamer1;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class SavingService {
 	
 	private final static String FILE_CHOOSER_TITLE = "Saving process data...";
-	
-	
-	@NonNull private final Components components;
 	
 	
 	public File openFileChooser(Window ownerWindow) {
@@ -27,7 +21,7 @@ public class SavingService {
 		File initialDirectory = getInitialDirectory();
 		File file;
 
-		ProcessRepository process = components.getRepository().getCurrentProcessRepository();
+		ProcessRepository process = Components.getRepository().getCurrentProcessRepository();
 		FileNamer filenamer = new FileNamer1(process);
 		
 		fileChooser.setTitle(FILE_CHOOSER_TITLE);
@@ -44,7 +38,7 @@ public class SavingService {
 	}
 	
 	private File getInitialDirectory() {
-		String initialDirectory = components.getSettings().getString(AppProperties.SAVE_PATH);
+		String initialDirectory = Components.getSettings().getString(AppProperties.SAVE_PATH);
 		
 		if (initialDirectory != null && !initialDirectory.isEmpty()) {
 			File path = new File(initialDirectory);
@@ -55,7 +49,7 @@ public class SavingService {
 	}
 	
 	private void saveSavingPath(File file) {
-		components.getSettings().setProperty(AppProperties.SAVE_PATH, file.getParent());
-		components.getSettings().saveToFile();
+		Components.getSettings().setProperty(AppProperties.SAVE_PATH, file.getParent());
+		Components.getSettings().saveToFile();
 	};
 }

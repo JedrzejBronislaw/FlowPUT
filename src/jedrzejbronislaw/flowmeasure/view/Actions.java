@@ -29,13 +29,9 @@ import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionAttempt;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.MultiDeviceAutoConnection;
 import jedrzejbronislaw.flowmeasure.view.saveWindow.SaveWindow;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class Actions implements ActionContainer {
 	
-	private final Components components;
-
 
 	@Override
 	public void startProcess() {
@@ -119,7 +115,7 @@ public class Actions implements ActionContainer {
 		ProcessRepository process = repository().getCurrentProcessRepository();
 		SaveWindow saveWindow = new SaveWindow(resources(), process, settingsService(), savingService());
 
-		saveWindow.setOwner(components.getPrimaryStage());
+		saveWindow.setOwner(Components.getPrimaryStage());
 		saveWindow.setSaveAction(writer::save);
 			
 		saveWindow.showWindow();
@@ -169,50 +165,50 @@ public class Actions implements ActionContainer {
 	
 	
 	private EventManager eventManager() {
-		return components.getEventManager();
+		return Components.getEventManager();
 	}
 	
 	private ConnectionMonitor connectionMonitor() {
-		return components.getConnectionMonitor();
+		return Components.getConnectionMonitor();
 	}
 	
 	private UARTDevice edDevice() {
-		return components.getEdDevice();
+		return Components.getEdDevice();
 	}
 	
 	private List<UARTDevice> devices() {
-		return components.getDevices();
+		return Components.getDevices();
 	}
 	
 	private ViewMediator viewMediator() {
-		return components.getViewMediator();
+		return Components.getViewMediator();
 	}
 	
 	private ResourceAccess resources() {
-		return components.getResources();
+		return Components.getResources();
 	}
 	
 	private FlowManager flowManager() {
-		return components.getFlowManager();
+		return Components.getFlowManager();
 	}
 	
 	private Settings settings() {
-		return components.getSettings();
+		return Components.getSettings();
 	}
 	
 	private SettingsService settingsService() {
-		return components.getSettingsService();
+		return Components.getSettingsService();
 	}
 	
 	private SavingService savingService() {
-		return components.getSavingService();
+		return Components.getSavingService();
 	}
 	
 	private Repository repository() {
-		return components.getRepository();
+		return Components.getRepository();
 	}
 	
 	private ConnectionService connectionService() {
-		return components.getConnectionService();
+		return Components.getConnectionService();
 	}
 }
