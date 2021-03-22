@@ -1,15 +1,22 @@
 package jedrzejbronislaw.flowmeasure.events;
 
+import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class EventPolicy {
 	
-	private final StateManager stateManager;
+	private StateManager stateManager;
+	
+	
+	public EventPolicy() {
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			stateManager = Components.getStateManager();
+		});
+	}
+	
 	
 	public boolean checkPermmision(EventType event) {
 		return (

@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.calibration.Calibration;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager.FlowConsumerType;
@@ -42,21 +43,24 @@ public class CalibrationPane extends VBox implements Initializable, AllStatesLis
 	@FXML private Label flowLabel;
 	@FXML private Label aveFlowLabel;
 	
-	private final EventManager eventManager;
-	private final FlowManager flowManager;
-	private final Settings settings;
-	private final Calibration calibration;
+	private EventManager eventManager;
+	private FlowManager flowManager;
+	private Settings settings;
+	private Calibration calibration;
 
 	private int calibratedFlowmeter;
 	
 	
-	public CalibrationPane(EventManager eventManager, FlowManager flowManager, Settings settings, Calibration calibration) {
-		this.eventManager = eventManager;
-		this.flowManager  = flowManager;
-		this.settings     = settings;
-		this.calibration  = calibration;
-		
+	public CalibrationPane() {
 		MyFXMLLoader2.create("CalibrationPane.fxml", this);
+		
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			eventManager = Components.getEventManager();
+			flowManager  = Components.getFlowManager();
+			settings     = Components.getSettings();
+			calibration  = Components.getCalibration();
+			init();
+		});
 	}
 	
 	public void setCurrentValues(List<Integer> values) {
@@ -82,7 +86,9 @@ public class CalibrationPane extends VBox implements Initializable, AllStatesLis
 	}
 
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initialize(URL arg0, ResourceBundle arg1) {}
+	
+	private void init() {
 		flowmeterField.getSelectionModel().select(0);
 		flowmeterField.setOnAction(e -> setFlowmeter(selectedFlowmeter()));
 		

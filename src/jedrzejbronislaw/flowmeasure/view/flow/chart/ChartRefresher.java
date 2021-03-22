@@ -7,6 +7,7 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
@@ -46,11 +47,10 @@ public class ChartRefresher {
 	private ItemSelector<FlowMeasurement> itemSelector = new ItemSelector<>();
 	
 	
-	public ChartRefresher(FlowConverters flowConverters, LineChart<Number, Number> chart, Settings settings) {
+	public ChartRefresher(FlowConverters flowConverters, LineChart<Number, Number> chart) {
 		this.chart = chart;
 		
 		seriesManager = new SeriesManager(chart);
-		seriesManager.setSeriesNameSupplier(number -> settings.getString(new FlowmeterNameProperty(number)));
 		seriesManager.refreshSeriesNames();
 		
 		pulseUpdater = new ChartPulseDataUpdater(chart, seriesManager::setChartPoint);
@@ -61,7 +61,12 @@ public class ChartRefresher {
 		setChartStaticProperties();
 		setXAxisStaticProperties();
 		
-		settings.addChangeListener(seriesManager::refreshSeriesNames);
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			Settings settings = Components.getSettings();
+			
+			seriesManager.setSeriesNameSupplier(number -> settings.getString(new FlowmeterNameProperty(number)));
+			settings.addChangeListener(seriesManager::refreshSeriesNames);
+		});
 	}
 	
 	public void refresh(ChartOptions options, ProcessRepository process) {

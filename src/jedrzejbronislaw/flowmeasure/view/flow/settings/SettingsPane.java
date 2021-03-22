@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.FlowmeterNameProperty;
@@ -36,14 +37,17 @@ public class SettingsPane extends VBox implements Initializable, StateListener<A
 	private List<PulseRatioSettingsPane> ratios = new ArrayList<>();
 	private List<FlowmeterNameSettingsPane> names = new ArrayList<>();
 	
-	private final Settings settings;
+	private Settings settings;
 	private boolean activeUpdating = true;
 
 	
-	public SettingsPane(Settings settings) {
-		this.settings = settings;
-		
+	public SettingsPane() {
 		MyFXMLLoader2.create("SettingsPane.fxml", this);
+		
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			settings = Components.getSettings();
+			settings.addChangeListener(this::updateSettings);
+		});
 	}
 
 
@@ -79,8 +83,6 @@ public class SettingsPane extends VBox implements Initializable, StateListener<A
 
 		addRatioPanes(Consts.FLOWMETERS_NUMBER);
 		addNamePanes( Consts.FLOWMETERS_NUMBER);
-		
-		settings.addChangeListener(this::updateSettings);
 	}
 	
 	private void save() {

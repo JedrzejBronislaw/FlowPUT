@@ -7,7 +7,9 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Window;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
+import jedrzejbronislaw.flowmeasure.model.Repository;
 import jedrzejbronislaw.flowmeasure.settings.AppProperties;
+import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.tools.fileNamer.FileNamer;
 import jedrzejbronislaw.flowmeasure.tools.fileNamer.FileNamer1;
 
@@ -16,12 +18,24 @@ public class SavingService {
 	private final static String FILE_CHOOSER_TITLE = "Saving process data...";
 	
 	
+	private Repository repository;
+	private Settings   settings;
+	
+	
+	public SavingService() {
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			repository = Components.getRepository();
+			settings   = Components.getSettings();
+		});
+	}
+	
+	
 	public File openFileChooser(Window ownerWindow) {
 		FileChooser fileChooser = new FileChooser();
 		File initialDirectory = getInitialDirectory();
 		File file;
 
-		ProcessRepository process = Components.getRepository().getCurrentProcessRepository();
+		ProcessRepository process = repository.getCurrentProcessRepository();
 		FileNamer filenamer = new FileNamer1(process);
 		
 		fileChooser.setTitle(FILE_CHOOSER_TITLE);
@@ -38,7 +52,7 @@ public class SavingService {
 	}
 	
 	private File getInitialDirectory() {
-		String initialDirectory = Components.getSettings().getString(AppProperties.SAVE_PATH);
+		String initialDirectory = settings.getString(AppProperties.SAVE_PATH);
 		
 		if (initialDirectory != null && !initialDirectory.isEmpty()) {
 			File path = new File(initialDirectory);
@@ -49,7 +63,7 @@ public class SavingService {
 	}
 	
 	private void saveSavingPath(File file) {
-		Components.getSettings().setProperty(AppProperties.SAVE_PATH, file.getParent());
-		Components.getSettings().saveToFile();
+		settings.setProperty(AppProperties.SAVE_PATH, file.getParent());
+		settings.saveToFile();
 	};
 }

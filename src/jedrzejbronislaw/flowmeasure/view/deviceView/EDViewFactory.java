@@ -16,12 +16,12 @@ public class EDViewFactory extends ViewFactory {
 
 	@Override
 	public Node createChartPane() {
-		return new ChartEDPane(flowconverters(), settings(), this::getCurrentProcessRepo);
+		return new ChartEDPane();
 	}
 
 	@Override
 	public Node createTablePane() {
-		return new MeasurementTable(this::getCurrentProcessRepo);
+		return new MeasurementTable();
 	}
 	
 	@Override
@@ -36,9 +36,6 @@ public class EDViewFactory extends ViewFactory {
 
 	@Override
 	public Node createLivePane() {
-		LiveEDPane livePane = new LiveEDPane();
-		livePane.setViewMediator(viewMediator());
-		
-		return livePane;
+		return new LiveEDPane();
 	}
 }

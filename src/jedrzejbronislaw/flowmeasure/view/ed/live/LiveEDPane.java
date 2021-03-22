@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.ValueConverter;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
 import jedrzejbronislaw.flowmeasure.view.ViewMediator;
@@ -21,12 +22,14 @@ public class LiveEDPane extends VBox implements Initializable {
 	
 	public LiveEDPane() {
 		MyFXMLLoader2.create("LiveEDPane.fxml", this);
-	}
-	
-	public void setViewMediator(ViewMediator viewMediator) {
-		viewMediator.setFlowPreviewer(0, this::refreshPH);
-		viewMediator.setFlowPreviewer(1, this::refreshEC);
-		viewMediator.setFlowPreviewer(2, this::refreshAM);
+		
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			ViewMediator viewMediator = Components.getViewMediator();
+			
+			viewMediator.setFlowPreviewer(0, this::refreshPH);
+			viewMediator.setFlowPreviewer(1, this::refreshEC);
+			viewMediator.setFlowPreviewer(2, this::refreshAM);
+		});
 	}
 	
 	private void refreshPH(Integer value) {

@@ -2,9 +2,9 @@ package jedrzejbronislaw.flowmeasure.components.flowManager;
 
 import java.util.function.Supplier;
 
+import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.calibration.Calibration;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
-import jedrzejbronislaw.flowmeasure.model.Repository;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,11 +26,8 @@ public class FlowManager {
 	@Setter private Supplier<FlowMeasurementConsumer> bufferCreator;
 	@Setter private Calibration calibration;
 
-	        private final Repository repository;
-
 	
-	public FlowManager(Repository repository) {
-		this.repository = repository;
+	public FlowManager() {
 		setFlowConsumerType(FlowConsumerType.NONE);
 	}
 	
@@ -56,7 +53,7 @@ public class FlowManager {
 	}
 	
 	private FlowMeasurementConsumer processRepository() {
-		ProcessRepository processRepository = repository.getCurrentProcessRepository();
+		ProcessRepository processRepository = Components.getRepository().getCurrentProcessRepository();
 		return processRepository != null ? processRepository : noneFlowConsumer;
 	}
 }

@@ -35,9 +35,7 @@ import jedrzejbronislaw.flowmeasure.view.dialog.DialogPane;
 import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindow;
 import jedrzejbronislaw.flowmeasure.view.sidePane.SidePane;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class ViewBuilder {
 	
 	private static final int WINDOW_HEIGHT = 500;
@@ -52,6 +50,27 @@ public class ViewBuilder {
 	
 	private MainWindow mainWindow;
 	
+	private   Stage          primaryStage;
+	private   ResourceAccess resources;
+	protected EventManager   eventManager;
+	private   StateManager   stateManager;
+	private   DialogManager  dialogManager;
+	protected ViewMediator   viewMediator;
+	
+	
+	public ViewBuilder(ActionContainer actions) {
+		this.actions = actions;
+		
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			primaryStage  = Components.getPrimaryStage();
+			resources     = Components.getResources();
+			eventManager  = Components.getEventManager();
+			stateManager  = Components.getStateManager();
+			dialogManager = Components.getDialogManager();
+			viewMediator  = Components.getViewMediator();
+		});
+	}
+	
 	
 	public void build() {
 		mainWindow = mainWindow();
@@ -62,20 +81,20 @@ public class ViewBuilder {
 	private void buildDialog() {
 		DialogPane dialogPane = new DialogPane(mainWindow);
 		
-		dialogManager().setShowMessage(dialogPane::show);
+		dialogManager.setShowMessage(dialogPane::show);
 	}
 	
 	private void buildWindow(Pane root) {
 		try {
 			
 			Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-			scene.getStylesheets().add(resources().getResourcePath(CSS_FILENAME));
+			scene.getStylesheets().add(resources.getResourcePath(CSS_FILENAME));
 			
-			primaryStage().getIcons().add(loadLogo());
-			primaryStage().setScene(scene);
-			primaryStage().setTitle(WINDOW_TITLE);
-			primaryStage().setOnCloseRequest(this::closeApplication);
-			primaryStage().show();
+			primaryStage.getIcons().add(loadLogo());
+			primaryStage.setScene(scene);
+			primaryStage.setTitle(WINDOW_TITLE);
+			primaryStage.setOnCloseRequest(this::closeApplication);
+			primaryStage.show();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,7 +114,7 @@ public class ViewBuilder {
 	}
 
 	private Image loadLogo() {
-		return new Image(resources().path(LOGO_FILE_NAME));
+		return new Image(resources.path(LOGO_FILE_NAME));
 	}
 
 	private boolean confirmCloseWithAlert() {
@@ -115,7 +134,7 @@ public class ViewBuilder {
 	public Node connectionPane() {
 		ConnectionPane connectionPane = new ConnectionPane(actions);
 
-		viewMediator().setUartParamsGetter(connectionPane::getParams);
+		viewMediator.setUartParamsGetter(connectionPane::getParams);
 		addConnListener(connectionPane);
 		
 		return connectionPane;
@@ -159,7 +178,7 @@ public class ViewBuilder {
 
 	
 	protected void addEventListener(EventListener listener) {
-		eventManager().addListener(listener);
+		eventManager.addListener(listener);
 	}
 	
 	protected void addAllStatesListener(AllStatesListener listener) {
@@ -167,42 +186,18 @@ public class ViewBuilder {
 	}
 
 	private void addAppListener(StateListener<ApplicationState> listener) {
-		stateManager().getAppState().addStateListener(listener);
+		stateManager.getAppState().addStateListener(listener);
 	}
 	
 	protected void addConnListener(StateListener<ConnectionState> listener) {
-		stateManager().getConnState().addStateListener(listener);
+		stateManager.getConnState().addStateListener(listener);
 	}
 
 	private ApplicationState appState() {
-		return stateManager().getAppState().getState();
+		return stateManager.getAppState().getState();
 	}
 
 	private ProcessState processState() {
-		return stateManager().getProcessState().getState();
-	}
-	
-	private Stage primaryStage() {
-		return Components.getPrimaryStage();
-	}
-	
-	private ResourceAccess resources() {
-		return Components.getResources();
-	}
-	
-	protected EventManager eventManager() {
-		return Components.getEventManager();
-	}
-	
-	private StateManager stateManager() {
-		return Components.getStateManager();
-	}
-	
-	private DialogManager dialogManager() {
-		return Components.getDialogManager();
-	}
-	
-	protected ViewMediator viewMediator() {
-		return Components.getViewMediator();
+		return stateManager.getProcessState().getState();
 	}
 }

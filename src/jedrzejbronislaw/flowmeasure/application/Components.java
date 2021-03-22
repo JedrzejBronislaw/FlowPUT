@@ -39,6 +39,7 @@ public abstract class Components {
 	
 	@Getter private static Stage primaryStage;
 
+	@Getter private static ComponentsLoader componentsLoader = new ComponentsLoader();
 	@Getter private static ResourceAccess resources;
 	@Getter private static UARTDevice flowDevice;
 	@Getter private static UARTDevice edDevice;
@@ -70,14 +71,14 @@ public abstract class Components {
 		flowDevice = buildFlowDevice();
 		edDevice = buildEDDevice();
 		connectionMonitor = buildConnectionMonitor();
-		flowConverters = new FlowConverters(settings, Consts.FLOWMETERS_NUMBER);
+		flowConverters = new FlowConverters(Consts.FLOWMETERS_NUMBER);
 		eventManager = new EventManager();
 		stateManager = new StateManager();
-		eventPolicy = new EventPolicy(stateManager);
+		eventPolicy = new EventPolicy();
 		dialogManager = buildDialogManager();
 		calibration = buildCalibration();
 		repository = new Repository();
-		flowManager = new FlowManager(repository);
+		flowManager = new FlowManager();
 		
 		connectionService = new ConnectionService();
 		savingService = new SavingService();
@@ -85,6 +86,7 @@ public abstract class Components {
 		
 		viewBuilder = new ViewBuilder(new Actions());
 		
+		componentsLoader.load();
 		set();
 	}
 

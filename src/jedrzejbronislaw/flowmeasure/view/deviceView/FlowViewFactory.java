@@ -17,17 +17,17 @@ public class FlowViewFactory extends ViewFactory {
 	
 	@Override
 	public Node createChartPane() {
-		return new ChartPane(flowconverters(), settings(), this::getCurrentProcessRepo);
+		return new ChartPane();
 	}
 	
 	@Override
 	public Node createTablePane() {
-		return new MeasurementTable(this::getCurrentProcessRepo);
+		return new MeasurementTable();
 	}
 	
 	@Override
 	public Node createSettingsPane(){
-		SettingsPane settingsPane = new SettingsPane(settings());
+		SettingsPane settingsPane = new SettingsPane();
 		addAppListener(settingsPane);
 		
 		return settingsPane;
@@ -35,7 +35,7 @@ public class FlowViewFactory extends ViewFactory {
 
 	@Override
 	public Node createCalibrationPane() {
-		CalibrationPane calibrationPane = new CalibrationPane(eventManager(), flowManager(), settings(), calibration());
+		CalibrationPane calibrationPane = new CalibrationPane();
 		addAllStatesListener(calibrationPane);
 		
 		return calibrationPane;
@@ -43,6 +43,6 @@ public class FlowViewFactory extends ViewFactory {
 
 	@Override
 	public Node createLivePane() {
-		return new LivePane(viewMediator(), flowconverters(), settings());
+		return new LivePane();
 	}
 }

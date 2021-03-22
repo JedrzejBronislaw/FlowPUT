@@ -13,9 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.BorderPane;
-import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
+import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
-import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
 import jedrzejbronislaw.flowmeasure.tools.SnapshotSaver;
 import jedrzejbronislaw.flowmeasure.tools.loop.Refresher;
@@ -35,17 +34,18 @@ public class ChartPane extends BorderPane implements Initializable {
 
 	private ChartRefresher chartRefresher;
 	
-	private final Supplier<ProcessRepository> currentProcess;
+	private Supplier<ProcessRepository> currentProcess;
 	
 	private Refresher liveChartRefresher = new Refresher(REFRESHING_TIME, this::refresh);
 
 	
-	public ChartPane(FlowConverters flowconverters, Settings settings, Supplier<ProcessRepository> currentProcess) {
+	public ChartPane() {
 		MyFXMLLoader2.create("ChartPane.fxml", this);
 		
-		this.currentProcess = currentProcess;
-
-		chartRefresher = new ChartRefresher(flowconverters, chart, settings);
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			chartRefresher = new ChartRefresher(Components.getFlowConverters(), chart);
+			currentProcess = Components.getRepository()::getCurrentProcessRepository;
+		});
 	}
 	
 	public LineChart<Number, Number> newChart() {

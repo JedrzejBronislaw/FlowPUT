@@ -14,9 +14,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
-import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
 import jedrzejbronislaw.flowmeasure.tools.SnapshotSaver;
 import jedrzejbronislaw.flowmeasure.tools.loop.Refresher;
@@ -39,23 +39,24 @@ public class ChartEDPane extends BorderPane implements Initializable {
 	private ChartEDRefresher chartECRefresher;
 	private ChartEDRefresher chartAMRefresher;
 	
-	private final Supplier<ProcessRepository> currentProcess;
+	private Supplier<ProcessRepository> currentProcess;
 	
 	private Refresher liveChartRefresher = new Refresher(REFRESHING_TIME, this::refresh);
 
 	
-	public ChartEDPane(FlowConverters flowconverters, Settings settings, Supplier<ProcessRepository> currentProcess) {
+	public ChartEDPane() {
 		MyFXMLLoader2.create("ChartEDPane.fxml", this);
 		
-		this.currentProcess = currentProcess;
-		
-		createChartRefreshers(flowconverters, settings);
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			currentProcess = Components.getRepository()::getCurrentProcessRepository;
+			createChartRefreshers(Components.getFlowConverters());
+		});
 	}
 
-	private void createChartRefreshers(FlowConverters flowconverters, Settings settings) {
-		chartPHRefresher = new ChartEDRefresher(flowconverters, chartPH, settings);
-		chartECRefresher = new ChartEDRefresher(flowconverters, chartEC, settings);
-		chartAMRefresher = new ChartEDRefresher(flowconverters, chartAM, settings);
+	private void createChartRefreshers(FlowConverters flowconverters) {
+		chartPHRefresher = new ChartEDRefresher(flowconverters, chartPH);
+		chartECRefresher = new ChartEDRefresher(flowconverters, chartEC);
+		chartAMRefresher = new ChartEDRefresher(flowconverters, chartAM);
 		
 		chartPHRefresher.setSeriesFilter(Arrays.asList(0));
 		chartECRefresher.setSeriesFilter(Arrays.asList(1));
