@@ -2,6 +2,9 @@ package jedrzejbronislaw.flowmeasure.view;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.connectionMonitor.ConnectionMonitor;
 import jedrzejbronislaw.flowmeasure.devices.DeviceType;
@@ -17,6 +20,8 @@ import jedrzejbronislaw.flowmeasure.tools.uart.connection.MultiDeviceAutoConnect
 public class ConnectionService {
 	
 	private static final int UART_RATE = 9600;
+	
+	private Logger log = LoggerFactory.getLogger(getClass());
 	
 	
 	private EventManager      eventManager;
@@ -58,12 +63,12 @@ public class ConnectionService {
 		AutoConnection autoConn = new AutoConnection(device, UART.getPortList(), UART_RATE);
 		
 		autoConn.setIfFail(() -> {
-			System.out.println("¯aden port nie pasuje");
+			log.info("¯aden port nie pasuje");
 			eventManager.submitEvent(EventType.CONNECTION_FAILED);
 		});
 		
 		autoConn.setIfSuccess(port -> {
-			System.out.println("Uda³o po³¹czyæ siê z portem: " + port);
+			log.info("Uda³o po³¹czyæ siê z portem: {}", port);
 			eventManager.submitEvent(EventType.CONNECTION_SUCCESSFUL);
 			connectionMonitor.start();
 		});
@@ -75,12 +80,12 @@ public class ConnectionService {
 		MultiDeviceAutoConnection autoConn = new MultiDeviceAutoConnection(devices, UART.getPortList(), UART_RATE);
 		
 		autoConn.setIfFail(() -> {
-			System.out.println("Nie znaleziono ¿adnego urz¹dzenia pod ¿adnym portem");
+			log.info("Nie znaleziono ¿adnego urz¹dzenia pod ¿adnym portem");
 			eventManager.submitEvent(EventType.CONNECTION_FAILED);
 		});
 		
 		autoConn.setIfSuccess((device, port) -> {
-			System.out.println("Uda³o po³¹czyæ siê z urz¹dzeniem " + device.getName() + " na porcie: " + port);
+			log.info("Uda³o po³¹czyæ siê z urz¹dzeniem {} na porcie: {}", device.getName(), port);
 			eventManager.submitEvent(EventType.CONNECTION_SUCCESSFUL);
 			connectionMonitor.start();
 			

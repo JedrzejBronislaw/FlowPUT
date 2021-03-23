@@ -1,5 +1,8 @@
 package jedrzejbronislaw.flowmeasure.application;
 	
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
@@ -8,9 +11,11 @@ import jedrzejbronislaw.flowmeasure.states.StateManager;
 
 public class Main extends Application {
 	
+	private Logger log = LoggerFactory.getLogger(getClass());
+	
+	
 	@Override
 	public void start(Stage stage) {
-		
 		Components.create(stage);
 		
 		createStateAndEventListeners();
@@ -20,12 +25,12 @@ public class Main extends Application {
 		StateManager stateManager = Components.getStateManager();
 		EventManager eventManager = Components.getEventManager();
 		
-		stateManager.getAppState()    .addStateListener(state -> System.out.println(" -> New appState: "     + state.toString()));
-		stateManager.getConnState()   .addStateListener(state -> System.out.println(" -> New connState: "    + state.toString()));
-		stateManager.getProcessState().addStateListener(state -> System.out.println(" -> New processState: " + state.toString()));
+		stateManager.getAppState()    .addStateListener(state -> log.info("-> New appState: {}",     state));
+		stateManager.getConnState()   .addStateListener(state -> log.info("-> New connState: {}",    state));
+		stateManager.getProcessState().addStateListener(state -> log.info("-> New processState: {}", state));
 		
 		eventManager.addListener(event -> {
-			if(event != EventType.RECEIVED_DATA) System.out.println(" -> Event: " + event.toString());
+			if(event != EventType.RECEIVED_DATA) log.info("-> Event: {}", event);
 		});
 	}
 	

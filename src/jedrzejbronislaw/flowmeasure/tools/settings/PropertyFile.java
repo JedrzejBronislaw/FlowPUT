@@ -10,9 +10,14 @@ import java.util.Properties;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jedrzejbronislaw.flowmeasure.tools.settings.poperties.PropertyDesc;
 
 public class PropertyFile {
+	
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private final Properties properties;
 	private final File file;
@@ -54,7 +59,7 @@ public class PropertyFile {
 				propertySetter.accept(name, properties.getProperty(name.getName()));
 			
 		} catch (IOException e) {
-			System.out.println("error read properties");
+			log.warn("error read properties");
 			return false;
 		}
 		
@@ -69,7 +74,7 @@ public class PropertyFile {
 				
 			properties.storeToXML(stream, "properties");
 		} catch (IOException e) {
-			System.out.println("error write properties");
+			log.warn("error write properties");
 			return false;
 		}
 		

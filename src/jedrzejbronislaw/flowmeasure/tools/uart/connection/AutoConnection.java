@@ -3,6 +3,9 @@ package jedrzejbronislaw.flowmeasure.tools.uart.connection;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
@@ -12,6 +15,8 @@ import lombok.Setter;
 
 @RequiredArgsConstructor
 public class AutoConnection {
+	
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private static final int WAITING_FOR_RELAUNCH = 500;
 	private static final int MAX_BUSY_RESULTS = 10;
@@ -47,7 +52,7 @@ public class AutoConnection {
 	}
 
 	private void singleFail(ConnectionResult reason) {
-		System.out.println(attempt.getParams().PORT_NAME + ": " + reason);
+		log.info(attempt.getParams().PORT_NAME + ": " + reason);
 
 		if (isBusy(reason)) {
 			busyResultCounter++;
@@ -63,7 +68,7 @@ public class AutoConnection {
 	}
 
 	private void singleSuccess() {
-		System.out.println(attempt.getParams().PORT_NAME + ": connected");
+		log.info(attempt.getParams().PORT_NAME + ": connected");
 
 		Injection.run(ifSuccess, attempt.getParams().PORT_NAME);
 	}

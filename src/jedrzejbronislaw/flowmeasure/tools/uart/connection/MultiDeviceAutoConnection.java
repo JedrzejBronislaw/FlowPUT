@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.uart.UART;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
@@ -13,6 +16,8 @@ import lombok.Setter;
 
 @RequiredArgsConstructor
 public class MultiDeviceAutoConnection {
+	
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	@NonNull private final List<UARTDevice> devices;
 	@NonNull private List<String> portList;
@@ -48,15 +53,15 @@ public class MultiDeviceAutoConnection {
 		if (device == null || portList == null || portList.isEmpty()) return null;
 		
 		AutoConnection autoConn = new AutoConnection(device, portList, rate);
-		System.out.println(UART.getPortList());
+		log.info("{}", UART.getPortList());
 		
 		autoConn.setIfFail(() -> {
-			System.out.println("Pod ¿adnym portem nie znaleziono urz¹dzenia " + device.getName());
+			log.info("Pod ¿adnym portem nie znaleziono urz¹dzenia {}", device.getName());
 			start();
 		});
 		
 		autoConn.setIfSuccess(port -> {
-			System.out.println("Uda³o po³¹czyæ siê z urz¹dzeniem " + device.getName() + " na porcie: " + port);
+			log.info("Uda³o po³¹czyæ siê z urz¹dzeniem {} na porcie: {}", device.getName(), port);
 			Injection.run(ifSuccess, device, port);
 		});
 		

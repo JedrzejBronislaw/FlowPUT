@@ -3,6 +3,9 @@ package jedrzejbronislaw.flowmeasure.view;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -31,6 +34,8 @@ import jedrzejbronislaw.flowmeasure.tools.uart.connection.MultiDeviceAutoConnect
 import jedrzejbronislaw.flowmeasure.view.saveWindow.SaveWindow;
 
 public class Actions implements ActionContainer {
+	
+	private Logger log = LoggerFactory.getLogger(getClass());
 	
 
 	@Override
@@ -85,7 +90,7 @@ public class Actions implements ActionContainer {
 
 	@Override
 	public void autoconnectDevice() {
-		System.out.println("\nStart autoconnect");
+		log.info("Start autoconnect");
 		
 		MultiDeviceAutoConnection autoConnection = connectionService().createMultiDeviceAutoConnection();
 

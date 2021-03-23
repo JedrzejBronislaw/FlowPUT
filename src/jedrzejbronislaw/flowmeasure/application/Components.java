@@ -1,8 +1,10 @@
 package jedrzejbronislaw.flowmeasure.application;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.components.SavingService;
@@ -36,6 +38,8 @@ import jedrzejbronislaw.flowmeasure.view.ViewMediator;
 import lombok.Getter;
 
 public abstract class Components {
+	
+	private static Logger log = LoggerFactory.getLogger(Components.class);
 	
 	@Getter private static Stage primaryStage;
 
@@ -111,8 +115,8 @@ public abstract class Components {
 	}
 	
 	private static UARTDevice buildDevice(UARTDevice device) {
-		device.setIncorrectMessageReceive(m -> System.out.println("(" + LocalDateTime.now().toString() + ") Incorrect Message: " + m));
-		device.setDeviceConfirmation(() -> System.out.println("Device confirmation"));
+		device.setIncorrectMessageReceive(m -> log.warn("Incorrect Message: {}", m));
+		device.setDeviceConfirmation(    () -> log.info("Device confirmation"));
 			
 		return device;
 	}
