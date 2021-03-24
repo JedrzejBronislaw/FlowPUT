@@ -1,10 +1,15 @@
 package jedrzejbronislaw.flowmeasure.tools.uart;
 
-import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionResult.*;
+import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionResult.BUSY;
+import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionResult.CONNECTED;
+import static jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionResult.CONNECTION_ERROR;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionResult;
@@ -16,6 +21,8 @@ public abstract class UARTDevice {
 	protected enum MessageTag {
 		CORRECT, INCORRECT, IGNORED
 	}
+	
+	private Logger log = LoggerFactory.getLogger(getClass());
 	
 	private static final String LINE_SEPARATOR_REGEX = "\\r?\\n";
 	
@@ -73,7 +80,10 @@ public abstract class UARTDevice {
 		
 		String[] messages = messageLines.split(LINE_SEPARATOR_REGEX);
 		
-		Stream.of(messages).filter(this::unexecuted).forEach(message -> Injection.run(incorrectMessageReceive, message));
+		Stream.of(messages).filter(this::unexecuted).forEach(message -> {
+			log.warn("Incorrect Message: {}", message);
+			Injection.run(incorrectMessageReceive, message);
+		});
 	}
 	
 	private boolean unexecuted(String message) {
@@ -91,6 +101,8 @@ public abstract class UARTDevice {
 		if (!message.equals(PROOF_MESSAGE)) return false;
 		
 		correctDevice = true;
+		
+		log.info("Device confirmation");
 		Injection.run(deviceConfirmation);
 		
 		return true;

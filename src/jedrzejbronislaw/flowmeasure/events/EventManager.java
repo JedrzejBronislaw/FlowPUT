@@ -3,9 +3,14 @@ package jedrzejbronislaw.flowmeasure.events;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import lombok.Setter;
 
 public class EventManager {
+	
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	@Setter
 	private EventPolicy eventPolicy;
@@ -18,8 +23,9 @@ public class EventManager {
 	}
 	
 	public boolean submitEvent(EventType event) {
-		
 		boolean permission = permission(event);
+		if (event != EventType.RECEIVED_DATA) log.info("-> Event: {} ({})", event, permission);
+		
 		if(permission)
 			listeners.forEach(listener -> listener.event(event));
 		

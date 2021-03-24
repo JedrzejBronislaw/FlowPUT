@@ -3,9 +3,6 @@ package jedrzejbronislaw.flowmeasure.application;
 import java.util.Arrays;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javafx.stage.Stage;
 import jedrzejbronislaw.flowmeasure.components.SavingService;
 import jedrzejbronislaw.flowmeasure.components.SettingsService;
@@ -38,8 +35,6 @@ import jedrzejbronislaw.flowmeasure.view.ViewMediator;
 import lombok.Getter;
 
 public abstract class Components {
-	
-	private static Logger log = LoggerFactory.getLogger(Components.class);
 	
 	@Getter private static Stage primaryStage;
 
@@ -114,16 +109,8 @@ public abstract class Components {
 		viewBuilder.build();
 	}
 	
-	private static UARTDevice buildDevice(UARTDevice device) {
-		device.setIncorrectMessageReceive(m -> log.warn("Incorrect Message: {}", m));
-		device.setDeviceConfirmation(    () -> log.info("Device confirmation"));
-			
-		return device;
-	}
-	
 	private static FlowDevice buildFlowDevice() {
 		FlowDevice device = new FlowDevice();
-		buildDevice(device);
 
 		device.setNewSingleFlowReceive(viewMediator::showCurrentFlow);
 		
@@ -137,7 +124,6 @@ public abstract class Components {
 	
 	private static EDDevice buildEDDevice() {
 		EDDevice device = new EDDevice();
-		buildDevice(device);
 
 		device.setNewSingleFlowReceive(viewMediator::showCurrentFlow);
 		
