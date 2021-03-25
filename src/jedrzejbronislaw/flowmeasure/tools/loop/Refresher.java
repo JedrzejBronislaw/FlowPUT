@@ -16,7 +16,7 @@ public class Refresher {
 	}
 
 	public void off() {
-		if(currentLoop != null)
+		if (currentLoop != null)
 			currentLoop.end();
 	}
 	

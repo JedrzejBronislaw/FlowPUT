@@ -59,7 +59,7 @@ public class CSVWriterTest_allMetadata {
 	private void checkProperty(String name, int i, String value) {
 		assertTrue(parser.propertyExists(name));
 		
-		if(value != null) {
+		if (value != null) {
 			assertTrue(parser.getProperty(name).length >= (i+1));
 			assertEquals(value, parser.getProperty(name)[i]);
 		} else

@@ -24,10 +24,10 @@ public class ItemSelectorTest {
 		list = new ArrayList<Integer>();
 		smallList = new ArrayList<Integer>();
 		
-		for(int i=0; i<100; i++) 
+		for (int i=0; i<100; i++)
 			list.add(i);
 		
-		for(int i=0; i<5; i++) 
+		for (int i=0; i<5; i++)
 			smallList.add(i);
 	}
 
@@ -115,7 +115,7 @@ public class ItemSelectorTest {
 		assertEquals(12, newList.size());
 		
 		prevValue = newList.get(0).intValue();
-		for(int i=1; i<newList.size(); i++) {
+		for (int i=1; i<newList.size(); i++) {
 			assertTrue(prevValue + " [i:" + (i-1) + "] is not lower than " + newList.get(i) + " [i:" + (i) + "]",
 					prevValue < newList.get(i));
 			prevValue = newList.get(i);

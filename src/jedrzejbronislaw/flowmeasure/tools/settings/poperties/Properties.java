@@ -37,7 +37,7 @@ public class Properties implements PropertyAccess {
 	public void set(PropertyDesc propertyDesc, String value) {
 		Property property = properties.get(propertyDesc.getName());
 		
-		if(property != null && value != null && property.set(value))
+		if (property != null && value != null && property.set(value))
 			Injection.run(changeAction);
 	}
 

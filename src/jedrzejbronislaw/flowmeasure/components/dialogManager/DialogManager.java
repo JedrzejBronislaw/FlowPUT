@@ -20,7 +20,7 @@ public class DialogManager implements EventListener {
 		private Map<EventType, String> messages = new HashMap<EventType, String>();
 		private MessageEvent messageEvent;
 		
-		public builder addMessages(EventType event, String message){
+		public builder addMessages(EventType event, String message) {
 			messages.put(event, message);
 			return this;
 		}
@@ -50,7 +50,7 @@ public class DialogManager implements EventListener {
 		if (showMessage == null) return;
 		
 		String message = messages.get(event);
-		if(message != null) 
+		if (message != null)
 			showMessage.show(
 				TextTools.firstCharUpper(TextTools.removeUnderscores(event.toString())),
 				message,

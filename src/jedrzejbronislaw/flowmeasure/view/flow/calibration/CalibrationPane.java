@@ -152,16 +152,16 @@ public class CalibrationPane extends VBox implements Initializable, AllStatesLis
 	private void startCalibration(int flowmeter) {
 		setFlowmeter(flowmeter);
 		if (event(EventType.CALIBRATION_STARTS)) switchFlow(FlowConsumerType.CALIBRATION);
-	};
+	}
 	
 	private void stopCalibration() {
 		if (event(EventType.CALIBRATION_ENDS))   switchFlow(FlowConsumerType.NONE);
-	};
+	}
 	
 	private void saveCalibration() {
 		settings.setProperty(new RatioProperty(calibratedFlowmeter-1), calibration.getAveValue());
 		settings.saveToFile();
-	};
+	}
 	
 	private boolean event(EventType event) {
 		return eventManager.submitEvent(event);

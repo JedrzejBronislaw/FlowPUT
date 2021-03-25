@@ -53,7 +53,7 @@ public class LivePane extends VBox implements Initializable {
 	private void init() {
 		resetButton.setOnAction(e -> this.resetVolumes());
 		
-		for(int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
+		for (int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
 			addFlowPreview(createFlowPreview(i));
 		
 		settings.addChangeListener(this::updateFlowmeterNames);

@@ -83,7 +83,7 @@ public class FlowConverter1 implements FlowConverter {
 	}
 	
 	private Float pulsesToLitrePerSec(int pulses) {
-		if(oldTime == null || lastTime == null) return null;
+		if (oldTime == null || lastTime == null) return null;
 
 		float interval = ChronoUnit.MILLIS.between(oldTime, lastTime) / 1000f;
 		return pulsesToLitrePerSec(pulses, interval);

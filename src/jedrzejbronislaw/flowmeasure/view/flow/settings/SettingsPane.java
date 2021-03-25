@@ -107,12 +107,12 @@ public class SettingsPane extends VBox implements Initializable, StateListener<A
 	}
 	
 	private void addRatioPanes(int number) {
-		for(int i=0; i<number; i++)
+		for (int i=0; i<number; i++)
 			addRatioPane(new PulseRatioSettingsPane(RATIO_LABEL + (i+1) + ":"));
 	}
 	
 	private void addNamePanes(int number) {
-		for(int i=0; i<number; i++)
+		for (int i=0; i<number; i++)
 			addNamePane(new FlowmeterNameSettingsPane(NAME_LABEL + (i+1) + ":"));
 	}
 

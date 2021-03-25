@@ -19,7 +19,7 @@ public class SnapshotSaver {
 		WritableImage wImage = node.snapshot(null, null);
 		
 		File file = selectFile();
-		if(file == null) return;
+		if (file == null) return;
 		
 		try {
 			ImageIO.write(SwingFXUtils.fromFXImage(wImage, null), "png", file);

@@ -26,7 +26,7 @@ public class FlowConverters implements EventListener {
 	private void create(Settings settings, int number) {
 		converters = new FlowConverter[number];
 		
-		for(int i=0; i<number; i++)
+		for (int i=0; i<number; i++)
 			converters[i] = new FlowConverter1(settings, i);
 	}
 

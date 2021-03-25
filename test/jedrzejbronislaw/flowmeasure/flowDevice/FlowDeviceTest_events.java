@@ -83,10 +83,10 @@ public class FlowDeviceTest_events {
 	private int eventsNumber() {
 		int number = 0;
 		
-		if(introducingEvent)   number++;
-		if(newFlowsReceive)    number++;
-		if(incorrMessEvent)    number++;
-		if(newSingleFlowEvent) number++;
+		if (introducingEvent)   number++;
+		if (newFlowsReceive)    number++;
+		if (incorrMessEvent)    number++;
+		if (newSingleFlowEvent) number++;
 		
 		return number;
 	}

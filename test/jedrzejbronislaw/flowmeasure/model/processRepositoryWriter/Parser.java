@@ -39,10 +39,10 @@ public class Parser {
 		List<String[]> metadata = new ArrayList<>();
 		boolean metadataLine = false;
 		
-		for(String line : lines) {
+		for (String line : lines) {
 			
-			if(line.equals(ProcessRepositoryCSVWriter.METADATA_HEAD)) metadataLine = true;  else
-			if(line.equals(ProcessRepositoryCSVWriter.DATA_HEAD))     metadataLine = false; else
+			if (line.equals(ProcessRepositoryCSVWriter.METADATA_HEAD)) metadataLine = true;  else
+			if (line.equals(ProcessRepositoryCSVWriter.DATA_HEAD))     metadataLine = false; else
 			
 			if (metadataLine && !line.trim().isEmpty())
 				metadata.add(line.split(CSVWriter.SEPARATOR));
@@ -54,10 +54,10 @@ public class Parser {
 	private static List<String[]> extractDataHeader(String[] lines) {
 		List<String[]> dataheader = new ArrayList<>();
 		
-		for(int i=0; i<lines.length-2; i++) {
+		for (int i=0; i<lines.length-2; i++) {
 			String line = lines[i];
 			
-			if(line.equals(ProcessRepositoryCSVWriter.DATA_HEAD)) {
+			if (line.equals(ProcessRepositoryCSVWriter.DATA_HEAD)) {
 				dataheader.add(lines[i+1].split(CSVWriter.SEPARATOR));
 				dataheader.add(lines[i+2].split(CSVWriter.SEPARATOR));
 				break;
@@ -71,10 +71,10 @@ public class Parser {
 		List<String[]> data = new ArrayList<>();
 		boolean dataLine = false;
 		
-		for(int i=0; i<lines.length; i++) {
+		for (int i=0; i<lines.length; i++) {
 			String line = lines[i];
 			
-			if(line.equals(ProcessRepositoryCSVWriter.DATA_HEAD)) {
+			if (line.equals(ProcessRepositoryCSVWriter.DATA_HEAD)) {
 				dataLine = true;
 				i += 2;
 			} else

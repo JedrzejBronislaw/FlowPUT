@@ -37,7 +37,7 @@ public class TableUpdater {
 		clear();
 		
 		addColumn(createTimeColumn());
-		for(int i=0; i<numOfFlowmeters; i++) addColumn(createFlowColumn(i));
+		for (int i=0; i<numOfFlowmeters; i++) addColumn(createFlowColumn(i));
 	}
 
 	private void clear() {

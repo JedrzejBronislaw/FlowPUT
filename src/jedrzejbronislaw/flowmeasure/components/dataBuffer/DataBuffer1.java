@@ -53,7 +53,7 @@ public class DataBuffer1 implements DataBuffer {
 	private void addToBuffer(int[] flows) {
 		int length = Math.min(flows.length, size);
 		
-		for(int i=0; i<length; i++)
+		for (int i=0; i<length; i++)
 			buffer[i] += flows[i];
 	}
 
@@ -86,7 +86,7 @@ public class DataBuffer1 implements DataBuffer {
 		int[] portion = new int[size];
 		float ratio = (float)interval/sinceLastTime;
 		
-		for(int i=0; i<size; i++) {
+		for (int i=0; i<size; i++) {
 			portion[i] = Math.round(buffer[i]*ratio);
 			buffer[i] -= portion[i];
 		}

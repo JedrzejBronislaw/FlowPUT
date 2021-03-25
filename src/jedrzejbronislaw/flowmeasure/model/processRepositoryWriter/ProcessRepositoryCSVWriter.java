@@ -95,7 +95,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		int size = pulsePerLitre.length;
 		flowmeterWriters = new FlowmeterCSVWriter[size];
 		
-		for(int i=0; i<size; i++)
+		for (int i=0; i<size; i++)
 			flowmeterWriters[i] = new FlowmeterCSVWriter(csvWriter, i, pulsePerLitre[i], options);
 	}
 	
@@ -216,8 +216,8 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	}
 
 	private void writeDataHeader() throws IOException {
-		if(numOfUnits() > 1)
-			if(flowmeterValuesTogether())
+		if (numOfUnits() > 1)
+			if (flowmeterValuesTogether())
 				writeHeader_ManyUnits_FlowmeterTogether(); else
 				writeHeader_ManyUnits_UnitTogether();
 		else
@@ -230,7 +230,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		csvWriter.newLine();
 
 		writeTimeHeadres();
-		for(int i=0; i<numOfFlowmeters(); i++)
+		for (int i=0; i<numOfFlowmeters(); i++)
 			if (saveFlowmeter(i))
 				csvWriter.writeWithSeparator(flowmeterName(i));
 
@@ -240,13 +240,13 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	private void writeHeader_ManyUnits_UnitTogether() throws IOException {
 		csvWriter.writeSeparators(numOfTimeFormats());
 		csvWriter.write(unitName(0));
-		for(int j=0; j<numOfFlowmeters(); j++) if (saveFlowmeter(j)) csvWriter.writeSeparator();
+		for (int j=0; j<numOfFlowmeters(); j++) if (saveFlowmeter(j)) csvWriter.writeSeparator();
 		csvWriter.write(unitName(1));
 		csvWriter.newLine();
 
 		writeTimeHeadres();
-		for(int i=0; i<numOfUnits(); i++)
-			for(int j=0; j<numOfFlowmeters(); j++)
+		for (int i=0; i<numOfUnits(); i++)
+			for (int j=0; j<numOfFlowmeters(); j++)
 				if (saveFlowmeter(j))
 					csvWriter.writeWithSeparator(flowmeterName(j));
 
@@ -255,7 +255,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 
 	private void writeHeader_ManyUnits_FlowmeterTogether() throws IOException {
 		csvWriter.writeSeparators(numOfTimeFormats());
-		for(int i=0; i<numOfFlowmeters(); i++)
+		for (int i=0; i<numOfFlowmeters(); i++)
 			if (saveFlowmeter(i)) {
 				csvWriter.write(flowmeterName(i));
 				csvWriter.writeSeparators(numOfUnits());
@@ -264,7 +264,7 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		csvWriter.newLine();
 		
 		writeTimeHeadres();
-		for(int i=0; i<numOfFlowmeters(); i++)
+		for (int i=0; i<numOfFlowmeters(); i++)
 			if (saveFlowmeter(i)) {
 				csvWriter.writeWithSeparator(unitName(0));
 				csvWriter.writeWithSeparator(unitName(1));
@@ -274,9 +274,9 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	}
 
 	private void writeTimeHeadres() throws IOException {
-		if(isSelected(TimeFormat.UNIX))         csvWriter.writeWithSeparator(UNIX_TIME_HEAD);
-		if(isSelected(TimeFormat.FULL))         csvWriter.writeWithSeparator(FULL_TIME_HEAD);
-		if(isSelected(TimeFormat.PROCESS_TIME)) csvWriter.writeWithSeparator(PROCESS_TIME_HEAD);
+		if (isSelected(TimeFormat.UNIX))         csvWriter.writeWithSeparator(UNIX_TIME_HEAD);
+		if (isSelected(TimeFormat.FULL))         csvWriter.writeWithSeparator(FULL_TIME_HEAD);
+		if (isSelected(TimeFormat.PROCESS_TIME)) csvWriter.writeWithSeparator(PROCESS_TIME_HEAD);
 	}
 
 	private void writeMeasurementLine(FlowMeasurement measurement) throws IOException {
@@ -285,12 +285,12 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 		String decimalSeparator = options.getDecimalSeparator().toString();
 		Stream.of(flowmeterWriters).forEach(flowWriter -> flowWriter.newDataEvent(time));
 
-		if(isSelected(TimeFormat.UNIX))         csvWriter.writeWithSeparator(unixTime(time));
-		if(isSelected(TimeFormat.FULL))         csvWriter.writeWithSeparator(fullTime(time));
-		if(isSelected(TimeFormat.PROCESS_TIME)) csvWriter.writeWithSeparator(processTime(time, startTime, decimalSeparator));
+		if (isSelected(TimeFormat.UNIX))         csvWriter.writeWithSeparator(unixTime(time));
+		if (isSelected(TimeFormat.FULL))         csvWriter.writeWithSeparator(fullTime(time));
+		if (isSelected(TimeFormat.PROCESS_TIME)) csvWriter.writeWithSeparator(processTime(time, startTime, decimalSeparator));
 
 
-		if(flowmeterValuesTogether())
+		if (flowmeterValuesTogether())
 			writeMeasurementFlowmeterTogether(measurement, units); else
 			writeMeasurementUnitTogether(measurement, units);
 		
@@ -300,14 +300,14 @@ public class ProcessRepositoryCSVWriter implements ProcessRepositoryWriter {
 	private void writeMeasurementUnitTogether(FlowMeasurement measurement, List<Unit> units) throws IOException {
 
 		for (Unit unit : units)
-			for(int i=0; i<numOfFlowmeters(); i++)
+			for (int i=0; i<numOfFlowmeters(); i++)
 				if (saveFlowmeter(i))
 					flowmeterWriters[i].writeMeasurement(unit, measurement);
 	}
 
 	private void writeMeasurementFlowmeterTogether(FlowMeasurement measurement, List<Unit> units) throws IOException {
 
-		for(int i=0; i<numOfFlowmeters(); i++)
+		for (int i=0; i<numOfFlowmeters(); i++)
 			for (Unit unit : units)
 				if (saveFlowmeter(i))
 					flowmeterWriters[i].writeMeasurement(unit, measurement);

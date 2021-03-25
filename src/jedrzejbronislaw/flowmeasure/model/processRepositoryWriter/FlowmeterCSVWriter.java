@@ -43,7 +43,7 @@ public class FlowmeterCSVWriter {
 	}
 
 	private String setDecimalSeparator(Float flow) {
-		if(flow == null) return "";
+		if (flow == null) return "";
 		
 		return NumberTools.floatToString(flow, options.getDecimalSeparator().toString());
 	}

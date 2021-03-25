@@ -20,7 +20,7 @@ public class FlowMeasurement {
 		
 		values = new int[size];
 
-		for(int i=0; i<size; i++)
+		for (int i=0; i<size; i++)
 			values[i] = pulses[i];
 	}
 	
@@ -30,7 +30,7 @@ public class FlowMeasurement {
 		
 		values = new int[size];
 
-		for(int i=0; i<size; i++)
+		for (int i=0; i<size; i++)
 			values[i] = pulses[i];
 	}
 	

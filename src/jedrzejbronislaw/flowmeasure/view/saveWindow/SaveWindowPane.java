@@ -75,12 +75,12 @@ public class SaveWindowPane extends VBox implements Initializable {
 		Set<TimeFormat> timeFormats = options.getTimeFormats();
 		List<Unit> units = options.getUnits();
 
-		if(unixTime.isSelected())    timeFormats.add(TimeFormat.UNIX);
-		if(fullTime.isSelected())    timeFormats.add(TimeFormat.FULL);
-		if(processTime.isSelected()) timeFormats.add(TimeFormat.PROCESS_TIME);
+		if (unixTime.isSelected())    timeFormats.add(TimeFormat.UNIX);
+		if (fullTime.isSelected())    timeFormats.add(TimeFormat.FULL);
+		if (processTime.isSelected()) timeFormats.add(TimeFormat.PROCESS_TIME);
 		
-		if(unit_pulses.isSelected() && unit_flow.isSelected())
-			if(flow_first.isSelected()) {
+		if (unit_pulses.isSelected() && unit_flow.isSelected())
+			if (flow_first.isSelected()) {
 				units.add(Unit.FLOW);
 				units.add(Unit.PULSES);
 			} else {

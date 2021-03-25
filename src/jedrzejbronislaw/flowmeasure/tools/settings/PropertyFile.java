@@ -43,7 +43,7 @@ public class PropertyFile {
 	}
 
 	private void createFileIfNotExists(File file) {
-		if(!file.exists())
+		if (!file.exists())
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
@@ -51,8 +51,8 @@ public class PropertyFile {
 			}
 	}
 	
-	public boolean read(){
-		try(InputStream stream = new FileInputStream(file)){
+	public boolean read() {
+		try(InputStream stream = new FileInputStream(file)) {
 			properties.loadFromXML(stream);
 			
 			for (PropertyDesc name : propertyNames)
@@ -67,7 +67,7 @@ public class PropertyFile {
 	}
 
 	public boolean write() {
-		try(OutputStream stream = new FileOutputStream(file)){
+		try(OutputStream stream = new FileOutputStream(file)) {
 			
 			for (PropertyDesc name : propertyNames)
 				properties.setProperty(name.getName(), propertyGetter.apply(name));

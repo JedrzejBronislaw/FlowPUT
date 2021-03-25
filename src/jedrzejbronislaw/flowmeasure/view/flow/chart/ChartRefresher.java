@@ -75,7 +75,7 @@ public class ChartRefresher {
 		this.options = options;
 		this.process = process;
 		data         = process.getAllMeasurement();
-		if(data.size() == 0) return;
+		if (data.size() == 0) return;
 		
 		reduceDataIfNecessary();
 		range = chartRange.get(data, options);
@@ -128,7 +128,7 @@ public class ChartRefresher {
 	}
 	
 	private void reduceDataIfNecessary() {
-		if(!options.isLastSecOption() && data.size() > DATA_SIZE_LIMIT)
+		if (!options.isLastSecOption() && data.size() > DATA_SIZE_LIMIT)
 			data = itemSelector.select(data, DATA_SIZE_LIMIT);
 	}
 

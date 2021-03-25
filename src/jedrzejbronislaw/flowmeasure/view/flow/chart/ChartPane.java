@@ -64,7 +64,7 @@ public class ChartPane extends BorderPane implements Initializable {
 		
 		saveButton.setOnAction(e -> SnapshotSaver.withFileChooser(chart));
 		liveBox.setOnAction(e -> {
-			if(liveBox.isSelected())
+			if (liveBox.isSelected())
 				liveChartRefresher.on(); else
 				liveChartRefresher.off();
 		});
@@ -86,9 +86,9 @@ public class ChartPane extends BorderPane implements Initializable {
 		return lastSecsBox.isSelected();
 	}
 
-	private ValueUnit getValueUnit(){
-		if(pulsesRadio.isSelected())       return ValueUnit.PULSES;
-		if(litresPerSecRadio.isSelected()) return ValueUnit.FLOW_UNIT;
+	private ValueUnit getValueUnit() {
+		if (pulsesRadio.isSelected())       return ValueUnit.PULSES;
+		if (litresPerSecRadio.isSelected()) return ValueUnit.FLOW_UNIT;
 		return null;
 	}
 }

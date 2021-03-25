@@ -40,10 +40,10 @@ public class Actions implements ActionContainer {
 
 	@Override
 	public void startProcess() {
-		if(eventManager().submitEvent(EventType.PROCESS_STARTS)) {
+		if (eventManager().submitEvent(EventType.PROCESS_STARTS)) {
 			repository().createNewProcessRepository("").setStartWithNextValueFlag();
 			
-			if(isBufferedData())
+			if (isBufferedData())
 				flowManager().setFlowConsumerType(FlowConsumerType.BUFFERED); else
 				flowManager().setFlowConsumerType(FlowConsumerType.PLAIN);
 		}
@@ -51,7 +51,7 @@ public class Actions implements ActionContainer {
 
 	@Override
 	public void endProcess() {
-		if(eventManager().submitEvent(EventType.PROCESS_ENDS)) {
+		if (eventManager().submitEvent(EventType.PROCESS_ENDS)) {
 			repository().getCurrentProcessRepository().setProcessEndTimeNow();
 			flowManager().setFlowConsumerType(FlowConsumerType.NONE);
 		}
@@ -59,7 +59,7 @@ public class Actions implements ActionContainer {
 
 	@Override
 	public void saveProcess() {
-		if(eventManager().submitEvent(EventType.SAVING_PROCESS))
+		if (eventManager().submitEvent(EventType.SAVING_PROCESS))
 			showSaveWindow(prepareWriter());
 	}
 	
@@ -108,7 +108,7 @@ public class Actions implements ActionContainer {
 	private ProcessRepositoryWriter prepareWriter() {
 		ProcessRepositoryWriter writer = new ProcessRepositoryCSVWriter();
 		
-		if(isBufferedData())
+		if (isBufferedData())
 			writer.setBufferInterval(settings().getInt(AppProperties.BUFFER_INTERVAL));
 		writer.setPulsePerLitre(getPulseRatios());
 		writer.setFlowmeterNames(getFlowmeterNames());

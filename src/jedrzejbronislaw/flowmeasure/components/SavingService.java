@@ -65,5 +65,5 @@ public class SavingService {
 	private void saveSavingPath(File file) {
 		settings.setProperty(AppProperties.SAVE_PATH, file.getParent());
 		settings.saveToFile();
-	};
+	}
 }

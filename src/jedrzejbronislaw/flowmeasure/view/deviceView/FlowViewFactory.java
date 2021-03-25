@@ -26,7 +26,7 @@ public class FlowViewFactory extends ViewFactory {
 	}
 	
 	@Override
-	public Node createSettingsPane(){
+	public Node createSettingsPane() {
 		SettingsPane settingsPane = new SettingsPane();
 		addAppListener(settingsPane);
 		

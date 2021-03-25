@@ -33,7 +33,7 @@ public class SeriesManager {
 	public void refreshSeriesNames() {
 		if (seriesList == null) return;
 		
-		for(int i=0; i<seriesList.size(); i++)
+		for (int i=0; i<seriesList.size(); i++)
 			seriesList.get(i).setName(flowSeriesName(i));
 	}
 	
@@ -50,8 +50,8 @@ public class SeriesManager {
 		ObservableList<Series<Number, Number>> oldSeries = chart.getData();
 		isNewSeries = false;
 		
-		for(int i=0; i<seriesNumber; i++) {
-			if(i < oldSeries.size()) {
+		for (int i=0; i<seriesNumber; i++) {
+			if (i < oldSeries.size()) {
 				//series reuse
 				Series<Number, Number> series = oldSeries.get(i);
 				series.getData().clear();

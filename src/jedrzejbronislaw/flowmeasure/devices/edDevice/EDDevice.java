@@ -34,13 +34,13 @@ public class EDDevice extends UARTDevice {
 
 	@Override
 	protected MessageTag handleMessageLine(String message) {
-		if(!correctLineFormat(message)) return MessageTag.INCORRECT;
+		if (!correctLineFormat(message)) return MessageTag.INCORRECT;
 
 		String content = extraxtContent(message);
 		int numbers[]  = extractNumbers(content);
 		
-		if(numbers == null)             return MessageTag.INCORRECT;
-		if(correctSize(numbers))        return MessageTag.INCORRECT;
+		if (numbers == null)      return MessageTag.INCORRECT;
+		if (correctSize(numbers)) return MessageTag.INCORRECT;
 		
 		int[] flow = extractFlow(numbers);
 
@@ -53,7 +53,7 @@ public class EDDevice extends UARTDevice {
 		Injection.run(newFlowsReceive, convertValues(flow));
 		
 		if (newSingleFlowReceive != null)
-			for(int i=0; i<flow.length; i++) newSingleFlowReceive.accept(flow[i], i);
+			for (int i=0; i<flow.length; i++) newSingleFlowReceive.accept(flow[i], i);
 	}
 
 	private int[] convertValues(int[] values) {

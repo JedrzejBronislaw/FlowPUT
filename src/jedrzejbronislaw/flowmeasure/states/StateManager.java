@@ -15,50 +15,50 @@ public class StateManager implements EventListener {
 	@Override
 	public void event(EventType event) {
 
-		if(event == EventType.PROCESS_ENDS) {
+		if (event == EventType.PROCESS_ENDS) {
 			processState.setState(ProcessState.FINISHED);
 		} else
 		
 		
-		if(event == EventType.PROCESS_STARTS) {
+		if (event == EventType.PROCESS_STARTS) {
 			processState.setState(ProcessState.ONGOING);
 			appState.setState(ApplicationState.PROCESS);
 		} else
 		
 		
-		if(event == EventType.LOST_CONNECTION ||
-		   event == EventType.DISCONNECTION) {
-			if(processState.is(ProcessState.ONGOING))
+		if (event == EventType.LOST_CONNECTION ||
+		    event == EventType.DISCONNECTION) {
+			if (processState.is(ProcessState.ONGOING))
 				processState.setState(ProcessState.FINISHED); else
 				appState.setState(ApplicationState.IDLE);
 			connState.setState(ConnectionState.DISCONNECTED);
 		} else
 			
 			
-		if(event == EventType.CLOSE_PROCESS) {
+		if (event == EventType.CLOSE_PROCESS) {
 			processState.setState(ProcessState.BEFORE);
 			appState.setState(ApplicationState.IDLE);
 		} else
 		
-		if(event == EventType.CONNECTION_SUCCESSFUL) {
+		if (event == EventType.CONNECTION_SUCCESSFUL) {
 			connState.setState(ConnectionState.CONNECTED);
 		} else
 		
-		if(event == EventType.CONNECTION_FAILED) {
+		if (event == EventType.CONNECTION_FAILED) {
 			connState.setState(ConnectionState.DISCONNECTED);
 		} else
 		
-		if(event == EventType.CONNECTING_START) {
+		if (event == EventType.CONNECTING_START) {
 			connState.setState(ConnectionState.CONNECTING);
 		} else
 		
 		//---
 		
-		if(event == EventType.CALIBRATION_STARTS) {
+		if (event == EventType.CALIBRATION_STARTS) {
 			appState.setState(ApplicationState.CALIBRATION);
 		} else
 		
-		if(event == EventType.CALIBRATION_ENDS) {
+		if (event == EventType.CALIBRATION_ENDS) {
 			appState.setState(ApplicationState.IDLE);
 		}
 	}

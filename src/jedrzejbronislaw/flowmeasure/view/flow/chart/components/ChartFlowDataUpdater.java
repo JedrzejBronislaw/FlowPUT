@@ -29,7 +29,7 @@ public class ChartFlowDataUpdater extends ChartDataUpdater {
 	
 	@Override
 	protected Float measurementCalculation(int measurementNumber) {
-		if(measurementNumber == 0) return null;
+		if (measurementNumber == 0) return null;
 		
 		prevMeasurement = getMeasurement(measurementNumber-1);
 		measurement = getMeasurement(measurementNumber);

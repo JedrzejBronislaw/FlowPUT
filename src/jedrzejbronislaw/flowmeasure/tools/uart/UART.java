@@ -70,7 +70,7 @@ public class UART implements IUART {
 	}
 	
 	public boolean send(String message) {
-		if(!port.isOpen()) return false;
+		if (!port.isOpen()) return false;
 		
 		port.writeBytes(message.getBytes(), message.length());
 		

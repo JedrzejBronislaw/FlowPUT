@@ -81,7 +81,7 @@ public class SaveWindow {
 	}
 
 	private void tryOpenFileInDefaultApplication(File f) {
-		if(f.exists() && Desktop.isDesktopSupported()) {
+		if (f.exists() && Desktop.isDesktopSupported()) {
 			try {
 				Desktop.getDesktop().open(f);
 			} catch (IOException e) {

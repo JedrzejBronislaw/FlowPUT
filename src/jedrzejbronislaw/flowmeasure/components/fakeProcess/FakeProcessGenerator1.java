@@ -32,7 +32,7 @@ public class FakeProcessGenerator1 implements FakeProcessGenerator {
 		time = LocalDateTime.of(2000, 1, 1, 0, 0);
 		
 		model.getMetadata().setStartTime(time);
-		for(int i=0; i<size; i++) {
+		for (int i=0; i<size; i++) {
 			model.addFlowMeasurement(time, pulses);
 			time = time.plus(interval, ChronoUnit.MILLIS);
 		}

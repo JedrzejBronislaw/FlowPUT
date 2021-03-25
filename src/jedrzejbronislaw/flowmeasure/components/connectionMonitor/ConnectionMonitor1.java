@@ -46,7 +46,7 @@ public class ConnectionMonitor1 implements ConnectionMonitor {
 	
 	private LoopThread createMonitorLoop() {
 		return new LoopThread(interval, () -> {
-			if(isTimeout()) {
+			if (isTimeout()) {
 				alert = true;
 				monitor.end();
 				Injection.run(timeoutEvent);

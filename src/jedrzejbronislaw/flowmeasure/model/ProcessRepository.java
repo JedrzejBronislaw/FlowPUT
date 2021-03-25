@@ -50,11 +50,11 @@ public class ProcessRepository implements FlowMeasurementModel {
 		measurement.add(new FlowMeasurement(time, pulses));
 	}
 	
-	public FlowMeasurement getFlowMeasurement(int index){
+	public FlowMeasurement getFlowMeasurement(int index) {
 		return measurement.get(index);
 	}
 	
-	public List<FlowMeasurement> getAllMeasurement(){
+	public List<FlowMeasurement> getAllMeasurement() {
 		return Collections.unmodifiableList(measurement);
 	}
 	

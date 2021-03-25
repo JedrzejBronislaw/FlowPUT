@@ -121,26 +121,26 @@ public class SidePane extends HBox implements Initializable, EventListener, AllS
 	
 	@Override
 	public void event(EventType event) {
-		if(event == EventType.RECEIVED_DATA) {
+		if (event == EventType.RECEIVED_DATA) {
 			diodeBlink();
-			if(processState == ProcessState.ONGOING)
+			if (processState == ProcessState.ONGOING)
 				setDurationTimeLabel(startTime, LocalDateTime.now());
 		}
 
-		if(event == EventType.PROCESS_STARTS) {
+		if (event == EventType.PROCESS_STARTS) {
 			startTime = LocalDateTime.now();
 			endTime = null;
 			setStartTimeLabel(startTime.format(FORMATTER));
 			setEndTimeLabel("");
 		}
 		
-		if(event == EventType.PROCESS_ENDS) {
+		if (event == EventType.PROCESS_ENDS) {
 			endTime = LocalDateTime.now();
 			setEndTimeLabel(endTime.format(FORMATTER));
 			setDurationTimeLabel(startTime, endTime);
 		}
 		
-		if(event == EventType.CLOSE_PROCESS) {
+		if (event == EventType.CLOSE_PROCESS) {
 			Platform.runLater(() -> {
 				startLabel   .setText("");
 				endLabel     .setText("");

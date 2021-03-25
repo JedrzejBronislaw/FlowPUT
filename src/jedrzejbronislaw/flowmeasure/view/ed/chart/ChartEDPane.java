@@ -77,7 +77,7 @@ public class ChartEDPane extends BorderPane implements Initializable {
 		
 		saveButton.setOnAction(e -> SnapshotSaver.withFileChooser(chartPane));
 		liveBox.setOnAction(e -> {
-			if(liveBox.isSelected())
+			if (liveBox.isSelected())
 				liveChartRefresher.on(); else
 				liveChartRefresher.off();
 		});

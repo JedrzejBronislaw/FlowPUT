@@ -51,7 +51,7 @@ public abstract class UARTDevice {
 
 
 	public ConnectionResult connect(UARTParams params) {
-		if(connecting) return BUSY;
+		if (connecting) return BUSY;
 		connecting = true;
 		
 		uart = uartGenerator.apply(params);
@@ -76,7 +76,7 @@ public abstract class UARTDevice {
 	}
 
 	private void handleMessage(String messageLines) {
-		if(messageLines == null || messageLines.isEmpty()) return;
+		if (messageLines == null || messageLines.isEmpty()) return;
 		
 		String[] messages = messageLines.split(LINE_SEPARATOR_REGEX);
 		
@@ -91,8 +91,8 @@ public abstract class UARTDevice {
 	}
 
 	private MessageTag handleLine(String message) {
-		if(isProofMessage(message)) return MessageTag.CORRECT;
-		if(!correctDevice)          return MessageTag.IGNORED;
+		if (isProofMessage(message)) return MessageTag.CORRECT;
+		if (!correctDevice)          return MessageTag.IGNORED;
 		
 		return handleMessageLine(message);
 	}

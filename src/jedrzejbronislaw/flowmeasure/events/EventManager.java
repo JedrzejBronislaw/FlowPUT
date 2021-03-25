@@ -26,18 +26,18 @@ public class EventManager {
 		boolean permission = permission(event);
 		if (event != EventType.RECEIVED_DATA) log.info("-> Event: {} ({})", event, permission);
 		
-		if(permission)
+		if (permission)
 			listeners.forEach(listener -> listener.event(event));
 		
 		return permission;
 	}
 	
-	private boolean permission(EventType event){
+	private boolean permission(EventType event) {
 		return (checkInternalPermission(event) ||
 				(eventPolicy != null && eventPolicy.checkPermmision(event)));
 	}
 	
-	private boolean checkInternalPermission(EventType event){
+	private boolean checkInternalPermission(EventType event) {
 		return (event.isOneOf(
 					EventType.SAVING_PROCESS,
 					EventType.RECEIVED_DATA,

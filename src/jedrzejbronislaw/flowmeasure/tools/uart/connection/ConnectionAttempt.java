@@ -45,7 +45,7 @@ public class ConnectionAttempt {
 			
 			connect(CONNECTING_TIMEOUT);
 			
-			if(connectionResult == CONNECTED) {
+			if (connectionResult == CONNECTED) {
 				sleep(PROOF_MESSAGE_WAITING);
 				checkDevice();
 			} else
@@ -58,7 +58,7 @@ public class ConnectionAttempt {
 
 	private void checkDevice() {
 		
-		if(device.isCorrectDevice()) {
+		if (device.isCorrectDevice()) {
 			Injection.run(success);
 		} else {
 			device.disconnect();
@@ -85,7 +85,7 @@ public class ConnectionAttempt {
 	private ConnectionResult connect() {
 		ConnectionResult result = device.connect(params);
 		
-		if(result == CONNECTED) {
+		if (result == CONNECTED) {
 			sleep(PROOF_REQUEST_DELAY);
 			device.sendProofRequest();
 		}

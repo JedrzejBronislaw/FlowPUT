@@ -20,7 +20,7 @@ public class SettingsService {
 	public String[] getFlowmeterNames() {
 		String[] names = new String[Consts.FLOWMETERS_NUMBER];
 		
-		for(int i = 0; i < Consts.FLOWMETERS_NUMBER; i++)
+		for (int i = 0; i < Consts.FLOWMETERS_NUMBER; i++)
 			names[i] = settings.getString(new FlowmeterNameProperty(i));
 
 		return names;

@@ -25,7 +25,7 @@ public class EDViewFactory extends ViewFactory {
 	}
 	
 	@Override
-	public Node createSettingsPane(){
+	public Node createSettingsPane() {
 		return new Pane();
 	}
 

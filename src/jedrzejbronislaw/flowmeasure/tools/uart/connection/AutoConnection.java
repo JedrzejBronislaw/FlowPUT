@@ -76,7 +76,7 @@ public class AutoConnection {
 	private void tryNextPort() {
 		String port = getNextPort();
 		
-		if(port == null)
+		if (port == null)
 			Injection.run(ifFail); else
 			relaunch(port);
 	}

@@ -39,7 +39,7 @@ public class FlowPreview extends HBox implements Initializable {
 		pulses += value;
 		
 		Platform.runLater(() -> {
-			if(flowconverter != null) {
+			if (flowconverter != null) {
 				pulsesLabel.setText(computeFlow(value));
 				secPulsesLabel.setText(computeVolume(pulses));
 			} else {
@@ -51,7 +51,7 @@ public class FlowPreview extends HBox implements Initializable {
 
 	private String computeFlow(int value) {
 		Float litrePerSec = flowconverter.toFlow(value);
-		if(litrePerSec == null) return "";
+		if (litrePerSec == null) return "";
 
 		return PRECISION_FORMAT.format(litrePerSec) + " " + flowconverter.getFlowUnit();
 	}

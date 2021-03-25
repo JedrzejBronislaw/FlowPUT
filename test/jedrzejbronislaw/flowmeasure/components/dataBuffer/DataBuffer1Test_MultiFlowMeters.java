@@ -36,7 +36,7 @@ public class DataBuffer1Test_MultiFlowMeters {
 	private int[] getMeasurement(int index) {
 		int[] measurement = new int[FLOWMETERS_NUMBER];
 		
-		for(int i=0; i<FLOWMETERS_NUMBER; i++)
+		for (int i=0; i<FLOWMETERS_NUMBER; i++)
 			measurement[i] = repository.getFlowMeasurement(index).get(i);
 		
 		return measurement;

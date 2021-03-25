@@ -19,19 +19,19 @@ public class CSVWriter {
 	
 	public void write(String text) throws IOException {
 		writer.write(text);
-	};
+	}
 	
 	public void writeWithSeparator(String text) throws IOException {
 		writer.write(text + SEPARATOR);
-	};
+	}
 	
 	public void writeWithSeparator(int value) throws IOException {
 		writeWithSeparator(Integer.toString(value));
-	};
+	}
 	
 	public void writeSeparator() throws IOException {
 		writer.write(SEPARATOR);
-	};
+	}
 	
 	public void writeSeparators(int number) throws IOException {
 		for (int i=0; i<number; i++)
@@ -49,12 +49,12 @@ public class CSVWriter {
 
 	public void property(String propertyName, String value) throws IOException {
 		writeWithSeparator(propertyName);
-		if(value != null) writer.write(value);
+		if (value != null) writer.write(value);
 		newLine();
 	}
 
 	public void property(String propertyName, LocalDateTime datatime) throws IOException {
-		if(datatime == null)
+		if (datatime == null)
 			property(propertyName, ""); else
 			property(propertyName, datatime.format(FORMATTER));
 	}
