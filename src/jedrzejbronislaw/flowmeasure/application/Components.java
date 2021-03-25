@@ -24,7 +24,6 @@ import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.InternalResourceAccess;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
@@ -105,7 +104,6 @@ public abstract class Components {
 		eventManager.addListener(connectionMonitor);
 		eventManager.addListener(flowConverters);
 
-		MyFXMLLoader.setResources(resources);
 		viewBuilder.build();
 	}
 	
