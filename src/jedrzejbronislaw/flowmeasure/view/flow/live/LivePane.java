@@ -15,7 +15,7 @@ import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.FlowmeterNameProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.view.ViewMediator;
 import jedrzejbronislaw.flowmeasure.view.flow.live.flowPreview.FlowPreview;
 
@@ -32,7 +32,7 @@ public class LivePane extends VBox implements Initializable {
 
 	
 	public LivePane() {
-		MyFXMLLoader2.create("LivePane.fxml", this);
+		MyFXMLLoader.create("LivePane.fxml", this);
 		
 		Components.getComponentsLoader().addLoadMethod(() -> {
 			viewMediator   = Components.getViewMediator();

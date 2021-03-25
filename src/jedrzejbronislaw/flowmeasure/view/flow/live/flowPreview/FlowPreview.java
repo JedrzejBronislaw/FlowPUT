@@ -10,7 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverter;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 
 public class FlowPreview extends HBox implements Initializable {
 
@@ -24,7 +24,7 @@ public class FlowPreview extends HBox implements Initializable {
 
 	
 	public FlowPreview(FlowConverter flowconverter) {
-		MyFXMLLoader2.create("FlowPreview.fxml", this);
+		MyFXMLLoader.create("FlowPreview.fxml", this);
 		
 		setName("");
 		this.flowconverter = flowconverter;

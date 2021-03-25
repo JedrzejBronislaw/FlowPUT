@@ -23,7 +23,7 @@ import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessReposit
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.Unit;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import lombok.Setter;
 
 public class SaveWindowPane extends VBox implements Initializable {
@@ -49,7 +49,7 @@ public class SaveWindowPane extends VBox implements Initializable {
 
 	    	
 	public SaveWindowPane(SettingsService settingsService) {
-		MyFXMLLoader2.create("SaveMeasurementWindow.fxml", this);
+		MyFXMLLoader.create("SaveMeasurementWindow.fxml", this);
 		
 		setFlowmeterNames(settingsService.getFlowmeterNames());
 	}

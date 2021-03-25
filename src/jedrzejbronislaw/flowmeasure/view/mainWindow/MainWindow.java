@@ -13,7 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.TextTools;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import lombok.Getter;
@@ -28,7 +28,7 @@ public class MainWindow extends StackPane implements Initializable, StateListene
 
 	
 	public MainWindow() {
-		MyFXMLLoader2.create("MainWindow.fxml", this);
+		MyFXMLLoader.create("MainWindow.fxml", this);
 	}
 
 	

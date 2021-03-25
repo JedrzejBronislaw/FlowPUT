@@ -18,7 +18,7 @@ import jedrzejbronislaw.flowmeasure.settings.FlowmeterNameProperty;
 import jedrzejbronislaw.flowmeasure.settings.RatioProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import jedrzejbronislaw.flowmeasure.view.flow.settings.flowmeterName.FlowmeterNameSettingsPane;
 import jedrzejbronislaw.flowmeasure.view.flow.settings.pulseRatio.PulseRatioSettingsPane;
@@ -42,7 +42,7 @@ public class SettingsPane extends VBox implements Initializable, StateListener<A
 
 	
 	public SettingsPane() {
-		MyFXMLLoader2.create("SettingsPane.fxml", this);
+		MyFXMLLoader.create("SettingsPane.fxml", this);
 		
 		Components.getComponentsLoader().addLoadMethod(() -> {
 			settings = Components.getSettings();

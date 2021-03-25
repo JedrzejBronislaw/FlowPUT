@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.flowConverter.FlowConverters;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.SnapshotSaver;
 import jedrzejbronislaw.flowmeasure.tools.loop.Refresher;
 import jedrzejbronislaw.flowmeasure.view.flow.chart.components.ChartOptions;
@@ -45,7 +45,7 @@ public class ChartEDPane extends BorderPane implements Initializable {
 
 	
 	public ChartEDPane() {
-		MyFXMLLoader2.create("ChartEDPane.fxml", this);
+		MyFXMLLoader.create("ChartEDPane.fxml", this);
 		
 		Components.getComponentsLoader().addLoadMethod(() -> {
 			currentProcess = Components.getRepository()::getCurrentProcessRepository;

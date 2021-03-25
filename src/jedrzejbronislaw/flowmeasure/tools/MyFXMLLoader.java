@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-public class MyFXMLLoader2 {
+public class MyFXMLLoader {
 
 	private final static String MAIN_DIR = "/res";
 //	private final static String lang = Internationalization.RESOURCE_LOCATION;

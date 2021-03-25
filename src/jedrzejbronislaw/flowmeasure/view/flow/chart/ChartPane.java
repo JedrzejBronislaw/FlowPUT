@@ -15,7 +15,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.layout.BorderPane;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.SnapshotSaver;
 import jedrzejbronislaw.flowmeasure.tools.loop.Refresher;
 import jedrzejbronislaw.flowmeasure.view.flow.chart.components.ChartOptions;
@@ -40,7 +40,7 @@ public class ChartPane extends BorderPane implements Initializable {
 
 	
 	public ChartPane() {
-		MyFXMLLoader2.create("ChartPane.fxml", this);
+		MyFXMLLoader.create("ChartPane.fxml", this);
 		
 		Components.getComponentsLoader().addLoadMethod(() -> {
 			chartRefresher = new ChartRefresher(Components.getFlowConverters(), chart);

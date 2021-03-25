@@ -27,7 +27,7 @@ import jedrzejbronislaw.flowmeasure.states.AllStates;
 import jedrzejbronislaw.flowmeasure.states.AllStatesListener;
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 
 public class CalibrationPane extends VBox implements Initializable, AllStatesListener {
 
@@ -52,7 +52,7 @@ public class CalibrationPane extends VBox implements Initializable, AllStatesLis
 	
 	
 	public CalibrationPane() {
-		MyFXMLLoader2.create("CalibrationPane.fxml", this);
+		MyFXMLLoader.create("CalibrationPane.fxml", this);
 		
 		Components.getComponentsLoader().addLoadMethod(() -> {
 			eventManager = Components.getEventManager();

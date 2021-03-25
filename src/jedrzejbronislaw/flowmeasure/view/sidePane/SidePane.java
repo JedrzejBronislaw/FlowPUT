@@ -26,7 +26,7 @@ import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.states.ProcessState;
 import jedrzejbronislaw.flowmeasure.tools.Delay;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.TextTools;
 import jedrzejbronislaw.flowmeasure.tools.TimeCalc;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
@@ -71,7 +71,7 @@ public class SidePane extends HBox implements Initializable, EventListener, AllS
 	public SidePane(ActionContainer actions) {
 		this.actions = actions;
 		
-		MyFXMLLoader2.create("SidePane.fxml", this);
+		MyFXMLLoader.create("SidePane.fxml", this);
 	}
 	
 	

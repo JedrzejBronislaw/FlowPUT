@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.model.FlowMeasurement;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 
 public class MeasurementTable extends VBox implements Initializable {
 
@@ -25,7 +25,7 @@ public class MeasurementTable extends VBox implements Initializable {
 
 	
 	public MeasurementTable() {
-		MyFXMLLoader2.create("MeasurementTable.fxml", this);
+		MyFXMLLoader.create("MeasurementTable.fxml", this);
 		
 		tableUpdater = new TableUpdater(table);
 		

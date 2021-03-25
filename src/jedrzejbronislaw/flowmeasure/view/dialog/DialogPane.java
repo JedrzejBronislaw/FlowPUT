@@ -16,7 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import jedrzejbronislaw.flowmeasure.tools.Delay;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 
 public class DialogPane extends VBox implements Initializable {
 
@@ -28,7 +28,7 @@ public class DialogPane extends VBox implements Initializable {
 	public DialogPane(Pane root) {
 		this.root = root;
 		
-		MyFXMLLoader2.create("DialogPane.fxml", this);
+		MyFXMLLoader.create("DialogPane.fxml", this);
 	}
 	
 	

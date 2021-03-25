@@ -8,7 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader2;
+import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 
 public class PulseRatioSettingsPane extends HBox implements Initializable {
 	
@@ -17,7 +17,7 @@ public class PulseRatioSettingsPane extends HBox implements Initializable {
 
 	
 	public PulseRatioSettingsPane(String name) {
-		MyFXMLLoader2.create("PulseRatioSettingsPane.fxml", this);
+		MyFXMLLoader.create("PulseRatioSettingsPane.fxml", this);
 		setName(name);
 	}
 	
