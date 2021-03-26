@@ -131,7 +131,7 @@ public class ViewBuilder {
 		return result.get() == ButtonType.OK;
 	}
 	
-	public Node connectionPane() {
+	private Node connectionPane() {
 		ConnectionPane connectionPane = new ConnectionPane(actions);
 
 		viewMediator.setUartParamsGetter(connectionPane::getParams);
@@ -140,7 +140,7 @@ public class ViewBuilder {
 		return connectionPane;
 	}
 	
-	public Node sidePane() {
+	private Node sidePane() {
 		SidePane sidePane = new SidePane(actions);
 		
 		addAllStatesListener(sidePane);
@@ -177,11 +177,11 @@ public class ViewBuilder {
 	}
 
 	
-	protected void addEventListener(EventListener listener) {
+	private void addEventListener(EventListener listener) {
 		eventManager.addListener(listener);
 	}
 	
-	protected void addAllStatesListener(AllStatesListener listener) {
+	private void addAllStatesListener(AllStatesListener listener) {
 		new AllStates(Components.getStateManager(), listener);
 	}
 
@@ -189,7 +189,7 @@ public class ViewBuilder {
 		stateManager.getAppState().addStateListener(listener);
 	}
 	
-	protected void addConnListener(StateListener<ConnectionState> listener) {
+	private void addConnListener(StateListener<ConnectionState> listener) {
 		stateManager.getConnState().addStateListener(listener);
 	}
 
