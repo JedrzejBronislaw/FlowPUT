@@ -29,7 +29,7 @@ public class ConnectionService {
 	private UARTDevice        edDevice;
 	private UARTDevice        flowDevice;
 	private List<UARTDevice>  devices;
-	private ViewBuilder       viewBuilder;
+	private ViewManager       viewManager;
 	
 	
 	public ConnectionService() {
@@ -39,7 +39,7 @@ public class ConnectionService {
 			edDevice          = Components.getEdDevice();
 			flowDevice        = Components.getFlowDevice();
 			devices           = Components.getDevices();
-			viewBuilder       = Components.getViewBuilder();
+			viewManager       = Components.getViewManager();
 		});
 	}
 	
@@ -89,8 +89,8 @@ public class ConnectionService {
 			eventManager.submitEvent(EventType.CONNECTION_SUCCESSFUL);
 			connectionMonitor.start();
 			
-			if (device == flowDevice) viewBuilder.setDeviceView(DeviceType.FlowDevice);
-			if (device ==   edDevice) viewBuilder.setDeviceView(DeviceType.  EDDevice);
+			if (device == flowDevice) viewManager.setDeviceView(DeviceType.FlowDevice);
+			if (device ==   edDevice) viewManager.setDeviceView(DeviceType.  EDDevice);
 		});
 		
 		return autoConn;

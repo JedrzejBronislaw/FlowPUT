@@ -30,6 +30,7 @@ import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import jedrzejbronislaw.flowmeasure.view.Actions;
 import jedrzejbronislaw.flowmeasure.view.ConnectionService;
 import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
+import jedrzejbronislaw.flowmeasure.view.ViewManager;
 import jedrzejbronislaw.flowmeasure.view.ViewMediator;
 import lombok.Getter;
 
@@ -52,7 +53,7 @@ public abstract class Components {
 	@Getter private static Calibration calibration;
 	@Getter private static ViewMediator viewMediator;
 	@Getter private static Repository repository;
-	@Getter private static ViewBuilder viewBuilder;
+	@Getter private static ViewManager viewManager;
 	
 	@Getter private static ConnectionService connectionService;
 	@Getter private static SavingService savingService;
@@ -82,7 +83,7 @@ public abstract class Components {
 		savingService = new SavingService();
 		settingsService = new SettingsService();
 		
-		viewBuilder = new ViewBuilder(new Actions());
+		viewManager = new ViewManager();
 		
 		componentsLoader.load();
 		set();
@@ -104,7 +105,7 @@ public abstract class Components {
 		eventManager.addListener(connectionMonitor);
 		eventManager.addListener(flowConverters);
 
-		viewBuilder.build();
+		new ViewBuilder(new Actions()).build();
 	}
 	
 	private static FlowDevice buildFlowDevice() {

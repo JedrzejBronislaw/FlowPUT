@@ -1,7 +1,5 @@
 package jedrzejbronislaw.flowmeasure.view;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import javafx.application.Platform;
@@ -44,8 +42,6 @@ public class ViewBuilder {
 	private static final String CSS_FILENAME   = "application.css";
 	private static final String LOGO_FILE_NAME = "logo.png";
 
-	private Map<DeviceType, DeviceView> deviceViews = new HashMap<>();
-	
 	@NonNull private ActionContainer actions;
 	
 	private MainWindow mainWindow;
@@ -56,6 +52,7 @@ public class ViewBuilder {
 	private   StateManager   stateManager;
 	private   DialogManager  dialogManager;
 	protected ViewMediator   viewMediator;
+	private   ViewManager    viewManager;
 	
 	
 	public ViewBuilder(ActionContainer actions) {
@@ -68,6 +65,7 @@ public class ViewBuilder {
 			stateManager  = Components.getStateManager();
 			dialogManager = Components.getDialogManager();
 			viewMediator  = Components.getViewMediator();
+			viewManager   = Components.getViewManager();
 		});
 	}
 	
@@ -152,8 +150,9 @@ public class ViewBuilder {
 	private MainWindow mainWindow() {
 		MainWindow mainWindow = new MainWindow();
 
-		deviceViews.put(DeviceType.FlowDevice, new DeviceView(new FlowViewFactory(actions)));
-		deviceViews.put(DeviceType.EDDevice,   new DeviceView(new   EDViewFactory(actions)));
+		viewManager.setMainWindow(mainWindow);
+		viewManager.addDeviceView(DeviceType.FlowDevice, new DeviceView(new FlowViewFactory(actions)));
+		viewManager.addDeviceView(DeviceType.EDDevice,   new DeviceView(new   EDViewFactory(actions)));
 		
 		mainWindow.getBorderPane().setLeft(sidePane());
 		mainWindow.getBorderPane().setRight(connectionPane());
@@ -161,19 +160,6 @@ public class ViewBuilder {
 		addAppListener(mainWindow);
 		
 		return mainWindow;
-	}
-
-	public void setDeviceView(DeviceType device) {
-		DeviceView view = deviceViews.get(device);
-		if (view == null) return;
-		
-		Platform.runLater(() -> {
-			mainWindow.setLivePane       (view.getLivePane());
-			mainWindow.setTablePane      (view.getTablePane());
-			mainWindow.setChartPane      (view.getChartPane());
-			mainWindow.setSettingsPane   (view.getSettingsPane());
-			mainWindow.setCalibrationPane(view.getCalibrationPane());
-		});
 	}
 
 	
