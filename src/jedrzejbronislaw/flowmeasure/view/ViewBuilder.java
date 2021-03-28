@@ -43,14 +43,14 @@ public class ViewBuilder {
 
 	private MainWindow mainWindow;
 	
-	private   Stage          primaryStage;
-	private   ResourceAccess resources;
-	protected EventManager   eventManager;
-	private   StateManager   stateManager;
-	private   DialogManager  dialogManager;
-	protected ViewMediator   viewMediator;
-	private   ViewManager    viewManager;
-	private   ActionContainer actions;
+	private Stage           primaryStage;
+	private ResourceAccess  resources;
+	private EventManager    eventManager;
+	private StateManager    stateManager;
+	private DialogManager   dialogManager;
+	private ViewMediator    viewMediator;
+	private ViewManager     viewManager;
+	private ActionContainer actions;
 	
 	
 	public ViewBuilder() {
