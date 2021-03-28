@@ -10,14 +10,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import jedrzejbronislaw.flowmeasure.application.Components;
-import jedrzejbronislaw.flowmeasure.components.SavingService;
 import jedrzejbronislaw.flowmeasure.components.SettingsService;
 import jedrzejbronislaw.flowmeasure.components.connectionMonitor.ConnectionMonitor;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager.FlowConsumerType;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
-import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.Repository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryCSVWriter;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriter;
@@ -25,7 +23,6 @@ import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
 import jedrzejbronislaw.flowmeasure.settings.RatioProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
-import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionAttempt;
@@ -41,7 +38,6 @@ public class Actions implements ActionContainer {
 	private ConnectionMonitor connectionMonitor;
 	private FlowManager       flowManager;
 	private ViewMediator      viewMediator;
-	private ResourceAccess    resources;
 	private Settings          settings;
 	private Repository        repository;
 	
@@ -49,7 +45,6 @@ public class Actions implements ActionContainer {
 	private List<UARTDevice>  devices;
 	
 	private SettingsService   settingsService;
-	private SavingService     savingService;
 	private ConnectionService connectionService;
 	
 	
@@ -59,7 +54,6 @@ public class Actions implements ActionContainer {
 			connectionMonitor = Components.getConnectionMonitor();
 			flowManager       = Components.getFlowManager();
 			viewMediator      = Components.getViewMediator();
-			resources         = Components.getResources();
 			settings          = Components.getSettings();
 			repository        = Components.getRepository();
 			
@@ -67,7 +61,6 @@ public class Actions implements ActionContainer {
 			devices           = Components.getDevices();
 			
 			settingsService   = Components.getSettingsService();
-			savingService     = Components.getSavingService();
 			connectionService = Components.getConnectionService();
 		});
 	}
@@ -152,9 +145,7 @@ public class Actions implements ActionContainer {
 	}
 
 	private void showSaveWindow(ProcessRepositoryWriter writer) {
-		ProcessRepository process = repository.getCurrentProcessRepository();
-		SaveWindow saveWindow = new SaveWindow(resources, process, settingsService, savingService);
-
+		SaveWindow saveWindow = new SaveWindow();
 		saveWindow.setOwner(Components.getPrimaryStage());
 		saveWindow.setSaveAction(writer::save);
 			

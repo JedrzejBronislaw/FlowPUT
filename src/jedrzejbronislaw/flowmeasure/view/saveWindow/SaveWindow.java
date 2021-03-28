@@ -10,13 +10,12 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.SavingService;
-import jedrzejbronislaw.flowmeasure.components.SettingsService;
 import jedrzejbronislaw.flowmeasure.model.ProcessRepository;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.SaveAction;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
-import lombok.NonNull;
 import lombok.Setter;
 
 public class SaveWindow {
@@ -27,9 +26,9 @@ public class SaveWindow {
 	private static final String LOGO_FILE_NAME = "logo.png";
 	
 
-	@NonNull private ResourceAccess resources;
-	@NonNull private ProcessRepository process;
-	@NonNull private SavingService savingService;
+	private ResourceAccess resources;
+	private ProcessRepository process;
+	private SavingService savingService;
 
 	@Setter private SaveAction saveAction;
 	
@@ -42,17 +41,18 @@ public class SaveWindow {
 	}
 	
 	
-	public SaveWindow(ResourceAccess resources, ProcessRepository process, SettingsService settingsService, SavingService savingService) {
-		this.resources = resources;
-		this.process   = process;
-		this.savingService = savingService;
-		
-		saveWindowPane = new SaveWindowPane(settingsService);
-		
-		saveWindowPane.setExitAction(stage::close);
-		saveWindowPane.setSaveAction(this::save);
-		
-		buildStage();
+	public SaveWindow() {
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			resources = Components.getResources();
+			process = Components.getRepository().getCurrentProcessRepository();
+			savingService = Components.getSavingService();
+			
+			saveWindowPane = new SaveWindowPane();
+			saveWindowPane.setExitAction(stage::close);
+			saveWindowPane.setSaveAction(this::save);
+			
+			buildStage();
+		});
 	}
 	
 	

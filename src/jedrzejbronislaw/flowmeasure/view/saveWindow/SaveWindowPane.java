@@ -17,7 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.VBox;
-import jedrzejbronislaw.flowmeasure.components.SettingsService;
+import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.DecimalSeparator;
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriterOptions.TimeFormat;
@@ -48,10 +48,12 @@ public class SaveWindowPane extends VBox implements Initializable {
 	        private List<CheckBox> saveFlowmeters = new ArrayList<>();
 
 	    	
-	public SaveWindowPane(SettingsService settingsService) {
+	public SaveWindowPane() {
 		MyFXMLLoader.create("SaveMeasurementWindow.fxml", this);
 		
-		setFlowmeterNames(settingsService.getFlowmeterNames());
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			setFlowmeterNames(Components.getSettingsService().getFlowmeterNames());
+		});
 	}
 
 	
