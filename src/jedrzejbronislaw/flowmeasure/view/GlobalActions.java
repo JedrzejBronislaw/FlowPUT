@@ -29,7 +29,7 @@ import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionAttempt;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.MultiDeviceAutoConnection;
 import jedrzejbronislaw.flowmeasure.view.saveWindow.SaveWindow;
 
-public class Actions implements ActionContainer {
+public class GlobalActions implements ActionContainer {
 	
 	private Logger log = LoggerFactory.getLogger(getClass());
 	
@@ -48,7 +48,7 @@ public class Actions implements ActionContainer {
 	private ConnectionService connectionService;
 	
 	
-	public Actions() {
+	public GlobalActions() {
 		Components.getComponentsLoader().addLoadMethod(() -> {
 			eventManager      = Components.getEventManager();
 			connectionMonitor = Components.getConnectionMonitor();

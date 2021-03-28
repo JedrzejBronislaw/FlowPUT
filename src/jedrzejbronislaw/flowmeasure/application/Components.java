@@ -27,7 +27,7 @@ import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.InternalResourceAccess;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
-import jedrzejbronislaw.flowmeasure.view.Actions;
+import jedrzejbronislaw.flowmeasure.view.GlobalActions;
 import jedrzejbronislaw.flowmeasure.view.ConnectionService;
 import jedrzejbronislaw.flowmeasure.view.ViewBuilder;
 import jedrzejbronislaw.flowmeasure.view.ViewManager;
@@ -105,7 +105,7 @@ public abstract class Components {
 		eventManager.addListener(connectionMonitor);
 		eventManager.addListener(flowConverters);
 
-		new ViewBuilder(new Actions()).build();
+		new ViewBuilder(new GlobalActions()).build();
 	}
 	
 	private static FlowDevice buildFlowDevice() {
