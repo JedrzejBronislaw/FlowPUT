@@ -37,88 +37,114 @@ public class Actions implements ActionContainer {
 	private Logger log = LoggerFactory.getLogger(getClass());
 	
 	
-	private SettingsService settingsService;
+	private EventManager      eventManager;
+	private ConnectionMonitor connectionMonitor;
+	private FlowManager       flowManager;
+	private ViewMediator      viewMediator;
+	private ResourceAccess    resources;
+	private Settings          settings;
+	private Repository        repository;
+	
+	private UARTDevice        edDevice;
+	private List<UARTDevice>  devices;
+	
+	private SettingsService   settingsService;
+	private SavingService     savingService;
+	private ConnectionService connectionService;
 	
 	
 	public Actions() {
 		Components.getComponentsLoader().addLoadMethod(() -> {
-			settingsService = Components.getSettingsService();
+			eventManager      = Components.getEventManager();
+			connectionMonitor = Components.getConnectionMonitor();
+			flowManager       = Components.getFlowManager();
+			viewMediator      = Components.getViewMediator();
+			resources         = Components.getResources();
+			settings          = Components.getSettings();
+			repository        = Components.getRepository();
+			
+			edDevice          = Components.getEdDevice();
+			devices           = Components.getDevices();
+			
+			settingsService   = Components.getSettingsService();
+			savingService     = Components.getSavingService();
+			connectionService = Components.getConnectionService();
 		});
 	}
 	
 
 	@Override
 	public void startProcess() {
-		if (eventManager().submitEvent(EventType.PROCESS_STARTS)) {
-			repository().createNewProcessRepository("").setStartWithNextValueFlag();
+		if (eventManager.submitEvent(EventType.PROCESS_STARTS)) {
+			repository.createNewProcessRepository("").setStartWithNextValueFlag();
 			
 			if (isBufferedData())
-				flowManager().setFlowConsumerType(FlowConsumerType.BUFFERED); else
-				flowManager().setFlowConsumerType(FlowConsumerType.PLAIN);
+				flowManager.setFlowConsumerType(FlowConsumerType.BUFFERED); else
+				flowManager.setFlowConsumerType(FlowConsumerType.PLAIN);
 		}
 	}
 
 	@Override
 	public void endProcess() {
-		if (eventManager().submitEvent(EventType.PROCESS_ENDS)) {
-			repository().getCurrentProcessRepository().setProcessEndTimeNow();
-			flowManager().setFlowConsumerType(FlowConsumerType.NONE);
+		if (eventManager.submitEvent(EventType.PROCESS_ENDS)) {
+			repository.getCurrentProcessRepository().setProcessEndTimeNow();
+			flowManager.setFlowConsumerType(FlowConsumerType.NONE);
 		}
 	}
 
 	@Override
 	public void saveProcess() {
-		if (eventManager().submitEvent(EventType.SAVING_PROCESS))
+		if (eventManager.submitEvent(EventType.SAVING_PROCESS))
 			showSaveWindow(prepareWriter());
 	}
 	
 	@Override
 	public void closeProcess() {
-		if (confirmWithAlert() && eventManager().submitEvent(EventType.CLOSE_PROCESS))
-			repository().closeCurrentProcessRepository();
+		if (confirmWithAlert() && eventManager.submitEvent(EventType.CLOSE_PROCESS))
+			repository.closeCurrentProcessRepository();
 	}
 
 	@Override
 	public void connectDevice() {
-		UARTParams params = viewMediator().getUARTParams();
+		UARTParams params = viewMediator.getUARTParams();
 		if (!valideteParams(params)) return;
 		
-		ConnectionAttempt attempt = connectionService().createConnectionAttempt(edDevice(), params);
-		eventManager().submitEvent(EventType.CONNECTING_START);
+		ConnectionAttempt attempt = connectionService.createConnectionAttempt(edDevice, params);
+		eventManager.submitEvent(EventType.CONNECTING_START);
 		
 		attempt.start();
 	}
 
 	@Override
 	public void disconnectDevices() {
-		connectionMonitor().stop();
-		devices().forEach(d -> d.disconnect());
+		connectionMonitor.stop();
+		devices.forEach(d -> d.disconnect());
 
-		eventManager().submitEvent(EventType.DISCONNECTION);
+		eventManager.submitEvent(EventType.DISCONNECTION);
 	}
 
 	@Override
 	public void autoconnectDevice() {
 		log.info("Start autoconnect");
 		
-		MultiDeviceAutoConnection autoConnection = connectionService().createMultiDeviceAutoConnection();
+		MultiDeviceAutoConnection autoConnection = connectionService.createMultiDeviceAutoConnection();
 
-		eventManager().submitEvent(EventType.CONNECTING_START);
+		eventManager.submitEvent(EventType.CONNECTING_START);
 		autoConnection.start();
 	}
 
 	@Override
 	public void exit() {
-		eventManager().submitEvent(EventType.EXITING);
-		connectionMonitor().stop();
-		devices().forEach(d -> d.disconnect());
+		eventManager.submitEvent(EventType.EXITING);
+		connectionMonitor.stop();
+		devices.forEach(d -> d.disconnect());
 	}
 	
 	private ProcessRepositoryWriter prepareWriter() {
 		ProcessRepositoryWriter writer = new ProcessRepositoryCSVWriter();
 		
 		if (isBufferedData())
-			writer.setBufferInterval(settings().getInt(AppProperties.BUFFER_INTERVAL));
+			writer.setBufferInterval(settings.getInt(AppProperties.BUFFER_INTERVAL));
 		writer.setPulsePerLitre(getPulseRatios());
 		writer.setFlowmeterNames(settingsService.getFlowmeterNames());
 		
@@ -126,8 +152,8 @@ public class Actions implements ActionContainer {
 	}
 
 	private void showSaveWindow(ProcessRepositoryWriter writer) {
-		ProcessRepository process = repository().getCurrentProcessRepository();
-		SaveWindow saveWindow = new SaveWindow(resources(), process, settingsService(), savingService());
+		ProcessRepository process = repository.getCurrentProcessRepository();
+		SaveWindow saveWindow = new SaveWindow(resources, process, settingsService, savingService);
 
 		saveWindow.setOwner(Components.getPrimaryStage());
 		saveWindow.setSaveAction(writer::save);
@@ -140,7 +166,7 @@ public class Actions implements ActionContainer {
 		float[] outcome = new float[Consts.FLOWMETERS_NUMBER];
 		
 		for (int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
-			outcome[i] = settings().getFloat(ratioProperties[i]);
+			outcome[i] = settings.getFloat(ratioProperties[i]);
 		
 		return outcome;
 	}
@@ -164,55 +190,6 @@ public class Actions implements ActionContainer {
 	}
 
 	private boolean isBufferedData() {
-		return settings().getBool(AppProperties.BUFFERED_DATA);
-	}
-	
-	
-	private EventManager eventManager() {
-		return Components.getEventManager();
-	}
-	
-	private ConnectionMonitor connectionMonitor() {
-		return Components.getConnectionMonitor();
-	}
-	
-	private UARTDevice edDevice() {
-		return Components.getEdDevice();
-	}
-	
-	private List<UARTDevice> devices() {
-		return Components.getDevices();
-	}
-	
-	private ViewMediator viewMediator() {
-		return Components.getViewMediator();
-	}
-	
-	private ResourceAccess resources() {
-		return Components.getResources();
-	}
-	
-	private FlowManager flowManager() {
-		return Components.getFlowManager();
-	}
-	
-	private Settings settings() {
-		return Components.getSettings();
-	}
-	
-	private SettingsService settingsService() {
-		return Components.getSettingsService();
-	}
-	
-	private SavingService savingService() {
-		return Components.getSavingService();
-	}
-	
-	private Repository repository() {
-		return Components.getRepository();
-	}
-	
-	private ConnectionService connectionService() {
-		return Components.getConnectionService();
+		return settings.getBool(AppProperties.BUFFERED_DATA);
 	}
 }
