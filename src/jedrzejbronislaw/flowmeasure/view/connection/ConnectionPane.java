@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Shape;
+import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.TextTools;
@@ -43,8 +44,10 @@ public class ConnectionPane extends HBox implements Initializable, StateListener
 	private BooleanProperty hidden = new SimpleBooleanProperty(false);
 
 	
-	public ConnectionPane(ActionContainer actions) {
-		this.actions = actions;
+	public ConnectionPane() {
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			actions = Components.getGlobalActions();
+		});
 		
 		MyFXMLLoader.create("ConnectionPane.fxml", this);
 	}

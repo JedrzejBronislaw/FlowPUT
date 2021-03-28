@@ -32,7 +32,6 @@ import jedrzejbronislaw.flowmeasure.view.deviceView.FlowViewFactory;
 import jedrzejbronislaw.flowmeasure.view.dialog.DialogPane;
 import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindow;
 import jedrzejbronislaw.flowmeasure.view.sidePane.SidePane;
-import lombok.NonNull;
 
 public class ViewBuilder {
 	
@@ -42,8 +41,6 @@ public class ViewBuilder {
 	private static final String CSS_FILENAME   = "application.css";
 	private static final String LOGO_FILE_NAME = "logo.png";
 
-	@NonNull private ActionContainer actions;
-	
 	private MainWindow mainWindow;
 	
 	private   Stage          primaryStage;
@@ -53,11 +50,10 @@ public class ViewBuilder {
 	private   DialogManager  dialogManager;
 	protected ViewMediator   viewMediator;
 	private   ViewManager    viewManager;
+	private   ActionContainer actions;
 	
 	
-	public ViewBuilder(ActionContainer actions) {
-		this.actions = actions;
-		
+	public ViewBuilder() {
 		Components.getComponentsLoader().addLoadMethod(() -> {
 			primaryStage  = Components.getPrimaryStage();
 			resources     = Components.getResources();
@@ -66,6 +62,7 @@ public class ViewBuilder {
 			dialogManager = Components.getDialogManager();
 			viewMediator  = Components.getViewMediator();
 			viewManager   = Components.getViewManager();
+			actions       = Components.getGlobalActions();
 		});
 	}
 	
@@ -130,7 +127,7 @@ public class ViewBuilder {
 	}
 	
 	private Node connectionPane() {
-		ConnectionPane connectionPane = new ConnectionPane(actions);
+		ConnectionPane connectionPane = new ConnectionPane();
 
 		viewMediator.setUartParamsGetter(connectionPane::getParams);
 		addConnListener(connectionPane);
@@ -139,7 +136,7 @@ public class ViewBuilder {
 	}
 	
 	private Node sidePane() {
-		SidePane sidePane = new SidePane(actions);
+		SidePane sidePane = new SidePane();
 		
 		addAllStatesListener(sidePane);
 		addEventListener(sidePane);
@@ -151,8 +148,8 @@ public class ViewBuilder {
 		MainWindow mainWindow = new MainWindow();
 
 		viewManager.setMainWindow(mainWindow);
-		viewManager.addDeviceView(DeviceType.FlowDevice, new DeviceView(new FlowViewFactory(actions)));
-		viewManager.addDeviceView(DeviceType.EDDevice,   new DeviceView(new   EDViewFactory(actions)));
+		viewManager.addDeviceView(DeviceType.FlowDevice, new DeviceView(new FlowViewFactory()));
+		viewManager.addDeviceView(DeviceType.EDDevice,   new DeviceView(new   EDViewFactory()));
 		
 		mainWindow.getBorderPane().setLeft(sidePane());
 		mainWindow.getBorderPane().setRight(connectionPane());

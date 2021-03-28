@@ -9,15 +9,12 @@ import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import jedrzejbronislaw.flowmeasure.view.ActionContainer;
-import lombok.NonNull;
 
 public abstract class ViewFactory {
 	
-	@NonNull protected ActionContainer actions;
-	
-	
 	protected EventManager   eventManager;
 	private   StateManager   stateManager;
+	protected ActionContainer actions;
 	
 	
 	abstract public Node createLivePane();
@@ -27,10 +24,9 @@ public abstract class ViewFactory {
 	abstract public Node createCalibrationPane();
 	
 	
-	public ViewFactory(ActionContainer actions) {
-		this.actions = actions;
-		
+	public ViewFactory() {
 		Components.getComponentsLoader().addLoadMethod(() -> {
+			actions        = Components.getGlobalActions();
 			eventManager   = Components.getEventManager();
 			stateManager   = Components.getStateManager();
 		});

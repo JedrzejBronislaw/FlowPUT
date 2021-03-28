@@ -18,6 +18,7 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
+import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.events.EventListener;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.states.AllStates;
@@ -48,7 +49,7 @@ public class SidePane extends HBox implements Initializable, EventListener, AllS
 	@FXML private Button saveButton, closeButton, beginButton, endButton;
 	@FXML private Circle receiverDiode;
 	
-	private final ActionContainer actions;
+	private ActionContainer actions;
 
 	private ProcessState processState;
 	private LocalDateTime startTime = null;
@@ -68,8 +69,10 @@ public class SidePane extends HBox implements Initializable, EventListener, AllS
 	}
 
 	
-	public SidePane(ActionContainer actions) {
-		this.actions = actions;
+	public SidePane() {
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			actions = Components.getGlobalActions();
+		});
 		
 		MyFXMLLoader.create("SidePane.fxml", this);
 	}

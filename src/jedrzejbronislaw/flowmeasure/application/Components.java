@@ -53,6 +53,7 @@ public abstract class Components {
 	@Getter private static Calibration calibration;
 	@Getter private static ViewMediator viewMediator;
 	@Getter private static Repository repository;
+	@Getter private static GlobalActions globalActions;
 	@Getter private static ViewManager viewManager;
 	
 	@Getter private static ConnectionService connectionService;
@@ -83,6 +84,7 @@ public abstract class Components {
 		savingService = new SavingService();
 		settingsService = new SettingsService();
 		
+		globalActions = new GlobalActions();
 		viewManager = new ViewManager();
 		
 		componentsLoader.load();
@@ -105,7 +107,7 @@ public abstract class Components {
 		eventManager.addListener(connectionMonitor);
 		eventManager.addListener(flowConverters);
 
-		new ViewBuilder(new GlobalActions()).build();
+		new ViewBuilder().build();
 	}
 	
 	private static FlowDevice buildFlowDevice() {

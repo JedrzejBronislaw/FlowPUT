@@ -2,18 +2,12 @@ package jedrzejbronislaw.flowmeasure.view.deviceView;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 import jedrzejbronislaw.flowmeasure.view.ed.chart.ChartEDPane;
 import jedrzejbronislaw.flowmeasure.view.ed.live.LiveEDPane;
 import jedrzejbronislaw.flowmeasure.view.flow.table.MeasurementTable;
 
 public class EDViewFactory extends ViewFactory {
 	
-	public EDViewFactory(ActionContainer actions) {
-		super(actions);
-	}
-
-
 	@Override
 	public Node createChartPane() {
 		return new ChartEDPane();
