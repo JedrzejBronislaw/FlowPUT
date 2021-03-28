@@ -23,7 +23,6 @@ import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessReposit
 import jedrzejbronislaw.flowmeasure.model.processRepositoryWriter.ProcessRepositoryWriter;
 import jedrzejbronislaw.flowmeasure.settings.AppProperties;
 import jedrzejbronislaw.flowmeasure.settings.Consts;
-import jedrzejbronislaw.flowmeasure.settings.FlowmeterNameProperty;
 import jedrzejbronislaw.flowmeasure.settings.RatioProperty;
 import jedrzejbronislaw.flowmeasure.settings.Settings;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
@@ -36,6 +35,16 @@ import jedrzejbronislaw.flowmeasure.view.saveWindow.SaveWindow;
 public class Actions implements ActionContainer {
 	
 	private Logger log = LoggerFactory.getLogger(getClass());
+	
+	
+	private SettingsService settingsService;
+	
+	
+	public Actions() {
+		Components.getComponentsLoader().addLoadMethod(() -> {
+			settingsService = Components.getSettingsService();
+		});
+	}
 	
 
 	@Override
@@ -111,7 +120,7 @@ public class Actions implements ActionContainer {
 		if (isBufferedData())
 			writer.setBufferInterval(settings().getInt(AppProperties.BUFFER_INTERVAL));
 		writer.setPulsePerLitre(getPulseRatios());
-		writer.setFlowmeterNames(getFlowmeterNames());
+		writer.setFlowmeterNames(settingsService.getFlowmeterNames());
 		
 		return writer;
 	}
@@ -132,16 +141,6 @@ public class Actions implements ActionContainer {
 		
 		for (int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
 			outcome[i] = settings().getFloat(ratioProperties[i]);
-		
-		return outcome;
-	}
-
-	private String[] getFlowmeterNames() {
-		FlowmeterNameProperty[] ratioProperties = FlowmeterNameProperty.generate(Consts.FLOWMETERS_NUMBER);
-		String[] outcome = new String[Consts.FLOWMETERS_NUMBER];
-		
-		for (int i=0; i<Consts.FLOWMETERS_NUMBER; i++)
-			outcome[i] = settings().getString(ratioProperties[i]);
 		
 		return outcome;
 	}
