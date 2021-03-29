@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view;
+package jedrzejbronislaw.flowmeasure.components.globalActions;
 
 public interface ActionContainer {
 	void startProcess();

@@ -2,13 +2,13 @@ package jedrzejbronislaw.flowmeasure.view.deviceView;
 
 import javafx.scene.Node;
 import jedrzejbronislaw.flowmeasure.application.Components;
+import jedrzejbronislaw.flowmeasure.components.globalActions.ActionContainer;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.states.AllStates;
 import jedrzejbronislaw.flowmeasure.states.AllStatesListener;
 import jedrzejbronislaw.flowmeasure.states.ApplicationState;
 import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
-import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 
 public abstract class ViewFactory {
 	

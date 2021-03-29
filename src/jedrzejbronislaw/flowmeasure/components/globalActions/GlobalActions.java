@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view;
+package jedrzejbronislaw.flowmeasure.components.globalActions;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import jedrzejbronislaw.flowmeasure.application.Components;
+import jedrzejbronislaw.flowmeasure.components.ConnectionService;
 import jedrzejbronislaw.flowmeasure.components.SettingsService;
 import jedrzejbronislaw.flowmeasure.components.connectionMonitor.ConnectionMonitor;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
@@ -27,6 +28,7 @@ import jedrzejbronislaw.flowmeasure.tools.uart.UARTDevice;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionAttempt;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.MultiDeviceAutoConnection;
+import jedrzejbronislaw.flowmeasure.view.ViewMediator;
 import jedrzejbronislaw.flowmeasure.view.saveWindow.SaveWindow;
 
 public class GlobalActions implements ActionContainer {

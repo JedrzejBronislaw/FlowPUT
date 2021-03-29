@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.dialogManager.DialogManager;
+import jedrzejbronislaw.flowmeasure.components.globalActions.ActionContainer;
 import jedrzejbronislaw.flowmeasure.devices.DeviceType;
 import jedrzejbronislaw.flowmeasure.events.EventListener;
 import jedrzejbronislaw.flowmeasure.events.EventManager;

@@ -1,4 +1,4 @@
-package jedrzejbronislaw.flowmeasure.view;
+package jedrzejbronislaw.flowmeasure.components;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.AutoConnection;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.ConnectionAttempt;
 import jedrzejbronislaw.flowmeasure.tools.uart.connection.MultiDeviceAutoConnection;
+import jedrzejbronislaw.flowmeasure.view.ViewManager;
 
 public class ConnectionService {
 	

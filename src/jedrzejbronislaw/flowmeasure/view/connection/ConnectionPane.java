@@ -18,13 +18,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Shape;
 import jedrzejbronislaw.flowmeasure.application.Components;
+import jedrzejbronislaw.flowmeasure.components.globalActions.ActionContainer;
 import jedrzejbronislaw.flowmeasure.states.ConnectionState;
 import jedrzejbronislaw.flowmeasure.tools.MyFXMLLoader;
 import jedrzejbronislaw.flowmeasure.tools.TextTools;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import jedrzejbronislaw.flowmeasure.tools.uart.UART;
 import jedrzejbronislaw.flowmeasure.tools.uart.UARTParams;
-import jedrzejbronislaw.flowmeasure.view.ActionContainer;
 
 public class ConnectionPane extends HBox implements Initializable, StateListener<ConnectionState> {
 
