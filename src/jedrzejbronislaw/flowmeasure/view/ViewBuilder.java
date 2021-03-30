@@ -90,7 +90,6 @@ public class ViewBuilder {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle(WINDOW_TITLE);
 			primaryStage.setOnCloseRequest(this::closeApplication);
-			primaryStage.show();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
