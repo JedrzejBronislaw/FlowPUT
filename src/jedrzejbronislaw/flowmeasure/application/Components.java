@@ -18,6 +18,7 @@ import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
 import jedrzejbronislaw.flowmeasure.components.globalActions.GlobalActions;
 import jedrzejbronislaw.flowmeasure.devices.edDevice.EDDevice;
 import jedrzejbronislaw.flowmeasure.devices.flowDevice.FlowDevice;
+import jedrzejbronislaw.flowmeasure.devices2.DeviceManager;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventPolicy;
 import jedrzejbronislaw.flowmeasure.events.EventType;
@@ -60,6 +61,8 @@ public abstract class Components {
 	@Getter private static SavingService savingService;
 	@Getter private static SettingsService settingsService;
 	
+	@Getter private static DeviceManager deviceManager;
+	
 	
 	public static void create(Stage stage) {
 		primaryStage = stage;
@@ -86,6 +89,8 @@ public abstract class Components {
 		
 		globalActions = new GlobalActions();
 		viewManager = new ViewManager();
+		
+		deviceManager = new DeviceManager();
 		
 		componentsLoader.load();
 		set();

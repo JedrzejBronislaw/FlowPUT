@@ -42,6 +42,7 @@ public abstract class UARTDevice {
 
 	protected abstract MessageTag handleMessageLine(String message);
 	public abstract String getName();
+	@Setter private Consumer<String[]> dataReceiver;
 	
 	
 	public UARTDevice(String proofRequest, String proofMessage) {
@@ -106,5 +107,16 @@ public abstract class UARTDevice {
 		Injection.run(deviceConfirmation);
 		
 		return true;
+	}
+	
+	protected void sendToDataReceiver(int[] data) {
+		if (dataReceiver == null) return;
+		
+		String[] strData = new String[data.length];
+		
+		for (int i=0; i<data.length; i++)
+			strData[i] = Integer.toString(data[i]);
+
+		dataReceiver.accept(strData);
 	}
 }

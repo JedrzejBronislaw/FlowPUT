@@ -92,6 +92,9 @@ public class ConnectionService {
 			
 			if (device == flowDevice) viewManager.setDeviceView(DeviceType.FlowDevice);
 			if (device ==   edDevice) viewManager.setDeviceView(DeviceType.  EDDevice);
+			
+			if (device == flowDevice) Components.getDeviceManager().setDevice(jedrzejbronislaw.flowmeasure.devices2.DeviceType.FlowDevice, device);
+			if (device ==   edDevice) Components.getDeviceManager().setDevice(jedrzejbronislaw.flowmeasure.devices2.DeviceType.  EDDevice, device);
 		});
 		
 		return autoConn;

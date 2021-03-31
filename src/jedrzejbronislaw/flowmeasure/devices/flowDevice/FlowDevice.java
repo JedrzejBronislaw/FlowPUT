@@ -51,6 +51,8 @@ public class FlowDevice extends UARTDevice {
 		
 		if (newSingleFlowReceive != null)
 			for (int i=0; i<flow.length; i++) newSingleFlowReceive.accept(flow[i], i);
+		
+		sendToDataReceiver(flow);
 	}
 
 	private int[] extractNumbers(String message) {
