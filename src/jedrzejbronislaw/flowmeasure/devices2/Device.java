@@ -20,9 +20,17 @@ public class Device {
 	
 	public void receiveData(String[] data) {
 		System.out.println("Received data: " + Arrays.toString(data));
-		
+		float[] values = convertData(data);
+		System.out.println("Received values: " + Arrays.toString(values));
+	}
+	
+	public float[] convertData(String[] data) {
+		float[] values = new float[sensors.size()];
+
 		int i = 0;
 		for (Sensor sensor : sensors)
-			sensor.receiveData(data[i++]);
+			values[i] = sensor.receiveData(data[i++]);
+		
+		return values;
 	}
 }
