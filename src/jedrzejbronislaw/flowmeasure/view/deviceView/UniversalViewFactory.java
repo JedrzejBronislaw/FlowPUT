@@ -5,10 +5,10 @@ import java.util.List;
 import javafx.scene.Node;
 import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.devices2.Device;
-import jedrzejbronislaw.flowmeasure.devices2.DeviceFactory;
 import jedrzejbronislaw.flowmeasure.devices2.DeviceType;
 import jedrzejbronislaw.flowmeasure.devices2.SensorType;
 import jedrzejbronislaw.flowmeasure.devices2.deviceDescriptions.DeviceDescription;
+import jedrzejbronislaw.flowmeasure.devices2.deviceDescriptions.DeviceDescriptions;
 import jedrzejbronislaw.flowmeasure.view.universal.live.UniLivePane;
 import jedrzejbronislaw.flowmeasure.view.universal.live.preview.LivePreview;
 
@@ -29,7 +29,7 @@ public class UniversalViewFactory extends ViewFactory {
 
 	@Override
 	public Node createLivePane() {
-		DeviceDescription desc = DeviceFactory.getDescription(type);
+		DeviceDescription desc = DeviceDescriptions.get(type);
 		List<SensorType> sensors = desc.getSensors();
 		UniLivePane livePane = new UniLivePane();
 		
