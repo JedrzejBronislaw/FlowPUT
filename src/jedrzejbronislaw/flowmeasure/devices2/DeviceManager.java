@@ -41,4 +41,8 @@ public class DeviceManager {
 		currentDevice = null;
 		uartInterface = null;
 	}
+	
+	public Device getDevice(DeviceType deviceType) {
+		return devices.get(deviceType);
+	}
 }

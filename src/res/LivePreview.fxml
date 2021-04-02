@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+
+<fx:root spacing="25.0" type="HBox" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="name" styleClass="key" text="Name" />
+      <Label fx:id="value" alignment="CENTER_RIGHT" minWidth="70.0" styleClass="value" text="0" />
+      <Label fx:id="unit" />
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</fx:root>

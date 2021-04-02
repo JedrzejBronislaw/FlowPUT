@@ -28,8 +28,7 @@ import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.view.connection.ConnectionPane;
 import jedrzejbronislaw.flowmeasure.view.deviceView.DeviceView;
-import jedrzejbronislaw.flowmeasure.view.deviceView.EDViewFactory;
-import jedrzejbronislaw.flowmeasure.view.deviceView.FlowViewFactory;
+import jedrzejbronislaw.flowmeasure.view.deviceView.UniversalViewFactory;
 import jedrzejbronislaw.flowmeasure.view.dialog.DialogPane;
 import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindow;
 import jedrzejbronislaw.flowmeasure.view.sidePane.SidePane;
@@ -148,8 +147,10 @@ public class ViewBuilder {
 		MainWindow mainWindow = new MainWindow();
 
 		viewManager.setMainWindow(mainWindow);
-		viewManager.addDeviceView(DeviceType.FlowDevice, new DeviceView(new FlowViewFactory()));
-		viewManager.addDeviceView(DeviceType.EDDevice,   new DeviceView(new   EDViewFactory()));
+//		viewManager.addDeviceView(DeviceType.FlowDevice, new DeviceView(new FlowViewFactory()));
+//		viewManager.addDeviceView(DeviceType.EDDevice,   new DeviceView(new   EDViewFactory()));
+		viewManager.addDeviceView(DeviceType.FlowDevice, new DeviceView(new UniversalViewFactory(jedrzejbronislaw.flowmeasure.devices2.DeviceType.FlowDevice)));
+		viewManager.addDeviceView(DeviceType.EDDevice,   new DeviceView(new UniversalViewFactory(jedrzejbronislaw.flowmeasure.devices2.DeviceType.EDDevice)));
 		
 		mainWindow.getBorderPane().setLeft(sidePane());
 		mainWindow.getBorderPane().setRight(connectionPane());
