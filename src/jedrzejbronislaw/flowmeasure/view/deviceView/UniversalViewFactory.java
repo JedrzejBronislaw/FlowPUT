@@ -36,7 +36,7 @@ public class UniversalViewFactory extends ViewFactory {
 		for (int i=0; i<sensors.size(); i++) {
 			SensorType sensorType = sensors.get(i);
 			LivePreview preview = new LivePreview(sensorType.toString());
-			device.setSensorOutput(i, preview::setValue);
+			device.setSensorLiveOutput(i, preview::setValue);
 
 			livePane.addFlowPreview(preview);
 		}
