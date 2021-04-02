@@ -1,5 +1,8 @@
 package jedrzejbronislaw.flowmeasure.view;
 
+import static jedrzejbronislaw.flowmeasure.devices2.DeviceType.EDDevice;
+import static jedrzejbronislaw.flowmeasure.devices2.DeviceType.FlowDevice;
+
 import java.util.Optional;
 
 import javafx.application.Platform;
@@ -16,6 +19,7 @@ import jedrzejbronislaw.flowmeasure.application.Components;
 import jedrzejbronislaw.flowmeasure.components.dialogManager.DialogManager;
 import jedrzejbronislaw.flowmeasure.components.globalActions.ActionContainer;
 import jedrzejbronislaw.flowmeasure.devices.DeviceType;
+import jedrzejbronislaw.flowmeasure.devices2.DeviceViewFactory;
 import jedrzejbronislaw.flowmeasure.events.EventListener;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.states.AllStates;
@@ -27,11 +31,10 @@ import jedrzejbronislaw.flowmeasure.states.StateManager;
 import jedrzejbronislaw.flowmeasure.tools.observableState.StateListener;
 import jedrzejbronislaw.flowmeasure.tools.resourceAccess.ResourceAccess;
 import jedrzejbronislaw.flowmeasure.view.connection.ConnectionPane;
-import jedrzejbronislaw.flowmeasure.view.deviceView.DeviceView;
-import jedrzejbronislaw.flowmeasure.view.deviceView.UniversalViewFactory;
 import jedrzejbronislaw.flowmeasure.view.dialog.DialogPane;
 import jedrzejbronislaw.flowmeasure.view.mainWindow.MainWindow;
 import jedrzejbronislaw.flowmeasure.view.sidePane.SidePane;
+
 
 public class ViewBuilder {
 	
@@ -149,8 +152,8 @@ public class ViewBuilder {
 		viewManager.setMainWindow(mainWindow);
 //		viewManager.addDeviceView(DeviceType.FlowDevice, new DeviceView(new FlowViewFactory()));
 //		viewManager.addDeviceView(DeviceType.EDDevice,   new DeviceView(new   EDViewFactory()));
-		viewManager.addDeviceView(DeviceType.FlowDevice, new DeviceView(new UniversalViewFactory(jedrzejbronislaw.flowmeasure.devices2.DeviceType.FlowDevice)));
-		viewManager.addDeviceView(DeviceType.EDDevice,   new DeviceView(new UniversalViewFactory(jedrzejbronislaw.flowmeasure.devices2.DeviceType.EDDevice)));
+		viewManager.addDeviceView(DeviceType.FlowDevice, DeviceViewFactory.create(FlowDevice));
+		viewManager.addDeviceView(DeviceType.EDDevice,   DeviceViewFactory.create(EDDevice));
 		
 		mainWindow.getBorderPane().setLeft(sidePane());
 		mainWindow.getBorderPane().setRight(connectionPane());
