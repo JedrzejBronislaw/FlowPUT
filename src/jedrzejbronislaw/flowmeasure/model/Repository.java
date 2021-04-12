@@ -3,7 +3,6 @@ package jedrzejbronislaw.flowmeasure.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import jedrzejbronislaw.flowmeasure.settings.Consts;
 import lombok.Getter;
 
 public class Repository {
@@ -13,8 +12,8 @@ public class Repository {
 	private List<ProcessRepository> processRepositories = new ArrayList<>();
 	
 	
-	public ProcessRepository createNewProcessRepository(String name) {
-		ProcessRepository processRepository = new ProcessRepository(Consts.FLOWMETERS_NUMBER, name);
+	public ProcessRepository createNewProcessRepository(int numberOfSensors, String name) {
+		ProcessRepository processRepository = new ProcessRepository(numberOfSensors, name);
 		processRepository.getMetadata().setAuthor("");
 		
 		processRepositories.add(processRepository);

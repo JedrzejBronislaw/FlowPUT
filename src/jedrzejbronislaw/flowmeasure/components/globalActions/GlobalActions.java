@@ -71,7 +71,7 @@ public class GlobalActions implements ActionContainer {
 	@Override
 	public void startProcess() {
 		if (eventManager.submitEvent(EventType.PROCESS_STARTS)) {
-			repository.createNewProcessRepository("").setStartWithNextValueFlag();
+			repository.createNewProcessRepository(Consts.FLOWMETERS_NUMBER, "").setStartWithNextValueFlag();
 			
 			if (isBufferedData())
 				flowManager.setFlowConsumerType(FlowConsumerType.BUFFERED); else
