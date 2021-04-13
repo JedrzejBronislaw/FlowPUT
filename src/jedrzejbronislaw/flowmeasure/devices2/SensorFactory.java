@@ -8,9 +8,9 @@ import jedrzejbronislaw.flowmeasure.devices2.sensors.Sensor;
 
 public class SensorFactory {
 
-	public static Sensor createSensor(SensorType type) {
+	public static Sensor createSensor(SensorType type, int number) {
 		switch (type) {
-			case FlowMeter: return new FlowSensor();
+			case FlowMeter: return new FlowSensor(number);
 			case PHMeter:   return new PHSensor();
 			case ECSensor:  return new ECSensor();
 			case Ammeter:   return new Ammeter();

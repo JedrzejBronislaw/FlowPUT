@@ -3,6 +3,7 @@ package jedrzejbronislaw.flowmeasure.devices2.sensors;
 import java.util.function.Consumer;
 
 import jedrzejbronislaw.flowmeasure.devices2.DataFlow;
+import jedrzejbronislaw.flowmeasure.devices2.converters.NoConverter;
 import jedrzejbronislaw.flowmeasure.devices2.converters.ValueConverter;
 import jedrzejbronislaw.flowmeasure.tools.Injection;
 import lombok.Setter;
@@ -18,6 +19,10 @@ public abstract class Sensor {
 	
 	public abstract String getTypeName();
 //	public abstract String getName();
+
+	public Sensor() {
+		this.converter = new NoConverter();
+	}
 
 	public Sensor(ValueConverter converter) {
 		this.converter = converter;
