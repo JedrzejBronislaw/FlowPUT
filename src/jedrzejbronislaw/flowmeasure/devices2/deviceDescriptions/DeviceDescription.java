@@ -27,4 +27,8 @@ public abstract class DeviceDescription {
 	public List<SensorType> getSensors() {
 		return Collections.unmodifiableList(sensors);
 	}
+
+	public int getNumberOfSensors() {
+		return sensors.size();
+	}
 }

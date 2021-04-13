@@ -15,6 +15,9 @@ import jedrzejbronislaw.flowmeasure.components.SettingsService;
 import jedrzejbronislaw.flowmeasure.components.connectionMonitor.ConnectionMonitor;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager;
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowManager.FlowConsumerType;
+import jedrzejbronislaw.flowmeasure.devices2.DeviceManager;
+import jedrzejbronislaw.flowmeasure.devices2.DeviceType;
+import jedrzejbronislaw.flowmeasure.devices2.deviceDescriptions.DeviceDescriptions;
 import jedrzejbronislaw.flowmeasure.events.EventManager;
 import jedrzejbronislaw.flowmeasure.events.EventType;
 import jedrzejbronislaw.flowmeasure.model.Repository;
@@ -45,6 +48,7 @@ public class GlobalActions implements ActionContainer {
 	
 	private UARTDevice        edDevice;
 	private List<UARTDevice>  devices;
+	private DeviceManager     deviceManager;
 	
 	private SettingsService   settingsService;
 	private ConnectionService connectionService;
@@ -61,6 +65,7 @@ public class GlobalActions implements ActionContainer {
 			
 			edDevice          = Components.getEdDevice();
 			devices           = Components.getDevices();
+			deviceManager     = Components.getDeviceManager();
 			
 			settingsService   = Components.getSettingsService();
 			connectionService = Components.getConnectionService();
@@ -70,8 +75,13 @@ public class GlobalActions implements ActionContainer {
 
 	@Override
 	public void startProcess() {
+		DeviceType deviceType = deviceManager.getCurrentDeviceType();
+		if (deviceType == null) return;
+		
+		int numberOfSensors = DeviceDescriptions.get(deviceType).getNumberOfSensors();
+		
 		if (eventManager.submitEvent(EventType.PROCESS_STARTS)) {
-			repository.createNewProcessRepository(Consts.FLOWMETERS_NUMBER, "").setStartWithNextValueFlag();
+			repository.createNewProcessRepository(numberOfSensors, "").setStartWithNextValueFlag();
 			
 			if (isBufferedData())
 				flowManager.setFlowConsumerType(FlowConsumerType.BUFFERED); else

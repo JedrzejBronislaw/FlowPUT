@@ -5,11 +5,16 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jedrzejbronislaw.flowmeasure.components.flowManager.FlowMeasurementModel;
 import lombok.Getter;
 import lombok.Setter;
 
 public class ProcessRepository implements FlowMeasurementModel {
+	
+	private Logger log = LoggerFactory.getLogger(getClass());
 	
 	@Getter private ProcessMetadata metadata = new ProcessMetadata();
 	@Getter private int numOfFlowmeters = 0;
@@ -20,8 +25,9 @@ public class ProcessRepository implements FlowMeasurementModel {
 	
 	public ProcessRepository(int size, String name) {
 		metadata.setName(name);
-		
 		this.numOfFlowmeters = size;
+		
+		log.info("New process repository created (size: {}, name: {})", size, name);
 	}
 	
 	public void setProcessStartTimeNow() {metadata.setStartTime(LocalDateTime.now());}
