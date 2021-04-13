@@ -9,6 +9,8 @@ import jedrzejbronislaw.flowmeasure.devices2.DeviceType;
 import jedrzejbronislaw.flowmeasure.devices2.SensorType;
 import jedrzejbronislaw.flowmeasure.devices2.deviceDescriptions.DeviceDescription;
 import jedrzejbronislaw.flowmeasure.devices2.deviceDescriptions.DeviceDescriptions;
+import jedrzejbronislaw.flowmeasure.view.flow.settings.SettingsPane;
+import jedrzejbronislaw.flowmeasure.view.flow.table.MeasurementTable;
 import jedrzejbronislaw.flowmeasure.view.universal.live.UniLivePane;
 import jedrzejbronislaw.flowmeasure.view.universal.live.preview.LivePreview;
 
@@ -46,8 +48,7 @@ public class UniversalViewFactory extends ViewFactory {
 
 	@Override
 	public Node createTablePane() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MeasurementTable();
 	}
 
 	@Override
@@ -58,8 +59,10 @@ public class UniversalViewFactory extends ViewFactory {
 
 	@Override
 	public Node createSettingsPane() {
-		// TODO Auto-generated method stub
-		return null;
+		SettingsPane settingsPane = new SettingsPane();
+		addAppListener(settingsPane);
+		
+		return settingsPane;
 	}
 
 	@Override
